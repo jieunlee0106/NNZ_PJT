@@ -3,17 +3,27 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class ShowSearchController extends GetxController {
-  late TextEditingController searchController;
+  late final searchController;
+  RxString searchText = "".obs;
   final logger = Logger();
-  String? category;
+  RxString category = ''.obs;
+  RxBool hasFocus = false.obs;
+
   @override
   void onInit() {
-    super.onInit();
+    // TODO: implement onInit
+
     searchController = TextEditingController();
   }
 
   void onChangeCategory({required String value}) {
-    category = value;
-    logger.i(category);
+    logger.i(value.isEmpty);
+    searchText(value);
+  }
+
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
   }
 }

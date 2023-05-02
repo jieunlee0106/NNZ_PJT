@@ -13,7 +13,7 @@ class ShowSearchBar extends StatefulWidget {
 class _ShowSearchBarState extends State<ShowSearchBar> {
   final controller = Get.put(ShowSearchController());
   final List<String> _selectList = ['공연', '나눔'];
-  final String? _selectItem = '공연';
+  String _selectItem = '공연';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,11 +46,16 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                     );
                   }).toList(),
                   onChanged: (value) {
-                    controller.onChangeCategory(value: value!);
+                    setState(() {
+                      _selectItem = value!;
+                    });
                   }),
               Expanded(
                 child: TextField(
                   controller: controller.searchController,
+                  onChanged: (text) {
+                    controller.onChangeCategory(value: text);
+                  },
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "찾고 있는 공연이 있으신가요?",
