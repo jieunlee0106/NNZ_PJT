@@ -24,10 +24,13 @@ allprojects {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'com.github.eello:naneozoo-common:0.1.1'
+    implementation 'com.github.eello:naneozoo-common:0.2.1'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'

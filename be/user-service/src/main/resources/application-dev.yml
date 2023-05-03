@@ -1,0 +1,69 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /user-service
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Dev UserService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+spring:
+  redis:
+    host: ENC(iN+znVbwb24rnJDWcOF7XQqZyJEhkIjQ)
+    port: 6379
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ENC(ZsRuvWnZfl5CmNrlWvF/nS66ZfJd0az21nTmIxAqFoNK6i61aEVZ3F+zTMitE1pyOyav2uo/J5CNKJ7qkquzwZA72nW1nA4t1mGKxz/1R5GQ12gisHrgN2R0NWxuqjigpx/h6u+JyWaqMD0rwW8p+w==)
+    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  jpa:
+    database:
+    hibernate:
+      ddl_auto: create-drop
+    properties:
+      hibernate:
+        "globally_quoted_identifiers": "true"
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+
+  kafka:
+    bootstrap-servers: ENC(BG51LqW1PA/R5Kv9vmE3csMCX5xor0pj+NQbZEJka6wnMr2Z9wq0Vg==)
+    consumer:
+      group-id: ENC(pGfFK/W6nLA1LQTs+6y/GWjRrIy5szhD)
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      topic: ENC(CRlNcIg5nJbI5KGyLy3USMPO3/e3GmbA)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+ncp-sms:
+  access-key: ENC(3WdT8Gm9xahe2b9XH+FeKtgGEZFDmdv1nM4c+w+6DtQ=)
+  secret-key: ENC(4Kquf+ybsLmmWU8KwTyxonqw7+TLbh8Yki688c+ZfEwJODqtMWeMtbxDVvZAxCq2nm2shgRozUI=)
+  service-id: ENC(9MpTE/BNt0xWhmCsfajrapguRTWo07voCh7MCyoD+nDCi4DEuepGyg==)
+  from: ENC(AWNq6weRmTk/inXmHqPm2KV206sYbSIu)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator

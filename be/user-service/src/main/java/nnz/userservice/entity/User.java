@@ -33,7 +33,12 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber; // '-'을 뺀 형식 ex)01012345678
     private String profileImage; // 프로필 이미지 경로
+
+    @Enumerated(value = EnumType.STRING)
+    private AuthProvider authProvider;
+
     private LocalDateTime lastLoginAt;
+
 
     public enum AuthProvider {
         NNZ, TWITTER,
