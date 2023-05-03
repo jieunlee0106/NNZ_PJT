@@ -18,6 +18,7 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(
             color: Config.blackColor,
           ),

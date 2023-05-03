@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
+import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
@@ -16,12 +17,6 @@ import 'package:nnz/src/pages/share/my_sharing_list.dart';
 
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/musical.dart';
-import 'package:nnz/src/pages/category/stage.dart';
-import 'package:nnz/src/pages/category/movie.dart';
-import 'package:nnz/src/pages/category/sports.dart';
-import 'package:nnz/src/pages/category/esports.dart';
-
-import 'package:nnz/src/pages/share/sharing_perform.dart';
 
 import 'src/app.dart';
 import 'src/config/config.dart';
@@ -158,7 +153,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/myShareDetail",
           page: () => MySharedDetail(),
-        )
+        ),
+        GetPage(
+          name: "/proposeShow",
+          page: () => ProposeShow(),
+          transition: Transition.rightToLeft,
+        ),
       ],
     );
   }
