@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
@@ -23,6 +24,11 @@ import 'src/config/config.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // 세로모드만 허용
+    DeviceOrientation.portraitDown,
+  ]);
   Get.config(
     enableLog: true,
   );
