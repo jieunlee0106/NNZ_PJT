@@ -65,5 +65,12 @@ class ImagePath {
   static String get bsbB => 'assets/images/sports/bsb.jpg';
   static String get bkbB => 'assets/images/sports/bkb.jpg';
   static String get socB => 'assets/images/sports/soc.jpg';
-  static String get sad => 'assets/images/search/sad.png';
+  static String get socC => 'assets/images/sports/socc.jpg';
+  static String get bsbC => 'assets/images/sports/bsbc.jpg';
+  static String get bkbC => 'assets/images/sports/bkbc.jpg';
+  static String get socIcon => 'assets/images/sports/football.jpg';
+  static String get bkbIcon => 'assets/images/sports/basketball.jpg';
+  static String get bsbIcon => 'assets/images/sports/baseball.jpg';
+  static String get cal => 'assets/images/sports/cal.jpg';
+  static String get sad => 'assets/images/search/sad.jpg';
 }

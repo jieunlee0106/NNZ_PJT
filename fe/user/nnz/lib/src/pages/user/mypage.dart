@@ -19,7 +19,6 @@ class MyPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-      
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
           actions: [Icon(Icons.more_vert)],
         ),
@@ -46,7 +45,7 @@ class MyPage extends StatelessWidget {
                         child: Row(
                           children: [
                             Image.asset(
-                              ImagePath.esports,
+                              ImagePath.gift,
                               width: 30,
                             ),
                             Text(
