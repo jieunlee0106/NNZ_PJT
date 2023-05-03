@@ -63,16 +63,16 @@ class SharingRegisterProvider extends GetConnect {
   //나눔등록
   void testShare({required ShareModel shareModel, required var images}) async {
     final body = shareModel.toJson();
+    List<MultipartFile> multipartImageList = [];
+
     var formData = FormData(body);
 
     for (var i = 0; i < images.length; i++) {
-      formData.files.add(
-        MapEntry(
-          'images',
-          MultipartFile(images[i].path, filename: images[i].name),
-        ),
-      );
+      MultipartFile multipartFile =
+          MultipartFile(images[i].path, filename: images[i].name);
+      multipartImageList.add(multipartFile);
     }
+
     // for (var element in formData.files) {
     //   logger.i(element.toString());
     // }

@@ -52,7 +52,9 @@ class _RegisterFieldState extends State<RegisterField> {
 
         if (widget.formType == 'email') {
           final isValidEmail = controller.onEmailValidate(text: value);
-          controller.emailChecked.value = isValidEmail;
+          if (isValidEmail == true) {
+            controller.emailValidate(type: 'email', text: value);
+          }
         } else if (widget.formType == 'password') {
           final isValidPassword = controller.onPasswordValidate(text: value);
           controller.pwdChecked.value = isValidPassword;
@@ -70,9 +72,6 @@ class _RegisterFieldState extends State<RegisterField> {
       validator: (value) {
         if (widget.formType == 'email') {
           isEmail = controller.onEmailValidate(text: value!);
-          if (isEmail == true) {
-            controller.emailValidate();
-          }
 
           return isEmail ? null : "올바른 이메일 형식 입력해주세요";
         } else if (widget.formType == 'password') {
