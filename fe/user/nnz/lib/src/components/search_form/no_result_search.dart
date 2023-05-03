@@ -9,51 +9,53 @@ class NoResultSearch extends StatelessWidget {
   final logger = Logger();
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 24,
-      ),
-      child: Column(
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          iconData(
-            icon: ImagePath.sad,
-            size: 240,
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Text(
-            "검색 결과가 없습니다.",
-            style: TextStyle(
-              fontSize: 16,
-              color: Config.blackColor,
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            "원하는 공연이 없다면 나너주에게 알려주세요",
-            style: TextStyle(
-              fontSize: 16,
-              color: Config.blackColor,
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          GestureDetector(
-            onTap: () {
-              Get.toNamed("/proposeShow");
-            },
-            child: Text(
-              "+ 공연제안하기",
-              style: TextStyle(
-                fontSize: 20,
-                color: Config.deepYellowColor,
+          Column(
+            children: [
+              iconData(
+                icon: ImagePath.sad,
+                size: 240,
               ),
-            ),
-          )
+              const SizedBox(
+                height: 24,
+              ),
+              Text(
+                "검색 결과가 없습니다.",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Config.blackColor,
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                "원하는 공연이 없다면 나너주에게 알려주세요",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Config.blackColor,
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed("/proposeShow");
+                },
+                child: Text(
+                  "+ 공연제안하기",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Config.deepYellowColor,
+                  ),
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );

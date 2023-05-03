@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/icon_data.dart';
-import 'package:nnz/src/components/search_form/no_result_search.dart';
 
+import '../../components/search_form/no_result_search.dart';
 import '../../components/search_form/popular_hash_tag.dart';
 import '../../components/search_form/related_hash_tag.dart';
 import '../../components/search_form/show_search_bar.dart';
@@ -18,6 +18,7 @@ class Search extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: iconData(
             icon: ImagePath.logo,
@@ -28,7 +29,7 @@ class Search extends StatelessWidget {
         body: Obx(
           () => SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Padding(
+            child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
               ),
@@ -37,7 +38,10 @@ class Search extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const ShowSearchBar(),
+                  Container(
+                    color: Colors.white,
+                    child: const ShowSearchBar(),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -50,6 +54,9 @@ class Search extends StatelessWidget {
                               height: 32,
                             ),
                             // SearchShow(),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             NoResultSearch(),
                           ],
                         ),

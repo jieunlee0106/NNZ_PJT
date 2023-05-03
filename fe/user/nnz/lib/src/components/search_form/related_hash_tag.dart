@@ -9,6 +9,11 @@ class RelatedHashTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final tagList = ['square', '포카', '다꾸', '응원봉', '싱어송라이터'];
     return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
+      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -12,26 +12,33 @@ class ProposeShow extends StatelessWidget {
   final controller = Get.put(ProposeController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: iconData(
-            icon: ImagePath.logo,
-            size: 240,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            title: iconData(
+              icon: ImagePath.logo,
+              size: 240,
+            ),
+            centerTitle: true,
           ),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: [
-            ShowTitle(),
-            const SizedBox(
-              height: 16,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                ShowTitle(),
+                const SizedBox(
+                  height: 16,
+                ),
+                ShowUrl(),
+                const SizedBox(
+                  height: 16,
+                ),
+                const ProposeBtn(),
+              ],
             ),
-            ShowUrl(),
-            const SizedBox(
-              height: 16,
-            ),
-            const ProposeBtn(),
-          ],
-        ));
+          )),
+    );
   }
 }
