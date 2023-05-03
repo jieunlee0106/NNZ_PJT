@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
+import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
@@ -16,16 +17,9 @@ import 'package:nnz/src/pages/share/my_sharing_list.dart';
 
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/musical.dart';
-import 'package:nnz/src/pages/category/stage.dart';
-import 'package:nnz/src/pages/category/movie.dart';
-import 'package:nnz/src/pages/category/sports.dart';
-import 'package:nnz/src/pages/category/esports.dart';
-
-import 'package:nnz/src/pages/share/sharing_perform.dart';
 
 import 'src/app.dart';
 import 'src/config/config.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -65,11 +59,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-<<<<<<< HEAD
-      initialRoute: "/",
-=======
-      initialRoute: "/myShareDetail",
->>>>>>> shareauth
+      initialRoute: "/myShareInfo",
       getPages: [
         GetPage(
           name: "/",
@@ -163,6 +153,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/myShareDetail",
           page: () => MySharedDetail(),
+        ),
+        GetPage(
+          name: "/myShareInfo",
+          page: () => const MySharedInfo(),
         )
       ],
     );
