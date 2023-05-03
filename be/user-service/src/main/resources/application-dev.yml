@@ -73,3 +73,10 @@ jwt:
   expiration-period:
     access-token: 3600000 # 1hour
     refresh-token: 1296000000 # 15day
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(LtoSUscRMK/8/G7B8cVNdRKqmw004IQKdp2pWkgtOM/iPH54LXJE1fK56kn38uKz)
