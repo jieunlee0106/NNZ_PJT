@@ -4,10 +4,14 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
+import 'package:nnz/src/model/share_model.dart';
+
+import '../services/sharing_register.dart';
 
 enum Condition { INIT, YES, NO }
 
 class SharingRegisterController extends GetxController {
+  ShareModel shareModel = ShareModel();
   late final imageController;
   late final titleController;
   late final detailController;
@@ -196,6 +200,44 @@ class SharingRegisterController extends GetxController {
             builder: (context) {
               return const sharePopup(popupMessage: "조건을 입력해주세요");
             });
+      } else if (peopleCount <= 0) {
+        showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return const sharePopup(popupMessage: "인원수는 최소 1명 이상입니다.");
+            });
+      } else if (detailController.text.length <= 0) {
+        showDialog(
+            context: Get.context!,
+            builder: (context) {
+              return const sharePopup(popupMessage: "상세 정보를 입력해주세요");
+            });
+      } else {
+        // imageList.clear();
+        // for (var image in imageController.images) {
+        //   imageList.add(image);
+        //   logger.i("$image");
+        // }
+
+        // logger.i(tagList);
+        final openTime = "${openDateController.text}${openTimeController.text}";
+
+        shareModel = ShareModel(
+          showId: sharingController.text,
+          writer: "나너주",
+          nanumDate: sharingDateController.text,
+          title: titleController.text,
+          openTime: openTime,
+          quantity: peopleCount.value,
+          isCertification: isAuthentication.value == true ? "true" : "false",
+          condition: isAuthentication.value == true ? conList[0] : null,
+          content: detailController.text,
+          tags: tagList,
+        );
+
+        // logger.i("shareModel $shareModel");
+        SharingRegisterProvider()
+            .testShare(shareModel: shareModel, images: imageController.images);
       }
     } else if (peopleCount <= 0) {
       showDialog(
@@ -210,11 +252,32 @@ class SharingRegisterController extends GetxController {
             return const sharePopup(popupMessage: "상세 정보를 입력해주세요");
           });
     } else {
-      imageList.clear();
-      for (var image in imageController.images) {
-        imageList.add(image);
-        logger.i("$image");
-      }
+      // imageList.clear();
+      // for (var image in imageController.images) {
+      //   imageList.add(image);
+      //   logger.i("$image");
+      // }
+
+      // logger.i(tagList);
+      final openTime = "${openDateController.text}${openTimeController.text}";
+
+      shareModel = ShareModel(
+        showId: sharingController.text,
+        writer: "나너주",
+        nanumDate: sharingDateController.text,
+        title: titleController.text,
+        openTime: openTime,
+        quantity: peopleCount.value,
+        isCertification: isAuthentication.value == true ? "true" : "false",
+        condition: isAuthentication.value == true
+            ? conList.indexOf(0).toString()
+            : null,
+        content: detailController.text,
+        tags: tagList,
+      );
+
+      SharingRegisterProvider()
+          .testShare(shareModel: shareModel, images: imageController.images);
     }
   }
 }
