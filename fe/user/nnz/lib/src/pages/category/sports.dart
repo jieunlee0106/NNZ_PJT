@@ -3,7 +3,7 @@ import 'package:nnz/src/components/category/category_dropdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
-import 'package:nnz/src/components/category/sports_banner.dart';
+import 'package:nnz/src/components/category/sports_detail.dart';
 
 class SportsPage extends StatefulWidget {
   const SportsPage({Key? key}) : super(key: key);

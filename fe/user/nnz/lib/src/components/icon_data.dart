@@ -68,4 +68,8 @@ class ImagePath {
   static String get socC => 'assets/images/sports/socc.jpg';
   static String get bsbC => 'assets/images/sports/bsbc.jpg';
   static String get bkbC => 'assets/images/sports/bkbc.jpg';
+  static String get socIcon => 'assets/images/sports/football.png';
+  static String get bkbIcon => 'assets/images/sports/basketball.png';
+  static String get bsbIcon => 'assets/images/sports/baseball.png';
+  static String get cal => 'assets/images/sports/cal.png';
 }

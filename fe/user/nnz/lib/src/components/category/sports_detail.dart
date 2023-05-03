@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/components/category/category_dropdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:nnz/src/components/category/sports_list.dart';
+import 'package:nnz/src/components/category/sports_schedule.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
 
@@ -16,6 +18,10 @@ class _SportsBannerState extends State<SportsBanner> {
   String sportsName = '야구';
   String sportsNameR = '농구';
   String sportsNameL = '축구';
+  String league = 'KBO';
+  String startDate = '2023.04.01';
+  String endDate = '미정';
+  String sportsImg = ImagePath.bsbIcon;
 
   final List<String> _sports = [
     '야구',
@@ -135,10 +141,22 @@ class _SportsBannerState extends State<SportsBanner> {
                           setState(() {
                             if (index == 0) {
                               sportEventB = ImagePath.bsbB;
+                              league = 'KBO';
+                              startDate = '2023.04.01';
+                              endDate = '미정';
+                              sportsImg = ImagePath.bsbIcon;
                             } else if (index == 1) {
                               sportEventB = ImagePath.socB;
+                              league = 'Kleague';
+                              startDate = '2023.02.25';
+                              endDate = '미정';
+                              sportsImg = ImagePath.socIcon;
                             } else {
                               sportEventB = ImagePath.bkbB;
+                              league = 'KBL';
+                              startDate = '2023.04.02';
+                              endDate = '미정';
+                              sportsImg = ImagePath.bkbIcon;
                             }
                           });
                         },
@@ -150,10 +168,22 @@ class _SportsBannerState extends State<SportsBanner> {
                             String carouselImage;
                             if (index == 0) {
                               carouselImage = ImagePath.bsbC;
+                              league = 'KBO';
+                              startDate = '2023.04.02';
+                              endDate = '2023.04.12';
+                              sportsImg = ImagePath.bsbIcon;
                             } else if (index == 1) {
                               carouselImage = ImagePath.socC;
+                              league = 'Kleague';
+                              startDate = '2023.04.02';
+                              endDate = '2023.04.12';
+                              sportsImg = ImagePath.socIcon;
                             } else {
                               carouselImage = ImagePath.bkbC;
+                              league = 'KBL';
+                              startDate = '2023.04.02';
+                              endDate = '2023.04.12';
+                              sportsImg = ImagePath.bkbIcon;
                             }
                             return Container(
                               width: MediaQuery.of(context).size.width,
@@ -175,6 +205,19 @@ class _SportsBannerState extends State<SportsBanner> {
               ),
             ],
           ),
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        GrayLine(),
+        SportsSchedule(
+          league: league,
+          startDate: startDate,
+          endDate: endDate,
+        ),
+        GrayLine(),
+        SportsList(
+          sportsImg: sportsImg,
         ),
       ],
     );
