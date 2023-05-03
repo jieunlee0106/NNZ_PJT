@@ -20,8 +20,7 @@ class SharingRegisterController extends GetxController {
   late final movieController;
   late final conditionController;
   late final hashTagController;
-  late final performStartController;
-  late final performEndController;
+  late final sharingDateController;
   late final openDateController;
   late final openTimeController;
   List<ImageFile> imageList = [];
@@ -53,8 +52,7 @@ class SharingRegisterController extends GetxController {
     movieController = TextEditingController();
     conditionController = TextEditingController();
     hashTagController = TextEditingController();
-    performStartController = TextEditingController();
-    performEndController = TextEditingController();
+    sharingDateController = TextEditingController();
     openDateController = TextEditingController();
     openTimeController = TextEditingController();
   }
@@ -179,11 +177,11 @@ class SharingRegisterController extends GetxController {
               ],
             );
           });
-    } else if (performStartController.text.length <= 0) {
+    } else if (sharingDateController.text.length <= 0) {
       showDialog(
           context: Get.context!,
           builder: (context) {
-            return const sharePopup(popupMessage: "공연시간을 선택해주세요");
+            return const sharePopup(popupMessage: "나눔일시 입력해주세요");
           });
     } else if (titleController.text.length <= 0) {
       showDialog(

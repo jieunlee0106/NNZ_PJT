@@ -34,9 +34,19 @@ class BottomNavController extends GetxController {
         break;
       case PageName.HOME:
       case PageName.SERACH:
-      case PageName.ACTIVITY:
         changeIndex(value);
         break;
+      case PageName.ACTIVITY:
+        curIndex(page.index);
+        accessToken = await getToken();
+        if (accessToken == null) {
+          print(accessToken);
+          Get.offNamed("/register");
+          return;
+        }
+        changeIndex(value);
+        break;
+
       case PageName.MYPAGE:
         curIndex(page.index);
         accessToken = await getToken();

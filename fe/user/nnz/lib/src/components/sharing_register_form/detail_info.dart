@@ -12,7 +12,7 @@ class DetailInfo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 8,
+        vertical: 18,
       ),
       color: Colors.white,
       child: Column(
@@ -44,7 +44,7 @@ class DetailInfo extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 8,
-              // vertical: 18,
+              vertical: 12,
             ),
             child: TextField(
               controller: controller.detailController,
@@ -58,9 +58,6 @@ class DetailInfo extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 16,
-          )
         ],
       ),
     );
