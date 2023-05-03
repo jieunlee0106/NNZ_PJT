@@ -5,16 +5,21 @@ import io.github.eello.nnz.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.MessageDTO;
+import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
+import nnz.userservice.entity.RefreshToken;
 import nnz.userservice.entity.User;
 import nnz.userservice.entity.VerifyNumber;
 import nnz.userservice.exception.ErrorCode;
+import nnz.userservice.repository.RefreshTokenRepository;
 import nnz.userservice.repository.UserRepository;
 import nnz.userservice.repository.VerifyNumberRepository;
+import nnz.userservice.service.JwtProvider;
 import nnz.userservice.service.KafkaProducer;
 import nnz.userservice.service.SmsSender;
 import nnz.userservice.service.UserService;
 import nnz.userservice.util.ValidationUtils;
+import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private final VerifyNumberRepository verifyNumberRepository;
     private final PasswordEncoder passwordEncoder;
     private final KafkaProducer kafkaProducer;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     @Transactional
@@ -85,6 +92,7 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(vo.getPhone())
                 .password(passwordEncoder.encode(vo.getPwd()))
                 .authProvider(User.AuthProvider.NNZ)
+                .role(User.Role.USER)
                 .build();
 
         newUser = userRepository.save(newUser);
@@ -151,5 +159,29 @@ public class UserServiceImpl implements UserService {
     private String createRandomNumber() {
         Random random = new Random();
         return String.format("%06d", random.nextInt(999999));
+    }
+
+    @Override
+    public TokenDTO login(LoginVO vo) {
+        User user = userRepository.findByEmail(vo.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.LOGIN_FAILURE));
+
+        // 로그인 실패시 ErrorCode.LOGIN_FAILURE throw
+        user.login(passwordEncoder, vo.getPwd());
+
+        String accessToken = jwtProvider.generateAccessToken(user);
+        String refreshToken = jwtProvider.generateRefreshToken(user);
+
+        // 레디스에 리프레시 토큰 저장 -> key: email / value: refreshToken
+        RefreshToken rt = RefreshToken.builder()
+                .id(user.getEmail())
+                .refreshToken(refreshToken)
+                .build();
+        refreshTokenRepository.save(rt);
+
+        return TokenDTO.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 }

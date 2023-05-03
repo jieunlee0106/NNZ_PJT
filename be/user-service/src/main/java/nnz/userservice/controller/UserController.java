@@ -2,14 +2,18 @@ package nnz.userservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.service.UserService;
 import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.CheckVerifyVO;
+import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 import nnz.userservice.vo.VerifyVO;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -59,4 +63,18 @@ public class UserController {
         response.put("available", available); // 존재하면 사용 불가능이므로 not 연산하여 응답
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginVO vo, HttpServletResponse response) {
+        TokenDTO token = userService.login(vo);
+        ResponseCookie cookie = ResponseCookie.from("refresh", token.getRefreshToken())
+                .httpOnly(true)
+                .path("/")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+        token.deleteRefreshToken(); // 응답에 refreshToken을 포함시키지 않기 위해 null로 변경
+        return ResponseEntity.ok(token);
+    }
+
 }
