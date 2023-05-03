@@ -16,7 +16,7 @@ notification:
 
 spring:
   redis:
-    host: ENC(iN+znVbwb24rnJDWcOF7XQqZyJEhkIjQ)
+    host: ENC(Xk2ISzDv5IUn0l8c4npbakBxi+H+fdnuFl99ny5ITfs=)
     port: 6379
   mvc:
     pathmatch:
