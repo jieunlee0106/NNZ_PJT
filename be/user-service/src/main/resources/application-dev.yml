@@ -6,7 +6,7 @@ server:
 notification:
   mattermost:
     enabled: true
-    webhook-url: ENC(FCgljEFVopS7sUMV9HCxGQehKF7gendPQVof3ckMzm0F/OItFAcEH3u9UUoI2LOQt4h11LYrUm2c+TGDrJjbmMjEwAebFSXk)
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
     channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
     pretext: Dev UserService Error # attachments? ??? ??? ?? ?? ??? ??
     #    color: # attachment? ?? ??? ??. default=red
