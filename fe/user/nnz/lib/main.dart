@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
+import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
@@ -157,6 +158,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/proposeShow",
           page: () => ProposeShow(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/myShareInfo",
+          page: () => const MySharedInfo(),
           transition: Transition.rightToLeft,
         ),
       ],
