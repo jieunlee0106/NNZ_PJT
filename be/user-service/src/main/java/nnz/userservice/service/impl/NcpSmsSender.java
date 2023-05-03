@@ -54,13 +54,6 @@ public class NcpSmsSender implements SmsSender {
         headers.set("x-ncp-iam-access-key", accessKey);
         headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
 
-        log.info("Headers: {}", headers);
-
-        log.info("accessKey: {}", accessKey);
-        log.info("secretKey: {}", secretKey);
-        log.info("serviceId: {}", serviceId);
-        log.info("from: {}", from);
-
         List<MessageDTO> messages = new ArrayList<>();
         messages.add(messageDTO);
 
@@ -76,11 +69,7 @@ public class NcpSmsSender implements SmsSender {
         ObjectMapper om = new ObjectMapper();
         String body = om.writeValueAsString(request);
 
-        log.info("body: {}", body);
-
         HttpEntity<String> httpBody = new HttpEntity<>(body, headers);
-
-        log.info("httpBody: {}", httpBody);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
@@ -94,8 +83,8 @@ public class NcpSmsSender implements SmsSender {
     private String makeSignature(Long time) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
         String space = " ";					// one space
         String newLine = "\n";					// new line
-        String method = "GET";					// method
-        String url = "/photos/puppy.jpg?query1=&query2";	// url (include query string)
+        String method = "POST";					// method
+        String url = "/sms/v2/services/" + serviceId + "/messages";	// url (include query string)
         String timestamp = time.toString();			// current timestamp (epoch)
         String accessKey = this.accessKey;			// access key id (from portal or Sub Account)
         String secretKey = this.secretKey;
