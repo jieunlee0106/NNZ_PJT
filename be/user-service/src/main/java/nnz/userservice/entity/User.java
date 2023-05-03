@@ -1,7 +1,10 @@
 package nnz.userservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
+import io.github.eello.nnz.common.exception.CustomException;
 import lombok.*;
+import nnz.userservice.exception.ErrorCode;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -37,8 +40,21 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private AuthProvider authProvider;
 
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
     private LocalDateTime lastLoginAt;
 
+    public void login(PasswordEncoder passwordEncoder, String rawPassword) {
+        if (!passwordEncoder.matches(rawPassword, this.password)) {
+            throw new CustomException(ErrorCode.LOGIN_FAILURE);
+        }
+    }
+
+    public enum Role {
+        USER, ADMIN,
+        ;
+    }
 
     public enum AuthProvider {
         NNZ, TWITTER,

@@ -1,7 +1,9 @@
 package nnz.userservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
+import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 
 import java.io.UnsupportedEncodingException;
@@ -16,4 +18,5 @@ public interface UserService {
     boolean verify(String phone, int verifyNumber);
     boolean isExistByEmail(String email);
     boolean isExistByNickname(String nickname);
+    TokenDTO login(LoginVO vo);
 }
