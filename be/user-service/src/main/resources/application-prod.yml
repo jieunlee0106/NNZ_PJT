@@ -16,7 +16,7 @@ notification:
 
 spring:
   application:
-    name: PROD_USER_SERVICE
+    name: PROD-USER-SERVICE
   redis:
     host: ENC(0lb6U5bLxtLRV/9hNevi1egkI8FMnyZk)
     port: 6379
