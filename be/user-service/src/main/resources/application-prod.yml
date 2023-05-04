@@ -2,6 +2,8 @@ server:
   port: 9081
   servlet:
     context-path: /user-service
+  application:
+    name: PROD_USER_SERVICE
 
 notification:
   mattermost:
