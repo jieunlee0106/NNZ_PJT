@@ -68,7 +68,7 @@ class SearchShow extends StatelessWidget {
       '올림픽공원 SK핸드볼 경기장',
     ];
     return SizedBox(
-      height: Get.width * 0.85,
+      height: Get.width * 0.8,
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,

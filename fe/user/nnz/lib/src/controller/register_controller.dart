@@ -22,9 +22,11 @@ class RegisterController extends GetxController {
 
   //회원 유효성 검사 완료 후 회원가입 버튼은 활성화 하기 위해
   RxBool emailChecked = false.obs;
+  RxBool emailValidateCheck = false.obs;
   RxBool pwdChecked = false.obs;
   RxBool pwdConfirmChecked = false.obs;
   RxBool nickChecked = false.obs;
+  RxBool nickValidateCheck = false.obs;
   RxBool smsChecked = false.obs;
   RxBool isAgree = false.obs;
   RxBool registerChecked = false.obs;
@@ -92,8 +94,10 @@ class RegisterController extends GetxController {
         : false;
   }
 
-  void emailValidate() {
-    UserProvider().testApi(email: emailController.text);
+  //이메일형식 확인뒤 중복체크
+  void emailValidate({required String type, required String text}) {
+    logger.i("$type , $text");
+    UserProvider().testApi(type: type, text: text);
 
     //이메일 유효성 검사 통과시
     emailChecked(true);
@@ -129,11 +133,12 @@ class RegisterController extends GetxController {
     return true;
   }
 
-  void onNicknameValidate({required String nickname}) {
+  void onNicknameValidate(
+      {String type = "nickname", required String nickname}) {
     // logger.i(nickname);
     nickChecked(true);
     onRegisterCheck();
-    logger.i(registerChecked.value);
+    UserProvider().testApi(type: type, text: nickname);
   }
 
   String format(int seconds) {
@@ -194,7 +199,7 @@ class RegisterController extends GetxController {
     logger.i(nickChecked.value);
     logger.i(smsChecked.value);
     logger.i(isAgree.value);
-  
-    //회원가입 api 수행 
+
+    //회원가입 api 수행
   }
 }

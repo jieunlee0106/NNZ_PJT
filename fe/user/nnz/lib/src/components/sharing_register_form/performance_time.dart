@@ -32,7 +32,7 @@ class _PerformanceTimeState extends State<PerformanceTime> {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 8,
+        vertical: 18,
       ),
       color: Colors.white,
       child: Column(
@@ -45,7 +45,7 @@ class _PerformanceTimeState extends State<PerformanceTime> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 iconData(
-                  icon: ImagePath.calendar,
+                  icon: ImagePath.giftDate,
                   size: 80,
                 ),
                 const SizedBox(
@@ -56,7 +56,7 @@ class _PerformanceTimeState extends State<PerformanceTime> {
                     bottom: 4.0,
                   ),
                   child: Text(
-                    "공연 시간",
+                    "나눔 일시",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -73,84 +73,33 @@ class _PerformanceTimeState extends State<PerformanceTime> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: Get.width * 0.45,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Config.blackColor,
+                Expanded(
+                  child: Container(
+                    // width: Get.width * 0.45,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Config.blackColor,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            focusNode: performStartFocusNode,
-                            controller: controller.performStartController,
-                            decoration: const InputDecoration(
-                              hintText: "공연 시작일",
-                              border: InputBorder.none,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              focusNode: performStartFocusNode,
+                              controller: controller.sharingDateController,
+                              decoration: const InputDecoration(
+                                hintText: "나눔 하실 날짜를 입력해주세요",
+                                border: InputBorder.none,
+                              ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            DateTime? temp = await PlatformDatePicker.showDate(
-                              context: context,
-                              firstDate: DateTime(DateTime.now().year),
-                              initialDate: DateTime.now(),
-                              lastDate: DateTime(DateTime.now().year + 5),
-                              locale: const Locale('ko', 'KR'),
-                            );
-                            if (temp != null) {
-                              setState(() {
-                                date = temp;
-                              });
-                              final dateFormat =
-                                  date.toString().substring(0, 10);
-                              controller.performStartController.text =
-                                  dateFormat;
-                            }
-                          },
-                          child: const Icon(
-                            Icons.calendar_today,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: Get.width * 0.4,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Config.blackColor,
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            focusNode: performEndFocusNode,
-                            controller: controller.performEndController,
-                            decoration: const InputDecoration(
-                              hintText: "공연 종료일",
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
+                          GestureDetector(
                             onTap: () async {
                               DateTime? temp =
                                   await PlatformDatePicker.showDate(
@@ -166,12 +115,16 @@ class _PerformanceTimeState extends State<PerformanceTime> {
                                 });
                                 final dateFormat =
                                     date.toString().substring(0, 10);
-                                controller.performEndController.text =
+                                controller.sharingDateController.text =
                                     dateFormat;
                               }
                             },
-                            child: const Icon(Icons.calendar_today)),
-                      ],
+                            child: const Icon(
+                              Icons.calendar_today,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

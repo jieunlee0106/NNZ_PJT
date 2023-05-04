@@ -24,41 +24,38 @@ class _OpenTimeState extends State<OpenTime> {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 8,
+        vertical: 18,
       ),
       color: Colors.white,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                iconData(
-                  icon: ImagePath.calendar,
-                  size: 80,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              iconData(
+                icon: ImagePath.calendar,
+                size: 80,
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(
+                  bottom: 4,
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 4,
-                  ),
-                  child: Text(
-                    "오픈시간",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                child: Text(
+                  "오픈시간",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-              vertical: 12,
+              vertical: 14,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
