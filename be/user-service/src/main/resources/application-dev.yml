@@ -2,8 +2,6 @@ server:
   port: 8081
   servlet:
     context-path: /user-service
-  application:
-    name: DEV_USER_SERVICE
 
 notification:
   mattermost:
@@ -17,6 +15,8 @@ notification:
 #    footer: # attachment? ??? ?? ??. default=?? ??
 
 spring:
+  application:
+    name: DEV_USER_SERVICE
   redis:
     host: ENC(Xk2ISzDv5IUn0l8c4npbakBxi+H+fdnuFl99ny5ITfs=)
     port: 6379
