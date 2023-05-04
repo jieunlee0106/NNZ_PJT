@@ -25,6 +25,13 @@ logging:
         SQL: DEBUG
         type: TRACE
 
+#yml 암호화 yml 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
 notification:
   mattermost:
     enabled: true

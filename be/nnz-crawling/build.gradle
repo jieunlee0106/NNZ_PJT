@@ -29,6 +29,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.31'
 
+    //yml 암호화
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+
     // feat.김종성
     implementation 'com.github.eello:naneozoo-common:0.1.0'
 
