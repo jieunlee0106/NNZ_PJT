@@ -22,6 +22,20 @@ class ShowList extends StatelessWidget {
       'date': '2023.06.17 ~2023.06.18',
       'location': '서울 잠실종합운동장 올림픽주경기장'
     },
+    {
+      'image':
+          'https://ticketimage.interpark.com/Play/image/large/23/23005010_p.gif',
+      'title': '2023 백예린 단독 공연<square>',
+      'date': '2023.03.10 ~ 2023.05.10',
+      'location': '올림픽 공원 SK핸드볼 경기장'
+    },
+    {
+      'image':
+          'https://ticketimage.interpark.com/Play/image/large/23/23005708_p.gif',
+      'title': '현대카드 슈퍼콘서트 27 브루노 마스(Bruno Mars)',
+      'date': '2023.06.17 ~2023.06.18',
+      'location': '서울 잠실종합운동장 올림픽주경기장'
+    },
   ];
 
   @override

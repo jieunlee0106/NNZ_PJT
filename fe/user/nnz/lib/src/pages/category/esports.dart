@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/components/category/category_dropdown.dart';
+import 'package:nnz/src/components/category/eports_detail.dart';
+import 'package:nnz/src/components/icon_data.dart';
 
 class ESportsPage extends StatefulWidget {
   const ESportsPage({Key? key}) : super(key: key);
@@ -21,8 +23,8 @@ class _ESportsPageState extends State<ESportsPage> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: const Text("esport 페이지"),
+      body: SingleChildScrollView(
+        child: EsportsBanner(),
       ),
     );
   }

@@ -72,6 +72,14 @@ class ImagePath {
   static String get socIcon => 'assets/images/sports/football.png';
   static String get bkbIcon => 'assets/images/sports/basketball.png';
   static String get bsbIcon => 'assets/images/sports/baseball.png';
+  static String get kar => 'assets/images/sports/kar.JPG';
+  static String get karB => 'assets/images/sports/karB.JPG';
+  static String get lol => 'assets/images/sports/lol.JPG';
+  static String get lolB => 'assets/images/sports/lolB.JPG';
+  static String get ove => 'assets/images/sports/ove.JPG';
+  static String get oveB => 'assets/images/sports/oveB.JPG';
+  static String get sta => 'assets/images/sports/sta.JPG';
+  static String get staB => 'assets/images/sports/staB.JPG';
   static String get cal => 'assets/images/sports/cal.png';
   static String get sad => 'assets/images/search/sad.jpg';
   static String get giftDate => 'assets/images/sharing_register/gift.png';
