@@ -16,7 +16,7 @@ notification:
 
 spring:
   application:
-    name: DEV_USER_SERVICE
+    name: DEV-USER-SERVICE
   redis:
     host: ENC(Xk2ISzDv5IUn0l8c4npbakBxi+H+fdnuFl99ny5ITfs=)
     port: 6379
