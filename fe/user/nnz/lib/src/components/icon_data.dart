@@ -75,4 +75,5 @@ class ImagePath {
   static String get cal => 'assets/images/sports/cal.png';
   static String get sad => 'assets/images/search/sad.jpg';
   static String get giftDate => 'assets/images/sharing_register/gift.png';
+  static String get declare => 'assets/images/declare.png';
 }

@@ -8,6 +8,7 @@ import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
+import 'package:nnz/src/pages/user/other_profile.dart';
 import 'package:nnz/src/pages/user/profile_edit.dart';
 import 'package:nnz/src/pages/user/register.dart';
 import 'package:nnz/src/pages/user/register_form.dart';
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/",
+      initialRoute: "/otherUserProfile",
       getPages: [
         GetPage(
           name: "/",
@@ -169,6 +170,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/myShareInfo",
           page: () => const MySharedInfo(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/otherUserProfile",
+          page: () => const OtherProfile(),
           transition: Transition.rightToLeft,
         ),
       ],
