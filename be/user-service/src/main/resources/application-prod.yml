@@ -79,4 +79,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ENC(3CZoGJW/S4huIBOaxeoA9P9jonG9NAukcHowP3vSM7P6jN9YDXKX9zcdjCe1KVEfNqhMb8LDzSQ=)
+      defaultZone: ENC(2mrXswWsiEr4HX/ge0uq+bkD6DoFFCLo04LhphDL3ca9G31zV1Z2V4k14cANIyDT)
