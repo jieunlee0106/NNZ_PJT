@@ -3,10 +3,10 @@ server:
 
 spring:
   datasource:
+    url: ENC(QEHIqDyhXpHVVsG2Q9tF/FD+Vgs1RMqhelX23EjAHQedaOl7ZndSfWypccUKynQdwXNt3aXUbejH4htXimv+Zi42vg2NhoLOdul1d6hwMCe1ZQsWsnNMY0+5VMJqceni8KeNLIRePCRLw7r1g1aNibQGVeqjugJ0Jx9b/EL7NpojecKmMmAZAJeXY1UYVcbm)
+    username: ENC(wkNqgPR+zw2ev6kDzUJaoA==)
+    password: ENC(ulotMFibcmCo7Hj8jnDxlELCIe8euR5W)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/nnz_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: yyhj7424
 
   jpa:
     open-in-view: false
@@ -27,10 +27,10 @@ logging:
 
 notification:
   mattermost:
-    enabled: false
-    webhook-url: https://meeting.ssafy.com/hooks/yysukqft5jgwm81ehqz5ba6qur # ?? Webhook URL? ??
+    enabled: true
+    webhook-url: ENC(vxKUrqtENMyaPPK5Jqf2P58689oKo66nSRv9KRjtmil5LFY6ns8m7ZzqFFJYe00+tdOCRgRyJY7SYByqxvrE1RpKd7ZiMPLf)
     channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
-    pretext: occur error # attachments? ??? ??? ?? ?? ??? ??
+    pretext: UserService Error # attachments? ??? ??? ?? ?? ??? ??
     #    color: # attachment? ?? ??? ??. default=red
     author-name: mmSender # attachment? ??? ??? ??
     author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
