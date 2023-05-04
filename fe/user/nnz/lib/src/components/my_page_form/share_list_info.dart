@@ -79,7 +79,7 @@ class ShareList extends StatelessWidget {
               (item) => Container(
                 width: 345,
                 height: 150,
-                margin: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.only(top: 6),
                 decoration: const BoxDecoration(),
                 child: Column(
                   children: [
@@ -193,10 +193,10 @@ class ShareList extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 15,
                     ),
                     Container(
-                      height: 4,
+                      height: 2,
                       width: 350,
                       decoration: BoxDecoration(
                         color: Config.greyColor,

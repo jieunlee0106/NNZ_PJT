@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/pages/home/home.dart';
+import 'package:nnz/src/pages/home/likes_page.dart';
 import 'package:nnz/src/pages/search/search.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
@@ -28,12 +29,8 @@ class App extends GetView<BottomNavController> {
                     child: const Text("Upload Page"),
                   ),
                 ),
-                //activity
-                Center(
-                  child: Container(
-                    child: const Text("Activity Page"),
-                  ),
-                ),
+                //likeShareList
+                LikesPage(),
                 //mypage
                 Navigator(
                   key: controller.mypageKey,

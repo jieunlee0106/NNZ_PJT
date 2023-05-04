@@ -21,7 +21,7 @@ class _MusicalPageState extends State<MusicalPage> {
     return Scaffold(
       appBar: AppBar(
         title: CategoryDropdown(
-          items: <String>['콘서트', '뮤지컬', '연극', '영화', '스포트', 'e스포츠'],
+          items: <String>['콘서트', '뮤지컬', '연극', '페스티벌', '스포츠', 'e스포츠'],
           cartegory: '뮤지컬',
         ),
         centerTitle: true,

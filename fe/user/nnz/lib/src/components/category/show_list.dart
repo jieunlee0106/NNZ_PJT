@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
 import 'package:nnz/src/components/category/show_card.dart';
@@ -21,13 +22,6 @@ class ShowList extends StatelessWidget {
       'date': '2023.06.17 ~2023.06.18',
       'location': '서울 잠실종합운동장 올림픽주경기장'
     },
-    {
-      'image':
-          'https://ticketimage.interpark.com/Play/image/large/18/18006552_p.gif',
-      'title': '브릭데이 with BAND－데님키즈',
-      'date': '2023.03.10 ~ 2023.05.10',
-      'location': '스페이스브릭'
-    },
   ];
 
   @override
@@ -35,15 +29,47 @@ class ShowList extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Column(
-        children: _items
-            .map(
-              (item) => ShowCard(
-                  image: item['image']!,
-                  title: item['title']!,
-                  date: item['date']!,
-                  location: item['location']!),
-            )
-            .toList(),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Image.asset(
+                  ImagePath.gift,
+                  width: 35,
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '공연  목록',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text('공연에 대한 나눔을 확인해 보세요'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: _items
+                .map(
+                  (item) => ShowCard(
+                      image: item['image']!,
+                      title: item['title']!,
+                      date: item['date']!,
+                      location: item['location']!),
+                )
+                .toList(),
+          ),
+        ],
       ),
     );
   }

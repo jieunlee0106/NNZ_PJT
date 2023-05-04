@@ -18,7 +18,7 @@ class _SportsPageState extends State<SportsPage> {
     return Scaffold(
       appBar: AppBar(
         title: CategoryDropdown(
-          items: <String>['콘서트', '뮤지컬', '연극', '영화', '스포츠', 'e스포츠'],
+          items: <String>['콘서트', '뮤지컬', '연극', '페스티벌', '스포츠', 'e스포츠'],
           cartegory: '스포츠',
         ),
         centerTitle: true,

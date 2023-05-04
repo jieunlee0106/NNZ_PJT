@@ -70,7 +70,7 @@ class _MusicalDropdownState extends State<CategoryDropdown> {
           );
         }
       },
-      items: <String>['콘서트', '뮤지컬', '연극', '영화', '스포츠', 'e스포츠']
+      items: <String>['콘서트', '뮤지컬', '연극', '페스티벌', '스포츠', 'e스포츠']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,

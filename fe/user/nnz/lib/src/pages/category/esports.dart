@@ -16,13 +16,13 @@ class _ESportsPageState extends State<ESportsPage> {
     return Scaffold(
       appBar: AppBar(
         title: CategoryDropdown(
-          items: <String>['콘서트', '뮤지컬', '연극', '영화', '스포트', 'e스포츠'],
+          items: <String>['콘서트', '뮤지컬', '연극', '페스티벌', '스포츠', 'e스포츠'],
           cartegory: 'e스포츠',
         ),
         centerTitle: true,
       ),
       body: Center(
-        child: const Text("musical 페이지"),
+        child: const Text("esport 페이지"),
       ),
     );
   }

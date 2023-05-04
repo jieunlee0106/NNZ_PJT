@@ -19,7 +19,7 @@ class ShowCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 355,
-      height: 170,
+      height: 150,
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -38,8 +38,8 @@ class ShowCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 125,
-                height: 170,
+                width: 110,
+                height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: const Color.fromARGB(255, 255, 253, 253),
@@ -50,9 +50,9 @@ class ShowCard extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 225,
+                width: 240,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 20),
+                  padding: const EdgeInsets.only(top: 9, left: 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,13 +68,15 @@ class ShowCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 12,
+                        height: 8,
                       ),
                       Text('공연 기간'),
                       Text(
                         date,
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       SizedBox(
                         height: 6,
@@ -85,8 +87,8 @@ class ShowCard extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
-                            fontSize: 13),
-                        maxLines: 2,
+                            fontSize: 12),
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

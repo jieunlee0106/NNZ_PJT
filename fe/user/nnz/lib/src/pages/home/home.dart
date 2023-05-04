@@ -99,7 +99,7 @@ class Home extends StatelessWidget {
                     HomeCategory(
                       page: MoviePage(),
                       image: ImagePath.movie,
-                      categoryName: '영화',
+                      categoryName: '페스티벌',
                       num: 1,
                     ),
                     HomeCategory(
