@@ -21,6 +21,9 @@ class TwitterController extends GetxController {
         final authTokenSecret = response.authTokenSecret!;
       }
       logger.i(response.user!.thumbnailImage);
+      logger.i(response.user!.id);
+      logger.i(response.user!.name);
+      logger.i(response.user!.screenName);
       logger.i(response.status);
       logger.i(response.authToken);
       logger.i(response.authTokenSecret);

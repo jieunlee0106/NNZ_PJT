@@ -16,17 +16,19 @@ class SearchProvider extends GetConnect {
 
   //인기 해시 태그 조회
   Future<Response> getPopularTag() async {
-    try {
-      final response = await get("/tags");
-      return response;
-    } catch (e) {
-      final errorMessage = "$e";
-      logger.e(errorMessage);
-      throw Exception(errorMessage);
-    }
+    final response = await get("/tags");
+    return response;
+    // try {
+    //   final response = await get("/tags");
+    //   return response;
+    // } catch (e) {
+    //   final errorMessage = "$e";
+    //   logger.e(errorMessage);
+    //   throw Exception(errorMessage);
+    // }
   }
 
-  //나눔 / 공연 목록 조회
+  //검색 페이지  => 나눔 및  공연 타입으로  목록 조회
   Future<Response> getSearch({
     required String type,
     required String q,
@@ -47,12 +49,6 @@ class SearchProvider extends GetConnect {
     //   logger.e(errorMessage);
     //   throw Exception(errorMessage);
     // }
-  }
-
-  //나눔 카테고리 조회
-  Future<Response> getSharingCategories() async {
-    final response = await get("/shows/categories");
-    return response;
   }
 
   //나눔 공연 조회
