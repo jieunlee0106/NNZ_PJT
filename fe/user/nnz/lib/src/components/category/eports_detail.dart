@@ -1,33 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/components/category/category_dropdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:nnz/src/components/category/esports_list.dart';
 import 'package:nnz/src/components/category/sports_list.dart';
 import 'package:nnz/src/components/category/sports_schedule.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
 
-class SportsBanner extends StatefulWidget {
-  const SportsBanner({Key? key}) : super(key: key);
+class EsportsBanner extends StatefulWidget {
+  const EsportsBanner({Key? key}) : super(key: key);
 
   @override
-  _SportsBannerState createState() => _SportsBannerState();
+  _EsportsBannerState createState() => _EsportsBannerState();
 }
 
-class _SportsBannerState extends State<SportsBanner> {
-  String sportEventB = ImagePath.bsbB;
-  String sportsName = '야구';
-  String sportsNameR = '농구';
-  String sportsNameL = '축구';
-  String league = 'KBO';
-  String startDate = '2023.04.01';
-  String endDate = '미정';
-  String sportsImg = ImagePath.bsbIcon;
+class _EsportsBannerState extends State<EsportsBanner> {
+  String esportEventB = ImagePath.lolB;
+  String esportsName = 'LCK';
+  String esportsNameR = 'OWL';
+  String esportsNameL = 'KLD';
+  String img = ImagePath.esports;
 
-  final List<String> _sports = [
-    '야구',
-    '축구',
-    '농구',
-  ];
+  final List<String> _sports = ['LCK', 'OWL', 'GSL', 'KLD'];
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +33,10 @@ class _SportsBannerState extends State<SportsBanner> {
             // alignment: Alignment(0, -0.68),
             children: [
               Container(
-                height: 200,
+                height: 2750,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(sportEventB),
+                      image: AssetImage(esportEventB),
                       alignment: Alignment.topCenter),
                 ),
               ),
@@ -57,21 +51,25 @@ class _SportsBannerState extends State<SportsBanner> {
                   items: _sports.map((text) {
                     return Builder(
                       builder: (BuildContext context) {
-                        String sportsName;
-                        String sportsNameR;
-                        String sportsNameL;
-                        if (sportEventB == ImagePath.bsbB) {
-                          sportsName = _sports[0];
-                          sportsNameR = _sports[1];
-                          sportsNameL = _sports[2];
-                        } else if (sportEventB == ImagePath.socB) {
-                          sportsName = _sports[1];
-                          sportsNameR = _sports[2];
-                          sportsNameL = _sports[0];
+                        String esportsName;
+                        String esportsNameR;
+                        String esportsNameL;
+                        if (esportEventB == ImagePath.lolB) {
+                          esportsName = _sports[0];
+                          esportsNameR = _sports[1];
+                          esportsNameL = _sports[2];
+                        } else if (esportEventB == ImagePath.oveB) {
+                          esportsName = _sports[1];
+                          esportsNameR = _sports[2];
+                          esportsNameL = _sports[0];
+                        } else if (esportEventB == ImagePath.staB) {
+                          esportsName = _sports[2];
+                          esportsNameR = _sports[3];
+                          esportsNameL = _sports[1];
                         } else {
-                          sportsName = _sports[2];
-                          sportsNameR = _sports[0];
-                          sportsNameL = _sports[1];
+                          esportsName = _sports[3];
+                          esportsNameR = _sports[0];
+                          esportsNameL = _sports[2];
                         }
                         return Container(
                           child: Padding(
@@ -84,10 +82,10 @@ class _SportsBannerState extends State<SportsBanner> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      sportsName,
+                                      esportsName,
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 30,
+                                          fontSize: 35,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -97,7 +95,7 @@ class _SportsBannerState extends State<SportsBanner> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      sportsNameL,
+                                      esportsNameL,
                                       style: TextStyle(
                                         color: Colors.white70,
                                         fontSize: 16,
@@ -105,7 +103,7 @@ class _SportsBannerState extends State<SportsBanner> {
                                       ),
                                     ),
                                     Text(
-                                      sportsNameR,
+                                      esportsNameR,
                                       style: TextStyle(
                                         color: Colors.white70,
                                         fontSize: 16,
@@ -140,23 +138,13 @@ class _SportsBannerState extends State<SportsBanner> {
                         onPageChanged: (int index, _) {
                           setState(() {
                             if (index == 0) {
-                              sportEventB = ImagePath.bsbB;
-                              league = 'KBO';
-                              startDate = '2023.04.01';
-                              endDate = '미정';
-                              sportsImg = ImagePath.bsbIcon;
+                              esportEventB = ImagePath.lolB;
                             } else if (index == 1) {
-                              sportEventB = ImagePath.socB;
-                              league = 'Kleague';
-                              startDate = '2023.02.25';
-                              endDate = '미정';
-                              sportsImg = ImagePath.socIcon;
+                              esportEventB = ImagePath.oveB;
+                            } else if (index == 2) {
+                              esportEventB = ImagePath.staB;
                             } else {
-                              sportEventB = ImagePath.bkbB;
-                              league = 'KBL';
-                              startDate = '2023.04.02';
-                              endDate = '미정';
-                              sportsImg = ImagePath.bkbIcon;
+                              esportEventB = ImagePath.karB;
                             }
                           });
                         },
@@ -167,23 +155,13 @@ class _SportsBannerState extends State<SportsBanner> {
                             int index = _sports.indexOf(image);
                             String carouselImage;
                             if (index == 0) {
-                              carouselImage = ImagePath.bsbC;
-                              league = 'KBO';
-                              startDate = '2023.04.02';
-                              endDate = '2023.04.12';
-                              sportsImg = ImagePath.bsbIcon;
+                              carouselImage = ImagePath.lol;
                             } else if (index == 1) {
-                              carouselImage = ImagePath.socC;
-                              league = 'Kleague';
-                              startDate = '2023.04.02';
-                              endDate = '2023.04.12';
-                              sportsImg = ImagePath.socIcon;
+                              carouselImage = ImagePath.ove;
+                            } else if (index == 2) {
+                              carouselImage = ImagePath.sta;
                             } else {
-                              carouselImage = ImagePath.bkbC;
-                              league = 'KBL';
-                              startDate = '2023.04.02';
-                              endDate = '2023.04.12';
-                              sportsImg = ImagePath.bkbIcon;
+                              carouselImage = ImagePath.kar;
                             }
                             return Container(
                               width: MediaQuery.of(context).size.width,
@@ -201,23 +179,11 @@ class _SportsBannerState extends State<SportsBanner> {
                       }).toList(),
                     ),
                   ),
+                  EsportsList(sportsImg: img)
                 ],
               ),
             ],
           ),
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        GrayLine(),
-        SportsSchedule(
-          league: league,
-          startDate: startDate,
-          endDate: endDate,
-        ),
-        GrayLine(),
-        SportsList(
-          sportsImg: sportsImg,
         ),
       ],
     );
