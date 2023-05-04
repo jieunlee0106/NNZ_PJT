@@ -94,23 +94,30 @@ class RegisterController extends GetxController {
         : false;
   }
 
-  //이메일형식 확인뒤 중복체크
-  void emailValidate({required String type, required String text}) {
-    logger.i("$type , $text");
-    UserProvider().testApi(type: type, text: text);
-
-    //이메일 유효성 검사 통과시
-    emailChecked(true);
-    logger.i("이메일 통과됐나요? ${emailChecked.value}");
-    // UserProvider().getValidateEmail(email: emailController.text);
-  }
-
-  void onSms() {
+  //sms 인증 요청
+  void onSms() async {
     requestSms(true);
     phoneChecked(false);
-    requestAgainSms(false);
+
     logger.i(phoneChecked.value);
     startTimer();
+    //sms 인증번호 요청 서버 api 통신가능하면 주석 풀것
+    //   try {
+    //     final response =
+    //         await UserProvider().postReqVerify(phone: smsController.text);
+    //     if (response.statusCode == 200) {
+    //       phoneChecked(false);
+    //       startTimer();
+    //       logger.i(phoneChecked.value);
+    //     } else {}
+    //     final errorMessage = "(${response.statusCode}): ${response.body}";
+    //             logger.e(errorMessage);
+    //             throw Exception(errorMessage);
+    //   } catch (e) {
+    //      final errorMessage = "$e";
+    //           logger.e(errorMessage);
+    //           throw Exception(errorMessage);
+    //   }
   }
 
   bool onEmailValidate({required String text}) {
@@ -133,12 +140,64 @@ class RegisterController extends GetxController {
     return true;
   }
 
+  //이메일형식 확인뒤 중복체크
+  void emailValidate({required String type, required String text}) async {
+    logger.i("$type , $text");
+    UserProvider().testApi(type: type, text: text);
+    emailChecked(true);
+
+    //이메일 유효성 검사 통과시 서버에서 api 통신 가능하면 주석 풀것
+
+    // logger.i("이메일 통과됐나요? ${emailChecked.value}");
+
+    // try {
+    //   final response =
+    //       await UserProvider().getValidate(type: type, value: text);
+    //   if (response.statusCode == 200) {
+    //     final available = response.body["available"];
+
+    //     available이 statusCode 200이되면 repoonse.body로 available true or false로 준다.
+    //     emailChecked(available);
+    //     onRegisterCheck();
+    //   }else{
+    //      final errorMessage = "(${response.statusCode}): ${response.body}";
+    //         logger.e(errorMessage);
+    //         throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //   final errorMessage = "$e";
+    //       logger.e(errorMessage);
+    //       throw Exception(errorMessage);
+    // }
+  }
+
   void onNicknameValidate(
-      {String type = "nickname", required String nickname}) {
+      {String type = "nickname", required String nickname}) async {
     // logger.i(nickname);
+
+    UserProvider().testApi(type: type, text: nickname);
     nickChecked(true);
     onRegisterCheck();
-    UserProvider().testApi(type: type, text: nickname);
+
+    //서버에서 api 가능 하면 주석 풀것
+
+    // try {
+    //   final response =
+    //       await UserProvider().getValidate(type: type, value: nickname);
+    //   if (response.statusCode == 200) {
+    //     final available = response.body["available"];
+    //     nickChecked(available);
+    //     onRegisterCheck();
+    //   } else {
+    //     final errorMessage = "(${response.statusCode}): ${response.body}";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //   final errorMessage = "$e";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    // }
   }
 
   String format(int seconds) {
@@ -157,16 +216,52 @@ class RegisterController extends GetxController {
     }
   }
 
-  void onTest() {
+  //인증번호 통과 유무.....
+
+  void onPhoneAuthNumberVerity() async {
+    logger.i(authNumberController.text);
     smsChecked(true);
     onRegisterCheck();
     if (timer.isActive) {
       timer.cancel();
     }
+
+    // 서버에서 api 통신이 가능하면 주석 풀 것
+    // try {
+    //   final response = await UserProvider().postResVerify(
+    //       phone: smsController.text, verifyNum: authNumberController.text);
+    //   if (response.statusCode == 200) {
+    //     final verify = response.body["verify"];
+    //     if (verify == false) {
+    //       smsChecked(verify);
+    //       showDialog(
+    //           context: Get.context!,
+    //           builder: (BuildContext context) {
+    //             return const sharePopup(popupMessage: "유효하지않는 인증번호입니다.");
+    //           });
+    //       onRegisterCheck();
+    //     } else {
+    //       smsChecked(verify);
+    //       onRegisterCheck();
+    //       if (timer.isActive) {
+    //         timer.cancel();
+    //       }
+    //     }
+    //   } else {
+    //     final errorMessage = "(${response.statusCode}): ${response.body}";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //   final errorMessage = "$e";
+    //   logger.e(errorMessage);
+    //   throw Exception(errorMessage);
+    // }
   }
 
   void onTimer() {
     isTimerChecked = false;
+    //인증번호가 6자리면 통과
     if (authNumberController.text.length >= 6) {
       isAuthChecked(true);
     }

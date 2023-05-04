@@ -93,7 +93,7 @@ class Register extends StatelessWidget {
                               size: 80,
                             ),
                             const Text(
-                              "아이디로 시작하기",
+                              "이메일로 시작하기",
                               style: TextStyle(
                                 fontSize: 20,
                               ),
