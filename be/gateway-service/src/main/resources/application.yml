@@ -7,22 +7,41 @@ eureka:
     #    service-url:
     #      defaultZone: http://localhost:8761/eureka
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
 
 spring:
   application:
-    name: gateway-service
+    name: DEV_GATEWAY_SERVICE
 
   cloud:
     gateway:
       routes:
-#        show-service
-        - id: show-service
-          uri: lb://SHOW-SERVICE
+        - id: DEV_CONFIG_SERVICE
+          uri: lb://DEV_CONFIG_SERVICE
           predicates:
-            - Path=/show-service/**
-        - id: user-service
-          url: lb://USER-SERVICE
+            - Path=/config-service/**
+        - id: DEV_USER_SERVICE
+          uri: lb://DEV_USER_SERVICE
           predicates:
             - Path=/user-service/**
+        - id: DEV_SHOW_SERVICE
+          uri: lb://DEV_SHOW_SERVICE
+          predicates:
+            - Path=/show-service/**
+        - id: DEV_NANUM_SERVICE
+          uri: lb://DEV_NANUM_SERVICE
+          predicates:
+            - Path=/nanum-service/**
+        - id: DEV_TAG_SERVICE
+          uri: lb://DEV_TAG_SERVICE
+          predicates:
+            - Path=/tag-service/**
+        - id: DEV_ADMIN_SERVICE
+          uri: lb://DEV_ADMIN_SERVICE
+          predicates:
+            - Path=/admin-service/**
+        - id: DEV_CRAWLING_SERVICE
+          uri: lb://DEV_CRAWLING_SERVICE
+          predicates:
+            - Path=/crawling-service/**
 
