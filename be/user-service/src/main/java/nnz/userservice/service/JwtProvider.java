@@ -45,6 +45,7 @@ public class JwtProvider {
         claims.put("id", user.getId());
         claims.put("email", user.getEmail());
         claims.put("role", user.getRole());
+        claims.put("authProvider", user.getAuthProvider());
 
         return Jwts.builder()
                 .setSubject(user.getId().toString())
