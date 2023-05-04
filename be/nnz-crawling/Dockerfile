@@ -18,7 +18,7 @@ RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.49/chromedriver_
     chmod +x /usr/bin/chromedriver
 
 # JAR_FILE 변수에 jar 파일을 등록
-ARG JAR_FILE=/build/libs/nnz-crawlinge-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=/build/libs/nnz-crawling-0.0.1-SNAPSHOT.jar
 
 # build 된 jar 파일을 container 내부에 복사
 # 젠킨스 도커 -> 스프링 도커
