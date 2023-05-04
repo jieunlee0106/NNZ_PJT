@@ -11,4 +11,4 @@ COPY ${JAR_FILE} ./app.jar
 EXPOSE 8082
 
 # jasypt 암호화 키 제공하려면
-#ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar"]
