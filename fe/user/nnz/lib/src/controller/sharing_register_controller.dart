@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
+import 'package:nnz/src/model/share_category_model.dart';
 import 'package:nnz/src/model/share_model.dart';
+import 'package:nnz/src/services/search_provider.dart';
 
 import '../services/sharing_register.dart';
 
@@ -27,7 +29,10 @@ class SharingRegisterController extends GetxController {
   late final sharingDateController;
   late final openDateController;
   late final openTimeController;
+  final RxList<ShareCategoryModel> pCategories = RxList<ShareCategoryModel>();
+  final RxList<ShareCategoryModel> cCategories = RxList<ShareCategoryModel>();
   List<ImageFile> imageList = [];
+
   RxList<String> conList = RxList<String>();
   RxList<String> tagList = RxList<String>();
   RxString testText = "".obs;
@@ -138,12 +143,74 @@ class SharingRegisterController extends GetxController {
   void onRemoveTag(int index) {
     tagList.remove(tagList[index]);
   }
-  //카테고리 조회
+
+  //부모 카테고리 조회
+  Future<void> getParentCategory() async {
+    try {
+      final response = await SearchProvider().getCategory();
+      if (response.statusCode == 200) {
+        for (var category in response.body) {
+          pCategories(category);
+        }
+        logger.i(pCategories);
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
+  }
+
+  //자식 카테고리 검색
+  Future<void> getChildCategory({required String parent}) async {
+    try {
+      final response = await SearchProvider().getCategory(parent: parent);
+      if (response.statusCode == 200) {
+        if (response.body != null) {
+          cCategories.clear();
+          for (var category in response.body) {
+            cCategories(category);
+          }
+        } else {
+          cCategories.clear();
+        }
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
+  }
 
   //공연 카테고리 별 검색
-  void onSearchShow(
-      {required TextEditingController textController,
-      required String category}) {}
+  Future<void> onSearchShow({
+    required String category,
+    required String title,
+  }) async {
+    try {
+      final response = await SearchProvider()
+          .getSharingShow(category: category, title: title);
+      if (response.statusCode == 200) {
+        logger.i(response.body);
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
+  }
 
   void onShareRegister() {
     if (imageController.images.length == 0) {

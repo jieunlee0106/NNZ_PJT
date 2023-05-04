@@ -162,7 +162,7 @@ class Sms extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               if (controller.isAuthChecked.value) {
-                                controller.onTest();
+                                controller.onPhoneAuthNumberVerity();
                               }
                             },
                             child: Container(

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nnz/src/model/register_model.dart';
 
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
@@ -136,20 +137,9 @@ class UserProvider extends GetConnect {
   }
 
   //회원가입 api
-  Future<Response> postRegister({
-    required String email,
-    required String pwd,
-    required String confrimPwd,
-    required String nickname,
-    required String phone,
-  }) async {
-    final body = {
-      'email': email,
-      'pwd': pwd,
-      'confirmPwd': confrimPwd,
-      'nickname': nickname,
-      'phone': phone,
-    };
+  Future<Response> postRegister({required RegisterModel user}) async {
+    final body = user.toJson();
+    // logger.i(body);
     final response =
         await post("/user-service/users/join", body, headers: headers);
     return response;

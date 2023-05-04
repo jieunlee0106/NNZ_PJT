@@ -20,10 +20,4 @@ class ShowSearchController extends GetxController {
     logger.i(value.isEmpty);
     searchText(value);
   }
-
-  @override
-  void onClose() {
-    searchController.dispose();
-    super.onClose();
-  }
 }

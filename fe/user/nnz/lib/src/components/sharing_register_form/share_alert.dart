@@ -23,12 +23,9 @@ class _ShareAlertState extends State<ShareAlert> {
 
   final controller = Get.put(SharingRegisterController());
   final List<String> _items = ['콘서트', '뮤지컬', '연극', '영화', '스포츠', 'e스포츠'];
-  final List<String> _sportsItems = ['축구', '야구', '농구'];
-  final List<String> _esportsItems = ['LCK', '스타크래프트'];
 
   String? _selectedItem;
-  String? _selectedSports;
-  String? _selectedeSports;
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
