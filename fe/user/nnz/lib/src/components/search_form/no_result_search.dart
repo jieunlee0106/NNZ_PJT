@@ -5,7 +5,7 @@ import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
 
 class NoResultSearch extends StatelessWidget {
-  NoResultSearch({Key? key}) : super(key: key);
+  NoResultSearch({super.key});
   final logger = Logger();
   @override
   Widget build(BuildContext context) {

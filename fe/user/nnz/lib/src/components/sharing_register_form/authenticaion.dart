@@ -24,43 +24,39 @@ class _AuthenticationState extends State<Authentication> {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 8,
+        vertical: 18,
       ),
       color: Colors.white,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                iconData(
-                  icon: ImagePath.certification,
-                  size: 80,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              iconData(
+                icon: ImagePath.certification,
+                size: 80,
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(
+                  bottom: 4,
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 4,
-                  ),
-                  child: Text(
-                    "인증유무",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                child: Text(
+                  "인증유무",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 36.0,
+              horizontal: 36,
+              vertical: 8,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

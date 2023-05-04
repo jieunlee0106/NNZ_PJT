@@ -20,7 +20,9 @@ class PeopleCount extends StatelessWidget {
         () => Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -47,7 +49,7 @@ class PeopleCount extends StatelessWidget {
             Container(
               padding: const EdgeInsetsDirectional.symmetric(
                 horizontal: 60,
-                vertical: 10,
+                vertical: 18,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
