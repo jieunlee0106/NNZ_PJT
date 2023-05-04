@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.service.UserService;
+import nnz.userservice.service.VerifyService;
 import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.CheckVerifyVO;
 import nnz.userservice.vo.LoginVO;
@@ -26,6 +27,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final VerifyService verifyService;
 
     @PostMapping("/users/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException {
@@ -35,13 +37,13 @@ public class UserController {
 
     @PostMapping("/users/verify")
     public ResponseEntity<Void> sendMessage(@RequestBody VerifyVO vo) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        userService.sendVerifySms(vo.getPhone());
+        verifyService.sendVerifySms(vo.getPhone());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/users/verify/check")
     public ResponseEntity<Map<String, Boolean>> checkVerify(@RequestBody CheckVerifyVO vo) {
-        boolean result = userService.verify(vo.getPhone(), vo.getVerifyNum());
+        boolean result = verifyService.verify(vo.getPhone(), vo.getVerifyNum());
 
         Map<String, Boolean> response = new HashMap<>();
         response.put("verify", result);
