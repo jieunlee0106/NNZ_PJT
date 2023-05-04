@@ -115,9 +115,9 @@ public class UserServiceImpl implements UserService {
         // TODO: NCP-SMS 인증문제 해결 후 문자 보내도록 수
         MessageDTO messageDTO = MessageDTO.builder()
                 .to(to)
-                .content(randomNumber)
+                .content("NNZ 인증번호: " + randomNumber)
                 .build();
-//        smsSender.sendMessage(messageDTO);
+        smsSender.sendMessage(messageDTO);
 
         // 인증번호 redis에 저장
         // 인증 확인 및 회원가입시 인증 여부 확인하기 위해
