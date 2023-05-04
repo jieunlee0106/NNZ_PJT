@@ -4,40 +4,29 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
-    #    service-url:
-    #      defaultZone: http://localhost:8761/eureka
     service-url:
-      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+      defaultZone: http://localhost:8761/eureka
 
 spring:
   application:
-    name: DEV_GATEWAY_SERVICE
+    name: GATEWAY-SERVICE
 
   cloud:
     gateway:
       routes:
-#        - id: DEV_CONFIG_SERVICE
-#          uri: lb://DEV_CONFIG_SERVICE
-#          predicates:
-#            - Path=/config-service/**
-        - id: DEV_USER_SERVICE
-          uri: lb://DEV_USER_SERVICE
-          predicates:
-            - Path=/user-service/**
-        - id: DEV_SHOW_SERVICE
-          uri: lb://DEV_SHOW_SERVICE
+        - id: DEV-SHOW-SERVICE
+          uri: lb://DEV-SHOW-SERVICE
           predicates:
             - Path=/show-service/**
-#        - id: DEV_NANUM_SERVICE
-#          uri: lb://DEV_NANUM_SERVICE
-#          predicates:
-#            - Path=/nanum-service/**
-#        - id: DEV_TAG_SERVICE
-#          uri: lb://DEV_TAG_SERVICE
-#          predicates:
-#            - Path=/tag-service/**
-#        - id: DEV_ADMIN_SERVICE
-#          uri: lb://DEV_ADMIN_SERVICE
-#          predicates:
-#            - Path=/admin-service/**
-
+        - id: DEV_USER_SERVICE
+          uri: lb://DEV-USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+        - id: NANUM-SERVICE
+          uri: lb://NANUM-SERVICE
+          predicates:
+            - Path=/nanum-service/**
+        - id: TAG-SERVICE
+          uri: lb://TAG-SERVICE
+          predicates:
+            - Path=/tag-service/**

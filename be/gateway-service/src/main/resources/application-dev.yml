@@ -1,0 +1,48 @@
+server:
+  port: 8000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
+spring:
+  application:
+    name: DEV-GATEWAY-SERVICE
+
+  cloud:
+    gateway:
+      routes:
+        #        - id: DEV-CONFIG-SERVICE
+        #          uri: lb://DEV-CONFIG-SERVICE
+        #          predicates:
+        #            - Path=/config-service/**
+        - id: DEV-USER-SERVICE
+          uri: lb://DEV-USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+        - id: DEV-SHOW-SERVICE
+          uri: lb://DEV-SHOW-SERVICE
+          predicates:
+            - Path=/show-service/**
+#        - id: DEV-NANUM-SERVICE
+#          uri: lb://DEV-NANUM-SERVICE
+#          predicates:
+#            - Path=/nanum-service/**
+#        - id: DEV-TAG-SERVICE
+#          uri: lb://DEV-TAG-SERVICE
+#          predicates:
+#            - Path=/tag-service/**
+#        - id: DEV-ADMIN-SERVICE
+#          uri: lb://DEV-ADMIN-SERVICE
+#          predicates:
+#            - Path=/admin-service/**
+
+
+#yml 암호화 yml 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
