@@ -5,9 +5,12 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/services/user_provider.dart';
 
+import '../model/register_model.dart';
+
 class RegisterController extends GetxController {
   late final GlobalKey formKey;
   final logger = Logger();
+
   RxString timeCount = "".obs;
   int count = 10;
   final RxInt totalCount = 120.obs;
@@ -171,7 +174,7 @@ class RegisterController extends GetxController {
     // }
   }
 
-  void onNicknameValidate(
+  Future<void> onNicknameValidate(
       {String type = "nickname", required String nickname}) async {
     // logger.i(nickname);
 
@@ -218,7 +221,7 @@ class RegisterController extends GetxController {
 
   //인증번호 통과 유무.....
 
-  void onPhoneAuthNumberVerity() async {
+  Future<void> onPhoneAuthNumberVerity() async {
     logger.i(authNumberController.text);
     smsChecked(true);
     onRegisterCheck();
@@ -287,7 +290,7 @@ class RegisterController extends GetxController {
     );
   }
 
-  void onRegister() {
+  Future<void> onRegister() async {
     logger.i(emailChecked.value);
     logger.i(pwdChecked.value);
     logger.i(pwdConfirmChecked.value);
@@ -296,5 +299,28 @@ class RegisterController extends GetxController {
     logger.i(isAgree.value);
 
     //회원가입 api 수행
+    final user = RegisterModel(
+      email: emailController.text,
+      pwd: passwordController.text,
+      confirmPwd: passwordConfirmController.text,
+      nickname: nicknameController.text,
+      phone: smsController.text,
+    );
+    // logger.i(user);
+
+    // try {
+    //   final response = await UserProvider().postRegister(user: user);
+    //   if (response.statusCode == 201) {
+    //     Get.offNamed("/login");
+    //   } else {
+    //     final errorMessage = "(${response.statusCode}): ${response.body}";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //   final errorMessage = "$e";
+    //   logger.e(errorMessage);
+    //   throw Exception(errorMessage);
+    // }
   }
 }
