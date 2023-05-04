@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
+import 'package:nnz/src/components/other_user_from/other_user_profile_twitter.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
+import 'package:nnz/src/pages/user/other_profile.dart';
 import 'package:nnz/src/pages/user/profile_edit.dart';
 import 'package:nnz/src/pages/user/register.dart';
 import 'package:nnz/src/pages/user/register_form.dart';
@@ -169,6 +171,16 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/myShareInfo",
           page: () => const MySharedInfo(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/otherUserProfile",
+          page: () => const OtherProfile(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/otherUserProfileTwitter",
+          page: () => const OtherProfileTwitter(),
           transition: Transition.rightToLeft,
         ),
       ],
