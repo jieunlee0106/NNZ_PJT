@@ -2,7 +2,7 @@ server:
   port: 8082
 spring:
   application:
-    name: DEV_SHOW_SERVICE
+    name: DEV-SHOW-SERVICE
   datasource:
     url: ENC(ZsRuvWnZfl5CmNrlWvF/nS66ZfJd0az21nTmIxAqFoNK6i61aEVZ3F+zTMitE1pyOyav2uo/J5CNKJ7qkquzwZA72nW1nA4t1mGKxz/1R5GQ12gisHrgN2R0NWxuqjigpx/h6u+JyWaqMD0rwW8p+w==)
     username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)

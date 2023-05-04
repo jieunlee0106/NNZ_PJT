@@ -2,7 +2,7 @@ server:
   port: 9082
 spring:
   application:
-    name: PROD_SHOW_SERVICE
+    name: PROD-SHOW-SERVICE
   datasource:
     url: ENC(QEHIqDyhXpHVVsG2Q9tF/FD+Vgs1RMqhelX23EjAHQedaOl7ZndSfWypccUKynQdwXNt3aXUbejH4htXimv+Zi42vg2NhoLOdul1d6hwMCe1ZQsWsnNMY0+5VMJqceni8KeNLIRePCRLw7r1g1aNibQGVeqjugJ0Jx9b/EL7NpojecKmMmAZAJeXY1UYVcbm)
     username: ENC(wkNqgPR+zw2ev6kDzUJaoA==)
