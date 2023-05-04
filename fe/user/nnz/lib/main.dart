@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
+import 'package:nnz/src/components/other_user_from/other_user_profile_twitter.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/otherUserProfile",
+      initialRoute: "/",
       getPages: [
         GetPage(
           name: "/",
@@ -175,6 +176,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/otherUserProfile",
           page: () => const OtherProfile(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/otherUserProfileTwitter",
+          page: () => const OtherProfileTwitter(),
           transition: Transition.rightToLeft,
         ),
       ],

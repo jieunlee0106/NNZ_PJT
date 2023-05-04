@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nnz/src/components/icon_data.dart';
 
 import '../../config/config.dart';
 
@@ -25,13 +26,31 @@ class OtherUserProfile extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          Text(
-            "전종서",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Config.blackColor,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 2,
+                ),
+                child: Text(
+                  "전종서",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Config.blackColor,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              iconData(
+                icon: ImagePath.twitterProfile,
+                size: 80,
+              ),
+            ],
           ),
           const SizedBox(
             height: 8,
