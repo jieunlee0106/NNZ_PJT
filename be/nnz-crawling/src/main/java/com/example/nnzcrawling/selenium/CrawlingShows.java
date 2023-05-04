@@ -1,23 +1,29 @@
 package com.example.nnzcrawling.selenium;
 
-import com.example.nnzcrawling.dto.ResponseShowDTO;
-import com.example.nnzcrawling.entity.ShowEntity;
+import com.example.nnzcrawling.dto.CrawlingShowDTO;
+import com.example.nnzcrawling.entity.ShowCrawling;
+import com.example.nnzcrawling.entity.TagCrawling;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
+@Component
 public class CrawlingShows {
 
-    private static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private static final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\nnz-crawling\\chromedriver.exe";
+    private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+    private List<TagCrawling> tags = new ArrayList<>();
 
-    public void getCrawlingData() throws InterruptedException {
+    public List<ShowCrawling> getCrawlingData() throws InterruptedException {
 
         System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 
@@ -44,13 +50,17 @@ public class CrawlingShows {
         //HTTP응답속도보다 자바의 컴파일 속도가 더 빠르기 때문에 임의적으로 1초를 대기한다.
         Thread.sleep(1000);
 
-        // WebElement는 html의 태그를 가지는 클래스이다
+        List<CrawlingShowDTO> shows = new ArrayList<>();
 
-        List<ResponseShowDTO> shows = new ArrayList<>();
+        List<WebElement> categories = driver.findElements(By.cssSelector(
+                "div.list_type.switch > div > div > div.lego_scroll_middle > div > div > ul > li"
+        ));
 
         // 1번 인덱스는 전체 탭이므로 스킵
         int categoryCnt = 2;
-        while (categoryCnt <= 8) {
+//        int categoryCnt = categories.size() + 1;
+        while (categoryCnt <= categories.size()) {
+//        while (categoryCnt <= 2) {
 
             Thread.sleep(1000);
             // 공연의 카테고리 선택하기.
@@ -101,7 +111,6 @@ public class CrawlingShows {
                 try {
                     regions.sendKeys(Keys.ENTER);
                 } catch (Exception e) {
-                    System.out.println(categoryCnt);
                     if (categoryCnt <= 6) {
                         regions = driver.findElement(
                                 By.cssSelector(
@@ -115,7 +124,41 @@ public class CrawlingShows {
                     }
 
                     Thread.sleep(1000);
-                    regions.sendKeys(Keys.ENTER);
+                    try {
+                        regions.sendKeys(Keys.ENTER);
+                    } catch (Exception e2) {
+                        Thread.sleep(1000);
+                        if (categoryCnt <= 6) {
+                            regions = driver.findElement(
+                                    By.cssSelector(
+                                            "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(2) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
+                                    ));
+                        } else {
+                            regions = driver.findElement(
+                                    By.cssSelector(
+                                            "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(1) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
+                                    ));
+                        }
+
+                        Thread.sleep(2000);
+                        try {
+                            regions.sendKeys(Keys.ENTER);
+                        } catch (Exception e3) {
+                            Thread.sleep(2000);
+                            if (categoryCnt <= 6) {
+                                regions = driver.findElement(
+                                        By.cssSelector(
+                                                "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(2) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
+                                        ));
+                            } else {
+                                regions = driver.findElement(
+                                        By.cssSelector(
+                                                "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(1) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
+                                        ));
+                            }
+                            regions.sendKeys(Keys.ENTER);
+                        }
+                    }
                 }
                 Thread.sleep(1000);
 
@@ -149,7 +192,7 @@ public class CrawlingShows {
                     // 공연 정보들의 태그를 리스트에 담고 해당 리스트에서 <a> 태그 정보를 받아와 url 이동.
                     // 해당 메소드에서는 태그 정보만 담는다.
                     showList.forEach(element -> {
-                        shows.add(new ResponseShowDTO(element, element.getAttribute("href"), category, selectRegion));
+                        shows.add(new CrawlingShowDTO(element, element.getAttribute("href"), category, selectRegion));
                     });
 
                     WebElement nextBtn = driver.findElement(By.cssSelector("div.cm_content_wrap > div > div > div._info > div.cm_paging_area > div > a.pg_next.on"));
@@ -164,12 +207,7 @@ public class CrawlingShows {
             categoryCnt++;
         }
 
-        List<ShowEntity> responses = getShowInfo(driver, shows);
-
-        for (
-                ShowEntity entity : responses) {
-            System.out.println(entity);
-        }
+        List<ShowCrawling> responses = getShowInfo(driver, shows);
 
         try {
             //드라이버가 null이 아니라면
@@ -185,14 +223,15 @@ public class CrawlingShows {
             throw new RuntimeException(e.getMessage());
         }
 
+        return responses;
     }
 
-    private List<ShowEntity> getShowInfo(WebDriver driver, List<ResponseShowDTO> shows) {
+    private List<ShowCrawling> getShowInfo(WebDriver driver, List<CrawlingShowDTO> shows) {
 
-        List<ShowEntity> responses = new ArrayList<>();
+        List<ShowCrawling> showCrawlingRespons = new ArrayList<>();
 
         shows.forEach(v -> {
-            ShowEntity showEntity = new ShowEntity();
+            ShowCrawling showCrawling = new ShowCrawling();
 
             driver.get(v.getHref());
 
@@ -209,7 +248,7 @@ public class CrawlingShows {
             } catch (Exception e) {
                 return;
             }
-            showEntity.setTitle(title);
+            showCrawling.setTitle(title);
 
             // 공연 장소 - ~박물관, ~공연장
             String location = null;
@@ -229,41 +268,50 @@ public class CrawlingShows {
                             By.cssSelector(
                                     "div > div.detail_info > dl > div:nth-child(3) > dd"
                             )).getText();
-                    System.out.println(location);
                 }
             }
-            showEntity.setLocation(location);
+            showCrawling.setLocation(location);
 
             // 시작 일자
             String startDate = null;
             // 종료 일자
             String endDate = null;
 
-            WebElement dateElement = null;
             try {
-                dateElement = driver.findElement(By.cssSelector("div.cm_content_wrap._content > div > div > div.detail_info._default_info > dl > div:nth-child(2) > dd")).findElement(By.cssSelector("span:nth-child(2)"));
                 startDate = driver.findElement(
                         By.cssSelector(
-                                "div.cm_content_wrap._content > div > div > div.detail_info._default_info > dl > div:nth-child(2) > dd > span:nth-child(1)"
+                                "div.detail_info._default_info > dl > div:nth-child(2) > dd > span:nth-child(1)"
                         )).getText();
-
-                endDate = driver.findElement(By.cssSelector("div.cm_content_wrap._content > div > div > div.detail_info._default_info > dl > div:nth-child(2) > dd > span:nth-child(2)")).getText();
+                endDate = driver.findElement(
+                        By.cssSelector(
+                                "div.detail_info._default_info > dl > div:nth-child(2) > dd > span:nth-child(2)"
+                        )).getText();
             } catch (Exception e) {
                 try {
-                    startDate = driver.findElement(By.cssSelector("div.cm_content_wrap._content > div > div > div.detail_info._default_info > dl > div:nth-child(2) > dd")).getText();
-                    endDate = "";
-                } catch (Exception e2) {
                     startDate = driver.findElement(
                             By.cssSelector(
                                     "div > div:nth-child(1) > div > div.detail_info > dl > div:nth-child(2) > dd > span"
                             )).getText();
                     endDate = "";
-                    System.out.println(startDate);
+                } catch (Exception e2) {
+                    startDate = driver.findElement(By.cssSelector(
+                            "div > div > div.detail_info._default_info > dl > div:nth-child(2) > dd"
+                    )).getText();
+                    endDate = "";
                 }
             }
 
-            showEntity.setStartDate(startDate);
-            showEntity.setEndDate(endDate);
+            if (endDate.equals("")) {
+                StringTokenizer st = new StringTokenizer(startDate, "~ ");
+                startDate = st.nextToken();
+                try {
+                    endDate = st.nextToken();
+                } catch (NoSuchElementException nullException) {
+                    // 그냥 넘어가면 된다. endDate 없음
+                }
+            }
+            showCrawling.setStartDate(startDate.trim());
+            showCrawling.setEndDate(endDate.trim());
 
             // 연령 제한
             String ageLimit = null;
@@ -272,10 +320,12 @@ public class CrawlingShows {
             } catch (Exception e) {
                 ageLimit = "";
             }
-            showEntity.setAgeLimit(ageLimit);
+            showCrawling.setAgeLimit(ageLimit);
 
             // 지역
-            showEntity.setRegion(v.getRegion());
+            showCrawling.setRegion(v.getRegion());
+            tags.add(new TagCrawling(title, v.getRegion()));
+
 
             // 포스터 이미지 url
             String poster = null;
@@ -297,14 +347,58 @@ public class CrawlingShows {
                             )).getAttribute("src");
                 }
             }
-            showEntity.setPoster(poster);
+            showCrawling.setPosterImage(poster);
 
             // 카테고리
-            showEntity.setCategory(v.getCategory());
+            showCrawling.setCategory(v.getCategory());
+            tags.add(new TagCrawling(title, v.getCategory()));
 
-            System.out.println(showEntity);
+            showCrawlingRespons.add(showCrawling);
+
+            // 출연진 정보 크롤링
+            List<WebElement> tabs = driver.findElements(By.cssSelector(
+                    "div.cm_top_wrap._sticky._custom_select._header > div.sub_tap_area._scrolling_wrapper_common_tab._scroll_mover > div > div > ul > li"
+            ));
+
+            for (WebElement tab : tabs) {
+                if (tab.getText().equals("출연진")) {
+                    try {
+                        try {
+                            Thread.sleep(1000);
+                            // 출연진 태그 클릭
+                            tab.sendKeys(Keys.ENTER);
+                        } catch (Exception e) {
+                            try {
+                                Thread.sleep(1000);
+                                tab.click();
+                            } catch (Exception e2) {
+                                Thread.sleep(1000);
+                                tab.sendKeys(Keys.ENTER);
+                            }
+                        }
+                        Thread.sleep(1000);
+
+                        List<WebElement> actors = driver.findElements(By.cssSelector(
+                                "div.cm_content_wrap._content._people_content > div > div:nth-child(2) > div.list_image_info > ul > li > div > div > strong > a"
+                        ));
+
+                        for (WebElement actor : actors) {
+                            tags.add(new TagCrawling(title, actor.getText()));
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                }
+            }
         });
 
-        return responses;
+        return showCrawlingRespons;
+    }
+
+    public List<TagCrawling> getTags() {
+        return tags;
     }
 }

@@ -16,6 +16,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -25,6 +26,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.9.0'
 
+    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.31'
+
+    // feat.김종성
+    implementation 'com.github.eello:naneozoo-common:0.1.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     compileOnly 'org.projectlombok:lombok'
     // runtimeOnly 'com.mysql:mysql-connector-j'

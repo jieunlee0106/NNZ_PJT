@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ResponseShowDTO {
+public class CrawlingShowDTO {
 
     private WebElement element;
 

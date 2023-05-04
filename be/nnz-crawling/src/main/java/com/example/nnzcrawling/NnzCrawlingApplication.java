@@ -1,26 +1,14 @@
 package com.example.nnzcrawling;
 
-import com.example.nnzcrawling.selenium.CrawlingESports;
-import com.example.nnzcrawling.selenium.CrawlingShows;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class NnzCrawlingApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(NnzCrawlingApplication.class, args);
-
-        CrawlingShows crawlingShows = new CrawlingShows();
-        CrawlingESports crawlingESports = new CrawlingESports();
-
-        try {
-            crawlingESports.getCrawlingData();
-//            crawlingShows.getCrawlingData();
-        } catch (InterruptedException e) {
-            System.out.println(e.getStackTrace());
-        }
     }
-
 }
