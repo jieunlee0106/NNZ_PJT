@@ -2,12 +2,12 @@ server:
   port: 8082
 spring:
   application:
-    name: show-service
+    name: DEV_SHOW_SERVICE
   datasource:
+    url: ENC(ZsRuvWnZfl5CmNrlWvF/nS66ZfJd0az21nTmIxAqFoNK6i61aEVZ3F+zTMitE1pyOyav2uo/J5CNKJ7qkquzwZA72nW1nA4t1mGKxz/1R5GQ12gisHrgN2R0NWxuqjigpx/h6u+JyWaqMD0rwW8p+w==)
+    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/nnz_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: yyhj7424
 
   jpa:
     open-in-view: false
@@ -25,7 +25,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
 
 logging:
   level:
@@ -42,10 +42,10 @@ jasypt:
 
 notification:
   mattermost:
-    enabled: false
-    webhook-url: https://meeting.ssafy.com/hooks/yysukqft5jgwm81ehqz5ba6qur # ?? Webhook URL? ??
+    enabled: true
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
     channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
-    pretext: occur error # attachments? ??? ??? ?? ?? ??? ??
+    pretext: Dev UserService Error # attachments? ??? ??? ?? ?? ??? ??
     #    color: # attachment? ?? ??? ??. default=red
     author-name: mmSender # attachment? ??? ??? ??
     author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??

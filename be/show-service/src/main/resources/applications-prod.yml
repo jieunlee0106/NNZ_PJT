@@ -1,0 +1,53 @@
+server:
+  port: 9082
+spring:
+  application:
+    name: PROD_SHOW_SERVICE
+  datasource:
+    url: ENC(QEHIqDyhXpHVVsG2Q9tF/FD+Vgs1RMqhelX23EjAHQedaOl7ZndSfWypccUKynQdwXNt3aXUbejH4htXimv+Zi42vg2NhoLOdul1d6hwMCe1ZQsWsnNMY0+5VMJqceni8KeNLIRePCRLw7r1g1aNibQGVeqjugJ0Jx9b/EL7NpojecKmMmAZAJeXY1UYVcbm)
+    username: ENC(wkNqgPR+zw2ev6kDzUJaoA==)
+    password: ENC(ulotMFibcmCo7Hj8jnDxlELCIe8euR5W)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      #      ddl-auto: none
+      ddl-auto: none
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(7B9+kuInSwlFSida9o938Bb4PDb7BLJIq8Nooecfb51nPtV44b+YGY4LAXIfo0DCqyBkpDOKazw=)
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(vxKUrqtENMyaPPK5Jqf2P58689oKo66nSRv9KRjtmil5LFY6ns8m7ZzqFFJYe00+tdOCRgRyJY7SYByqxvrE1RpKd7ZiMPLf)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: UserService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
