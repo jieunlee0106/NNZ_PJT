@@ -44,7 +44,7 @@ class _NewPasswordState extends State<NewPassword> {
                           controller.passwordConfirmController.text
                       ? true
                       : false;
-              controller.onTest();
+              controller.onPwdCheck();
             },
             validator: (value) {
               isPassword = controller.onPasswordValidate(text: value!);
@@ -98,7 +98,7 @@ class _NewPasswordState extends State<NewPassword> {
               final isValidPwdConfirm = controller.passwordController.text ==
                   controller.passwordConfirmController.text;
               controller.pwdConfirmChecked.value = isValidPwdConfirm;
-              controller.onTest();
+              controller.onPwdCheck();
             },
             validator: (text) {
               Logger().i(controller.passwordController.text ==

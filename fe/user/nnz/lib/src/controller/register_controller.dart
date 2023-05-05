@@ -86,7 +86,6 @@ class RegisterController extends GetxController {
   }
 
   void onRegisterCheck() {
-    logger.i("비밀번호 체크 ${pwdChecked.value}");
     registerChecked.value = emailChecked.value &&
             pwdChecked.value &&
             pwdConfirmChecked.value &&
@@ -146,7 +145,6 @@ class RegisterController extends GetxController {
   //이메일형식 확인뒤 중복체크
   void emailValidate({required String type, required String text}) async {
     logger.i("$type , $text");
-    UserProvider().testApi(type: type, text: text);
     emailChecked(true);
 
     //이메일 유효성 검사 통과시 서버에서 api 통신 가능하면 주석 풀것

@@ -41,12 +41,36 @@ class FindPasswordController extends GetxController {
     }
   }
 
-  void onSms() {
+  //sms 본인인증 요청
+  Future<void> onSms() async {
     requestSms(true);
     phoneChekced(false);
     startTimer();
+
+    // try {
+    //   final response =
+    //       await UserProvider().postReqVerify(phone: phoneController.text);
+    //   //본인 핸드폰에 번호를 받았다는 이야기
+    //   if(response.statusCode == 200){
+    //     //그럼 굳이 응답을 받아서 모델링을 할 필요가.....
+    //     //인증번호가 들어갔다면 인증번호를 보냈다는 체크를 하고 유효시간 시작..
+    //     requestSms(true);
+    //     phoneChekced(false);
+    //     startTimer();
+    //   }
+    //   else{
+    //     final errorMessage = "(${response.statusCode}): ${response.body}";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //    final errorMessage = "$e";
+    //   logger.e(errorMessage);
+    //   throw Exception(errorMessage);
+    // }
   }
 
+  //비밀번호 유효성 검사
   bool onPasswordValidate({required String text}) {
     String pattern =
         r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$";
@@ -57,11 +81,31 @@ class FindPasswordController extends GetxController {
     return true;
   }
 
-  void onCheckAuthNumber() {
+  //인증번호 검사
+  Future<void> onCheckAuthNumber() async {
     isAuthChecked(true);
     if (timer.isActive) {
       timer.cancel();
     }
+    // try {
+    //   final response = await UserProvider().postResVerify(
+    //       phone: phoneController.text, verifyNum: authNumberController.text);
+    //   if(response.statusCode == 200){
+    //   isAuthChecked(true);
+    //   if (timer.isActive) {
+    //     timer.cancel();
+    //   }
+
+    //   }else{
+    //      final errorMessage = "(${response.statusCode}): ${response.body}";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //    final errorMessage = "$e";
+    //   logger.e(errorMessage);
+    //   throw Exception(errorMessage);
+    // }
   }
 
   void startTimer() {
@@ -80,7 +124,7 @@ class FindPasswordController extends GetxController {
     return '$duration'.substring(2, 7);
   }
 
-  void onTest() {
+  void onPwdCheck() {
     logger.i("들어왔냠? ${pwdChecked.value}");
     logger.i("들어왔냠 확인? ${pwdConfirmChecked.value}");
     findPwdChecked.value =
@@ -109,9 +153,42 @@ class FindPasswordController extends GetxController {
     });
   }
 
-  void onFindPassword() {
+  Future<void> onFindPassword() async {
     logger.i("비밀번호 상태 ${pwdChecked.value}");
     logger.i("비밀번호확인 상태 ${pwdConfirmChecked.value}");
     logger.i("되냐? 상태 ${findPwdChecked.value}");
+    // try {
+    //   final response = await UserProvider().patchPwd(
+    //       phone: phoneController.text,
+    //       pwd: passwordController.text,
+    //       confirmPwd: passwordConfirmController.text);
+    //   if (response.statusCode == 204) {
+    //     showDialog(
+    //         context: Get.context!,
+    //         builder: (BuildContext context) {
+    //           return AlertDialog(
+    //             content: const Text("비밀번호 변경되었습니다."),
+    //             actions: [
+    //               TextButton(
+    //                 onPressed: () {
+    //                   Get.offNamed("/login");
+
+    //                   FocusScope.of(context).unfocus();
+    //                 },
+    //                 child: const Text("확인"),
+    //               ),
+    //             ],
+    //           );
+    //         });
+    //   }else{
+    //      final errorMessage = "(${response.statusCode}): ${response.body}";
+    //     logger.e(errorMessage);
+    //     throw Exception(errorMessage);
+    //   }
+    // } catch (e) {
+    //    final errorMessage = "$e";
+    //   logger.e(errorMessage);
+    //   throw Exception(errorMessage);
+    // }
   }
 }
