@@ -51,4 +51,8 @@ public class Report extends BaseEntity {
             return ReportStatus.valueOf(CODE_MAP.get(code));
         }
     }
+
+    public void updateStatus(int code){
+        this.status = ReportStatus.of(code);
+    }
 }

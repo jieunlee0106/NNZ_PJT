@@ -12,6 +12,7 @@ import nnz.adminservice.repository.ReportRepository;
 import nnz.adminservice.repository.UserRepository;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.vo.AskedShowStatusVO;
+import nnz.adminservice.vo.ReportStatusVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,5 +73,20 @@ public class AdminServiceImpl implements AdminService {
                         .reason(report.getReason())
                         .status(report.getStatus().getCode())
                         .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public void handleReport(ReportStatusVO reportStatusVO) {
+        Report report = reportRepository.findById(reportStatusVO.getReportId())
+                .orElseThrow(() -> new CustomException(ErrorCode.REPORT_NOT_FOUND));
+
+        // 승인할 시
+        if(reportStatusVO.getStatus() == 1){
+            report.updateStatus(1);
+        }
+        // 거부할 시
+        else if(reportStatusVO.getStatus() == 2){
+            report.updateStatus(2);
+        }
     }
 }

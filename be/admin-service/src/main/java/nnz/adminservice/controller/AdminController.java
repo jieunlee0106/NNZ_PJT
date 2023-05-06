@@ -3,7 +3,7 @@ package nnz.adminservice.controller;
 import lombok.RequiredArgsConstructor;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.vo.AskedShowStatusVO;
-import org.springframework.http.HttpStatus;
+import nnz.adminservice.vo.ReportStatusVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +28,12 @@ public class AdminController {
     @GetMapping("/ask/reports")
     public ResponseEntity<?> findReportList(){
         return ResponseEntity.ok(adminService.findReportList());
+    }
+
+    @PatchMapping("/ask/reports")
+    public ResponseEntity<?> handleReport(@RequestBody ReportStatusVO reportStatusVO){
+        adminService.handleReport(reportStatusVO);
+        return ResponseEntity.ok().build();
     }
 
 }
