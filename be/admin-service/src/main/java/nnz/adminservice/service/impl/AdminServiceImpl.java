@@ -8,6 +8,7 @@ import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.AskedShowRepository;
 import nnz.adminservice.repository.UserRepository;
 import nnz.adminservice.service.AdminService;
+import nnz.adminservice.vo.AskedShowStatusVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,5 +32,27 @@ public class AdminServiceImpl implements AdminService {
                 .title(askedShow.getTitle())
                 .path(askedShow.getPath())
                 .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public void handleAskedShow(AskedShowStatusVO askedShowStatusVO) {
+
+        AskedShow askedShow = askedShowRepository.findById(askedShowStatusVO.getAskedShowsId())
+                .orElseThrow(() -> new CustomException(ErrorCode.ASKED_SHOW_NOT_FOUND));
+
+        // 승인할 시
+        if(askedShowStatusVO.getAskedShowStatus() == 1){
+            // shows 테이블에 insert
+            // show에 뭘 insert하지?
+
+            // asked_shows 테이블 상태 변경
+            askedShow.updateStatus(1);
+        }
+        // 거부할 시
+        else if(askedShowStatusVO.getAskedShowStatus() == 2){
+            // asked_shows 테이블 상태 변경
+            askedShow.updateStatus(2);
+        }
+
     }
 }

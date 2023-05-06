@@ -10,6 +10,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public enum ErrorCode implements AbstractErrorCode {
 
     USER_NOT_FOUND("U009", "등록되지 않은 사용자입니다.", NOT_FOUND),
+    ASKED_SHOW_NOT_FOUND("AS001", "등록되지 않은 공연 요청입니다.", NOT_FOUND),
     ;
 
     private final String code;

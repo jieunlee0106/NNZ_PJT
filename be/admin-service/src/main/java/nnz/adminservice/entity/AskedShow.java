@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @NoArgsConstructor
@@ -29,5 +33,17 @@ public class AskedShow extends BaseEntity {
         REFUSE(2);
 
         private final int code;
+
+        private static final Map<Integer, String> CODE_MAP = Collections.unmodifiableMap(
+                Stream.of(values()).collect(Collectors.toMap(AskedShowStatus::getCode, AskedShowStatus::name))
+        );
+
+        public static AskedShowStatus of(final int code){
+            return AskedShowStatus.valueOf(CODE_MAP.get(code));
+        }
+    }
+
+    public void updateStatus(int code){
+        this.status = AskedShowStatus.of(code);
     }
 }
