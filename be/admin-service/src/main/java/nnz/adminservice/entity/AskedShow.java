@@ -18,7 +18,7 @@ public class AskedShow extends BaseEntity {
     private String title;
     private String path;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private AskedShowStatus status;
 
     @Getter
