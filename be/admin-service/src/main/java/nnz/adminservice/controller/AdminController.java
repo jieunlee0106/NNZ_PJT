@@ -24,4 +24,10 @@ public class AdminController {
         adminService.handleAskedShow(askedShowStatusVO);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/ask/reports")
+    public ResponseEntity<?> findReportList(){
+        return ResponseEntity.ok(adminService.findReportList());
+    }
+
 }
