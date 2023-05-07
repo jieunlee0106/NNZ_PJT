@@ -47,6 +47,28 @@ public class FollowServiceImpl implements FollowService {
         log.info("{}님이 {}님을 팔로우", me.getEmail(), following.getEmail());
     }
 
+    @Override
+    @Transactional
+    public void unfollow(Long meId, Long followingId) {
+        User me = userRepository.findById(meId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 내가 팔로우를 취소할 사용자
+        User following = userRepository.findById(followingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Follow follow = followRepository.findByFollowerAndFollowing(me, following)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOLLOWING));
+
+        if (follow.getIsDelete()) {
+            throw new CustomException(ErrorCode.NOT_FOLLOWING);
+        }
+
+        follow.unfollow();
+
+        log.info("{}님이 {}님을 언팔로우", me.getEmail(), following.getEmail());
+    }
+
     /**
      * 내가 대상을 팔로우하고 있는지 여부
      */

@@ -88,4 +88,11 @@ public class UserController {
         followService.follow(token.getId(), followingId);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/users/unfollow/{followingId}")
+    public ResponseEntity<Void> unfollow(@PathVariable Long followingId, DecodedToken token) {
+        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 언팔로우
+        followService.unfollow(token.getId(), followingId);
+        return ResponseEntity.noContent().build();
+    }
 }

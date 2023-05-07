@@ -27,6 +27,9 @@ public class Follow extends BaseEntity {
     private User following; // 나를 기준으로 내가 구독한 사람
 
     public void reFollow() {
+        this.isDelete = false;
+    }
+    public void unfollow() {
         this.isDelete = true;
     }
 }

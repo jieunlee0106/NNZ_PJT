@@ -20,6 +20,7 @@ public enum ErrorCode implements AbstractErrorCode {
     USER_NOT_FOUND("U009", "등록되지 않은 사용자입니다.", NOT_FOUND),
     LOGIN_FAILURE("U010", "이메일 또는 비밀번호를 확인해주세요.", OK),
     ALREADY_FOLLOWING("U011", "이미 팔로우 중입니다.", CONFLICT),
+    NOT_FOLLOWING("U012", "팔로우 중이 아닙니다.", BAD_REQUEST),
     ;
 
     private final String code;
