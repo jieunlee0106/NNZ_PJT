@@ -1,6 +1,7 @@
 package nnz.userservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import nnz.userservice.dto.BookmarkedNanumDTO;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
 import nnz.userservice.vo.FindPwdVO;
@@ -11,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public interface UserService {
 
@@ -21,4 +23,5 @@ public interface UserService {
     boolean isExistByNickname(String nickname);
     TokenDTO login(LoginVO vo);
     void findPwd(FindPwdVO vo);
+    List<BookmarkedNanumDTO> findBookmarkedNanum(Long userId);
 }

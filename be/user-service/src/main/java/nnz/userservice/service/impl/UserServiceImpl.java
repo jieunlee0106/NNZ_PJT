@@ -5,15 +5,15 @@ import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nnz.userservice.dto.BookmarkedNanumDTO;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
+import nnz.userservice.entity.Nanum;
 import nnz.userservice.entity.RefreshToken;
 import nnz.userservice.entity.User;
 import nnz.userservice.entity.VerifyNumber;
 import nnz.userservice.exception.ErrorCode;
-import nnz.userservice.repository.RefreshTokenRepository;
-import nnz.userservice.repository.UserRepository;
-import nnz.userservice.repository.VerifyNumberRepository;
+import nnz.userservice.repository.*;
 import nnz.userservice.service.JwtProvider;
 import nnz.userservice.service.KafkaProducer;
 import nnz.userservice.service.UserService;
@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,6 +41,8 @@ public class UserServiceImpl implements UserService {
     private final KafkaProducer kafkaProducer;
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final NanumTagRepository nanumTagRepository;
 
     @Override
     @Transactional
@@ -165,5 +169,16 @@ public class UserServiceImpl implements UserService {
         user.changePwd(passwordEncoder.encode(vo.getPwd()));
 
         log.info("{}님의 비밀번호가 변경되었습니다.", user.getEmail());
+    }
+
+    @Override
+    public List<BookmarkedNanumDTO> findBookmarkedNanum(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        List<Nanum> bookmarkedNanum = bookmarkRepository.findNanumByUser(user);
+        // TODO: 나눔마다 태그 조회 쿼리 실행되는 점 개선
+//        nanumTagRepository.findByNanumIn(bookmarkedNanum);
+        return bookmarkedNanum.stream().map(BookmarkedNanumDTO::of).collect(Collectors.toList());
     }
 }

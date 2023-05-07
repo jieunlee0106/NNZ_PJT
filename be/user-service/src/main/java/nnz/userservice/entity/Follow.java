@@ -11,7 +11,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Getter
-@ToString
 public class Follow extends BaseEntity {
 
     @Id
@@ -19,11 +18,11 @@ public class Follow extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "follower", nullable = false)
+    @JoinColumn(name = "follower_id", nullable = false)
     private User follower; // 나를 기준으로 나를 구독한 사람
 
     @ManyToOne
-    @JoinColumn(name = "following", nullable = false)
+    @JoinColumn(name = "following_id", nullable = false)
     private User following; // 나를 기준으로 내가 구독한 사람
 
     public void reFollow() {
