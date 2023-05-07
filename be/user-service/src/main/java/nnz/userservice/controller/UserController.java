@@ -1,8 +1,10 @@
 package nnz.userservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.TokenDTO;
+import nnz.userservice.service.FollowService;
 import nnz.userservice.service.UserService;
 import nnz.userservice.service.VerifyService;
 import nnz.userservice.util.ValidationUtils;
@@ -25,6 +27,7 @@ public class UserController {
 
     private final UserService userService;
     private final VerifyService verifyService;
+    private final FollowService followService;
 
     @PostMapping("/users/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException {
@@ -74,6 +77,20 @@ public class UserController {
         response.addHeader("Set-Cookie", cookie.toString());
         token.deleteRefreshToken(); // 응답에 refreshToken을 포함시키지 않기 위해 null로 변경
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/users/follow/{followingId}")
+    public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) {
+        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 팔로우
+        followService.follow(token.getId(), followingId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/users/unfollow/{followingId}")
+    public ResponseEntity<Void> unfollow(@PathVariable Long followingId, DecodedToken token) {
+        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 언팔로우
+        followService.unfollow(token.getId(), followingId);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/users/find-pwd")
