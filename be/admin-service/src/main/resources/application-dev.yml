@@ -1,0 +1,58 @@
+server:
+  port: 8001
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Dev AdminrService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ENC(UmLCdIQue9EWbm+tJ2e2Hmm6QztNE0G31cM4T6Vuuv3IghXJaI7HblnI6OHG8kM8vNh4yaFOlb0wH5rkw4YP3OwhnCqEVIa5F1wb4+ssy/ojQVYA+nWMtvX1I3aT1+tm5RC+hu9W1jW0U2MezjwsjHJ+ZW4n/ilb)
+    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  jpa:
+    database:
+    hibernate:
+      ddl_auto: none
+    properties:
+      hibernate:
+        "globally_quoted_identifiers": "true"
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+cloud:
+  aws:
+    s3:
+      bucket: ENC(gje0c+ysfMXAd0lIu5ZOMhAq/dN8UKEK)
+    credentials:
+      access-key: ENC(XB6m0cHn6sbhEZjKAXAEg3EgDzW/1xvoVh7z2/2ws2M=)
+      secret-key: ENC(fZCWX/jrQ/i7HRMxfzvUfW+DifqHAiA01qNPYfjyIlM3lQ01WYhIPrh8OGjf6SEubzHUslYQOOQ=)
+    region:
+      static: ap-southeast-2
+      auto: false
+    stack:
+      auto: false
