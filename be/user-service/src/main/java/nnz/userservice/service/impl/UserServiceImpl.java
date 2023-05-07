@@ -2,6 +2,7 @@ package nnz.userservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.exception.CustomException;
+import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.TokenDTO;
@@ -93,8 +94,10 @@ public class UserServiceImpl implements UserService {
 
         UserDTO userDTO = UserDTO.of(newUser);
 
+        KafkaMessage<UserDTO> kafkaMessage = KafkaMessage.create().body(userDTO);
+
         // kafka에 가입한 사용자에 대한 메시지 발생
-        kafkaProducer.sendMessage(userDTO);
+        kafkaProducer.sendMessage(kafkaMessage);
 
         return userDTO;
     }
