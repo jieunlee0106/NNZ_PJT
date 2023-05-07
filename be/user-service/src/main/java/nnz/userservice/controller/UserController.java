@@ -1,8 +1,10 @@
 package nnz.userservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.TokenDTO;
+import nnz.userservice.service.FollowService;
 import nnz.userservice.service.UserService;
 import nnz.userservice.service.VerifyService;
 import nnz.userservice.util.ValidationUtils;
@@ -28,6 +30,7 @@ public class UserController {
 
     private final UserService userService;
     private final VerifyService verifyService;
+    private final FollowService followService;
 
     @PostMapping("/users/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException {
@@ -79,4 +82,10 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
+    @PostMapping("/users/follow/{followingId}")
+    public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) {
+        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 팔로우
+        followService.follow(token.getId(), followingId);
+        return ResponseEntity.noContent().build();
+    }
 }
