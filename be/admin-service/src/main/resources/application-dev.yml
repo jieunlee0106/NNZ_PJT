@@ -43,3 +43,16 @@ jasypt:
     bean: jasyptStringEncryptor
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+cloud:
+  aws:
+    s3:
+      bucket: ENC(gje0c+ysfMXAd0lIu5ZOMhAq/dN8UKEK)
+    credentials:
+      access-key: ENC(XB6m0cHn6sbhEZjKAXAEg3EgDzW/1xvoVh7z2/2ws2M=)
+      secret-key: ENC(fZCWX/jrQ/i7HRMxfzvUfW+DifqHAiA01qNPYfjyIlM3lQ01WYhIPrh8OGjf6SEubzHUslYQOOQ=)
+    region:
+      static: ap-southeast-2
+      auto: false
+    stack:
+      auto: false
