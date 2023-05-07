@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.TokenDTO;
+import nnz.userservice.service.BookmarkService;
 import nnz.userservice.service.FollowService;
 import nnz.userservice.service.UserService;
 import nnz.userservice.service.VerifyService;
@@ -28,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final VerifyService verifyService;
     private final FollowService followService;
+    private final BookmarkService bookmarkService;
 
     @PostMapping("/users/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException {
@@ -96,6 +98,12 @@ public class UserController {
     @PatchMapping("/users/find-pwd")
     public ResponseEntity<Void> findPwd(@RequestBody FindPwdVO vo) {
         userService.findPwd(vo);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/users/bookmarks/{nanumId}")
+    public ResponseEntity<Void> toggleWish(@PathVariable Long nanumId, DecodedToken token) {
+        bookmarkService.toggleWish(token.getId(), nanumId);
         return ResponseEntity.noContent().build();
     }
 }

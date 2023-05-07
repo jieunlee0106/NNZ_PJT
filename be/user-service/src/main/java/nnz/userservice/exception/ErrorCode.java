@@ -21,6 +21,11 @@ public enum ErrorCode implements AbstractErrorCode {
     LOGIN_FAILURE("U010", "이메일 또는 비밀번호를 확인해주세요.", OK),
     ALREADY_FOLLOWING("U011", "이미 팔로우 중입니다.", CONFLICT),
     NOT_FOLLOWING("U012", "팔로우 중이 아닙니다.", BAD_REQUEST),
+
+    NANUM_NOT_FOUND("N001", "존재하지 않는 나눔입니다.", BAD_REQUEST),
+
+    ALREADY_BOOKMARKED("BM001", "이미 찜한 나눔입니다.", CONFLICT),
+    NOT_BOOKMARK("BM002", "찜한 나눔이 아닙니다.", BAD_REQUEST),
     ;
 
     private final String code;

@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'com.github.eello:naneozoo-common:0.4.0'
+    implementation 'com.github.eello:naneozoo-common:0.4.1'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
     // jasypt
