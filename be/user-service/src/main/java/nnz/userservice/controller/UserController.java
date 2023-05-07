@@ -6,10 +6,7 @@ import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.service.UserService;
 import nnz.userservice.service.VerifyService;
 import nnz.userservice.util.ValidationUtils;
-import nnz.userservice.vo.CheckVerifyVO;
-import nnz.userservice.vo.LoginVO;
-import nnz.userservice.vo.UserJoinVO;
-import nnz.userservice.vo.VerifyVO;
+import nnz.userservice.vo.*;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,4 +76,9 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
+    @PatchMapping("/users/find-pwd")
+    public ResponseEntity<Void> findPwd(@RequestBody FindPwdVO vo) {
+        userService.findPwd(vo);
+        return ResponseEntity.noContent().build();
+    }
 }

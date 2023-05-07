@@ -4,6 +4,7 @@ import io.github.eello.nnz.common.entity.BaseEntity;
 import io.github.eello.nnz.common.exception.CustomException;
 import lombok.*;
 import nnz.userservice.exception.ErrorCode;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
         @UniqueConstraint(name = "EMAIL_UNIQUE", columnNames = "email"),
         @UniqueConstraint(name = "NICKNAME_UNIQUE", columnNames = "nickname")
 })
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -49,6 +51,10 @@ public class User extends BaseEntity {
         if (!passwordEncoder.matches(rawPassword, this.password)) {
             throw new CustomException(ErrorCode.LOGIN_FAILURE);
         }
+    }
+
+    public void changePwd(String pwd) {
+        this.password = pwd;
     }
 
     public enum Role {
