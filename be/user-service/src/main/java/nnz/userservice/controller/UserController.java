@@ -3,6 +3,7 @@ package nnz.userservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
+import nnz.userservice.dto.BookmarkedNanumDTO;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.service.BookmarkService;
 import nnz.userservice.service.FollowService;
@@ -20,6 +21,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -105,5 +107,11 @@ public class UserController {
     public ResponseEntity<Void> toggleWish(@PathVariable Long nanumId, DecodedToken token) {
         bookmarkService.toggleWish(token.getId(), nanumId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/users/bookmarks")
+    public ResponseEntity<List<BookmarkedNanumDTO>> findBookmarkedNanum(DecodedToken token) {
+        List<BookmarkedNanumDTO> bookmarkedNanum = userService.findBookmarkedNanum(token.getId());
+        return ResponseEntity.ok(bookmarkedNanum);
     }
 }
