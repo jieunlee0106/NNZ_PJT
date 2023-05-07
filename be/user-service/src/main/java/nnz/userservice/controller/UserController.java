@@ -8,10 +8,7 @@ import nnz.userservice.service.FollowService;
 import nnz.userservice.service.UserService;
 import nnz.userservice.service.VerifyService;
 import nnz.userservice.util.ValidationUtils;
-import nnz.userservice.vo.CheckVerifyVO;
-import nnz.userservice.vo.LoginVO;
-import nnz.userservice.vo.UserJoinVO;
-import nnz.userservice.vo.VerifyVO;
+import nnz.userservice.vo.*;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -93,6 +90,12 @@ public class UserController {
     public ResponseEntity<Void> unfollow(@PathVariable Long followingId, DecodedToken token) {
         // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 언팔로우
         followService.unfollow(token.getId(), followingId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/users/find-pwd")
+    public ResponseEntity<Void> findPwd(@RequestBody FindPwdVO vo) {
+        userService.findPwd(vo);
         return ResponseEntity.noContent().build();
     }
 }

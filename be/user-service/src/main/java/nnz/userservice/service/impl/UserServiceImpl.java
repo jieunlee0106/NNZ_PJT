@@ -18,6 +18,7 @@ import nnz.userservice.service.JwtProvider;
 import nnz.userservice.service.KafkaProducer;
 import nnz.userservice.service.UserService;
 import nnz.userservice.util.ValidationUtils;
+import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -134,5 +135,35 @@ public class UserServiceImpl implements UserService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void findPwd(FindPwdVO vo) {
+        VerifyNumber vn = verifyNumberRepository.findById(vo.getPhone())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFY));
+
+        // 본인확인 검증
+        if (!vn.isVerify()) {
+            throw new CustomException(ErrorCode.NOT_VERIFIED);
+        }
+
+        // 비밀번호와 비밀번호 확인이 일치하지 않음
+        if (!vo.getPwd().equals(vo.getConfirmPwd())) {
+            throw new CustomException(ErrorCode.PWD_NOT_MATCH_CONFIRM_PWD);
+        }
+
+        // 비밃번호 형식이 유효하지 않음
+        if (!ValidationUtils.isValidPwd(vo.getPwd())) {
+            throw new CustomException(ErrorCode.INVALID_PWD_PATTERN);
+        }
+
+        User user = userRepository.findByPhoneNumber(vo.getPhone())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 패스워드 업데이트
+        user.changePwd(passwordEncoder.encode(vo.getPwd()));
+
+        log.info("{}님의 비밀번호가 변경되었습니다.", user.getEmail());
     }
 }

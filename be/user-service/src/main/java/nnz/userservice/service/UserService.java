@@ -3,6 +3,7 @@ package nnz.userservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
+import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 
@@ -19,4 +20,5 @@ public interface UserService {
     boolean isExistByEmail(String email);
     boolean isExistByNickname(String nickname);
     TokenDTO login(LoginVO vo);
+    void findPwd(FindPwdVO vo);
 }
