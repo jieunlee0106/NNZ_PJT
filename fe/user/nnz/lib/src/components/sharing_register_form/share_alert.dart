@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:nnz/src/components/sharing_register_form/category/esports.dart';
-import 'package:nnz/src/components/sharing_register_form/category/movies.dart';
 import 'package:nnz/src/components/sharing_register_form/category/musical.dart';
 import 'package:nnz/src/components/sharing_register_form/category/sports.dart';
-import 'package:nnz/src/components/sharing_register_form/category/theator.dart';
 
 import '../../config/config.dart';
 import '../../controller/sharing_register_controller.dart';
-import 'category/concert.dart';
 
 class ShareAlert extends StatefulWidget {
   const ShareAlert({super.key});
@@ -22,9 +18,9 @@ class _ShareAlertState extends State<ShareAlert> {
   final logger = Logger();
 
   final controller = Get.put(SharingRegisterController());
-  final List<String> _items = ['콘서트', '뮤지컬', '연극', '영화', '스포츠', 'e스포츠'];
-  List<String>? _items2;
 
+  List<String> _items = [];
+  List<String> _childItems = [];
   String? _selectedItem;
   @override
   void initState() {
@@ -33,7 +29,8 @@ class _ShareAlertState extends State<ShareAlert> {
   }
 
   void onGetParentCategory() async {
-    _items2 = await controller.getParentCategory();
+    _items = await controller.getParentCategory();
+    setState(() {});
   }
 
   @override
@@ -60,74 +57,69 @@ class _ShareAlertState extends State<ShareAlert> {
                       color: const Color(0xffF3F3F3),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: DropdownButton<String>(
-                      underline: Container(),
-                      isDense: true,
-                      padding: const EdgeInsetsDirectional.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      icon: Padding(
-                        padding: EdgeInsets.only(
-                          left: Get.width * 0.3,
-                        ),
-                        child: const Icon(
-                          Icons.keyboard_arrow_down,
-                        ),
-                      ),
-                      hint: const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                        ),
-                        child: Text(
-                          "나눔 카테고리",
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      value: _selectedItem,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedItem = newValue;
-                        });
-                      },
-                      items: _items.map((item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              right: 60,
+                    child: _items.isEmpty
+                        ? const CircularProgressIndicator()
+                        : DropdownButton<String>(
+                            underline: Container(),
+                            isDense: true,
+                            padding: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
                             ),
-                            child: Text(item),
+                            icon: Padding(
+                              padding: EdgeInsets.only(
+                                left: Get.width * 0.3,
+                              ),
+                              child: const Icon(
+                                Icons.keyboard_arrow_down,
+                              ),
+                            ),
+                            hint: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: Text(
+                                "나눔 카테고리",
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            value: _selectedItem,
+                            onChanged: (newValue) async {
+                              _childItems.clear();
+                              setState(() {
+                                _selectedItem = newValue;
+                              });
+                              _childItems = await controller.getChildCategory(
+                                  index: _items.indexOf(newValue!));
+                              setState(() {});
+                            },
+                            items: _items.map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList(),
                           ),
-                        );
-                      }).toList(),
-                      //
-                      // items: controller.pCategories.map((item) {
-                      //   return DropdownMenuItem(
-                      //     value: item,
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.only(
-                      //         right: 60,
-                      //       ),
-                      //       child: Text(item),
-                      //     ),
-                      //   );
-                      // }).toList(),
-                    ),
                   ),
                   //
                   // for(var item in  _items)...[
                   //   if(_selectedItem == item)
                   //     ChildCategory(selectItem: _selectedItem),
                   // ],
-                  _selectedItem == _items[0] ? ConcertCategory() : Container(),
-                  _selectedItem == '뮤지컬' ? MusicalCategory() : Container(),
-                  _selectedItem == '연극' ? TheatorCategory() : Container(),
-                  _selectedItem == '영화' ? MovieCategory() : Container(),
-                  _selectedItem == '스포츠' ? const SportsCategory() : Container(),
-                  _selectedItem == 'e스포츠'
-                      ? const EsportsCategory()
-                      : Container(),
+
+                  _selectedItem == null
+                      ? Container()
+                      : _childItems.isEmpty
+                          ? MusicalCategory(selectItem: _selectedItem)
+                          : SportsCategory(childCategoriesList: _childItems),
+                  // _selectedItem == _items[0] ? ConcertCategory() : Container(),
+                  // _selectedItem == '뮤지컬' ? MusicalCategory() : Container(),
+                  // _selectedItem == '연극' ? TheatorCategory() : Container(),
+                  // _selectedItem == '영화' ? MovieCategory() : Container(),
+                  // _selectedItem == '스포츠' ? const SportsCategory() : Container(),
+                  // _selectedItem == 'e스포츠'
+                  //     ? const EsportsCategory()
+                  //     : Container(),
                 ],
               ),
             ),
