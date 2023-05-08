@@ -1,0 +1,63 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: TAG-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/tag_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: yyhj7424
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      #      ddl-auto: create-drop
+      ddl-auto: none
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+#      group-id: tag-service-1 # ex) user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+#      topic: test-tag # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: false
+    webhook-url: https://meeting.ssafy.com/hooks/yysukqft5jgwm81ehqz5ba6qur # ?? Webhook URL? ??
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: occur error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
