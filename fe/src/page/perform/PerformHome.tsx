@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import HeaderNav from "../../components/HeaderNav";
 import allow from "../../assets/allow.png";
 import reject from "../../assets/reject.png";
+import axiosApi from "../../services/axiosApi";
+import { useEffect } from "react";
 
 function PerformHome() {
+  const id = sessionStorage.getItem("userToken");
+
   interface perform {
     title: string;
     isPass: boolean;
@@ -22,6 +26,19 @@ function PerformHome() {
       index: 2,
     },
   ];
+
+  const listDataHandler = async () => {
+    try {
+      const res = await axiosApi.get("admin-service/admin/ask/shows");
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    listDataHandler();
+  }, []);
 
   return (
     <div className="flex flex-col items-center">

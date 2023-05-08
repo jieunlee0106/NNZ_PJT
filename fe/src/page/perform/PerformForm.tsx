@@ -1,9 +1,22 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import HeaderNav from "../../components/HeaderNav";
 import DatePicker from "react-datepicker";
+import qs from "qs";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+import axiosApi from "../../services/axiosApi";
+
+axiosApi.defaults.paramsSerializer = (params) => {
+  return qs.stringify(params);
+};
+
+const params = {};
+
+interface category {
+  code: string;
+  name: string;
+}
 
 function PerformForm() {
   const [startDate, setStartDate] = useState(new Date());
@@ -13,6 +26,35 @@ function PerformForm() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [imgSrcList, setImgSrcList] = useState<any | null>();
   const [imgUp, setImgUp] = useState<File>();
+
+  //카테고리
+  const [parcategory, setParCategory] = useState<category[]>([]);
+  const categoryHandler = async () => {
+    try {
+      const res = await axiosApi.get("show-service/shows/categories");
+      console.log(res);
+      setParCategory(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //작은 카테고리
+  const [smcategory, setSmCategofy] = useState<category[]>([]);
+  const categorySelectHandler = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const bigC = event.target.value;
+    const params = { parent: bigC };
+    try {
+      const res = await axiosApi.get(`show-service/shows/categories`, {
+        params,
+      });
+      console.log(res);
+      setSmCategofy(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   //지역
   const location: string[] = [
@@ -85,6 +127,10 @@ function PerformForm() {
     );
   }, [imgSrcList]);
 
+  useEffect(() => {
+    categoryHandler();
+  }, []);
+
   return (
     <div className="flex flex-col items-center overflow-y-scroll">
       <div className="w-10/12">
@@ -118,6 +164,27 @@ function PerformForm() {
                 type="text"
                 className="border-b-2 border-b-[#0D0D0D] w-3/6 h-12"
               ></input>
+            </div>
+            <div className="flex">
+              <div className="flex flex-col my-2 ml-32 text-base">
+                <label className="my-2">공연 카테고리</label>
+                <select className="w-40 mt-5" onChange={categorySelectHandler}>
+                  {parcategory.map((big, index) => (
+                    <option value={big.code} key={index}>
+                      {big.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col my-2 ml-32 text-base">
+                <select className="w-52 mt-16">
+                  {smcategory.map((small, index) => (
+                    <option value={small.code} key={index}>
+                      {small.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="flex flex-col my-2 ml-32 text-base">
               <label className="my-2">공연 장소</label>

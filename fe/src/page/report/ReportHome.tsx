@@ -1,6 +1,21 @@
+import { useEffect } from "react";
 import HeaderNav from "../../components/HeaderNav";
+import axiosApi from "../../services/axiosApi";
 
 function ReportHome() {
+  const dataHandler = async () => {
+    try {
+      const res = await axiosApi.get("admin-service/admin/ask/reports");
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    dataHandler();
+  }, []);
+
   return (
     <div className="flex flex-col items-center">
       <div className="w-10/12">
