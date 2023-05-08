@@ -47,27 +47,6 @@ class UserProvider extends GetConnect {
       headers: headers,
     );
     return response;
-    // try {
-    //   final response = await get("/users/check?$type&$value", headers: headers);
-    //   //응답코드가 200이면 닉네임이나 이메일 사용가능
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   }
-    //   //응답코드가 409이면 닉네임이나 이메일이 중복이 되었다는 의미...
-    //   else if (response.statusCode == 409) {
-    //     return response.body;
-    //   }
-    //   //위의 두 에러가 아닌 나머지 코드이면 erorrMessage를 준다.
-    //   else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //테스트 이메일 중복확인 api
@@ -88,20 +67,6 @@ class UserProvider extends GetConnect {
       headers: headers,
     );
     return response;
-    // try {
-    //   final response = await post("/users/verify", body, headers: headers);
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //본인인증 확인 api
@@ -120,20 +85,6 @@ class UserProvider extends GetConnect {
       headers: headers,
     );
     return response;
-    // try {
-    //   final response = await post("/users/verify", body, headers: headers);
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //회원가입 api
@@ -145,20 +96,6 @@ class UserProvider extends GetConnect {
       body,
     );
     return response;
-    // try {
-    //   final response = await post("/users/join", body, headers: headers);
-    //   if (response.statusCode == 201) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //비밀번호 변경 api
@@ -175,19 +112,5 @@ class UserProvider extends GetConnect {
         "https://k8b207.p.ssafy.io/api/user-service/users/find-pwd", body,
         headers: headers);
     return response;
-    // try {
-    //   final response = await patch("/users/find-pwd", body);
-    //   if (response.statusCode == 204) {
-    //     return response;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 }
