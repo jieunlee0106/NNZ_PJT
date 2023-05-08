@@ -1,12 +1,12 @@
 server:
-  port: 8001
+  port: 9001
 
 notification:
   mattermost:
     enabled: true
     webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
     channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
-    pretext: Dev AdminService Error # attachments? ??? ??? ?? ?? ??? ??
+    pretext: Prod AdminService Error # attachments? ??? ??? ?? ?? ??? ??
     #    color: # attachment? ?? ??? ??. default=red
     author-name: mmSender # attachment? ??? ??? ??
     author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
@@ -14,15 +14,15 @@ notification:
 
 spring:
   application:
-    name: DEV-ADMIN-SERVICE
+    name: PROD-ADMIN-SERVICE
 
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: ENC(UmLCdIQue9EWbm+tJ2e2Hmm6QztNE0G31cM4T6Vuuv3IghXJaI7HblnI6OHG8kM8vNh4yaFOlb0wH5rkw4YP3OwhnCqEVIa5F1wb4+ssy/ojQVYA+nWMtvX1I3aT1+tm5RC+hu9W1jW0U2MezjwsjHJ+ZW4n/ilb)
+    url: ENC(MmPyk1GXf0t/ZMPEybWZpbnBecMYlBjqPBckmNV1VtZBuq88xJxmPDRSij1f5UnU8ggTQ/E2LI5wGg4t1ZHCuNiwInYEOdb2nasipkR/uPNbr93AnkLKz/SSBerSOH0pyXYGLzl21oXOd56Dh9mLRqUvZ8us1eZM89XPVJNWyXFE0wK/rGbiMwVImRy6iCRYA4oYpeudJxs=)
     username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
-    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+    password: ENC(RV9CmY1XczYqzNs1mWMfGV+R0bgfSapf)
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -43,7 +43,7 @@ spring:
   kafka:
     bootstrap-servers: http://k8b207.p.ssafy.io:29092
     consumer:
-      group-id: dev-admin-service # ex) user-service-1
+      group-id: prod-admin-service # ex) user-service-1
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -75,8 +75,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+      defaultZone: ENC(NK/213v7owHYUmSyZAmWusUntAqMiJ5vjClNNO9f3yf0h0dD7LEumreR88Q9V6yPWr1bGiWGN54=)
 
 kafka:
   topic:
-    prefix: dev-
+    prefix: prod-
