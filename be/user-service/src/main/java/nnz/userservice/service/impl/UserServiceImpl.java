@@ -7,10 +7,7 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.*;
-import nnz.userservice.entity.Nanum;
-import nnz.userservice.entity.RefreshToken;
-import nnz.userservice.entity.User;
-import nnz.userservice.entity.VerifyNumber;
+import nnz.userservice.entity.*;
 import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.repository.*;
 import nnz.userservice.service.JwtProvider;
@@ -22,13 +19,14 @@ import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -229,4 +227,39 @@ public class UserServiceImpl implements UserService {
         return PageDTO.of(providedNanumDTO);
     }
 
+    @Override
+    public NanumParticipantsDTO nanumParticipants(Long userId, Long nanumId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Nanum nanum = nanumRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
+
+        if (nanum.getProvider() != user) {
+            throw new CustomException(ErrorCode.NOT_PROVIDER);
+        }
+
+        List<ReceiveNanum> receiveNanums = receiveNanumRepository.findByNanum(nanum); // 나눔에 참가한 유저 조회
+        Set<User> follower = followRepository.findFollower(user); // 나눔자의 팔로워 조회
+
+        List<NanumParticipantsDTO.ParticipantDTO> participants = new ArrayList<>();
+        for (ReceiveNanum receiveNanum : receiveNanums) {
+            User receiver = receiveNanum.getReceiver();
+
+            boolean isFollower = follower.contains(receiver);
+
+            NanumParticipantsDTO.ParticipantDTO participantDTO = NanumParticipantsDTO.ParticipantDTO.builder()
+                    .id(receiver.getId())
+                    .nickname(receiver.getNickname())
+                    .profileImage(receiver.getProfileImage())
+                    .isReceived(receiveNanum.isReceived())
+                    .isCertificated(receiveNanum.isCertificated())
+                    .isFollower(isFollower)
+                    .build();
+
+            participants.add(participantDTO);
+        }
+
+        return NanumParticipantsDTO.of(nanum, participants);
+    }
 }

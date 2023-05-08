@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.BookmarkedNanumDTO;
+import nnz.userservice.dto.NanumParticipantsDTO;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
 import nnz.userservice.service.BookmarkService;
@@ -134,5 +135,11 @@ public class UserController {
         } else pageDTO = userService.providedNanums(userId, pageable);
 
         return ResponseEntity.ok(pageDTO);
+    }
+
+    @GetMapping("/users/nanums/{nanumId}")
+    public ResponseEntity<NanumParticipantsDTO> getNanumParticipants(@PathVariable Long nanumId, DecodedToken token) {
+        NanumParticipantsDTO nanumParticipants = userService.nanumParticipants(token.getId(), nanumId);
+        return ResponseEntity.ok(nanumParticipants);
     }
 }
