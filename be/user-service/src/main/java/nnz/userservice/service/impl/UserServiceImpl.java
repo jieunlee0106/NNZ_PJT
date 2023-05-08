@@ -6,6 +6,7 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.BookmarkedNanumDTO;
+import nnz.userservice.dto.StatisticsDTO;
 import nnz.userservice.dto.TokenDTO;
 import nnz.userservice.dto.UserDTO;
 import nnz.userservice.entity.Nanum;
@@ -42,7 +43,10 @@ public class UserServiceImpl implements UserService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final NanumRepository nanumRepository;
+    private final ReceiveNanumRepository receiveNanumRepository;
     private final NanumTagRepository nanumTagRepository;
+    private final FollowRepository followRepository;
 
     @Override
     @Transactional
@@ -180,5 +184,27 @@ public class UserServiceImpl implements UserService {
         // TODO: 나눔마다 태그 조회 쿼리 실행되는 점 개선
 //        nanumTagRepository.findByNanumIn(bookmarkedNanum);
         return bookmarkedNanum.stream().map(BookmarkedNanumDTO::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO info(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Integer followingCount = followRepository.countByFollower(user);
+        Integer followerCount = followRepository.countByFollowing(user);
+
+        List<Nanum> provideNanum = nanumRepository.findByProvider(user);
+        StatisticsDTO provideStatistics = StatisticsDTO.of(provideNanum);
+
+        List<Nanum> receiveNanum = receiveNanumRepository.findNanumByReceiver(user);
+        StatisticsDTO receiveStatistics = StatisticsDTO.of(receiveNanum);
+
+        UserDTO userDTO = UserDTO.of(user);
+        userDTO.setFollowingCount(followingCount);
+        userDTO.setFollowerCount(followerCount);
+        userDTO.setStatistics(new UserDTO.Statistics(provideStatistics, receiveStatistics));
+
+        return userDTO;
     }
 }

@@ -24,4 +24,5 @@ public interface UserService {
     TokenDTO login(LoginVO vo);
     void findPwd(FindPwdVO vo);
     List<BookmarkedNanumDTO> findBookmarkedNanum(Long userId);
+    UserDTO info(Long userId);
 }

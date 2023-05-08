@@ -2,6 +2,7 @@ package nnz.userservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "nanums")
+@Where(clause = "is_delete = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -25,6 +27,10 @@ public class Nanum extends BaseEntity {
     private NanumStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id")
+    private User provider;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id")
     private Show show;
 
@@ -33,7 +39,7 @@ public class Nanum extends BaseEntity {
 
     @Getter
     public enum NanumStatus {
-        BEFORE(0), ONGOING(1), CLOSE(2), FINISH(3),
+        BEFORE(0), CLOSE(1), ONGOING(2), FINISH(3),
         ;
 
         private final int status;

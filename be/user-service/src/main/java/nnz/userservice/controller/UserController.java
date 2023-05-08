@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.BookmarkedNanumDTO;
 import nnz.userservice.dto.TokenDTO;
+import nnz.userservice.dto.UserDTO;
 import nnz.userservice.service.BookmarkService;
 import nnz.userservice.service.FollowService;
 import nnz.userservice.service.UserService;
@@ -113,5 +114,11 @@ public class UserController {
     public ResponseEntity<List<BookmarkedNanumDTO>> findBookmarkedNanum(DecodedToken token) {
         List<BookmarkedNanumDTO> bookmarkedNanum = userService.findBookmarkedNanum(token.getId());
         return ResponseEntity.ok(bookmarkedNanum);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<UserDTO> info(DecodedToken token) {
+        UserDTO info = userService.info(token.getId());
+        return ResponseEntity.ok(info);
     }
 }
