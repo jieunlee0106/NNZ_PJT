@@ -14,12 +14,16 @@ public class ShowTagDTO {
 
     private Long id;
 
-    private String tag;
+    private String tagName;
+
+    private Long showId;
+
+    private Long tagId;
 
     public static ShowTagDTO entityToDTO(ShowTag showTag) {
         return ShowTagDTO.builder()
                 .id(showTag.getId())
-                .tag(showTag.getTag().getTag())
+                .tagName(showTag.getTag().getTag())
                 .build();
     }
 }

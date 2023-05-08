@@ -1,5 +1,9 @@
 package nnz.showservice.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +11,7 @@ import lombok.NoArgsConstructor;
 import nnz.showservice.entity.Show;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +33,17 @@ public class ShowDTO {
 
     private String ageLimit;
 
+    private String region;
+
     private List<ShowTagDTO> showTags;
 
     private String poster;
+
+    private String categoryCode;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime updatedAt;
 
     public static ShowDTO entityToDTO(Show show) {
         List<ShowTagDTO> showTags = show.getShowTags()
@@ -45,8 +58,10 @@ public class ShowDTO {
                 .poster(show.getPosterImage())
                 .startDate(show.getStartDate())
                 .endDate(show.getEndDate())
+                .region(show.getRegion())
                 .title(show.getTitle())
                 .showTags(showTags)
+                .updatedAt(show.getUpdatedAt())
                 .build();
     }
 
