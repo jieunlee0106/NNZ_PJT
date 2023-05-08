@@ -10,6 +10,7 @@ import 'package:nnz/src/pages/share/my_shared_info_form.dart';
 import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/share/my_snappingtest.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
+import 'package:nnz/src/pages/user/alarm.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
 import 'package:nnz/src/pages/user/other_profile.dart';
@@ -200,6 +201,10 @@ class MyApp extends StatelessWidget {
           name: "/otherUserProfileTwitter",
           page: () => const OtherProfileTwitter(),
           transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/notification",
+          page: () => NotificationPage(),
         ),
       ],
     );

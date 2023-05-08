@@ -18,10 +18,10 @@ class _EsportsBannerState extends State<EsportsBanner> {
   String esportEventB = ImagePath.lolB;
   String esportsName = 'LCK';
   String esportsNameR = 'OWL';
-  String esportsNameL = 'KLD';
+  String esportsNameL = 'KDL';
   String img = ImagePath.esports;
 
-  final List<String> _sports = ['LCK', 'OWL', 'GSL', 'KLD'];
+  final List<String> _sports = ['LCK', 'OWL', 'GSL', 'KDL'];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _EsportsBannerState extends State<EsportsBanner> {
             // alignment: Alignment(0, -0.68),
             children: [
               Container(
-                height: 2750,
+                height: 2900,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(esportEventB),
