@@ -4,7 +4,7 @@ spring:
   application:
     name: DEV-SHOW-SERVICE
   datasource:
-    url: ENC(ZsRuvWnZfl5CmNrlWvF/nS66ZfJd0az21nTmIxAqFoNK6i61aEVZ3F+zTMitE1pyOyav2uo/J5CNKJ7qkquzwZA72nW1nA4t1mGKxz/1R5GQ12gisHrgN2R0NWxuqjigpx/h6u+JyWaqMD0rwW8p+w==)
+    url: ENC(r/A32kM2dGOL6oitAaARBNHIJxblfJexUwkinzNlqDVgvDckDWevwvgkY8/FPfIH8nQzuLGbmzE6P6yz2UwrZVxHZIGcs7OvKyyhI3P2MjQJflT5EtTWmDN3MPxjlVATApSqOqGjeEKN+wK28coFks2NhTsPB4UW)
     username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
     password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
     driver-class-name: com.mysql.cj.jdbc.Driver
