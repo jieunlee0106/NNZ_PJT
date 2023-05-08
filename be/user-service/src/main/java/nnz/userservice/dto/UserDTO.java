@@ -19,6 +19,7 @@ public class UserDTO {
 
     private Long id;
     private String email;
+    private String nickname;
     private String phone;
     private String profileImage;
     private User.AuthProvider authProvider;
@@ -45,6 +46,7 @@ public class UserDTO {
         UserDTO dto = new UserDTO();
         dto.id = user.getId();
         dto.email = user.getEmail();
+        dto.nickname = user.getNickname();
         dto.phone = user.getPhoneNumber();
         dto.profileImage = user.getProfileImage();
         dto.authProvider = user.getAuthProvider();
