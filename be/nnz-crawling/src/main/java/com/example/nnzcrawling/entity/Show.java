@@ -1,10 +1,9 @@
 package com.example.nnzcrawling.entity;
 
-import com.example.nnzcrawling.util.converter.ShowConverter;
+import com.example.nnzcrawling.dto.ShowDTO;
 import io.github.eello.nnz.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.SQLInsert;
 
 import javax.persistence.*;
 
@@ -13,6 +12,12 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
+//@SQLInsert(sql = "insert ignore into shows " +
+//        "(title, location, start_date, end_date, " +
+//        "age_limit, region, poster_image, category_code) " +
+//        "values (?, ?, ?, ?, ?, ?, ?, ?);")
 public class Show extends BaseEntity {
 
     @Id
@@ -21,25 +26,45 @@ public class Show extends BaseEntity {
 
     private String title;
 
-    @Convert(converter = ShowConverter.class)
     private String location;
 
-    @Convert(converter = ShowConverter.class)
     private String startDate;
 
-    @Convert(converter = ShowConverter.class)
     private String endDate;
 
-    @Convert(converter = ShowConverter.class)
     private String ageLimit;
 
-    @Convert(converter = ShowConverter.class)
     private String region;
 
-    @Convert(converter = ShowConverter.class)
     private String posterImage;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")
     private Category category;
+
+    public static Show of(ShowCrawling v, Category category) {
+        return Show.builder()
+                .title(v.getTitle())
+                .location(v.getLocation())
+                .startDate(v.getStartDate())
+                .endDate(v.getEndDate())
+                .ageLimit(v.getAgeLimit())
+                .region(v.getRegion())
+                .posterImage(v.getPosterImage())
+                .category(category)
+                .build();
+    }
+
+    public static Show dtoToEntity(ShowDTO showDTO, Category category) {
+        return Show.builder()
+                .title(showDTO.getTitle())
+                .location(showDTO.getLocation())
+                .startDate(showDTO.getStartDate())
+                .endDate(showDTO.getEndDate())
+                .ageLimit(showDTO.getAgeLimit())
+                .region(showDTO.getRegion())
+                .posterImage(showDTO.getPosterImage())
+                .category(category)
+                .build();
+    }
 }

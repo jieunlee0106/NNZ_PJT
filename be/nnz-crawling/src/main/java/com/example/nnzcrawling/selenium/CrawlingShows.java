@@ -20,7 +20,8 @@ import java.util.StringTokenizer;
 public class CrawlingShows {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+//    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
@@ -159,7 +160,23 @@ public class CrawlingShows {
                                                 "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(1) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
                                         ));
                             }
-                            regions.sendKeys(Keys.ENTER);
+                            try {
+                                regions.sendKeys(Keys.ENTER);
+                            } catch (Exception e4) {
+                                Thread.sleep(2000);
+                                if (categoryCnt <= 6) {
+                                    regions = driver.findElement(
+                                            By.cssSelector(
+                                                    "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(2) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
+                                            ));
+                                } else {
+                                    regions = driver.findElement(
+                                            By.cssSelector(
+                                                    "div.cm_content_wrap > div > div > div.cm_tap_area.type_performance > div > div > ul > li:nth-child(1) > div > div > div > div > div > ul > li:nth-child(" + regionCnt + ") > a"
+                                            ));
+                                }
+                                regions.sendKeys(Keys.ENTER);
+                            }
                         }
                     }
                 }

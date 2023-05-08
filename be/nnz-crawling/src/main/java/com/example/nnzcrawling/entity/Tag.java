@@ -1,12 +1,15 @@
 package com.example.nnzcrawling.entity;
 
+import com.example.nnzcrawling.dto.TagDTO;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.github.eello.nnz.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -14,14 +17,30 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Tag extends BaseEntity {
+@ToString
+public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String tag;
 
     // 조회수
     private Integer views;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime updatedAt;
+
+    protected boolean isDelete;
+
+    public static Tag of(TagDTO tagDTO) {
+        return Tag.builder()
+                .id(tagDTO.getId())
+                .tag(tagDTO.getTag())
+                .views(tagDTO.getViews())
+                .updatedAt(tagDTO.getUpdatedAt())
+                .isDelete(tagDTO.isDelete())
+                .build();
+    }
 }

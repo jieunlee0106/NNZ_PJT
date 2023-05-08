@@ -18,7 +18,8 @@ import java.util.StringTokenizer;
 public class CrawlingESports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+//    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
@@ -149,66 +150,6 @@ public class CrawlingESports {
             }
             categoryCnt++;
         }
-
-        // 스타2
-        url = "https://game.naver.com/esports/Starcraft_II_Legacy_of_the_Void/schedule/gsl";
-        driver.get(url);
-
-        Thread.sleep(1000);
-
-        List<WebElement> stars = driver.findElements(
-                By.cssSelector(
-                        "#civ > div > div > div > div.schedule_container__2rbMY > div:nth-child(2) > div.list_wrap__3zIxG.list_none_team__1Cgqf"
-                ));
-
-        String year = driver.findElement(By.cssSelector("strong.schedule_calendar_txt_year__hT9Ws")).getText();
-
-        for (WebElement star : stars) {
-
-            List<WebElement> schedules = star.findElements(
-                    By.cssSelector(
-                            "div.card_item__3Covz"
-                    ));
-
-            for (WebElement element : schedules) {
-
-                String date = element.findElement(By.cssSelector("div.card_date__1kdC3")).getText();
-                StringTokenizer st = new StringTokenizer(date, "일");
-                date = st.nextToken();
-                date = date.replace("월 ", "-");
-
-                List<WebElement> times = element.findElements(
-                        By.cssSelector(
-                                "div.row_game_info__1drvl > span.row_time__28bwr"
-                        ));
-
-                List<WebElement> homes = element.findElements(
-                        By.cssSelector(
-                                "div.row_home__zbX5s > span.row_name__IDFHz"
-                        ));
-
-                List<WebElement> aways = driver.findElements(
-                        By.cssSelector(
-                                "div.row_away__3zJEV > span.row_name__IDFHz"
-                        ));
-
-                for (int i = 0; i < homes.size(); i++) {
-                    ShowCrawling showCrawling = new ShowCrawling();
-
-                    String title = homes.get(i).getText() + " vs " + aways.get(i).getText();
-                    showCrawling.setCategory("스타크래프트2");
-                    showCrawling.setTitle(title);
-                    showCrawling.setStartDate(year + "-" + date + "T" + times.get(i).getText());
-
-                    tags.add(new TagCrawling(title, title));
-                    tags.add(new TagCrawling(title, "스타크래프트2"));
-                    tags.add(new TagCrawling(title, homes.get(i).getText()));
-                    tags.add(new TagCrawling(title, aways.get(i).getText()));
-                    eSports.add(showCrawling);
-                }
-            }
-        }
-
         return eSports;
     }
 

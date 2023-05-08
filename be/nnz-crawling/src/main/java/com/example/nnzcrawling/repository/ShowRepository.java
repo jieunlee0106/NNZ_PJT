@@ -8,5 +8,9 @@ import java.util.Optional;
 
 public interface ShowRepository extends JpaRepository<Show, Long> {
 
-    List<Optional<Show>> findByTitleContaining(String title);
+    List<Show> findByTitleContaining(String title);
+
+//    Optional<Show> findByTitle(String title);
+
+    Optional<Show> findByTitleAndStartDateAndIsDeleteFalse(String title, String startDate);
 }
