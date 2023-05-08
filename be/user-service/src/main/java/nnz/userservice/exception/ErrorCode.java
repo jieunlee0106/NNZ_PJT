@@ -22,6 +22,7 @@ public enum ErrorCode implements AbstractErrorCode {
     ALREADY_FOLLOWING("U011", "이미 팔로우 중입니다.", CONFLICT),
     NOT_FOLLOWING("U012", "팔로우 중이 아닙니다.", BAD_REQUEST),
     OLD_PASSWORD_IS_REQUIRED("U013", "기존 패스워드는 필수입니다.", BAD_REQUEST),
+    PROFILE_IMAGE_UPLOAD_FAIL("U014", "프로필 이미지 업로드에 실패하였습니다.", INTERNAL_SERVER_ERROR),
 
 
     NANUM_NOT_FOUND("N001", "존재하지 않는 나눔입니다.", BAD_REQUEST),

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-@ToString
+@ToString(exclude = {"password"})
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,6 +64,9 @@ public class User extends BaseEntity {
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+    public void changeProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public enum Role {
