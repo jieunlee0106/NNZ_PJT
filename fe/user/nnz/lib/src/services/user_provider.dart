@@ -171,7 +171,9 @@ class UserProvider extends GetConnect {
       "pwd": pwd,
       "confirmPwd": confirmPwd,
     };
-    final response = await patch("/users/find-pwd", body, headers: headers);
+    final response = await patch(
+        "https://k8b207.p.ssafy.io/api/user-service/users/find-pwd", body,
+        headers: headers);
     return response;
     // try {
     //   final response = await patch("/users/find-pwd", body);
