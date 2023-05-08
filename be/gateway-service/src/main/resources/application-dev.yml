@@ -45,6 +45,10 @@ spring:
           uri: lb://DEV-ADMIN-SERVICE
           predicates:
             - Path=/admin-service/**
+        - id: DEV-TAG-SERVICE
+          uri: lb://DEV-TAG-SERVICE
+          predicates:
+            - Path=/tag-service/**
 #        - id: DEV-NANUM-SERVICE
 #          uri: lb://DEV-NANUM-SERVICE
 #          predicates:
