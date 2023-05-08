@@ -9,7 +9,9 @@ import nnz.userservice.dto.UserDTO;
 import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
+import nnz.userservice.vo.UserUpdateProfileVO;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -26,4 +28,5 @@ public interface UserService {
     PageDTO receivedNanums(Long userId, Pageable pageable);
     PageDTO providedNanums(Long userId, Pageable pageable);
     NanumParticipantsDTO nanumParticipants(Long userId, Long nanumId);
+    void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException;
 }
