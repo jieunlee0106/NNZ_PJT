@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:marquee/marquee.dart';
+import 'package:get/get.dart';
+import 'package:nnz/src/pages/share/my_shared_detail.dart';
 
 //**
 //
@@ -155,13 +156,16 @@ class ShareList extends StatelessWidget {
                                 height: 10,
                               ),
                               Center(
-                                child: Text(
-                                  item['title']!,
-                                  style: TextStyle(
-                                    color: Config.blackColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    overflow: TextOverflow.ellipsis,
+                                child: GestureDetector(
+                                  onTap: () => Get.to(() => MySharedDetail()),
+                                  child: Text(
+                                    item['title']!,
+                                    style: TextStyle(
+                                      color: Config.blackColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
                               ),

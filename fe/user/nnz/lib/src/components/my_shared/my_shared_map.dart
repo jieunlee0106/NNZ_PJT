@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:nnz/src/config/config.dart';
 
 class MyMapWidget extends StatefulWidget {
   const MyMapWidget({super.key});
@@ -32,19 +33,10 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             onMapCreated: (GoogleMapController controller) {
               googleMapController = controller;
             },
-            onCameraIdle: () {
-              setState(() {
-                isMove = false;
-              });
-            },
-            onCameraMoveStarted: () {
-              setState(() {
-                isMove = true;
-              });
-            },
           ),
         ),
         FloatingActionButton.extended(
+          backgroundColor: Config.yellowColor,
           onPressed: () async {
             Position position = await _determinedPosition();
 
@@ -63,9 +55,15 @@ class _MyMapWidgetState extends State<MyMapWidget> {
 
             setState(() {});
           },
-          label: const Text("현재 위치"),
-          icon: const Icon(Icons.location_history),
-        )
+          label: Text(
+            "현재 위치 설정",
+            style: TextStyle(color: Config.blackColor),
+          ),
+          icon: Icon(
+            Icons.room,
+            color: Config.blackColor,
+          ),
+        ),
       ],
     );
   }

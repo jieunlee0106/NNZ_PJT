@@ -6,9 +6,9 @@ import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
-class MySharedInfo extends StatelessWidget {
+class SharingDetailInfo extends StatelessWidget {
   final controller = Get.put(ShareDetailController());
-  MySharedInfo({super.key});
+  SharingDetailInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
