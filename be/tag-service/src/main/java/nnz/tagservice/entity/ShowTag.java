@@ -1,5 +1,6 @@
 package nnz.tagservice.entity;
 
+import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Getter
-public class ShowTag {
+public class ShowTag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
