@@ -2,6 +2,7 @@ package nnz.adminservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Show extends BaseEntity {
 
     @Id
