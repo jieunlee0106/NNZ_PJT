@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false, length = 16)
@@ -55,5 +55,17 @@ public class User extends BaseEntity {
     public enum AuthProvider {
         NNZ, TWITTER,
         ;
+    }
+
+    public static User of(UserDTO userDTO){
+        User user = new User();
+        user.id = userDTO.getId();
+        user.email = userDTO.getEmail();
+        user.nickname = userDTO.getNickname();
+        user.phoneNumber = userDTO.getPhone();
+        user.profileImage = userDTO.getProfileImage();
+        user.authProvider = userDTO.getAuthProvider();
+        user.lastLoginAt = userDTO.getLastLoginAt();
+        return user;
     }
 }
