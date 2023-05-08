@@ -37,7 +37,7 @@ spring:
   jpa:
     database:
     hibernate:
-      ddl_auto: create-drop
+      ddl_auto: update
     properties:
       hibernate:
         "globally_quoted_identifiers": "true"

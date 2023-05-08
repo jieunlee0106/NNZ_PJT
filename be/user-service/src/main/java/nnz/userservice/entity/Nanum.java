@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class Nanum extends BaseEntity {
 
     private String title;
     private String thumbnail;
+    private LocalDate date;
+    private String location;
+    private boolean isCertification;
 
     @Enumerated(value = EnumType.ORDINAL)
     private NanumStatus status;

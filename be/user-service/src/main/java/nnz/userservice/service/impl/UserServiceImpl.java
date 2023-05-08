@@ -1,14 +1,12 @@
 package nnz.userservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nnz.userservice.dto.BookmarkedNanumDTO;
-import nnz.userservice.dto.StatisticsDTO;
-import nnz.userservice.dto.TokenDTO;
-import nnz.userservice.dto.UserDTO;
+import nnz.userservice.dto.*;
 import nnz.userservice.entity.Nanum;
 import nnz.userservice.entity.RefreshToken;
 import nnz.userservice.entity.User;
@@ -22,6 +20,9 @@ import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -207,4 +208,25 @@ public class UserServiceImpl implements UserService {
 
         return userDTO;
     }
+
+    @Override
+    public PageDTO receivedNanums(Long userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Page<Nanum> receivedNanums = receiveNanumRepository.findNanumByReceiver(user, pageable);
+        Page<NanumDTO> receivedNanumDTO = receivedNanums.map(NanumDTO::of);
+        return PageDTO.of(receivedNanumDTO);
+    }
+
+    @Override
+    public PageDTO providedNanums(Long userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Page<Nanum> providedNanums = nanumRepository.findByProvider(user, pageable);
+        Page<NanumDTO> providedNanumDTO = providedNanums.map(NanumDTO::of);
+        return PageDTO.of(providedNanumDTO);
+    }
+
 }
