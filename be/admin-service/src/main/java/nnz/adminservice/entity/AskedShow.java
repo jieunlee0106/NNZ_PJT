@@ -4,6 +4,8 @@ import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Collections;
@@ -15,6 +17,8 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @Table(name = "asked_shows")
 @Getter
+@SQLDelete(sql = "UPDATE AskedShow SET is_delete = 1 WHERE id = ?")
+@Where(clause = "is_delete  = 0")
 public class AskedShow extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

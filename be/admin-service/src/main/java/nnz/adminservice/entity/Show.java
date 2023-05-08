@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "shows")
@@ -14,6 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Where(clause = "is_delete  = 0")
 public class Show extends BaseEntity {
 
     @Id
@@ -31,5 +36,9 @@ public class Show extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")
     private Category category;
+
+    @OneToMany(mappedBy = "show")
+    private List<ShowTag> showTags = new ArrayList<>();
+
 }
 

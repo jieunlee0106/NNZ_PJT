@@ -2,6 +2,9 @@ package nnz.adminservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
+import nnz.adminservice.dto.UserDTO;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +19,8 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @ToString
+@SQLDelete(sql = "UPDATE User SET is_delete = 1 WHERE id = ?")
+@Where(clause = "is_delete  = 0")
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +29,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false, length = 16)
@@ -50,5 +55,17 @@ public class User extends BaseEntity {
     public enum AuthProvider {
         NNZ, TWITTER,
         ;
+    }
+
+    public static User of(UserDTO userDTO){
+        User user = new User();
+        user.id = userDTO.getId();
+        user.email = userDTO.getEmail();
+        user.nickname = userDTO.getNickname();
+        user.phoneNumber = userDTO.getPhone();
+        user.profileImage = userDTO.getProfileImage();
+        user.authProvider = userDTO.getAuthProvider();
+        user.lastLoginAt = userDTO.getLastLoginAt();
+        return user;
     }
 }

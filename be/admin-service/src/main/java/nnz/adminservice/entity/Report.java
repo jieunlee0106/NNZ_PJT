@@ -4,6 +4,8 @@ import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +18,8 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @Table(name = "reports")
 @Getter
+@SQLDelete(sql = "UPDATE Report SET is_delete = 1 WHERE id = ?")
+@Where(clause = "is_delete  = 0")
 public class Report extends BaseEntity {
 
     @Id
