@@ -19,6 +19,7 @@ import 'package:nnz/src/pages/category/sports.dart';
 import 'package:nnz/src/pages/category/esports.dart';
 import 'package:nnz/src/pages/category/stage.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
+import 'package:nnz/src/pages/user/alarm.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -34,12 +35,27 @@ class Home extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyPage()),
+              MaterialPageRoute(
+                builder: (context) => MyPage(),
+              ),
             );
           },
         ),
         title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-        actions: [Icon(Icons.notifications)],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationPage(), // NotificationPage로 이동
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

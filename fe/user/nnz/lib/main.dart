@@ -6,6 +6,7 @@ import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
+import 'package:nnz/src/pages/user/alarm.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
 import 'package:nnz/src/pages/user/profile_edit.dart';
@@ -170,6 +171,10 @@ class MyApp extends StatelessWidget {
           name: "/myShareInfo",
           page: () => const MySharedInfo(),
           transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/notification",
+          page: () => NotificationPage(),
         ),
       ],
     );
