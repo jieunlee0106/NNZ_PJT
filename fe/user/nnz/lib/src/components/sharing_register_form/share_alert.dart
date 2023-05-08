@@ -82,7 +82,6 @@ class _ShareAlertState extends State<ShareAlert> {
                                 "나눔 카테고리",
                               ),
                             ),
-                            alignment: Alignment.center,
                             value: _selectedItem,
                             onChanged: (newValue) async {
                               _childItems.clear();
@@ -96,30 +95,21 @@ class _ShareAlertState extends State<ShareAlert> {
                             items: _items.map((item) {
                               return DropdownMenuItem(
                                 value: item,
-                                child: Text(item),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
+                                  ),
+                                  child: Text(item),
+                                ),
                               );
                             }).toList(),
                           ),
                   ),
-                  //
-                  // for(var item in  _items)...[
-                  //   if(_selectedItem == item)
-                  //     ChildCategory(selectItem: _selectedItem),
-                  // ],
-
                   _selectedItem == null
                       ? Container()
                       : _childItems.isEmpty
                           ? MusicalCategory(selectItem: _selectedItem)
                           : SportsCategory(childCategoriesList: _childItems),
-                  // _selectedItem == _items[0] ? ConcertCategory() : Container(),
-                  // _selectedItem == '뮤지컬' ? MusicalCategory() : Container(),
-                  // _selectedItem == '연극' ? TheatorCategory() : Container(),
-                  // _selectedItem == '영화' ? MovieCategory() : Container(),
-                  // _selectedItem == '스포츠' ? const SportsCategory() : Container(),
-                  // _selectedItem == 'e스포츠'
-                  //     ? const EsportsCategory()
-                  //     : Container(),
                 ],
               ),
             ),
@@ -127,8 +117,8 @@ class _ShareAlertState extends State<ShareAlert> {
           actions: [
             TextButton(
               onPressed: () {
+                controller.nempSearchController.text = '';
                 Navigator.of(context).pop();
-                controller.onChange(controller.testText.value);
               },
               child: Container(
                 decoration: BoxDecoration(

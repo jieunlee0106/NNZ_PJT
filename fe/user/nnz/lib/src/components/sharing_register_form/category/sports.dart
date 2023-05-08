@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/components/icon_data.dart';
+import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/sharing_register_controller.dart';
 
 class SportsCategory extends StatefulWidget {
@@ -20,61 +22,83 @@ class _SportsCategoryState extends State<SportsCategory> {
   void initState() {
     super.initState();
     _sportsItems = widget.childCategoriesList;
+
+    test();
+  }
+
+  void test() async {
+    showList = await controller.onSearchShow(
+        category: _selectedSports ??
+            _sportsItems.first, // 카테고리를 선택하지 않았다면 첫번째 항목을 선택합니다.
+        title: controller.nempSearchController.text);
+    logger.i(showList);
+    setState(() {}); // showList를 변경했으므로 setState()를 호출합니다.
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 16,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 4,
+    return Obx(
+      () => Column(
+        children: [
+          const SizedBox(
+            height: 16,
           ),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xffF3F3F3),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: DropdownButton<String>(
-                  underline: Container(),
-                  isDense: true,
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 4,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF3F3F3),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  icon: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.1,
+                  child: DropdownButton<String>(
+                    underline: Container(),
+                    isDense: true,
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
                     ),
-                    child: const Icon(
-                      Icons.keyboard_arrow_down,
+                    icon: const Padding(
+                      padding: EdgeInsets.only(
+                        left: 64,
+                      ),
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                      ),
                     ),
+                    hint: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
+                      child: Text(
+                        "카테고리 선택해주세요",
+                      ),
+                    ),
+                    value: _selectedSports,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedSports = newValue;
+                      });
+                      showList.clear();
+                    },
+                    items: _sportsItems.map((item) {
+                      return DropdownMenuItem(
+                        value: item,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                          ),
+                          child: Text(item),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  hint: const Text(
-                    "카테고리 선택해주세요",
-                  ),
-                  value: _selectedSports,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedSports = newValue;
-                    });
-                  },
-                  items: _sportsItems.map((item) {
-                    return DropdownMenuItem(
-                      value: item,
-                      child: Text(item),
-                    );
-                  }).toList(),
                 ),
-              ),
-              _selectedSports != null
-                  ? Column(
-                      children: [
+                _selectedSports != null
+                    ? Column(children: [
                         const SizedBox(
                           height: 20,
                         ),
@@ -85,69 +109,87 @@ class _SportsCategoryState extends State<SportsCategory> {
                           ),
                           controller: controller.nempSearchController,
                           onChanged: (value) async {
-                            logger.i(controller.nempSearchController.text);
+                            showList.clear();
                             showList = await controller.onSearchShow(
                                 category: _selectedSports!,
                                 title: controller.nempSearchController.text);
                             logger.i("과연 $showList");
+                            setState(() {});
                           },
                         ),
-                        FutureBuilder<List>(
-                          future: controller.onSearchShow(
-                              category: _selectedSports!,
-                              title: controller.nempSearchController.text),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List> snapshot) {
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return ListTile(
-                                    title: Text(snapshot.data![index].title),
-                                    subtitle:
-                                        Text(snapshot.data![index].subtitle),
-                                  );
-                                },
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                          },
-                        ),
-                        // if (showList.isEmpty) ...[
-                        //   Flexible(
-                        //     flex: 3,
-                        //     child: ListView.builder(
-                        //         scrollDirection: Axis.vertical,
-                        //         itemCount: showList.length,
-                        //         itemBuilder: (BuildContext context, int index) {
-                        //           return SizedBox(
-                        //             height: 50,
-                        //             child: Text("${showList[index]["title"]}"),
-                        //           );
-                        //         }),
-                        //   )
-                        // ],
-                        // if (showList.isNotEmpty) ...[
-                        //   Expanded(
-                        //     child: ListView.builder(
-                        //         scrollDirection: Axis.vertical,
-                        //         itemCount: showList.length,
-                        //         itemBuilder: (BuildContext context, int index) {
-                        //           return Text("${showList[index]["title"]}");
-                        //         }),
-                        //   )
-                        // ]
-                      ],
-                    )
-                  : Container(),
-            ],
+                        if (controller.nempSearchController.text.length ==
+                            0) ...[
+                          Container(
+                            child: Column(children: [
+                              for (var item in showList)
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.sharingController.text =
+                                        item["title"];
+
+                                    logger.i(controller.sharingController.text);
+                                  },
+                                  child: ListTile(
+                                    title: Text(item["title"]),
+                                  ),
+                                ),
+                            ]),
+                          )
+                        ] else if (controller
+                                .nempSearchController.text.length >=
+                            1) ...[
+                          showList.isNotEmpty
+                              ? Container(
+                                  child: Column(children: [
+                                    for (var item in showList)
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.sharingController.text =
+                                              item["title"];
+
+                                          logger.i(controller
+                                              .sharingController.text);
+                                        },
+                                        child: ListTile(
+                                          title: Text(item["title"]),
+                                        ),
+                                      ),
+                                  ]),
+                                )
+                              : Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      iconData(
+                                        icon: ImagePath.sad,
+                                        size: 120,
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        "검색결과가 없습니다.",
+                                        style: TextStyle(
+                                          color: Config.blackColor,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                        ],
+                      ])
+                    : Container(),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
