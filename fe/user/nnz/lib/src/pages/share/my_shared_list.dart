@@ -27,7 +27,7 @@ class MySharedList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      '나눔 참여 리스트',
+                      '나눔 참여 리스트!',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
