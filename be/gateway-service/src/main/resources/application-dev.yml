@@ -13,6 +13,21 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: '*'
+#            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - PATCH
+              - OPTIONS
+              - DELETE
       routes:
         #        - id: DEV-CONFIG-SERVICE
         #          uri: lb://DEV-CONFIG-SERVICE
@@ -38,21 +53,7 @@ spring:
 #          uri: lb://DEV-TAG-SERVICE
 #          predicates:
 #            - Path=/tag-service/**
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: '*'
-            allow-credentials: true
-            allowedHeaders: '*'
-            allowedMethods:
-              - POST
-              - GET
-              - PUT
-              - PATCH
-              - OPTIONS
-              - DELETE
+
 
 
 #yml 암호화 yml 설정
