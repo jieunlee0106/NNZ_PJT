@@ -62,34 +62,29 @@ class LoginController extends GetxController {
       // final response = UserProvider().postLogin(
       //     email: emailController.text, password: passwordController.text);
       // logger.i(response);
-      Get.find<BottomNavController>().setToken(accessToken: "12313123123");
-      final token = Get.find<BottomNavController>().getToken();
-      Get.offNamed("/app");
-      Get.find<BottomNavController>()
-          .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
-      logger.i(token.toString());
 
-      // try {
-      //   final response = await UserProvider().postLogin(
-      //       email: emailController.text, password: passwordController.text);
-      //   if (response.statusCode == 200) {
-      //     final accessToken = response.body;
-      //      Get.find<BottomNavController>().setToken(accessToken: accessToken);
-      //     final token =  Get.find<BottomNavController>().getToken();
-      //     Get.offNamed("/app");
-      //   Get.find<BottomNavController>()
-      //     .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
-
-      //   } else {
-      //     final errorMessage = "(${response.statusCode}): ${response.body}";
-      //   logger.e(errorMessage);
-      //   throw Exception(errorMessage);
-      //   }
-      // } catch (e) {
-      //    final errorMessage = "$e";
-      // logger.e(errorMessage);
-      // throw Exception(errorMessage);
-      // }
+      try {
+        final response = await UserProvider().postLogin(
+            email: emailController.text, password: passwordController.text);
+        logger.i(response.statusCode);
+        if (response.statusCode == 200) {
+          logger.i(response.body);
+          final accessToken = response.body["accessToken"];
+          Get.find<BottomNavController>().setToken(accessToken: accessToken);
+          final token = Get.find<BottomNavController>().getToken();
+          Get.offNamed("/app");
+          Get.find<BottomNavController>()
+              .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
+        } else {
+          final errorMessage = "(${response.statusCode}): ${response.body}";
+          logger.e(errorMessage);
+          throw Exception(errorMessage);
+        }
+      } catch (e) {
+        final errorMessage = "$e";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
     }
   }
 

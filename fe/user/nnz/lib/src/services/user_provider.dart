@@ -31,22 +31,10 @@ class UserProvider extends GetConnect {
       'email': email,
       'pwd': password,
     };
-    final response = await post("/users/login", body, headers: headers);
+    final response = await post(
+        "https://k8b207.p.ssafy.io/api/user-service/users/login", body,
+        headers: headers);
     return response;
-    // try {
-    //   final response = await post("/users/login", body, headers: headers);
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //이메일 및 닉네임 중복확인 코드 중복이므로 type와 value를 가져와 쿼리스트링으로 get 검색
