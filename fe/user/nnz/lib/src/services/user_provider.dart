@@ -55,7 +55,9 @@ class UserProvider extends GetConnect {
     required String value,
   }) async {
     final response = await get(
-        "https://k8b207.p.ssafy.io/api/user-service/users/check?type=$type&val=$value");
+      "https://k8b207.p.ssafy.io/api/user-service/users/check?type=$type&val=$value",
+      headers: headers,
+    );
     return response;
     // try {
     //   final response = await get("/users/check?$type&$value", headers: headers);

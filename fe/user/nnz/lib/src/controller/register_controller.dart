@@ -44,7 +44,7 @@ class RegisterController extends GetxController {
   late final nicknameController;
   late final smsController;
   late final authNumberController;
-
+  String? textError;
   @override
   void onInit() {
     super.onInit();
@@ -143,10 +143,18 @@ class RegisterController extends GetxController {
     return true;
   }
 
+  String? onEmailCheck() {
+    if (emailChecked.value == false) {
+      return "중복된이메일입니다.";
+    } else {
+      return null;
+    }
+  }
+
   //이메일형식 확인뒤 중복체크
-  void emailValidate({required String type, required String text}) async {
+  Future<void> emailValidate(
+      {required String type, required String text}) async {
     logger.i("$type , $text");
-    // emailChecked(true);
 
     //이메일 유효성 검사 통과시 서버에서 api 통신 가능하면 주석 풀것
 
@@ -158,10 +166,13 @@ class RegisterController extends GetxController {
       if (response.statusCode == 200) {
         logger.i(response.body);
         final available = response.body["available"];
-
-        // available이 statusCode 200이되면 repoonse.body로 available true or false로 준다.
-        emailChecked(available);
-        onRegisterCheck();
+        emailChecked.value = response.body["available"];
+        if (!available) {
+          onRegisterCheck();
+        } else {
+          emailChecked.value = true;
+          onRegisterCheck();
+        }
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);
@@ -172,6 +183,10 @@ class RegisterController extends GetxController {
       logger.e(errorMessage);
       throw Exception(errorMessage);
     }
+  }
+
+  bool testResult() {
+    return emailChecked.value == true ? true : false;
   }
 
   Future<void> onNicknameValidate(
@@ -189,6 +204,13 @@ class RegisterController extends GetxController {
         logger.i(response.body);
         final available = response.body["available"];
         nickChecked(available);
+        if (nickChecked.value == false) {
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "중복된 닉네임입니다.");
+              });
+        }
         onRegisterCheck();
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
@@ -313,7 +335,22 @@ class RegisterController extends GetxController {
       final response = await UserProvider().postRegister(user: user);
       logger.i(response.statusCode);
       if (response.statusCode == 204) {
-        Get.offNamed("/register");
+        showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: const Text("회원가입되었습니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.offAllNamed("/register");
+                      FocusScope.of(context).unfocus();
+                    },
+                    child: const Text("확인"),
+                  ),
+                ],
+              );
+            });
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);
