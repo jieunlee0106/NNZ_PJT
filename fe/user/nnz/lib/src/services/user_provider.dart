@@ -6,14 +6,16 @@ import 'package:nnz/src/model/register_model.dart';
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
   final logger = Logger();
+  @override
   final headers = {
-    'Content-Type': 'application',
+    'Content-Type': 'application/json',
   };
 
   @override
   void onInit() async {
     //load env file
     await dotenv.load();
+
     //Set baseUrl from .env file
     httpClient.baseUrl = dotenv.env['BASE_URL'];
     httpClient.timeout = const Duration(microseconds: 5000);
@@ -52,7 +54,8 @@ class UserProvider extends GetConnect {
     required String type,
     required String value,
   }) async {
-    final response = await get("/users/check?type=$type&val=$value");
+    final response = await get(
+        "https://k8b207.p.ssafy.io/api/user-service/users/check?type=$type&val=$value");
     return response;
     // try {
     //   final response = await get("/users/check?$type&$value", headers: headers);
@@ -89,8 +92,11 @@ class UserProvider extends GetConnect {
     final body = {
       'phone': phone,
     };
-    final response =
-        await post("/user-service/users/verify", body, headers: headers);
+    final response = await post(
+      "https://k8b207.p.ssafy.io/api/user-service/users/verify",
+      body,
+      headers: headers,
+    );
     return response;
     // try {
     //   final response = await post("/users/verify", body, headers: headers);
@@ -115,10 +121,14 @@ class UserProvider extends GetConnect {
   }) async {
     final body = {
       'phone': phone,
-      'verify': verifyNum,
+      'verifyNum': verifyNum,
     };
-    final response =
-        await post("/user-service/users/verify/check", body, headers: headers);
+    logger.i("$phone $verifyNum");
+    final response = await post(
+      "https://k8b207.p.ssafy.io/api/user-service/users/verify/check",
+      body,
+      headers: headers,
+    );
     return response;
     // try {
     //   final response = await post("/users/verify", body, headers: headers);
@@ -140,8 +150,10 @@ class UserProvider extends GetConnect {
   Future<Response> postRegister({required RegisterModel user}) async {
     final body = user.toJson();
     // logger.i(body);
-    final response =
-        await post("/user-service/users/join", body, headers: headers);
+    final response = await post(
+      "https://k8b207.p.ssafy.io/api/user-service/users/join",
+      body,
+    );
     return response;
     // try {
     //   final response = await post("/users/join", body, headers: headers);
