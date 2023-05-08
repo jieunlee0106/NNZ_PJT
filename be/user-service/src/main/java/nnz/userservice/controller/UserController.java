@@ -1,6 +1,7 @@
 package nnz.userservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.BookmarkedNanumDTO;
@@ -12,6 +13,7 @@ import nnz.userservice.service.UserService;
 import nnz.userservice.service.VerifyService;
 import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -120,5 +122,17 @@ public class UserController {
     public ResponseEntity<UserDTO> info(DecodedToken token) {
         UserDTO info = userService.info(token.getId());
         return ResponseEntity.ok(info);
+    }
+
+    @GetMapping("/users/nanums")
+    public ResponseEntity<PageDTO> getNanums(DecodedToken token, @RequestParam("type") String type, Pageable pageable) {
+        Long userId = token.getId();
+
+        PageDTO pageDTO;
+        if ("receive".equals(type)) {
+            pageDTO = userService.receivedNanums(userId, pageable);
+        } else pageDTO = userService.providedNanums(userId, pageable);
+
+        return ResponseEntity.ok(pageDTO);
     }
 }
