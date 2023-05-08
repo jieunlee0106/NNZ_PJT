@@ -30,6 +30,9 @@ public class CrawlingShows {
         //크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         //브라우저가 눈에 보이지 않고 내부적으로 돈다.
         //설정하지 않을 시 실제 크롬 창이 생성되고, 어떤 순서로 진행되는지 확인할 수 있다.
