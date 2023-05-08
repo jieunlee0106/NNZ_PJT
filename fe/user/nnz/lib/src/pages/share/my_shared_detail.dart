@@ -7,6 +7,8 @@ import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/list_scroll_controller.dart';
 import 'package:nnz/src/pages/share/my_shared_auth.dart';
+import 'package:nnz/src/pages/share/my_shared_info.dart';
+import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
 class MySharedDetail extends StatelessWidget {
@@ -79,13 +81,21 @@ class MySharedDetail extends StatelessWidget {
             const SizedBox(
               height: 7,
             ),
-            const Row(
+            Row(
               children: [
-                SharingButton(btnheight: 10, btnwidth: 50, btntext: "당일 정보 입력"),
-                SizedBox(
+                GestureDetector(
+                  onTap: () => Get.to(() => MySharedInfo()),
+                  child: const SharingButton(
+                      btnheight: 10, btnwidth: 53, btntext: "당일 정보 입력"),
+                ),
+                const SizedBox(
                   width: 10,
                 ),
-                SharingButton(btnheight: 11, btnwidth: 85, btntext: "QR")
+                GestureDetector(
+                  onTap: () => Get.to(() => const ShareQrLeader()),
+                  child: const SharingButton(
+                      btnheight: 11, btnwidth: 82, btntext: "QR"),
+                )
               ],
             ),
             const SizedBox(

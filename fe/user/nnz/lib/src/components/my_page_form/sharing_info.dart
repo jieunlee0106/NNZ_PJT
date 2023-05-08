@@ -11,7 +11,7 @@ class SharingInfo extends StatelessWidget {
   final String end;
   final Widget page;
 
-  SharingInfo({
+  const SharingInfo({
     super.key,
     required this.share,
     required this.total,
@@ -24,7 +24,7 @@ class SharingInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 40, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
       child: Column(
         children: [
           Column(
@@ -43,7 +43,7 @@ class SharingInfo extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      child: Text('더보기'),
+                      child: const Text('더보기'),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -54,14 +54,14 @@ class SharingInfo extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Container(
                 width: 340,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 249, 241, 214),
+                  color: const Color.fromARGB(255, 249, 241, 214),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -73,16 +73,16 @@ class SharingInfo extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
+                          const Text(
                             '전체',
                             style: TextStyle(fontSize: 14),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Text(
                             total,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color(0xffFF6666),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
@@ -104,16 +104,16 @@ class SharingInfo extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
+                                const Text(
                                   '나눔 전',
                                   style: TextStyle(fontSize: 14),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 4,
                                 ),
                                 Text(
                                   yet,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Color(0xff848484),
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
@@ -126,16 +126,16 @@ class SharingInfo extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
+                                const Text(
                                   '나눔 중',
                                   style: TextStyle(fontSize: 14),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 4,
                                 ),
                                 Text(
                                   ing,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Color(0xff848484),
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
@@ -148,16 +148,16 @@ class SharingInfo extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
+                                const Text(
                                   '종료',
                                   style: TextStyle(fontSize: 14),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 4,
                                 ),
                                 Text(
                                   end,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Color(0xff848484),
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/my_shared/my_shared_map.dart';
+import 'package:nnz/src/components/my_shared/my_shared_timepicker.dart';
+import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
-class MySharedInfo extends StatelessWidget {
+class MySharedInfoForm extends StatelessWidget {
   final controller = Get.put(ShareDetailController());
-  MySharedInfo({super.key});
+  MySharedInfoForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,18 +64,15 @@ class MySharedInfo extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  "나눔 시간",
+                  "오픈 시간",
                   style: TextStyle(fontSize: 15, color: Config.blackColor),
                 ),
               ],
             ),
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 45, vertical: 15),
-            child: Text(
-              "2023. 01.01 16:30",
-              style: TextStyle(fontSize: 16),
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: SharedTimePicker(title: "나눔 오픈 시간"),
           ),
           const SizedBox(
             height: 15,
@@ -97,19 +96,28 @@ class MySharedInfo extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 45),
-            child: Text(
-              "빨간색 체크셔츠를 입고있습니다",
-              style: TextStyle(fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextField(
+              controller: controller.userclothController,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                hintText: "착장을 입력해주세요",
+                enabledBorder: InputBorder.none,
+                alignLabelWithHint: true,
+              ),
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 30,
           ),
+          const Center(
+            child: SharingButton(
+              btnheight: 10,
+              btnwidth: 80,
+              btntext: "등록",
+            ),
+          )
         ],
       ),
     );

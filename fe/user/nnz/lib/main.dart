@@ -6,6 +6,9 @@ import 'package:nnz/src/components/other_user_from/other_user_profile_twitter.da
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
+import 'package:nnz/src/pages/share/my_shared_info_form.dart';
+import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
+import 'package:nnz/src/pages/share/my_snappingtest.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
 import 'package:nnz/src/pages/user/login.dart';
@@ -170,7 +173,22 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/myShareInfo",
-          page: () => const MySharedInfo(),
+          page: () => MySharedInfo(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/myShareInfoForm",
+          page: () => MySharedInfoForm(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/sharingInfo",
+          page: () => const SheetBelowTest(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: "/ShareQrLeader",
+          page: () => const ShareQrLeader(),
           transition: Transition.rightToLeft,
         ),
         GetPage(
