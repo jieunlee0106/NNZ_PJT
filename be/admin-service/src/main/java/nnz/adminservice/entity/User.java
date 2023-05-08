@@ -2,6 +2,9 @@ package nnz.adminservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
+import nnz.adminservice.dto.UserDTO;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +19,8 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @ToString
+@SQLDelete(sql = "UPDATE User SET is_delete = 1 WHERE id = ?")
+@Where(clause = "is_delete  = 0")
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
