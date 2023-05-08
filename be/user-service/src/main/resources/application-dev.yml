@@ -18,8 +18,8 @@ spring:
   application:
     name: DEV-USER-SERVICE
   redis:
-    host: ENC(kKQU1ExRDb6aTYSYkL3XY74NJr+FqJOkLSOBc4l7Z0o=)
-    port: 6379
+    host: ENC(ENEQGkwJRbnFVFmgsBjUFBhXzr0RCvkW)
+    port: 6378
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
