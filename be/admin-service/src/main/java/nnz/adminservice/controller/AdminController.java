@@ -17,12 +17,12 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @GetMapping("/ask/show")
+    @GetMapping("/ask/shows")
     public ResponseEntity<?> findAskedShowList(){
         return ResponseEntity.ok(adminService.findAskedShowList());
     }
 
-    @PatchMapping("/ask/show")
+    @PatchMapping("/ask/shows")
     public ResponseEntity<?> handleAskedShow(@RequestBody AskedShowStatusVO askedShowStatusVO){
         adminService.handleAskedShow(askedShowStatusVO);
         return ResponseEntity.ok().build();
