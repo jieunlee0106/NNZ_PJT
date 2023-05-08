@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 
+import '../services/user_provider.dart';
+
 class LoginController extends GetxController {
   static LoginController get to => Get.find();
   final storage = const FlutterSecureStorage();
@@ -33,7 +35,7 @@ class LoginController extends GetxController {
     logger.i(text);
   }
 
-  void onLogin() {
+  Future<void> onLogin() async {
     bool checkEmail = isEmailValid(emailController.text);
     if (!checkEmail) {
       showDialog(
@@ -60,13 +62,29 @@ class LoginController extends GetxController {
       // final response = UserProvider().postLogin(
       //     email: emailController.text, password: passwordController.text);
       // logger.i(response);
-      Get.find<BottomNavController>().setToken(accessToken: "123123123");
 
-      final token = Get.find<BottomNavController>().getToken();
-      Get.offNamed("/app");
-      Get.find<BottomNavController>()
-          .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
-      logger.i(token.toString());
+      try {
+        final response = await UserProvider().postLogin(
+            email: emailController.text, password: passwordController.text);
+        logger.i(response.statusCode);
+        if (response.statusCode == 200) {
+          logger.i(response.body);
+          final accessToken = response.body["accessToken"];
+          Get.find<BottomNavController>().setToken(accessToken: accessToken);
+          final token = Get.find<BottomNavController>().getToken();
+          Get.offNamed("/app");
+          Get.find<BottomNavController>()
+              .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
+        } else {
+          final errorMessage = "(${response.statusCode}): ${response.body}";
+          logger.e(errorMessage);
+          throw Exception(errorMessage);
+        }
+      } catch (e) {
+        final errorMessage = "$e";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
     }
   }
 

@@ -23,8 +23,18 @@ class _ShareAlertState extends State<ShareAlert> {
 
   final controller = Get.put(SharingRegisterController());
   final List<String> _items = ['콘서트', '뮤지컬', '연극', '영화', '스포츠', 'e스포츠'];
+  List<String>? _items2;
 
   String? _selectedItem;
+  @override
+  void initState() {
+    super.initState();
+    onGetParentCategory();
+  }
+
+  void onGetParentCategory() async {
+    _items2 = await controller.getParentCategory();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +101,26 @@ class _ShareAlertState extends State<ShareAlert> {
                           ),
                         );
                       }).toList(),
+                      //
+                      // items: controller.pCategories.map((item) {
+                      //   return DropdownMenuItem(
+                      //     value: item,
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.only(
+                      //         right: 60,
+                      //       ),
+                      //       child: Text(item),
+                      //     ),
+                      //   );
+                      // }).toList(),
                     ),
                   ),
-                  _selectedItem == '콘서트' ? ConcertCategory() : Container(),
+                  //
+                  // for(var item in  _items)...[
+                  //   if(_selectedItem == item)
+                  //     ChildCategory(selectItem: _selectedItem),
+                  // ],
+                  _selectedItem == _items[0] ? ConcertCategory() : Container(),
                   _selectedItem == '뮤지컬' ? MusicalCategory() : Container(),
                   _selectedItem == '연극' ? TheatorCategory() : Container(),
                   _selectedItem == '영화' ? MovieCategory() : Container(),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/config/config.dart';
+
+import '../../controller/search_controller.dart';
 
 class PopularHashTag extends StatelessWidget {
   const PopularHashTag({super.key});
@@ -7,6 +10,37 @@ class PopularHashTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tagList = ['스티커', 'nct', '다꾸', '응원봉', '트와이스', '전종서', '뉴진스', '종이의집'];
+    final controller = Get.put(ShowSearchController());
+    // return FutureBuilder<List<String>>(
+    //     future: controller.onPopularTag(),
+    //     builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+    //       if (snapshot.connectionState == ConnectionState.waiting) {
+    //         //API 응답이 오기 전에는 로딩 중을 표시
+    //         return CircularProgressIndicator();
+    //       } else if (snapshot.hasError) {
+    //         return Text("Error : ${snapshot.error}");
+    //       } else if (!snapshot.hasData) {
+    //         return Text("No Data");
+    //       } else {
+    //         List<String> itemList = snapshot.data!;
+    //         List<String> hashtagList = [];
+    //         for (var item in itemList) {
+    //           RegExp exp = RegExp(r'\#\w+');
+    //           Iterable<Match> matches = exp.allMatches(item);
+    //           for (Match match in matches) {
+    //             hashtagList.add(match.group(0)!);
+    //           }
+    //         }
+    //         return ListView.builder(
+    //             itemCount: hashtagList.length,
+    //             itemBuilder: (BuildContext context, int index) {
+    //               return ListTile(
+    //                 title: Text(hashtagList[index]),
+    //               );
+    //             });
+    //       }
+    //     });
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,

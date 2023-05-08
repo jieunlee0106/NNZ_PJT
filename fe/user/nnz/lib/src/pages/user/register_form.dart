@@ -51,7 +51,7 @@ class RegisterForm extends StatelessWidget {
                         Nickname(),
                         Sms(),
                         const Agree(),
-                        AuthBtn(),
+                        const AuthBtn(),
                       ],
                     ),
                   ),

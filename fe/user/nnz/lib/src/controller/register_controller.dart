@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/services/user_provider.dart';
 
+import '../components/register_form/share_popup.dart';
 import '../model/register_model.dart';
 
 class RegisterController extends GetxController {
@@ -43,7 +44,7 @@ class RegisterController extends GetxController {
   late final nicknameController;
   late final smsController;
   late final authNumberController;
-
+  String? textError;
   @override
   void onInit() {
     super.onInit();
@@ -86,7 +87,6 @@ class RegisterController extends GetxController {
   }
 
   void onRegisterCheck() {
-    logger.i("비밀번호 체크 ${pwdChecked.value}");
     registerChecked.value = emailChecked.value &&
             pwdChecked.value &&
             pwdConfirmChecked.value &&
@@ -100,27 +100,27 @@ class RegisterController extends GetxController {
   //sms 인증 요청
   void onSms() async {
     requestSms(true);
-    phoneChecked(false);
+    // phoneChecked(false);
 
     logger.i(phoneChecked.value);
-    startTimer();
+    // startTimer003892();
     //sms 인증번호 요청 서버 api 통신가능하면 주석 풀것
-    //   try {
-    //     final response =
-    //         await UserProvider().postReqVerify(phone: smsController.text);
-    //     if (response.statusCode == 200) {
-    //       phoneChecked(false);
-    //       startTimer();
-    //       logger.i(phoneChecked.value);
-    //     } else {}
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //             logger.e(errorMessage);
-    //             throw Exception(errorMessage);
-    //   } catch (e) {
-    //      final errorMessage = "$e";
-    //           logger.e(errorMessage);
-    //           throw Exception(errorMessage);
-    //   }
+    try {
+      final response =
+          await UserProvider().postReqVerify(phone: smsController.text);
+      if (response.statusCode == 200) {
+        phoneChecked(false);
+        startTimer();
+        logger.i("본인요청 api ${response.body}");
+      } else {}
+      final errorMessage = "(${response.statusCode}): ${response.body}";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
   }
 
   bool onEmailValidate({required String text}) {
@@ -143,64 +143,85 @@ class RegisterController extends GetxController {
     return true;
   }
 
+  String? onEmailCheck() {
+    if (emailChecked.value == false) {
+      return "중복된이메일입니다.";
+    } else {
+      return null;
+    }
+  }
+
   //이메일형식 확인뒤 중복체크
-  void emailValidate({required String type, required String text}) async {
+  Future<void> emailValidate(
+      {required String type, required String text}) async {
     logger.i("$type , $text");
-    UserProvider().testApi(type: type, text: text);
-    emailChecked(true);
 
     //이메일 유효성 검사 통과시 서버에서 api 통신 가능하면 주석 풀것
 
     // logger.i("이메일 통과됐나요? ${emailChecked.value}");
 
-    // try {
-    //   final response =
-    //       await UserProvider().getValidate(type: type, value: text);
-    //   if (response.statusCode == 200) {
-    //     final available = response.body["available"];
+    try {
+      final response =
+          await UserProvider().getValidate(type: type, value: text);
+      if (response.statusCode == 200) {
+        logger.i(response.body);
+        final available = response.body["available"];
+        emailChecked.value = response.body["available"];
+        if (!available) {
+          onRegisterCheck();
+        } else {
+          emailChecked.value = true;
+          onRegisterCheck();
+        }
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
+  }
 
-    //     available이 statusCode 200이되면 repoonse.body로 available true or false로 준다.
-    //     emailChecked(available);
-    //     onRegisterCheck();
-    //   }else{
-    //      final errorMessage = "(${response.statusCode}): ${response.body}";
-    //         logger.e(errorMessage);
-    //         throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //       logger.e(errorMessage);
-    //       throw Exception(errorMessage);
-    // }
+  bool testResult() {
+    return emailChecked.value == true ? true : false;
   }
 
   Future<void> onNicknameValidate(
       {String type = "nickname", required String nickname}) async {
     // logger.i(nickname);
 
-    UserProvider().testApi(type: type, text: nickname);
-    nickChecked(true);
-    onRegisterCheck();
+    // nickChecked(true);
+    // onRegisterCheck();
 
     //서버에서 api 가능 하면 주석 풀것
-
-    // try {
-    //   final response =
-    //       await UserProvider().getValidate(type: type, value: nickname);
-    //   if (response.statusCode == 200) {
-    //     final available = response.body["available"];
-    //     nickChecked(available);
-    //     onRegisterCheck();
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    // }
+    try {
+      final response =
+          await UserProvider().getValidate(type: type, value: nickname);
+      if (response.statusCode == 200) {
+        logger.i(response.body);
+        final available = response.body["available"];
+        nickChecked(available);
+        if (nickChecked.value == false) {
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "중복된 닉네임입니다.");
+              });
+        }
+        onRegisterCheck();
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
   }
 
   String format(int seconds) {
@@ -230,36 +251,38 @@ class RegisterController extends GetxController {
     }
 
     // 서버에서 api 통신이 가능하면 주석 풀 것
-    // try {
-    //   final response = await UserProvider().postResVerify(
-    //       phone: smsController.text, verifyNum: authNumberController.text);
-    //   if (response.statusCode == 200) {
-    //     final verify = response.body["verify"];
-    //     if (verify == false) {
-    //       smsChecked(verify);
-    //       showDialog(
-    //           context: Get.context!,
-    //           builder: (BuildContext context) {
-    //             return const sharePopup(popupMessage: "유효하지않는 인증번호입니다.");
-    //           });
-    //       onRegisterCheck();
-    //     } else {
-    //       smsChecked(verify);
-    //       onRegisterCheck();
-    //       if (timer.isActive) {
-    //         timer.cancel();
-    //       }
-    //     }
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
+    try {
+      final response = await UserProvider().postResVerify(
+          phone: smsController.text, verifyNum: authNumberController.text);
+      logger.i("인증번호 : ${authNumberController.text}");
+      if (response.statusCode == 200) {
+        final verify = response.body["verify"];
+        logger.i(response.body);
+        if (verify == false) {
+          smsChecked(verify);
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "유효하지않는 인증번호입니다.");
+              });
+          onRegisterCheck();
+        } else {
+          smsChecked(verify);
+          onRegisterCheck();
+          if (timer.isActive) {
+            timer.cancel();
+          }
+        }
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
   }
 
   void onTimer() {
@@ -308,19 +331,35 @@ class RegisterController extends GetxController {
     );
     // logger.i(user);
 
-    // try {
-    //   final response = await UserProvider().postRegister(user: user);
-    //   if (response.statusCode == 201) {
-    //     Get.offNamed("/login");
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
+    try {
+      final response = await UserProvider().postRegister(user: user);
+      logger.i(response.statusCode);
+      if (response.statusCode == 204) {
+        showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: const Text("회원가입되었습니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.offAllNamed("/register");
+                      FocusScope.of(context).unfocus();
+                    },
+                    child: const Text("확인"),
+                  ),
+                ],
+              );
+            });
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
   }
 }

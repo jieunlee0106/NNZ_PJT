@@ -35,7 +35,8 @@ class _RegisterFieldState extends State<RegisterField> {
   bool isEmail = false;
   bool isPassword = false;
   bool isPasswordConfirm = false;
-
+  bool isTest = false;
+  bool? emailCheck = true;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -43,7 +44,7 @@ class _RegisterFieldState extends State<RegisterField> {
       controller: widget.controller,
       keyboardType: widget.type,
       obscureText: widget.observer ?? false,
-      onChanged: (value) {
+      onChanged: (value) async {
         final controller = Get.find<RegisterController>();
         controller.onChangeFiled(
           controller: widget.controller,
@@ -53,7 +54,7 @@ class _RegisterFieldState extends State<RegisterField> {
         if (widget.formType == 'email') {
           final isValidEmail = controller.onEmailValidate(text: value);
           if (isValidEmail == true) {
-            controller.emailValidate(type: 'email', text: value);
+            logger.i(emailCheck);
           }
         } else if (widget.formType == 'password') {
           final isValidPassword = controller.onPasswordValidate(text: value);
@@ -73,7 +74,25 @@ class _RegisterFieldState extends State<RegisterField> {
         if (widget.formType == 'email') {
           isEmail = controller.onEmailValidate(text: value!);
 
-          return isEmail ? null : "올바른 이메일 형식 입력해주세요";
+          logger.i("여기서는 $emailCheck");
+          if (!isEmail) {
+            return '올바른 이메일 형식으로 입력해주세요';
+          } else {
+            controller.emailValidate(type: 'email', text: value).then((_) {
+              if (controller.emailChecked.value == false) {
+                isTest = controller.emailChecked.value;
+                setState(() {});
+              } else {
+                isTest = controller.emailChecked.value;
+                setState(() {});
+              }
+            });
+            if (isTest == false) {
+              return '중복된 이메일입니다.';
+            } else {
+              return null;
+            }
+          }
         } else if (widget.formType == 'password') {
           isPassword = controller.onPasswordValidate(text: value!);
           controller.pwdChecked.value = isPassword == true ? true : false;

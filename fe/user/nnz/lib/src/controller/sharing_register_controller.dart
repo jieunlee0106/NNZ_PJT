@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
-import 'package:nnz/src/model/share_category_model.dart';
+import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/share_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
@@ -18,6 +18,10 @@ class SharingRegisterController extends GetxController {
   late final titleController;
   late final detailController;
   late final sharingController;
+
+  late final showSearchController;
+  //나눔등록에서 공연 검색 api 통신이 완료되면
+  //sportsController ~ movieController는 싹다 삭제하기
   late final sportsController;
   late final musicalController;
   late final concertController;
@@ -29,8 +33,8 @@ class SharingRegisterController extends GetxController {
   late final sharingDateController;
   late final openDateController;
   late final openTimeController;
-  final RxList<ShareCategoryModel> pCategories = RxList<ShareCategoryModel>();
-  final RxList<ShareCategoryModel> cCategories = RxList<ShareCategoryModel>();
+  final RxList<String> pCategories = RxList<String>();
+  final RxList<String> cCategories = RxList<String>();
   List<ImageFile> imageList = [];
 
   RxList<String> conList = RxList<String>();
@@ -53,6 +57,7 @@ class SharingRegisterController extends GetxController {
     titleController = TextEditingController();
     detailController = TextEditingController();
     sharingController = TextEditingController();
+    showSearchController = TextEditingController();
     sportsController = TextEditingController();
     musicalController = TextEditingController();
     esportsController = TextEditingController();
@@ -145,14 +150,15 @@ class SharingRegisterController extends GetxController {
   }
 
   //부모 카테고리 조회
-  Future<void> getParentCategory() async {
+  Future<List<String>> getParentCategory() async {
     try {
       final response = await SearchProvider().getCategory();
       if (response.statusCode == 200) {
         for (var category in response.body) {
-          pCategories(category);
+          pCategories.add(category["name"]);
         }
         logger.i(pCategories);
+        return pCategories;
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);
@@ -166,17 +172,19 @@ class SharingRegisterController extends GetxController {
   }
 
   //자식 카테고리 검색
-  Future<void> getChildCategory({required String parent}) async {
+  Future<List<String>> getChildCategory({required String parent}) async {
     try {
       final response = await SearchProvider().getCategory(parent: parent);
       if (response.statusCode == 200) {
         if (response.body != null) {
           cCategories.clear();
           for (var category in response.body) {
-            cCategories(category);
+            cCategories.add(category);
           }
+          return cCategories;
         } else {
           cCategories.clear();
+          return [];
         }
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
@@ -191,6 +199,7 @@ class SharingRegisterController extends GetxController {
   }
 
   //공연 카테고리 별 검색
+  //통신이 완료된 후 위젯을 만들겠습니다. 아니면 지금할까? 
   Future<void> onSearchShow({
     required String category,
     required String title,

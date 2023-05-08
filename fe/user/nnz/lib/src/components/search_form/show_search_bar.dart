@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/search_controller.dart';
 
@@ -12,6 +13,7 @@ class ShowSearchBar extends StatefulWidget {
 
 class _ShowSearchBarState extends State<ShowSearchBar> {
   final controller = Get.put(ShowSearchController());
+  final logger = Logger();
   final List<String> _selectList = ['공연', '나눔'];
   String _selectItem = '공연';
   @override
@@ -55,7 +57,8 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                 child: TextField(
                   controller: controller.searchController,
                   onChanged: (text) {
-                    controller.onChangeCategory(value: text);
+                    logger.i(_selectItem);
+                    controller.onChangeCategory(text: text, type: _selectItem);
                   },
                   decoration: const InputDecoration(
                     border: InputBorder.none,
