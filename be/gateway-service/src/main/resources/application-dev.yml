@@ -38,7 +38,21 @@ spring:
 #          uri: lb://DEV-TAG-SERVICE
 #          predicates:
 #            - Path=/tag-service/**
-
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - PATCH
+              - OPTIONS
+              - DELETE
 
 
 #yml 암호화 yml 설정
