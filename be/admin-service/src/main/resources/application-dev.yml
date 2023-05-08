@@ -77,3 +77,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
+kafka:
+  topic:
+    prefix: dev-

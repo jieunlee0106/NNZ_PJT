@@ -1,5 +1,6 @@
 package nnz.adminservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.vo.AskedShowStatusVO;
@@ -24,7 +25,7 @@ public class AdminController {
     }
 
     @PatchMapping("/ask/shows")
-    public ResponseEntity<?> handleAskedShow(@RequestBody AskedShowStatusVO askedShowStatusVO){
+    public ResponseEntity<?> handleAskedShow(@RequestBody AskedShowStatusVO askedShowStatusVO) throws JsonProcessingException {
         adminService.handleAskedShow(askedShowStatusVO);
         return ResponseEntity.ok().build();
     }
@@ -42,14 +43,14 @@ public class AdminController {
     }
 
     @PatchMapping("/ask/reports")
-    public ResponseEntity<?> handleReport(@RequestBody ReportStatusVO reportStatusVO){
+    public ResponseEntity<?> handleReport(@RequestBody ReportStatusVO reportStatusVO) throws JsonProcessingException {
         adminService.handleReport(reportStatusVO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/banners")
     public ResponseEntity<?> registBanners(@RequestPart(value = "banners", required = false) List<MultipartFile> files,
-                                           @RequestPart(value = "showIds") List<Long> showIDsVO){
+                                           @RequestPart(value = "showIds") List<Long> showIDsVO) throws JsonProcessingException {
         adminService.registBanners(files, showIDsVO);
         return ResponseEntity.ok().build();
     }

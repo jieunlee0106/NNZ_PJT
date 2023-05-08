@@ -9,6 +9,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "shows")
@@ -34,5 +36,9 @@ public class Show extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")
     private Category category;
+
+    @OneToMany(mappedBy = "show")
+    private List<ShowTag> showTags = new ArrayList<>();
+
 }
 

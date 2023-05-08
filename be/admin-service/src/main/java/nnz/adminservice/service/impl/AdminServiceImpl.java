@@ -2,15 +2,20 @@ package nnz.adminservice.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.exception.CustomException;
+import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.adminservice.dto.AskedShowDTO;
+import nnz.adminservice.dto.BannerDTO;
 import nnz.adminservice.dto.ReportDTO;
+import nnz.adminservice.dto.ShowDTO;
 import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
 import nnz.adminservice.service.AdminService;
+import nnz.adminservice.service.KafkaProducer;
 import nnz.adminservice.vo.AskedShowStatusVO;
 import nnz.adminservice.vo.ReportStatusVO;
 import nnz.adminservice.vo.ShowVO;
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
     private String bucket;
 
     private final AmazonS3 amazonS3;
-
+    private final KafkaProducer kafkaProducer;
     @Override
     public List<AskedShowDTO> findAskedShowList() {
 
@@ -54,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void handleAskedShow(AskedShowStatusVO askedShowStatusVO) {
+    public void handleAskedShow(AskedShowStatusVO askedShowStatusVO) throws JsonProcessingException {
 
         AskedShow askedShow = askedShowRepository.findById(askedShowStatusVO.getAskedShowsId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ASKED_SHOW_NOT_FOUND));
@@ -70,6 +76,9 @@ public class AdminServiceImpl implements AdminService {
             askedShow.updateStatus(2);
         }
 
+        KafkaMessage<AskedShowStatusVO> message = KafkaMessage.update().body(askedShowStatusVO);
+
+        kafkaProducer.sendMessage(message, "askedshow");
     }
 
     @Override
@@ -90,16 +99,22 @@ public class AdminServiceImpl implements AdminService {
 
             String path = amazonS3.getUrl(bucket, savedName).toString();
 
-            showRepository.save(Show.builder()
-                            .category(category)
-                            .posterImage(path)
-                            .title(showVO.getTitle())
-                            .startDate(showVO.getStartDate())
-                            .endDate(showVO.getEndDate())
-                            .location(showVO.getLocation())
-                            .ageLimit(showVO.getAgeLimit())
-                            .region(showVO.getRegion())
-                            .build());
+            Show save = showRepository.save(Show.builder()
+                    .category(category)
+                    .posterImage(path)
+                    .title(showVO.getTitle())
+                    .startDate(showVO.getStartDate())
+                    .endDate(showVO.getEndDate())
+                    .location(showVO.getLocation())
+                    .ageLimit(showVO.getAgeLimit())
+                    .region(showVO.getRegion())
+                    .build());
+
+            ShowDTO showDTO = ShowDTO.entityToDTO(save);
+
+            KafkaMessage<ShowDTO> message = KafkaMessage.create().body(showDTO);
+
+            kafkaProducer.sendMessage(message, "show");
 
         }catch (Exception e){
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAIL);
@@ -121,7 +136,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void handleReport(ReportStatusVO reportStatusVO) {
+    public void handleReport(ReportStatusVO reportStatusVO) throws JsonProcessingException {
         Report report = reportRepository.findById(reportStatusVO.getReportId())
                 .orElseThrow(() -> new CustomException(ErrorCode.REPORT_NOT_FOUND));
 
@@ -133,12 +148,18 @@ public class AdminServiceImpl implements AdminService {
         else if(reportStatusVO.getStatus() == 2){
             report.updateStatus(2);
         }
+
+        KafkaMessage<ReportStatusVO> message = KafkaMessage.update().body(reportStatusVO);
+
+        kafkaProducer.sendMessage(message, "report");
     }
 
     @Override
-    public void registBanners(List<MultipartFile> files, List<Long> showIDsVO) {
+    public void registBanners(List<MultipartFile> files, List<Long> showIDsVO) throws JsonProcessingException {
+        List<BannerDTO> bannerDTOList = new ArrayList<>();
 
         for(int i=0; i<3; i++){
+            Banner banner = null;
             try{
                 MultipartFile file = files.get(i);
                 Long showId = showIDsVO.get(i);
@@ -158,7 +179,7 @@ public class AdminServiceImpl implements AdminService {
 
                     String path = amazonS3.getUrl(bucket, savedName).toString();
 
-                    bannerRepository.save(Banner.builder()
+                    banner = bannerRepository.save(Banner.builder()
                             .image(path)
                             .show(show)
                             .build());
@@ -169,6 +190,14 @@ public class AdminServiceImpl implements AdminService {
             }catch (NullPointerException e){
                 throw new CustomException(ErrorCode.FILE_NOT_ENOUGH);
             }
+            bannerDTOList.add(BannerDTO.builder()
+                            .id(banner.getId())
+                            .image(banner.getImage())
+                            .showId(banner.getShow().getId())
+                            .build());
         }
+        KafkaMessage<List<BannerDTO>> message = KafkaMessage.create().body(bannerDTOList);
+
+        kafkaProducer.sendMessage(message, "banner");
     }
 }
