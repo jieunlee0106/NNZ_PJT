@@ -7,15 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.adminservice.dto.AskedShowDTO;
 import nnz.adminservice.dto.ReportDTO;
-import nnz.adminservice.entity.AskedShow;
-import nnz.adminservice.entity.Banner;
-import nnz.adminservice.entity.Report;
-import nnz.adminservice.entity.Show;
+import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.vo.AskedShowStatusVO;
 import nnz.adminservice.vo.ReportStatusVO;
+import nnz.adminservice.vo.ShowVO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +33,7 @@ public class AdminServiceImpl implements AdminService {
     private final ReportRepository reportRepository;
     private final BannerRepository bannerRepository;
     private final ShowRepository showRepository;
+    private final CategoryRepository categoryRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -62,9 +61,6 @@ public class AdminServiceImpl implements AdminService {
 
         // 승인할 시
         if(askedShowStatusVO.getAskedShowStatus() == 1){
-            // shows 테이블에 insert
-            // show에 뭘 insert하지?
-
             // asked_shows 테이블 상태 변경
             askedShow.updateStatus(1);
         }
@@ -74,6 +70,40 @@ public class AdminServiceImpl implements AdminService {
             askedShow.updateStatus(2);
         }
 
+    }
+
+    @Override
+    public void createShow(ShowVO showVO, MultipartFile file) {
+
+        Category category = categoryRepository.findByCode(showVO.getCategory())
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+
+        try{
+            String originalName = file.getOriginalFilename();
+            String savedName = UUID.randomUUID() + "-" + originalName;
+
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(file.getSize());
+            objMeta.setContentType(file.getContentType());
+
+            amazonS3.putObject(bucket, savedName, file.getInputStream(), objMeta);
+
+            String path = amazonS3.getUrl(bucket, savedName).toString();
+
+            showRepository.save(Show.builder()
+                            .category(category)
+                            .posterImage(path)
+                            .title(showVO.getTitle())
+                            .startDate(showVO.getStartDate())
+                            .endDate(showVO.getEndDate())
+                            .location(showVO.getLocation())
+                            .ageLimit(showVO.getAgeLimit())
+                            .region(showVO.getRegion())
+                            .build());
+
+        }catch (Exception e){
+            throw new CustomException(ErrorCode.FILE_UPLOAD_FAIL);
+        }
     }
 
     @Override

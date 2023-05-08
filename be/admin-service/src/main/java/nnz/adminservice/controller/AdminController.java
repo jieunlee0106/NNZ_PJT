@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.vo.AskedShowStatusVO;
 import nnz.adminservice.vo.ReportStatusVO;
+import nnz.adminservice.vo.ShowVO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,13 @@ public class AdminController {
     @PatchMapping("/ask/shows")
     public ResponseEntity<?> handleAskedShow(@RequestBody AskedShowStatusVO askedShowStatusVO){
         adminService.handleAskedShow(askedShowStatusVO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/ask/shows")
+    public ResponseEntity<?> createShow(@RequestPart(name = "ShowVO") ShowVO showVO,
+                                        @RequestPart(name = "poster") MultipartFile file){
+        adminService.createShow(showVO, file);
         return ResponseEntity.ok().build();
     }
 
