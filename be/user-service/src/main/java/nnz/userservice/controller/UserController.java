@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -141,5 +142,14 @@ public class UserController {
     public ResponseEntity<NanumParticipantsDTO> getNanumParticipants(@PathVariable Long nanumId, DecodedToken token) {
         NanumParticipantsDTO nanumParticipants = userService.nanumParticipants(token.getId(), nanumId);
         return ResponseEntity.ok(nanumParticipants);
+    }
+
+    @PatchMapping("/users")
+    public ResponseEntity<Void> updateUser(
+            DecodedToken token,
+            @RequestPart("data") UserUpdateProfileVO vo,
+            @RequestPart(value = "file", required = false) MultipartFile file) throws UnsupportedEncodingException {
+        userService.updateProfile(token.getId(), vo, file);
+        return ResponseEntity.noContent().build();
     }
 }

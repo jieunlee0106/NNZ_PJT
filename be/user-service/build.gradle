@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.github.eello:naneozoo-common:0.4.1'
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'
+
 
     // jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'

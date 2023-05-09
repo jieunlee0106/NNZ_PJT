@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-@ToString
+@ToString(exclude = {"password"})
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +48,11 @@ public class User extends BaseEntity {
     private LocalDateTime lastLoginAt;
 
     public void login(PasswordEncoder passwordEncoder, String rawPassword) {
+        matchPwd(passwordEncoder, rawPassword);
+        this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public void matchPwd(PasswordEncoder passwordEncoder, String rawPassword) {
         if (!passwordEncoder.matches(rawPassword, this.password)) {
             throw new CustomException(ErrorCode.LOGIN_FAILURE);
         }
@@ -55,6 +60,13 @@ public class User extends BaseEntity {
 
     public void changePwd(String pwd) {
         this.password = pwd;
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void changeProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public enum Role {

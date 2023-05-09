@@ -12,17 +12,22 @@ import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.repository.*;
 import nnz.userservice.service.JwtProvider;
 import nnz.userservice.service.KafkaProducer;
+import nnz.userservice.service.S3Service;
 import nnz.userservice.service.UserService;
 import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
+import nnz.userservice.vo.UserUpdateProfileVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +49,8 @@ public class UserServiceImpl implements UserService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumRepository nanumRepository;
     private final ReceiveNanumRepository receiveNanumRepository;
-    private final NanumTagRepository nanumTagRepository;
     private final FollowRepository followRepository;
+    private final S3Service s3Service;
 
     @Override
     @Transactional
@@ -261,5 +266,65 @@ public class UserServiceImpl implements UserService {
         }
 
         return NanumParticipantsDTO.of(nanum, participants);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 기존 비밀번호가 입력되지 않은 경우
+        if (!StringUtils.hasText(vo.getOldPwd())) {
+            throw new CustomException(ErrorCode.OLD_PASSWORD_IS_REQUIRED);
+        }
+
+        // 기존 비밀번호가 일치하는지 검증
+        user.matchPwd(passwordEncoder, vo.getOldPwd());
+
+        log.info("user profile update -> Before: {}", user);
+
+        if (StringUtils.hasText(vo.getNickname())) { // 닉네임 변경 요청
+            if (!ValidationUtils.isValidNickname(vo.getNickname())) { // 닉네임 형식이 맞지 않은 경우
+                throw new CustomException(ErrorCode.INVALID_NICKNAME_PATTERN);
+            }
+
+            if (isExistByNickname(vo.getNickname())) { // 이미 존재하는 닉네임인 경우
+                throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+            }
+
+            user.changeNickname(vo.getNickname());
+            log.info("update nickname");
+        }
+
+        if (StringUtils.hasText(vo.getNewPwd())) { // 비밀번호 변경 요청
+            if (!ValidationUtils.isValidPwd(vo.getNewPwd())) { // 비밀번호 형식이 맞지 않은 경우
+                throw new CustomException(ErrorCode.INVALID_PWD_PATTERN);
+            }
+
+            if (!vo.getNewPwd().equals(vo.getConfirmNewPwd())) { // 비밀번호와 비밀번호 확인이 불일치
+                throw new CustomException(ErrorCode.PWD_NOT_MATCH_CONFIRM_PWD);
+            }
+
+            user.changePwd(passwordEncoder.encode(vo.getNewPwd()));
+            log.info("update password");
+        }
+
+        if (!file.isEmpty()) { // 프로필 이미지 변경 요청
+            try {
+                String oldProfileImage = user.getProfileImage();
+                String profileImagePath = s3Service.uploadFile(file);
+                user.changeProfileImage(profileImagePath);
+                log.info("update profile image");
+
+                // 버켓에서 기존 프로필 이미지 파일 삭제
+                s3Service.deleteFile(oldProfileImage);
+                log.info("delete old profile image");
+            } catch (IOException e) {
+                throw new CustomException(ErrorCode.PROFILE_IMAGE_UPLOAD_FAIL);
+            }
+        }
+
+        log.info("user profile update -> After: {}", user);
     }
 }
