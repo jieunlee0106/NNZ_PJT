@@ -5,11 +5,11 @@ import 'package:nnz/src/controller/category_controller.dart';
 class NotificationPage extends StatelessWidget {
   final categoryController = Get.put(CategoryController());
 
-  // void test() {
-  //   final ll = categoryController.categoryList.value['content'];
-  //   print(ll);
-  //   Get.to(() => CategoryListScreen(categoryList: ll));
-  // }
+  void test() {
+    final ll = categoryController.categoryList;
+    print(ll);
+    Get.to(() => CategoryListScreen(categoryList: ll));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class NotificationPage extends StatelessWidget {
           child: Text("Fetch Categories"),
           onPressed: () {
             categoryController.getCategoryList();
-            // test();
+            test();
           },
         ),
       ),
@@ -48,8 +48,8 @@ class CategoryListScreen extends StatelessWidget {
           final category = categoryList[index];
           return Card(
             child: ListTile(
-              title: Text(category['leftTeam']),
-              subtitle: Text(category['rightTeam']),
+              title: Text(category['date']),
+              subtitle: Text(category['rightTeam'] + category['location']),
             ),
           );
         },

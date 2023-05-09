@@ -1,35 +1,22 @@
 import 'package:get/get.dart';
-import 'package:nnz/src/services/category_service.dart';
+import 'package:dio/dio.dart';
 
 class CategoryController extends GetxController {
-  final CategoryService _categoryService = Get.put(CategoryService());
+  var categoryList = [];
 
-  Rx<List<dynamic>> categoryList = Rx<List<dynamic>>([]);
+  void getCategoryList() async {
+    try {
+      final response = await Dio().get(
+        'https://k8b207.p.ssafy.io/api/show-service/shows',
+        queryParameters: {'category': '축구'},
+      );
 
-  Future<void> getCategoryList() async {
-    final response = await _categoryService.getCategoryList();
-    if (response == null) {
-      print("error");
-    } else {
-      print(response.data['content']);
-      categoryList.value = response.data['content'];
-      print("!!!!!!!!!!!!!!!!!!!!!!!!!성공!!!");
-      return response;
+      if (response.statusCode == 200) {
+        categoryList = response.data['content'];
+        print('성공');
+      }
+    } catch (error) {
+      print('Error while getting category list: $error');
     }
   }
-
-  // try {
-  //   final response = await get("/show?=$category", headers: headers);
-  //   if (response.statusCode == 200) {
-  //     return response.body;
-  //   } else {
-  //     final errorMessage = "(${response.statusCode}): ${response.body}";
-  //     logger.e(errorMessage);
-  //     throw Exception(errorMessage);
-  //   }
-  // } catch (e) {
-  //   final errorMessage = "$e";
-  //   logger.e(errorMessage);
-  //   throw Exception(errorMessage);
-  // }
 }
