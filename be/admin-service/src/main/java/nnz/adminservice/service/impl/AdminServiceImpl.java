@@ -16,9 +16,11 @@ import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.service.KafkaProducer;
+import nnz.adminservice.service.TagFeignClient;
 import nnz.adminservice.vo.AskedShowStatusVO;
 import nnz.adminservice.vo.ReportStatusVO;
 import nnz.adminservice.vo.ShowVO;
+import nnz.adminservice.vo.TagVO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final AmazonS3 amazonS3;
     private final KafkaProducer kafkaProducer;
+    private final TagFeignClient tagFeignClient;
     @Override
     public List<AskedShowDTO> findAskedShowList() {
 
@@ -110,13 +113,35 @@ public class AdminServiceImpl implements AdminService {
                     .region(showVO.getRegion())
                     .build());
 
+            // Kafka에 메세지 전송
             ShowDTO showDTO = ShowDTO.entityToDTO(save);
 
             KafkaMessage<ShowDTO> message = KafkaMessage.create().body(showDTO);
 
             kafkaProducer.sendMessage(message, "show");
 
+
+            // 태그 생성
+            List<TagVO> tagVOList = new ArrayList<>();
+
+            // 지역 태그 추가
+            tagVOList.add(TagVO.builder()
+                    .title(save.getTitle())
+                    .tag(save.getRegion())
+                    .type("show")
+                    .build());
+
+            // 카테고리 태그 추가
+            tagVOList.add(TagVO.builder()
+                    .title(save.getTitle())
+                    .tag(save.getCategory().getName())
+                    .type("show")
+                    .build());
+
+            tagFeignClient.createTag(tagVOList);
+
         }catch (Exception e){
+            e.printStackTrace();
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAIL);
         }
     }

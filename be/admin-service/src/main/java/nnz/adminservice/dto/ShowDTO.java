@@ -34,10 +34,6 @@ public class ShowDTO {
     private String poster;
 
     public static ShowDTO entityToDTO(Show show) {
-        List<ShowTagDTO> showTags = show.getShowTags()
-                .stream()
-                .map(ShowTagDTO::entityToDTO)
-                .collect(Collectors.toList());
 
         return ShowDTO.builder()
                 .id(show.getId())
@@ -47,12 +43,7 @@ public class ShowDTO {
                 .startDate(show.getStartDate())
                 .endDate(show.getEndDate())
                 .title(show.getTitle())
-                .showTags(showTags)
                 .build();
-    }
-
-    public static Page<ShowDTO> toPagingDTO(Page<Show> showPage) {
-        return showPage.map(ShowDTO::entityToDTO);
     }
 }
 
