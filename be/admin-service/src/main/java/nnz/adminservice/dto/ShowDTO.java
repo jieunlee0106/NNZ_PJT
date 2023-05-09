@@ -28,8 +28,7 @@ public class ShowDTO {
     private String endDate;
 
     private String ageLimit;
-
-    private List<ShowTagDTO> showTags;
+    private String region;
 
     private String poster;
 
@@ -39,6 +38,7 @@ public class ShowDTO {
                 .id(show.getId())
                 .ageLimit(show.getAgeLimit())
                 .location(show.getLocation())
+                .region(show.getRegion())
                 .poster(show.getPosterImage())
                 .startDate(show.getStartDate())
                 .endDate(show.getEndDate())

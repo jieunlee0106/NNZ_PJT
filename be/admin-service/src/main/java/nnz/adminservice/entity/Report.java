@@ -1,9 +1,8 @@
 package nnz.adminservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import nnz.adminservice.dto.ReportDTO;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -18,6 +17,8 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @Table(name = "reports")
 @Getter
+@Builder
+@AllArgsConstructor
 @SQLDelete(sql = "UPDATE Report SET is_delete = 1 WHERE id = ?")
 @Where(clause = "is_delete  = 0")
 public class Report extends BaseEntity {
@@ -59,4 +60,5 @@ public class Report extends BaseEntity {
     public void updateStatus(int code){
         this.status = ReportStatus.of(code);
     }
+
 }
