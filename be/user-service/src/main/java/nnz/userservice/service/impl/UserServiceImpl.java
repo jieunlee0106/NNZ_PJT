@@ -319,8 +319,11 @@ public class UserServiceImpl implements UserService {
                 log.info("update profile image");
 
                 // 버켓에서 기존 프로필 이미지 파일 삭제
-                s3Service.deleteFile(oldProfileImage);
-                log.info("delete old profile image");
+
+//                if (oldProfileImage != null) {
+//                    s3Service.deleteFile(oldProfileImage);
+//                    log.info("delete old profile image");
+//                }
             } catch (IOException e) {
                 throw new CustomException(ErrorCode.PROFILE_IMAGE_UPLOAD_FAIL);
             }
