@@ -105,10 +105,6 @@ class _ProfileEditState extends State<ProfileEdit> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
           actions: const [Icon(Icons.more_vert)],
         ),

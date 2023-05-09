@@ -76,7 +76,7 @@ class LoginController extends GetxController {
           Get.find<BottomNavController>().setToken(accessToken: accessToken);
           Get.find<BottomNavController>().setUserId(userId: userId);
           final token = Get.find<BottomNavController>().getToken();
-          Get.offNamed("/app");
+          Get.offAllNamed("/app");
           Get.find<BottomNavController>()
               .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
         } else {

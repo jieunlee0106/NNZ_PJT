@@ -75,8 +75,11 @@ class UserEditController extends GetxController {
           newPwd: newPwdController.text,
           confirmNewPwd: newPwdConfirmController.text,
           nickname: nickController.text);
-      logger.i(response.statusCode);
-      logger.i(response.statusText);
+      logger.i(response.statusCode.runtimeType);
+      if (response.statusCode == 204) {
+        logger.i("이동합니다.");
+        Get.back();
+      }
     } catch (e) {
       final errorMessage = "$e";
       logger.e(errorMessage);

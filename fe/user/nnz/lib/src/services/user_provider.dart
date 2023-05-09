@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart' as io;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/register_model.dart';
@@ -10,7 +9,7 @@ import 'package:nnz/src/model/register_model.dart';
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
   final logger = Logger();
-  @override
+
   @override
   void onInit() async {
     //load env file
@@ -136,26 +135,22 @@ class UserProvider extends GetConnect {
     required String confirmNewPwd,
     required String nickname,
   }) async {
-    var formData = io.FormData();
-    formData.fields.add(MapEntry(
-        'data',
-        jsonEncode({
-          'oldPwd': oldPwd,
-          'newPwd': newPwd,
-          'confirmNewPwd': confirmNewPwd,
-          'nickname': nickname,
-        })));
-    formData.files.add(MapEntry(
-        'file',
-        io.MultipartFile.fromFileSync(
-          image.path,
-          filename: 'profile.png',
-        )));
+    final formData = FormData({
+      "data": jsonEncode({
+        "oldPwd": oldPwd,
+        "newPwd": newPwd,
+        "confirmNewPwd": confirmNewPwd,
+        "nickname": nickname,
+      }),
+      "file": MultipartFile(image.path, filename: "profile.png")
+    });
+
+    logger.i(formData.fields);
 
     final token = Get.find<BottomNavController>().accessToken;
     final headers = {
       'Content-type': 'multipart/form-data; boundary=${formData.boundary}',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
     };
 
     final response = await patch(
@@ -163,6 +158,7 @@ class UserProvider extends GetConnect {
       formData,
       headers: headers,
     );
+
     return response;
   }
 }
