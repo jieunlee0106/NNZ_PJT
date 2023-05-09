@@ -49,14 +49,14 @@ spring:
           uri: lb://DEV-TAG-SERVICE
           predicates:
             - Path=/tag-service/**
-#        - id: DEV-NANUM-SERVICE
-#          uri: lb://DEV-NANUM-SERVICE
-#          predicates:
-#            - Path=/nanum-service/**
-#        - id: DEV-TAG-SERVICE
-#          uri: lb://DEV-TAG-SERVICE
-#          predicates:
-#            - Path=/tag-service/**
+        - id: DEV-NANUM-SERVICE
+          uri: lb://DEV-NANUM-SERVICE
+          predicates:
+            - Path=/nanum-service/**
+        - id: DEV-TAG-SERVICE
+          uri: lb://DEV-TAG-SERVICE
+          predicates:
+            - Path=/tag-service/**
 
 
 
