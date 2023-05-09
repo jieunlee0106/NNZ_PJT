@@ -40,6 +40,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+    private static final String TOPIC = "user";
+
     private final UserRepository userRepository;
     private final VerifyNumberRepository verifyNumberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -110,7 +112,7 @@ public class UserServiceImpl implements UserService {
         KafkaMessage<UserDTO> kafkaMessage = KafkaMessage.create().body(userDTO);
 
         // kafka에 가입한 사용자에 대한 메시지 발생
-        kafkaProducer.sendMessage(kafkaMessage);
+        kafkaProducer.sendMessage(TOPIC, kafkaMessage);
 
         return userDTO;
     }
