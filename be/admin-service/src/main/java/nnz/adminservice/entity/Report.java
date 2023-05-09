@@ -61,4 +61,6 @@ public class Report extends BaseEntity {
         this.status = ReportStatus.of(code);
     }
 
+    public void updateProcessedAt(LocalDateTime time){this.processedAt = time;}
+
 }

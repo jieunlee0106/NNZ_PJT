@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -173,6 +174,8 @@ public class AdminServiceImpl implements AdminService {
         else if(reportStatusVO.getStatus() == 2){
             report.updateStatus(2);
         }
+
+        report.updateProcessedAt(LocalDateTime.now());
 
         KafkaMessage<ReportStatusVO> message = KafkaMessage.update().body(reportStatusVO);
 
