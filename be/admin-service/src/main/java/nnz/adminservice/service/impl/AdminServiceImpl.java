@@ -79,10 +79,6 @@ public class AdminServiceImpl implements AdminService {
             // asked_shows 테이블 상태 변경
             askedShow.updateStatus(2);
         }
-
-        KafkaMessage<AskedShowStatusVO> message = KafkaMessage.update().body(askedShowStatusVO);
-
-        kafkaProducer.sendMessage(message, "askedshow");
     }
 
     @Override
