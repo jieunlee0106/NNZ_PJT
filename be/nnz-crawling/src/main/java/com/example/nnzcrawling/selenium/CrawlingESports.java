@@ -18,8 +18,8 @@ import java.util.StringTokenizer;
 public class CrawlingESports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-//    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+//    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {

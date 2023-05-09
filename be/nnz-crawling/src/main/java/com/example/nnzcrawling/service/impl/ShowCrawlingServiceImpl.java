@@ -48,25 +48,25 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         List<TagCrawling> tagCrawlingEntities = new ArrayList<>();
 
         try {
-//            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
+            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
             List<ShowCrawling> eSports = crawlingESports.getCrawlingData();
-//            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
-//            List<TagCrawling> showTags = crawlingShows.getTags();
+            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
+            List<TagCrawling> showTags = crawlingShows.getTags();
             List<TagCrawling> eSportsTags = crawlingESports.getTags();
-//            List<TagCrawling> sportsTags = crawlingSports.getTags();
+            List<TagCrawling> sportsTags = crawlingSports.getTags();
 
-//            showCrawlingEntities.addAll(shows);
-//            tagCrawlingEntities.addAll(showTags);
+            showCrawlingEntities.addAll(shows);
+            tagCrawlingEntities.addAll(showTags);
             showCrawlingEntities.addAll(eSports);
             tagCrawlingEntities.addAll(eSportsTags);
-//            showCrawlingEntities.addAll(sports);
-//            tagCrawlingEntities.addAll(sportsTags);
+            showCrawlingEntities.addAll(sports);
+            tagCrawlingEntities.addAll(sportsTags);
 
             // 공연 크롤링 정보 저장
-//            List<Show> showEntities = new ArrayList<>();
+            List<Show> showEntities = new ArrayList<>();
             showCrawlingEntities.forEach(v -> {
                 Category category = categoryRepository.findByName(v.getCategory()).orElseThrow();
-//                showEntities.add(Show.of(v, category));
+                showEntities.add(Show.of(v, category));
                 Optional<Show> findShow = showRepository.findByTitleAndStartDateAndIsDeleteFalse(v.getTitle(), v.getStartDate());
 
                 if (!findShow.isPresent()) {
@@ -74,8 +74,8 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                     showRepository.save(show);
                 }
             });
-//            showRepository.saveAll(showEntities);
-//            showCrawlingRepository.createShows(showCrawlingEntities);
+            showRepository.saveAll(showEntities);
+            showCrawlingRepository.createShows(showCrawlingEntities);
 
             // kafka producer 등록
             for (ShowCrawling showCrawling : showCrawlingEntities) {
