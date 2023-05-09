@@ -16,5 +16,5 @@ public interface NanumService {
 
     PageDTO readNanumsByNanumTag(String nanumTagName, PageRequest pageRequest);
 
-    PageDTO readNanumsByLocation(Double lat, Double lng, Integer status, PageRequest pageRequest);
+    PageDTO readNanumsByLocation(Double lat, Double lng, PageRequest pageRequest);
 }

@@ -1,0 +1,84 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: NANUM-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/nanum_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: yyhj7424
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      #      ddl-auto: none
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: http://localhost:9092
+    consumer:
+#      group-id: # ex) user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+#      topic: test-nanum # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    nnz:
+      # feign client 로그 추적
+      nanum-serivce:
+        service: DEBUG
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Dev UserService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+cloud:
+  aws:
+    s3:
+      bucket: nnz-bucket
+    credentials:
+      access-key: AKIA6FMHN27EWBKCTETF
+      secret-key: 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
+    region:
+      static: ap-southeast-2
+      auto: false
+    stack:
+      auto: false

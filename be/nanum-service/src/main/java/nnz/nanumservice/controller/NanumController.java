@@ -57,10 +57,12 @@ public class NanumController {
     public ResponseEntity<PageDTO> readNanumsByLocation(
             @RequestParam(name = "lat") Double lat,
             @RequestParam(name = "lng") Double lng,
-            @RequestParam(name = "status") Integer status,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "20") Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return new ResponseEntity<>(nanumService.readNanumsByLocation(lat, lng, status, pageRequest), HttpStatus.OK);
+        return new ResponseEntity<>(nanumService.readNanumsByLocation(lat, lng, pageRequest), HttpStatus.OK);
     }
+
+//    @PostMapping("/{nanumId}/info")
+//    public ResponseEntity<>
 }

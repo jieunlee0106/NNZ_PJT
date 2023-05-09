@@ -6,10 +6,12 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.NanumDTO;
 import nnz.nanumservice.dto.NanumImageDTO;
+import nnz.nanumservice.dto.NearNanumDTO;
 import nnz.nanumservice.dto.TagDTO;
 import nnz.nanumservice.entity.*;
 import nnz.nanumservice.repository.*;
 import nnz.nanumservice.service.KafkaProducer;
+import nnz.nanumservice.service.LocationDistance;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.service.TagFeignClient;
 import nnz.nanumservice.vo.NanumVO;
@@ -21,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,6 +41,7 @@ public class NanumServiceImpl implements NanumService {
     private final KafkaProducer producer;
     private final NanumTagRepository nanumTagRepository;
     private final TagRepository tagRepository;
+    private final LocationDistance locationDistance;
 
     @Override
     @Transactional
@@ -124,10 +129,37 @@ public class NanumServiceImpl implements NanumService {
     }
 
     @Override
-    public PageDTO readNanumsByLocation(Double lat, Double lng, Integer status, PageRequest pageRequest) {
+    public PageDTO readNanumsByLocation(Double lat, Double lng, PageRequest pageRequest) {
 
+        List<Nanum> nanums = nanumRepository.findAllByStatus(1);
+        List<NanumDTO> nanumDTOs = nanums.stream().map(NanumDTO::of).collect(Collectors.toList());
 
+        List<NearNanumDTO> nearNanumDTOs = new ArrayList<>();
+        nanumDTOs.forEach(nanumDTO -> {
+            double distance = locationDistance.getDistance(lat, lng, nanumDTO.getLat(), nanumDTO.getLng());
+            if (distance <= 10.0 && nearNanumDTOs.size() <= 8) {
+                nearNanumDTOs.add(new NearNanumDTO(distance, nanumDTO));
+            }
+        });
 
-        return null;
+        nanumDTOs = new ArrayList<>();
+
+        if (!nearNanumDTOs.isEmpty()) {
+            Collections.sort(nearNanumDTOs);
+
+            for (NearNanumDTO nearNanumDTO : nearNanumDTOs) {
+                nanumDTOs.add(nearNanumDTO.getNanumDTO());
+            }
+
+            int start = (int) pageRequest.getOffset();
+            int end = Math.min((start + pageRequest.getPageSize()), nanumDTOs.size());
+            Page<NanumDTO> nanumDTOPage = new PageImpl<>(nanumDTOs.subList(start, end), pageRequest, nanumDTOs.size());
+
+            return PageDTO.of(nanumDTOPage);
+        } //
+        else {
+            Page<NanumDTO> nanumDTOPage = new PageImpl<>(nanumDTOs.subList(0, 0), pageRequest, nanumDTOs.size());
+            return PageDTO.of(nanumDTOPage);
+        }
     }
 }
