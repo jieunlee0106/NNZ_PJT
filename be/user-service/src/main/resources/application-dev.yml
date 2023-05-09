@@ -82,3 +82,16 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
+cloud:
+  aws:
+    s3:
+      bucket: ENC(gje0c+ysfMXAd0lIu5ZOMhAq/dN8UKEK)
+    credentials:
+      access-key: ENC(XB6m0cHn6sbhEZjKAXAEg3EgDzW/1xvoVh7z2/2ws2M=)
+      secret-key: ENC(fZCㅇWX/jrQ/i7HRMxfzvUfW+DifqHAiA01qNPYfjyIlM3lQ01WYhIPrh8OGjf6SEubzHUslYQOOQ=)
+    region:
+      static: ap-southeast-2
+      auto: false
+    stack:
+      auto: false
