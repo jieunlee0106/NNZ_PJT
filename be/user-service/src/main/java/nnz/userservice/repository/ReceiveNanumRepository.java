@@ -26,4 +26,6 @@ public interface ReceiveNanumRepository extends JpaRepository<ReceiveNanum, Long
 
     @EntityGraph(attributePaths = {"receiver"})
     List<ReceiveNanum> findByNanum(Nanum nanum);
+
+    Integer countByReceiver(User receiver);
 }

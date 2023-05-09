@@ -2,10 +2,7 @@ package nnz.userservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
-import nnz.userservice.dto.BookmarkedNanumDTO;
-import nnz.userservice.dto.NanumParticipantsDTO;
-import nnz.userservice.dto.TokenDTO;
-import nnz.userservice.dto.UserDTO;
+import nnz.userservice.dto.*;
 import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
@@ -29,4 +26,5 @@ public interface UserService {
     PageDTO providedNanums(Long userId, Pageable pageable);
     NanumParticipantsDTO nanumParticipants(Long userId, Long nanumId);
     void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException;
+    OtherUserInfoDTO otherUserInfo(Long meId, Long otherUserId);
 }

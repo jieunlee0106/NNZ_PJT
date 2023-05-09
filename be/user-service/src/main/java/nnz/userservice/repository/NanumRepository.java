@@ -12,4 +12,5 @@ public interface NanumRepository extends JpaRepository<Nanum, Long> {
 
     List<Nanum> findByProvider(User user);
     Page<Nanum> findByProvider(User user, Pageable pageable);
+    Integer countByProvider(User provider);
 }
