@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nnz.adminservice.dto.ShowDTO;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -37,8 +38,16 @@ public class Show extends BaseEntity {
     @JoinColumn(name = "category_code")
     private Category category;
 
-    @OneToMany(mappedBy = "show")
-    private List<ShowTag> showTags = new ArrayList<>();
-
+    public static Show of(ShowDTO showDTO){
+        return Show.builder()
+                .title(showDTO.getTitle())
+                .location(showDTO.getLocation())
+                .startDate(showDTO.getStartDate())
+                .endDate(showDTO.getEndDate())
+                .ageLimit(showDTO.getAgeLimit())
+                .region(showDTO.getRegion())
+                .posterImage(showDTO.getPoster())
+                .build();
+    }
 }
 
