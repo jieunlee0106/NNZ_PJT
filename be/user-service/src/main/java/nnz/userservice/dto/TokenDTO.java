@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TokenDTO {
 
+    private Long userId;
     private String accessToken;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

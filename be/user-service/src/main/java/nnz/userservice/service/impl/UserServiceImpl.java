@@ -144,6 +144,7 @@ public class UserServiceImpl implements UserService {
         refreshTokenRepository.save(rt);
 
         return TokenDTO.builder()
+                .userId(user.getId())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
