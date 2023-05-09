@@ -125,7 +125,8 @@ public class UserController {
 
     @GetMapping("/users/{otherUserId}")
     public ResponseEntity<OtherUserInfoDTO> otherUserInfo(DecodedToken token, @PathVariable Long otherUserId) {
-        OtherUserInfoDTO otherUserInfo = userService.otherUserInfo(token.getId(), otherUserId);
+        OtherUserInfoDTO otherUserInfo =
+                userService.otherUserInfo(token == null ? null : token.getId(), otherUserId);
         return ResponseEntity.ok(otherUserInfo);
     }
 

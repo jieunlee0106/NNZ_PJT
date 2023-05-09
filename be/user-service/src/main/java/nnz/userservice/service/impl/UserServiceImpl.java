@@ -338,7 +338,7 @@ public class UserServiceImpl implements UserService {
         Integer followingCount = followRepository.countByFollower(otherUser);
         Integer followerCount = followRepository.countByFollowing(otherUser);
 
-        boolean isFollower = followRepository.existsByFollowerIdAndFollowingId(meId, otherUserId);
+        boolean isFollower = meId != null && followRepository.existsByFollowerIdAndFollowingId(meId, otherUserId);
 
         Integer nanumCount = nanumRepository.countByProvider(otherUser);
         Integer receiveCount = receiveNanumRepository.countByReceiver(otherUser);
