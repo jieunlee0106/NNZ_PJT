@@ -20,6 +20,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class KafkaConsumer {
 
         UserDTO body = kafkaMessage.getBody();
 
-        if(kafkaMessage.getType().equals("CREATE")) userRepository.save(User.of(body));
+        if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) userRepository.save(User.of(body));
         else if(kafkaMessage.getType().equals("UPDATE")) userRepository.save(User.of(body));
         else if(kafkaMessage.getType().equals("DELETE")) userRepository.delete(User.of(body));
     }
@@ -104,7 +106,7 @@ public class KafkaConsumer {
                 .status(AskedShow.AskedShowStatus.of(body.getStatus()))
                 .build();
 
-        if(kafkaMessage.getType().equals("CREATE")) askedShowRepository.save(askedShow);
+        if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) askedShowRepository.save(askedShow);
         else if(kafkaMessage.getType().equals("UPDATE")) askedShowRepository.save(askedShow);
         else if(kafkaMessage.getType().equals("DELETE")) askedShowRepository.delete(askedShow);
     }
