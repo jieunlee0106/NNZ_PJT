@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class ShowDTO {
 
     private Long id;
+    private String category;
 
     private String title;
 
@@ -36,6 +37,7 @@ public class ShowDTO {
 
         return ShowDTO.builder()
                 .id(show.getId())
+                .category(show.getCategory().getName())
                 .ageLimit(show.getAgeLimit())
                 .location(show.getLocation())
                 .region(show.getRegion())
