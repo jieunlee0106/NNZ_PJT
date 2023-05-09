@@ -14,8 +14,8 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: DEV-SHOW-SERVICE
-          uri: lb://DEV-SHOW-SERVICE
+        - id: SHOW-SERVICE
+          uri: lb://SHOW-SERVICE
           predicates:
             - Path=/show-service/**
         - id: DEV_USER_SERVICE
