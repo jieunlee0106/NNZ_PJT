@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.vo.NanumVO;
 
 import javax.persistence.*;
@@ -97,5 +98,9 @@ public class Nanum extends BaseEntity {
 
     public NanumInfo getNanumInfo() {
         return this.nanumInfo == null ? new NanumInfo() : this.nanumInfo;
+    }
+
+    public void setNanumInfo(NanumInfoDTO nanumInfoDTO) {
+        this.nanumInfo = NanumInfo.of(nanumInfoDTO);
     }
 }

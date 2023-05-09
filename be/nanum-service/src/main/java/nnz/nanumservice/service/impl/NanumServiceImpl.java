@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
-import nnz.nanumservice.dto.NanumDTO;
-import nnz.nanumservice.dto.NanumImageDTO;
-import nnz.nanumservice.dto.NearNanumDTO;
-import nnz.nanumservice.dto.TagDTO;
+import nnz.nanumservice.dto.*;
 import nnz.nanumservice.entity.*;
 import nnz.nanumservice.repository.*;
 import nnz.nanumservice.service.KafkaProducer;
@@ -161,5 +158,13 @@ public class NanumServiceImpl implements NanumService {
             Page<NanumDTO> nanumDTOPage = new PageImpl<>(nanumDTOs.subList(0, 0), pageRequest, nanumDTOs.size());
             return PageDTO.of(nanumDTOPage);
         }
+    }
+
+    @Override
+    public void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO) {
+
+        // todo : error handling
+        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+        nanum.setNanumInfo(nanumInfoDTO);
     }
 }

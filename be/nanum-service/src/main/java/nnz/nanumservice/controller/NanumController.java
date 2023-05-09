@@ -3,6 +3,7 @@ package nnz.nanumservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
+import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +64,11 @@ public class NanumController {
         return new ResponseEntity<>(nanumService.readNanumsByLocation(lat, lng, pageRequest), HttpStatus.OK);
     }
 
-//    @PostMapping("/{nanumId}/info")
-//    public ResponseEntity<>
+    @PostMapping("/{nanumId}/info")
+    public ResponseEntity<NanumInfoDTO> createNanumInfo(
+            @PathVariable(name = "nanumId") Long nanumId,
+            @RequestBody NanumInfoDTO nanumInfoDTO) {
+        nanumService.createNanumInfo(nanumId, nanumInfoDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

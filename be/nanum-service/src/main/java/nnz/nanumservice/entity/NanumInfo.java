@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nnz.nanumservice.dto.NanumInfoDTO;
 
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
@@ -30,4 +31,14 @@ public class NanumInfo {
     private Double lng;
 
     private String outfit;
+
+    public static NanumInfo of(NanumInfoDTO nanumInfoDTO) {
+        return NanumInfo.builder()
+                .nanumTime(nanumInfoDTO.getNanumTime())
+                .outfit(nanumInfoDTO.getOutfit())
+                .lng(nanumInfoDTO.getLng())
+                .lat(nanumInfoDTO.getLat())
+                .location(nanumInfoDTO.getLocation())
+                .build();
+    }
 }
