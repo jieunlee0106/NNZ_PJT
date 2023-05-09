@@ -20,8 +20,8 @@ class NotificationPage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           child: Text("Fetch Categories"),
-          onPressed: () {
-            categoryController.getCategoryList();
+          onPressed: () async {
+            await categoryController.getCategoryList();
             test();
           },
         ),

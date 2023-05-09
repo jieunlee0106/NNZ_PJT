@@ -1,22 +1,19 @@
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
+
+import 'package:nnz/src/services/category_service.dart';
 
 class CategoryController extends GetxController {
-  var categoryList = [];
+  var categoryList =[];
 
-  void getCategoryList() async {
+  getCategoryList() async {
     try {
-      final response = await Dio().get(
-        'https://k8b207.p.ssafy.io/api/show-service/shows',
-        queryParameters: {'category': '축구'},
-      );
-
-      if (response.statusCode == 200) {
-        categoryList = response.data['content'];
-        print('성공');
-      }
-    } catch (error) {
-      print('Error while getting category list: $error');
+      final data = await CategoryService().getCategoryList(categoryName: '야구');
+      // categoryList.assignAll(data.date['content']);
+      print(data.data['content']);
+      categoryList = data.data['content'];
+      // assignAll 메소드는 RxList에 새로운 요소를 추가하고, 리스트를 업데이트합니다.
+    } catch (e) {
+      print(e);
     }
   }
 }

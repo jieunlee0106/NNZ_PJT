@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/performDetail",
+      initialRoute: "/home",
       getPages: [
         GetPage(
           name: "/",
