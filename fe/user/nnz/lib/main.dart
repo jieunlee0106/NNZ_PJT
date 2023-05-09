@@ -9,6 +9,7 @@ import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/my_shared_info_form.dart';
 import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/share/my_snappingtest.dart';
+import 'package:nnz/src/pages/share/sharing_perform.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
 import 'package:nnz/src/pages/user/find_password.dart';
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/",
+      initialRoute: "/performDetail",
       getPages: [
         GetPage(
           name: "/",
@@ -205,6 +206,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/notification",
           page: () => NotificationPage(),
+        ),
+        GetPage(
+          name: "/performDetail",
+          page: () => SharePerfomDetail(),
         ),
       ],
     );
