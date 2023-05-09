@@ -18,10 +18,12 @@ import nnz.adminservice.repository.ShowRepository;
 import nnz.adminservice.repository.UserRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class KafkaConsumer {
     private final UserRepository userRepository;
     private final ShowRepository showRepository;
