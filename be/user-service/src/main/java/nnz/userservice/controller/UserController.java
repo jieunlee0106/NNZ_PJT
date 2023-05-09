@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
-import nnz.userservice.dto.BookmarkedNanumDTO;
-import nnz.userservice.dto.NanumParticipantsDTO;
-import nnz.userservice.dto.TokenDTO;
-import nnz.userservice.dto.UserDTO;
+import nnz.userservice.dto.*;
 import nnz.userservice.service.BookmarkService;
 import nnz.userservice.service.FollowService;
 import nnz.userservice.service.UserService;
@@ -124,6 +121,13 @@ public class UserController {
     public ResponseEntity<UserDTO> info(DecodedToken token) {
         UserDTO info = userService.info(token.getId());
         return ResponseEntity.ok(info);
+    }
+
+    @GetMapping("/users/{otherUserId}")
+    public ResponseEntity<OtherUserInfoDTO> otherUserInfo(DecodedToken token, @PathVariable Long otherUserId) {
+        OtherUserInfoDTO otherUserInfo =
+                userService.otherUserInfo(token == null ? null : token.getId(), otherUserId);
+        return ResponseEntity.ok(otherUserInfo);
     }
 
     @GetMapping("/users/nanums")

@@ -328,4 +328,35 @@ public class UserServiceImpl implements UserService {
 
         log.info("user profile update -> After: {}", user);
     }
+
+    @Override
+    public OtherUserInfoDTO otherUserInfo(Long meId, Long otherUserId) {
+        // TODO: 해당 메소드를 실행하기 위해 쿼리가 6번 실행 -> 줄이는 방법을 생각
+
+        User otherUser = userRepository.findById(otherUserId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Integer followingCount = followRepository.countByFollower(otherUser);
+        Integer followerCount = followRepository.countByFollowing(otherUser);
+
+        boolean isFollower = meId != null && followRepository.existsByFollowerIdAndFollowingId(meId, otherUserId);
+
+        Integer nanumCount = nanumRepository.countByProvider(otherUser);
+        Integer receiveCount = receiveNanumRepository.countByReceiver(otherUser);
+        OtherUserInfoDTO.Statistics statistics = OtherUserInfoDTO.Statistics.builder()
+                .totalCount(nanumCount + receiveCount)
+                .nanumCount(nanumCount)
+                .receiveCount(receiveCount)
+                .build();
+
+        return OtherUserInfoDTO.builder()
+                .id(otherUser.getId())
+                .nickname(otherUser.getNickname())
+                .profileImage(otherUser.getProfileImage())
+                .isFollow(isFollower)
+                .followingCount(followingCount)
+                .followerCount(followerCount)
+                .statistics(statistics)
+                .build();
+    }
 }
