@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/components/register_form/share_popup.dart';
 import 'package:nnz/src/services/user_provider.dart';
 
 class UserEditController extends GetxController {
@@ -22,6 +23,10 @@ class UserEditController extends GetxController {
     newPwdController = TextEditingController();
     newPwdConfirmController = TextEditingController();
     nickController = TextEditingController();
+  }
+
+  bool test({required String value}) {
+    return newPwdConfirmController.text == value ? true : false;
   }
 
   bool onPasswordValidate({required String text}) {
@@ -51,8 +56,17 @@ class UserEditController extends GetxController {
         final available = response.body["available"];
         nickChecked.value = response.body["available"];
         if (!available) {
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "중복된 닉네임입니다.");
+              });
         } else {
-          nickChecked.value = true;
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "사용가능한 닉네임입니다.");
+              });
         }
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
@@ -78,7 +92,34 @@ class UserEditController extends GetxController {
       logger.i(response.statusCode.runtimeType);
       if (response.statusCode == 204) {
         logger.i("이동합니다.");
+        await Get.dialog(
+          AlertDialog(
+            content: const Text("계정 수정 완료하였습니다."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(Get.context!).pop();
+                },
+                child: const Text("확인"),
+              ),
+            ],
+          ),
+        );
         Get.back();
+      } else {
+        await Get.dialog(
+          AlertDialog(
+            content: Text("${response.body["message"]}"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(Get.context!).pop();
+                },
+                child: const Text("확인"),
+              ),
+            ],
+          ),
+        );
       }
     } catch (e) {
       final errorMessage = "$e";

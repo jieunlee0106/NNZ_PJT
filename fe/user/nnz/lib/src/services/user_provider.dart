@@ -149,7 +149,7 @@ class UserProvider extends GetConnect {
 
     final token = Get.find<BottomNavController>().accessToken;
     final headers = {
-      'Content-type': 'multipart/form-data; boundary=${formData.boundary}',
+      'Content-type': 'multipart/form-data;boundary=${formData.boundary}',
       'Authorization': 'Bearer $token',
     };
 
