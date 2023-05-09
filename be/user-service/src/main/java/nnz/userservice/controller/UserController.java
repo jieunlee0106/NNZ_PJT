@@ -73,13 +73,14 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginVO vo, HttpServletResponse response) {
         TokenDTO token = userService.login(vo);
-        ResponseCookie cookie = ResponseCookie.from("refresh", token.getRefreshToken())
-                .httpOnly(true)
-                .path("/")
-                .build();
 
-        response.addHeader("Set-Cookie", cookie.toString());
-        token.deleteRefreshToken(); // 응답에 refreshToken을 포함시키지 않기 위해 null로 변경
+//        ResponseCookie cookie = ResponseCookie.from("refresh", token.getRefreshToken())
+//                .httpOnly(true)
+//                .path("/")
+//                .build();
+//
+//        response.addHeader("Set-Cookie", cookie.toString());
+//        token.deleteRefreshToken(); // 응답에 refreshToken을 포함시키지 않기 위해 null로 변경
         return ResponseEntity.ok(token);
     }
 
