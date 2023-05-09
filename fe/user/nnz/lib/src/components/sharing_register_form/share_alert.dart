@@ -118,6 +118,7 @@ class _ShareAlertState extends State<ShareAlert> {
             TextButton(
               onPressed: () {
                 controller.nempSearchController.text = '';
+                controller.empSearchController.text = '';
                 Navigator.of(context).pop();
               },
               child: Container(

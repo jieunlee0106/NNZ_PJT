@@ -69,8 +69,12 @@ class LoginController extends GetxController {
         logger.i(response.statusCode);
         if (response.statusCode == 200) {
           logger.i(response.body);
+
           final accessToken = response.body["accessToken"];
+          final userId = response.body["userId"];
+          // final userId = response.body["userId"];
           Get.find<BottomNavController>().setToken(accessToken: accessToken);
+          Get.find<BottomNavController>().setUserId(userId: userId);
           final token = Get.find<BottomNavController>().getToken();
           Get.offNamed("/app");
           Get.find<BottomNavController>()

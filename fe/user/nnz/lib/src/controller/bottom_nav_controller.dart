@@ -15,7 +15,7 @@ class BottomNavController extends GetxController {
   GlobalKey<NavigatorState> mypageKey = GlobalKey<NavigatorState>();
   final storage = const FlutterSecureStorage();
   String? accessToken;
-
+  String? userId;
   void changeBottomNav(int value, {bool hasGesture = true}) async {
     var page = PageName.values[value];
     print(page);
@@ -23,6 +23,7 @@ class BottomNavController extends GetxController {
       case PageName.UPLOAD:
         curIndex(page.index);
         accessToken = await getToken();
+        userId = await getUserId();
         if (accessToken == null) {
           print(accessToken);
           Get.offNamed("/register");
@@ -77,8 +78,21 @@ class BottomNavController extends GetxController {
     return accessToken;
   }
 
+  Future<String?> getUserId() async {
+    final userId = await storage.read(key: "userId");
+    if (userId == null) {
+      return null;
+    }
+    return userId;
+  }
+
   Future<void> setToken({required String accessToken}) async {
     await storage.write(key: "accessToken", value: accessToken);
+    return;
+  }
+
+  Future<void> setUserId({required int userId}) async {
+    await storage.write(key: "userId", value: userId.toString());
     return;
   }
 

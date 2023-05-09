@@ -1,10 +1,10 @@
 class ShareModel {
-  String? showId;
-  String? writer;
+  int? showId;
+  int? writer;
   String? nanumDate;
   String? title;
   String? openTime;
-  String? isCertification;
+  bool? isCertification;
   String? condition;
   int? quantity;
   String? content;

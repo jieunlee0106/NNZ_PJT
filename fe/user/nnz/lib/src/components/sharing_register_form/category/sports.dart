@@ -35,6 +35,67 @@ class _SportsCategoryState extends State<SportsCategory> {
     setState(() {}); // showList를 변경했으므로 setState()를 호출합니다.
   }
 
+  Widget notShowList() {
+    return Column(children: [
+      for (var item in showList)
+        GestureDetector(
+          onTap: () {
+            controller.sharingController.text = item["title"];
+            controller.showId(item["id"]);
+            logger.i(controller.sharingController.text);
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              vertical: 8,
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 16,
+            ),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, 4),
+                    blurRadius: 4,
+                    color: Colors.transparent.withOpacity(0.5),
+                  )
+                ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item["title"],
+                  style: TextStyle(
+                    color: Config.blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  item["startDate"],
+                  style: TextStyle(
+                    color: Config.blackColor,
+                    fontSize: 14,
+                  ),
+                ),
+                item["location"] == null
+                    ? Container()
+                    : Text(
+                        item["location"],
+                        style: TextStyle(
+                          color: Config.blackColor,
+                          fontSize: 14,
+                        ),
+                      ),
+              ],
+            ),
+          ),
+        ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -119,43 +180,12 @@ class _SportsCategoryState extends State<SportsCategory> {
                         ),
                         if (controller.nempSearchController.text.length ==
                             0) ...[
-                          Container(
-                            child: Column(children: [
-                              for (var item in showList)
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.sharingController.text =
-                                        item["title"];
-
-                                    logger.i(controller.sharingController.text);
-                                  },
-                                  child: ListTile(
-                                    title: Text(item["title"]),
-                                  ),
-                                ),
-                            ]),
-                          )
+                          notShowList()
                         ] else if (controller
                                 .nempSearchController.text.length >=
                             1) ...[
                           showList.isNotEmpty
-                              ? Container(
-                                  child: Column(children: [
-                                    for (var item in showList)
-                                      GestureDetector(
-                                        onTap: () {
-                                          controller.sharingController.text =
-                                              item["title"];
-
-                                          logger.i(controller
-                                              .sharingController.text);
-                                        },
-                                        child: ListTile(
-                                          title: Text(item["title"]),
-                                        ),
-                                      ),
-                                  ]),
-                                )
+                              ? notShowList()
                               : Container(
                                   margin: const EdgeInsets.symmetric(
                                     vertical: 12,
@@ -167,7 +197,7 @@ class _SportsCategoryState extends State<SportsCategory> {
                                     children: [
                                       iconData(
                                         icon: ImagePath.sad,
-                                        size: 120,
+                                        size: 240,
                                       ),
                                       const SizedBox(
                                         height: 8,
