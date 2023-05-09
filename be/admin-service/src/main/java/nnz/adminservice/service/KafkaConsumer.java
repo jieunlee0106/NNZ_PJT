@@ -42,8 +42,8 @@ public class KafkaConsumer {
         UserDTO body = kafkaMessage.getBody();
 
         if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) userRepository.save(User.of(body));
-        else if(kafkaMessage.getType().equals("UPDATE")) userRepository.save(User.of(body));
-        else if(kafkaMessage.getType().equals("DELETE")) userRepository.delete(User.of(body));
+        else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) userRepository.save(User.of(body));
+        else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) userRepository.delete(User.of(body));
     }
 
     // Show
@@ -56,9 +56,9 @@ public class KafkaConsumer {
 
         ShowDTO body = kafkaMessage.getBody();
 
-        if(kafkaMessage.getType().equals("CREATE")) showRepository.save(Show.of(body));
-        else if(kafkaMessage.getType().equals("UPDATE")) showRepository.save(Show.of(body));
-        else if(kafkaMessage.getType().equals("DELETE")) showRepository.delete(Show.of(body));
+        if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) showRepository.save(Show.of(body));
+        else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) showRepository.save(Show.of(body));
+        else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) showRepository.delete(Show.of(body));
     }
 
     // Report
@@ -85,9 +85,9 @@ public class KafkaConsumer {
                 .status(Report.ReportStatus.of(body.getStatus()))
                 .build();
 
-        if(kafkaMessage.getType().equals("CREATE")) reportRepository.save(report);
-        else if(kafkaMessage.getType().equals("UPDATE")) reportRepository.save(report);
-        else if(kafkaMessage.getType().equals("DELETE")) reportRepository.delete(report);
+        if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) reportRepository.save(report);
+        else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) reportRepository.save(report);
+        else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) reportRepository.delete(report);
     }
 
     // AskedShow
@@ -107,8 +107,8 @@ public class KafkaConsumer {
                 .build();
 
         if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) askedShowRepository.save(askedShow);
-        else if(kafkaMessage.getType().equals("UPDATE")) askedShowRepository.save(askedShow);
-        else if(kafkaMessage.getType().equals("DELETE")) askedShowRepository.delete(askedShow);
+        else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) askedShowRepository.save(askedShow);
+        else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) askedShowRepository.delete(askedShow);
     }
 
 }
