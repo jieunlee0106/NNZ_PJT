@@ -1,16 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:dio/dio.dart' as io;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/register_model.dart';
 
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
   final logger = Logger();
   @override
-  final headers = {
-    'Content-Type': 'application/json',
-  };
-
   @override
   void onInit() async {
     //load env file
@@ -27,6 +27,9 @@ class UserProvider extends GetConnect {
     required String email,
     required String password,
   }) async {
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final body = {
       'email': email,
       'pwd': password,
@@ -42,6 +45,9 @@ class UserProvider extends GetConnect {
     required String type,
     required String value,
   }) async {
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final response = await get(
       "https://k8b207.p.ssafy.io/api/user-service/users/check?type=$type&val=$value",
       headers: headers,
@@ -61,6 +67,9 @@ class UserProvider extends GetConnect {
     final body = {
       'phone': phone,
     };
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final response = await post(
       "https://k8b207.p.ssafy.io/api/user-service/users/verify",
       body,
@@ -77,6 +86,9 @@ class UserProvider extends GetConnect {
     final body = {
       'phone': phone,
       'verifyNum': verifyNum,
+    };
+    final headers = {
+      'Content-Type': 'application/json',
     };
     logger.i("$phone $verifyNum");
     final response = await post(
@@ -108,9 +120,49 @@ class UserProvider extends GetConnect {
       "pwd": pwd,
       "confirmPwd": confirmPwd,
     };
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final response = await patch(
         "https://k8b207.p.ssafy.io/api/user-service/users/find-pwd", body,
         headers: headers);
+    return response;
+  }
+
+  Future<Response> patchUser({
+    required File image,
+    required String oldPwd,
+    required String newPwd,
+    required String confirmNewPwd,
+    required String nickname,
+  }) async {
+    var formData = io.FormData();
+    formData.fields.add(MapEntry(
+        'data',
+        jsonEncode({
+          'oldPwd': oldPwd,
+          'newPwd': newPwd,
+          'confirmNewPwd': confirmNewPwd,
+          'nickname': nickname,
+        })));
+    formData.files.add(MapEntry(
+        'file',
+        io.MultipartFile.fromFileSync(
+          image.path,
+          filename: 'profile.png',
+        )));
+
+    final token = Get.find<BottomNavController>().accessToken;
+    final headers = {
+      'Content-type': 'multipart/form-data; boundary=${formData.boundary}',
+      'Authorization': 'Bearer $token'
+    };
+
+    final response = await patch(
+      "https://k8b207.p.ssafy.io/api/user-service/users",
+      formData,
+      headers: headers,
+    );
     return response;
   }
 }
