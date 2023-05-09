@@ -14,14 +14,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    @Value("${spring.kafka.producer.topic}")
-    private String topic;
+//    @Value("${spring.kafka.producer.topic}")
+//    private String topic;
+
+    @Value("${spring.kafka.prefix}")
+    private String prefix;
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(KafkaMessage<?> message) throws JsonProcessingException {
+    public void sendMessage(String topic, KafkaMessage<?> message) throws JsonProcessingException {
         String jsonMessage = KafkaMessageUtils.serialize(message);
-        kafkaTemplate.send(this.topic, jsonMessage);
-        log.info("produce message: {} to: {}", jsonMessage, this.topic);
+        kafkaTemplate.send(prefix + topic, jsonMessage);
+        log.info("produce message: {} to: {}", jsonMessage, prefix + topic);
     }
 }

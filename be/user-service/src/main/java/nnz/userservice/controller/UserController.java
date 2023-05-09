@@ -5,10 +5,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.*;
-import nnz.userservice.service.BookmarkService;
-import nnz.userservice.service.FollowService;
-import nnz.userservice.service.UserService;
-import nnz.userservice.service.VerifyService;
+import nnz.userservice.service.*;
 import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.*;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +31,7 @@ public class UserController {
     private final VerifyService verifyService;
     private final FollowService followService;
     private final BookmarkService bookmarkService;
+    private final AskService askService;
 
     @PostMapping("/users/join")
     public ResponseEntity<Void> join(@RequestBody UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException {
@@ -154,6 +152,21 @@ public class UserController {
             @RequestPart("data") UserUpdateProfileVO vo,
             @RequestPart(value = "file", required = false) MultipartFile file) throws UnsupportedEncodingException {
         userService.updateProfile(token.getId(), vo, file);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/users/ask/show")
+    public ResponseEntity<Void> askRegisterShow(@RequestBody ShowRegisterVO vo) throws JsonProcessingException {
+        askService.askRegisterShow(vo);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/users/report")
+    public ResponseEntity<Void> reportUser(
+            DecodedToken token,
+            @RequestBody UserReportVO vo) throws JsonProcessingException {
+        vo.setReporterId(token.getId());
+        askService.reportUser(vo);
         return ResponseEntity.noContent().build();
     }
 }

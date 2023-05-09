@@ -47,6 +47,7 @@ spring:
 
 
   kafka:
+    prefix: prod-
     bootstrap-servers: ENC(ja/91EAqTMG/+quV1DWlpCHszwjHpMT7TCZ+fr4cowAWQ+YubiOUIA==)
     consumer:
       group-id: ENC(RoVHtnhD8Wi0ZLIdgsRoAI6rrVfw3Ndt)
