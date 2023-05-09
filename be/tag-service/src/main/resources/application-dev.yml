@@ -19,6 +19,16 @@ spring:
       hibernate:
         globally_quoted_identifiers: true
         format_sql: true
+  kafka:
+    bootstrap-servers: http://k8b207.p.ssafy.io:29092
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 
 eureka:
   client:
