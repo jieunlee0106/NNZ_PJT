@@ -21,12 +21,7 @@ class SharingRegisterController extends GetxController {
   late final showSearchController;
   //나눔등록에서 공연 검색 api 통신이 완료되면
   //sportsController ~ movieController는 싹다 삭제하기
-  late final sportsController;
-  late final musicalController;
-  late final concertController;
-  late final esportsController;
-  late final theaterController;
-  late final movieController;
+
   late final conditionController;
   late final hashTagController;
   late final sharingDateController;
@@ -42,7 +37,8 @@ class SharingRegisterController extends GetxController {
   RxList<String> conList = RxList<String>();
   RxList<String> tagList = RxList<String>();
   RxString testText = "".obs;
-
+  RxInt showId = RxInt(0);
+  RxInt writer = 0.obs;
   RxBool isAuthentication = false.obs;
 
   RxInt peopleCount = 0.obs;
@@ -60,12 +56,7 @@ class SharingRegisterController extends GetxController {
     detailController = TextEditingController();
     sharingController = TextEditingController();
     showSearchController = TextEditingController();
-    sportsController = TextEditingController();
-    musicalController = TextEditingController();
-    esportsController = TextEditingController();
-    concertController = TextEditingController();
-    theaterController = TextEditingController();
-    movieController = TextEditingController();
+
     conditionController = TextEditingController();
     hashTagController = TextEditingController();
     sharingDateController = TextEditingController();
@@ -78,6 +69,11 @@ class SharingRegisterController extends GetxController {
   Future<String> getToken() async {
     final accessToken = await storage.read(key: 'accessToken');
     return accessToken!;
+  }
+
+  Future<String> getUserId() async {
+    final userId = await storage.read(key: 'userId');
+    return userId!;
   }
 
   void onChange(String text) {
@@ -318,13 +314,13 @@ class SharingRegisterController extends GetxController {
         final openTime = "${openDateController.text}${openTimeController.text}";
 
         shareModel = ShareModel(
-          showId: sharingController.text,
-          writer: "나너주",
+          showId: showId.value,
+          writer: writer.value,
           nanumDate: sharingDateController.text,
           title: titleController.text,
           openTime: openTime,
           quantity: peopleCount.value,
-          isCertification: isAuthentication.value == true ? "true" : "false",
+          isCertification: isAuthentication.value,
           condition: isAuthentication.value == true ? conList[0] : null,
           content: detailController.text,
           tags: tagList,
@@ -357,13 +353,13 @@ class SharingRegisterController extends GetxController {
       final openTime = "${openDateController.text}${openTimeController.text}";
 
       shareModel = ShareModel(
-        showId: sharingController.text,
-        writer: "나너주",
+        showId: showId.value,
+        writer: writer.value,
         nanumDate: sharingDateController.text,
         title: titleController.text,
         openTime: openTime,
         quantity: peopleCount.value,
-        isCertification: isAuthentication.value == true ? "true" : "false",
+        isCertification: isAuthentication.value,
         condition: isAuthentication.value == true
             ? conList.indexOf(0).toString()
             : null,
