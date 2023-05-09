@@ -2,6 +2,7 @@ package nnz.adminservice.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +16,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReportDTO {
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime reportedAt;
-    private Long reportedId;
+    private Long reporterId;
     private Long targetId;
     private String reason;
     private int status;

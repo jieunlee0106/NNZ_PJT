@@ -71,7 +71,7 @@ public class KafkaConsumer {
 
         ReportDTO body = kafkaMessage.getBody();
 
-        User reporter = userRepository.findById(body.getReportedId())
+        User reporter = userRepository.findById(body.getReporterId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         User target = userRepository.findById(body.getTargetId())
