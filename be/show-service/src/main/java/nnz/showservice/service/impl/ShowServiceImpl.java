@@ -38,7 +38,7 @@ public class ShowServiceImpl implements ShowService {
         Category category = categoryRepository.findByName(categoryName).orElseThrow();
         Page<Show> showPage = showRepository.findByCategoryAndIsDeleteFalse(category, pageRequest);
 
-        if (category.getParentCode().equals("SPO") || category.getParentCode().equals("ESP")) {
+        if (category.getParentCode() != null && (category.getParentCode().equals("SPO") || category.getParentCode().equals("ESP"))) {
             Page<SportsDTO> sportsDTOPage = showPage.map(SportsDTO::entityToDto);
             return PageDTO.of(sportsDTOPage);
         }
