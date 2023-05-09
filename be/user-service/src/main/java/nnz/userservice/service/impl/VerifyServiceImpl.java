@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.MessageDTO;
 import nnz.userservice.entity.VerifyNumber;
 import nnz.userservice.exception.ErrorCode;
+import nnz.userservice.repository.UserRepository;
 import nnz.userservice.repository.VerifyNumberRepository;
 import nnz.userservice.service.SmsSender;
 import nnz.userservice.service.VerifyService;
@@ -29,12 +30,40 @@ import java.util.Random;
 public class VerifyServiceImpl implements VerifyService {
 
     private final SmsSender smsSender;
+    private final UserRepository userRepository;
     private final VerifyNumberRepository verifyNumberRepository;
     private static final Long VERIFY_NUMBER_EXPIRATION_PERIOD = 1000L * 60 * 2; // 2min
 
     @Override
     @Transactional
-    public void sendVerifySms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+    public void sendJoinVerifySms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        if (userRepository.existsByPhoneNumber(to)) {
+            throw new CustomException(ErrorCode.DUPLICATE_PHONE_NUMBER);
+        }
+
+        sendSms(to);
+    }
+
+    @Override
+    @Transactional
+    public void sendFindPwdVerifySms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        sendSms(to);
+    }
+
+    @Override
+    @Transactional
+    public boolean verify(String phone, int verifyNumber) {
+        VerifyNumber vn = verifyNumberRepository.findById(phone)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFY));
+
+        vn.verify(verifyNumber);
+        verifyNumberRepository.save(vn);
+
+        log.info("input verifyNumber:{}, {}의 인증결과: {}", verifyNumber, phone, vn.isVerify());
+        return vn.isVerify();
+    }
+
+    private void sendSms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         String randomNumber = createRandomNumber();
 
         // 인증번호를 문자로 전송
@@ -62,19 +91,6 @@ public class VerifyServiceImpl implements VerifyService {
                 .build();
         verifyNumberRepository.save(verifyNumber);
         log.info("레디스에 인증정보 저장: {}", verifyNumber);
-    }
-
-    @Override
-    @Transactional
-    public boolean verify(String phone, int verifyNumber) {
-        VerifyNumber vn = verifyNumberRepository.findById(phone)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFY));
-
-        vn.verify(verifyNumber);
-        verifyNumberRepository.save(vn);
-
-        log.info("input verifyNumber:{}, {}의 인증결과: {}", verifyNumber, phone, vn.isVerify());
-        return vn.isVerify();
     }
 
     private String createRandomNumber() {

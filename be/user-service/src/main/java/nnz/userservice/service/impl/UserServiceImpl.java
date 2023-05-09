@@ -75,6 +75,11 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
+        // 폰 번호 중복 검사
+        if (isExistsByPhoneNumber(vo.getPhone())) {
+            throw new CustomException(ErrorCode.DUPLICATE_PHONE_NUMBER);
+        }
+
         // 닉네임 형식 검사
         if (!ValidationUtils.isValidNickname(vo.getNickname())) {
             throw new CustomException(ErrorCode.INVALID_NICKNAME_PATTERN);
@@ -125,6 +130,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isExistByNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public boolean isExistsByPhoneNumber(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
     }
 
     @Override

@@ -18,6 +18,7 @@ public interface UserService {
     UserDTO join(UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException;
     boolean isExistByEmail(String email);
     boolean isExistByNickname(String nickname);
+    boolean isExistsByPhoneNumber(String phoneNumber);
     TokenDTO login(LoginVO vo);
     void findPwd(FindPwdVO vo);
     List<BookmarkedNanumDTO> findBookmarkedNanum(Long userId);

@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 public interface VerifyService {
 
-    void sendVerifySms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException;
+    void sendJoinVerifySms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException;
+    void sendFindPwdVerifySms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException;
     boolean verify(String phone, int verifyNumber);
 }

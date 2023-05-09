@@ -7,18 +7,17 @@ import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.*;
 import nnz.userservice.service.*;
 import nnz.userservice.util.ValidationUtils;
-import nnz.userservice.vo.*;
+import nnz.userservice.vo.FindPwdVO;
+import nnz.userservice.vo.LoginVO;
+import nnz.userservice.vo.UserJoinVO;
+import nnz.userservice.vo.UserUpdateProfileVO;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,21 +36,6 @@ public class UserController {
     public ResponseEntity<Void> join(@RequestBody UserJoinVO vo) throws UnsupportedEncodingException, JsonProcessingException {
         userService.join(vo);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/users/verify")
-    public ResponseEntity<Void> sendMessage(@RequestBody VerifyVO vo) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        verifyService.sendVerifySms(vo.getPhone());
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/users/verify/check")
-    public ResponseEntity<Map<String, Boolean>> checkVerify(@RequestBody CheckVerifyVO vo) {
-        boolean result = verifyService.verify(vo.getPhone(), vo.getVerifyNum());
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("verify", result);
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/users/check")
