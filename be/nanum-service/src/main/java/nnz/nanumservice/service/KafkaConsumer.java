@@ -25,7 +25,7 @@ public class KafkaConsumer {
     private final UserRepository userRepository;
     private final NanumRepository nanumRepository;
 
-    @KafkaListener(topics = "test-show", groupId = "nanum-service-1")
+    @KafkaListener(topics = "dev-show", groupId = "nanum-service-1")
     public void getShowMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume message: {}", message);
@@ -38,7 +38,7 @@ public class KafkaConsumer {
         showRepository.save(show);
     }
 
-    @KafkaListener(topics = "test-tag", groupId = "nanum-service-2")
+    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
     public void getTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
         log.info("consume message: {}", message);
@@ -51,7 +51,7 @@ public class KafkaConsumer {
         tagRepository.save(tag);
     }
 
-    @KafkaListener(topics = "test-nanum-tag", groupId = "nanum-service-3")
+    @KafkaListener(topics = "dev-nanumtag", groupId = "nanum-service-3")
     public void getNanumTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<NanumTagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumTagDTO.class);
         log.info("consume message: {}", message);
@@ -68,7 +68,7 @@ public class KafkaConsumer {
         nanumTagRepository.save(nanumTag);
     }
 
-    @KafkaListener(topics = "test-user", groupId = "nanum-service-4")
+    @KafkaListener(topics = "dev-user", groupId = "nanum-service-4")
     public void getUserMessage(String message) throws JsonProcessingException {
         KafkaMessage<UserDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, UserDTO.class);
         log.info("consume message: {}", message);

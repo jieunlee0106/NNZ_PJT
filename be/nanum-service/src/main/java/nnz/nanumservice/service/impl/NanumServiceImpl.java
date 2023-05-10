@@ -55,7 +55,7 @@ public class NanumServiceImpl implements NanumService {
         NanumDTO nanumDTO = NanumDTO.of(nanum);
 
         KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.create().body(nanumDTO);
-        producer.sendMessage(nanumDTOKafkaMessage, "test-nanum");
+        producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
 
         // todo: error handling
         List<TagDTO> tagDTOs = new ArrayList<>();
@@ -82,7 +82,7 @@ public class NanumServiceImpl implements NanumService {
             NanumImageDTO nanumImageDTO = NanumImageDTO.of(nanumImage);
 
             KafkaMessage<NanumImageDTO> nanumImageDTOKafkaMessage = KafkaMessage.create().body(nanumImageDTO);
-            producer.sendMessage(nanumImageDTOKafkaMessage, "test-nanum-image");
+            producer.sendMessage(nanumImageDTOKafkaMessage, "dev-nanumimage");
 
             if (isThumbnail) {
                 nanum.updateThumbnail(path);
