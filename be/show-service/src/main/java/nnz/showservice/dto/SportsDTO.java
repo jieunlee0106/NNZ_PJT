@@ -32,35 +32,4 @@ public class SportsDTO {
     private String leftTeamImage;
 
     private String rightTeamImage;
-
-    public static SportsDTO entityToDto(Show show) {
-        String[] team = show.getTitle().split("vs");
-        String leftTeam = team[0];
-        String rightTeam = team[1];
-        String leftTeamImage = null;
-        String rightTeamImage = null;
-
-        if (show.getPosterImage() != null) {
-            String[] teamImages = show.getPosterImage().split("vs");
-            leftTeamImage = teamImages[0];
-            rightTeamImage = teamImages[1];
-        }
-
-        List<ShowTagDTO> showTags = show.getShowTags()
-                .stream()
-                .map(ShowTagDTO::entityToDTO)
-                .collect(Collectors.toList());
-
-        return SportsDTO.builder()
-                .id(show.getId())
-                .ageLimit(show.getAgeLimit())
-                .location(show.getLocation())
-                .leftTeam(leftTeam)
-                .rightTeam(rightTeam)
-                .leftTeamImage(leftTeamImage)
-                .rightTeamImage(rightTeamImage)
-                .date(show.getStartDate())
-                .showTags(showTags)
-                .build();
-    }
 }
