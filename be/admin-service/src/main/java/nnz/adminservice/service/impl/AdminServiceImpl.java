@@ -172,10 +172,6 @@ public class AdminServiceImpl implements AdminService {
         }
 
         report.updateProcessedAt(LocalDateTime.now());
-
-        KafkaMessage<ReportStatusVO> message = KafkaMessage.update().body(reportStatusVO);
-
-        kafkaProducer.sendMessage(message, "report");
     }
 
     @Override
