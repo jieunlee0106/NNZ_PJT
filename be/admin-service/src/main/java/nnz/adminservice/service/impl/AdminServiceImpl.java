@@ -67,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void handleAskedShow(AskedShowStatusVO askedShowStatusVO) throws JsonProcessingException {
 
-        AskedShow askedShow = askedShowRepository.findById(askedShowStatusVO.getAskedShowsId())
+        AskedShow askedShow = askedShowRepository.findById(askedShowStatusVO.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ASKED_SHOW_NOT_FOUND));
 
         // 승인할 시
