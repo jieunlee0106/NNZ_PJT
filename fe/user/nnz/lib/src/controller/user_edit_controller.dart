@@ -79,8 +79,40 @@ class UserEditController extends GetxController {
           newPwd: newPwdController.text,
           confirmNewPwd: newPwdConfirmController.text,
           nickname: nickController.text);
-      logger.i(response.statusCode);
-      logger.i(response.statusText);
+      if (response.statusCode == 204) {
+        await showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: const Text("계정 수정 완료하였습니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("확인"),
+                  ),
+                ],
+              );
+            });
+        Get.back();
+      } else {
+        await showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text(response.body["message"]),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("확인"),
+                  ),
+                ],
+              );
+            });
+      }
     } catch (e) {
       final errorMessage = "$e";
       logger.e(errorMessage);
