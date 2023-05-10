@@ -22,7 +22,12 @@ spring:
             allowedOrigins: '*'
             # allow-credentials: true
             allowedHeaders: '*'
-            allowedMethods: '*'
+            allowedMethods: 
+              - GET
+              - POST
+              - DELETE
+              - PATCH
+              - OPTIONS
         add-to-simple-url-handler-mapping: true
       routes:
         #        - id: DEV-CONFIG-SERVICE
