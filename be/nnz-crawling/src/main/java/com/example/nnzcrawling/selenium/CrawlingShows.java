@@ -20,8 +20,8 @@ import java.util.StringTokenizer;
 public class CrawlingShows {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-//    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+//    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
@@ -31,13 +31,9 @@ public class CrawlingShows {
         //크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-
-        //브라우저가 눈에 보이지 않고 내부적으로 돈다.
-        //설정하지 않을 시 실제 크롬 창이 생성되고, 어떤 순서로 진행되는지 확인할 수 있다.
-//        options.addArguments("headless");
 
         //위에서 설정한 옵션은 담은 드라이버 객체 생성
         //옵션을 설정하지 않았을 때에는 생략 가능하다.
@@ -62,9 +58,8 @@ public class CrawlingShows {
 
         // 1번 인덱스는 전체 탭이므로 스킵
         int categoryCnt = 2;
-//        int categoryCnt = categories.size() + 1;
-        while (categoryCnt <= categories.size()) {
-//        while (categoryCnt <= 2) {
+//        while (categoryCnt <= categories.size()) {
+        while (categoryCnt <= 2) {
 
             Thread.sleep(1000);
             // 공연의 카테고리 선택하기.

@@ -29,6 +29,5 @@ public class ShowCrawling {
 
     private String posterImage;
 
-    // e스포츠 -> 롤, 배그, 오버워치 등등..
     private String category;
 }

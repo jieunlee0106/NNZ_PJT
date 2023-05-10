@@ -2,13 +2,11 @@ package com.example.nnzcrawling.service.impl;
 
 import com.example.nnzcrawling.dto.ShowDTO;
 import com.example.nnzcrawling.dto.TagDTO;
-import com.example.nnzcrawling.entity.Category;
-import com.example.nnzcrawling.entity.Show;
-import com.example.nnzcrawling.entity.ShowCrawling;
-import com.example.nnzcrawling.entity.TagCrawling;
+import com.example.nnzcrawling.entity.*;
 import com.example.nnzcrawling.repository.CategoryRepository;
 import com.example.nnzcrawling.repository.ShowCrawlingRepository;
 import com.example.nnzcrawling.repository.ShowRepository;
+import com.example.nnzcrawling.repository.TeamImageRepository;
 import com.example.nnzcrawling.selenium.CrawlingESports;
 import com.example.nnzcrawling.selenium.CrawlingShows;
 import com.example.nnzcrawling.selenium.CrawlingSports;
@@ -22,9 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +34,10 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final KafkaProducer producer;
     private final CategoryRepository categoryRepository;
     private final ShowRepository showRepository;
+    private final TeamImageRepository teamImageRepository;
 
     @Override
-    @Scheduled(cron = "0 57 15 1/1 * *")
+    @Scheduled(cron = "0 1 13 1/1 * *")
     @Transactional
     public void createShow() {
 
@@ -74,7 +71,6 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                     showRepository.save(show);
                 }
             });
-            showRepository.saveAll(showEntities);
             showCrawlingRepository.createShows(showCrawlingEntities);
 
             // kafka producer 등록
@@ -97,8 +93,37 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             // 태그 생성 메소드 호출
             tagFeignClient.createTag(tagDTOs);
 
+            createTeamImage(sports);
         } catch (InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void createTeamImage(List<ShowCrawling> sports) {
+
+        Map<String, String> teamMap = new HashMap<>();
+
+        sports.forEach(sport -> {
+            String[] team = sport.getTitle().split("vs");
+            String leftTeam = team[0].trim();
+            String rightTeam = team[1].trim();
+
+            String leftTeamImage = null;
+            String rightTeamImage = null;
+            if (sport.getPosterImage() != null) {
+                String[] teamImages = sport.getPosterImage().split("vs");
+                leftTeamImage = teamImages[0].trim();
+                rightTeamImage = teamImages[1].trim();
+            }
+
+            teamMap.put(leftTeam, leftTeamImage);
+            teamMap.put(rightTeam, rightTeamImage);
+        });
+
+        teamMap.forEach((name, image) -> {
+            TeamImage teamImage = teamImageRepository.findById(name).orElse(new TeamImage(name, image));
+            teamImageRepository.save(teamImage);
+        });
     }
 }

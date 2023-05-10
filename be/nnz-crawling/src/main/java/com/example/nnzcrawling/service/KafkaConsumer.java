@@ -31,7 +31,7 @@ public class KafkaConsumer {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    @KafkaListener(topics = "test-tag", groupId = "crawling-service-1")
+    @KafkaListener(topics = "dev-tag", groupId = "crawling-service-1")
     public void getTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
         log.info("consume message: {}", message);
@@ -44,15 +44,13 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "test-show-tag", groupId = "crawling-service-2")
+    @KafkaListener(topics = "dev-show-tag", groupId = "crawling-service-2")
 //    @KafkaHandler // 카프카의 해당 토픽에서 메시지를 얻으면 실행되는 함수
     public void getShowTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowTagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowTagDTO.class);
         log.info("consume message: {}", message);
         log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
         log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-
-        System.out.println("=============================");
 
         // todo: error handling
         Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();

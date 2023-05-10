@@ -3,7 +3,6 @@ package com.example.nnzcrawling.entity;
 import com.example.nnzcrawling.dto.ShowDTO;
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
-import org.hibernate.annotations.SQLInsert;
 
 import javax.persistence.*;
 
@@ -14,10 +13,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
-//@SQLInsert(sql = "insert ignore into shows " +
-//        "(title, location, start_date, end_date, " +
-//        "age_limit, region, poster_image, category_code) " +
-//        "values (?, ?, ?, ?, ?, ?, ?, ?);")
 public class Show extends BaseEntity {
 
     @Id

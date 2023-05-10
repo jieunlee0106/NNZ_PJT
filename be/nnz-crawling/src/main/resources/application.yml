@@ -4,9 +4,13 @@ server:
 spring:
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/show_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: yyhj7424
+#    url: jdbc:mysql://127.0.0.1:3306/show_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: root
+#    password: yyhj7424
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(CME3/hc/qLgRu1/yBUEvBM70vwxhkTbag+0NOJuen2wco8Ft1kMVQWxw0tksc7e8LTK3FE2qxv/W+pBJ15DLkDmHEWMKELVNmVDOS8V3sOx3e6y42hZpjDKlYxHlP2JoFCA6e+3JrpautIsoqEdnng==)
+    username: ENC(wkNqgPR+zw2ev6kDzUJaoA==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   application:
@@ -31,7 +35,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
-      topic: test-show # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
+      topic: dev-show # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 

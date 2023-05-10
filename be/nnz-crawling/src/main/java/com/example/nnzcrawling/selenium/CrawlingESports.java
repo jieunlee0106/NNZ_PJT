@@ -18,8 +18,8 @@ import java.util.StringTokenizer;
 public class CrawlingESports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-//    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+//    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
@@ -29,15 +29,9 @@ public class CrawlingESports {
         //크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-
-
-
-        //브라우저가 눈에 보이지 않고 내부적으로 돈다.
-        //설정하지 않을 시 실제 크롬 창이 생성되고, 어떤 순서로 진행되는지 확인할 수 있다.
-//        options.addArguments("headless");
 
         WebDriver driver = new ChromeDriver(options);
 
