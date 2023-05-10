@@ -38,9 +38,10 @@ public class KafkaConsumer {
         log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
         log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
 
-        Tag tag = Tag.of(kafkaMessage.getBody());
-
-        tagRepository.save(tag);
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            Tag tag = Tag.of(kafkaMessage.getBody());
+            tagRepository.save(tag);
+        }
     }
 
     @Transactional
@@ -52,28 +53,28 @@ public class KafkaConsumer {
         log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
         log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
 
-        // todo: error handling
-        Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();
-        System.out.println(show);
-        Tag tag = tagRepository.findById(kafkaMessage.getBody().getTagId()).orElseThrow();
-        System.out.println(tag);
-        ShowTag showTag = ShowTag.of(kafkaMessage.getBody(), show, tag);
-
-        showTagRepository.save(showTag);
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            // todo: error handling
+            Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();
+            Tag tag = tagRepository.findById(kafkaMessage.getBody().getTagId()).orElseThrow();
+            ShowTag showTag = ShowTag.of(kafkaMessage.getBody(), show, tag);
+            showTagRepository.save(showTag);
+        }
     }
 
-    @Transactional
-    @KafkaListener(topics = "dev-show", groupId = "crawling-service-3")
-    public void getShowMessage(String message) throws JsonProcessingException {
-        KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-
-        // todo: error handling
-        Category category = categoryRepository.findById(kafkaMessage.getBody().getCategoryCode()).orElseThrow();
-        Show show = Show.dtoToEntity(kafkaMessage.getBody(), category);
-
-        showRepository.save(show);
-    }
+    // todo: 관리자에서 등록하는 공연에 대한 토픽은 따로 분리해야 할듯.
+//    @Transactional
+//    @KafkaListener(topics = "dev-show", groupId = "crawling-service-3")
+//    public void getShowMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
+//        log.info("consume message: {}", message);
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        // todo: error handling
+//        Category category = categoryRepository.findById(kafkaMessage.getBody().getCategoryCode()).orElseThrow();
+//        Show show = Show.dtoToEntity(kafkaMessage.getBody(), category);
+//
+//        showRepository.save(show);
+//    }
 }
