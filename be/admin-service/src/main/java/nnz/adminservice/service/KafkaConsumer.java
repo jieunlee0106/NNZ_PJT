@@ -7,15 +7,9 @@ import io.github.eello.nnz.common.kafka.KafkaMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.adminservice.dto.*;
-import nnz.adminservice.entity.AskedShow;
-import nnz.adminservice.entity.Report;
-import nnz.adminservice.entity.Show;
-import nnz.adminservice.entity.User;
+import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
-import nnz.adminservice.repository.AskedShowRepository;
-import nnz.adminservice.repository.ReportRepository;
-import nnz.adminservice.repository.ShowRepository;
-import nnz.adminservice.repository.UserRepository;
+import nnz.adminservice.repository.*;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +25,7 @@ public class KafkaConsumer {
     private final ShowRepository showRepository;
     private final ReportRepository reportRepository;
     private final AskedShowRepository askedShowRepository;
+    private final CategoryRepository categoryRepository;
     // User
     @KafkaListener(topics = "dev-user", groupId = "dev-admin-service")
     public void userMessage(String message) throws JsonProcessingException {
@@ -56,9 +51,23 @@ public class KafkaConsumer {
 
         ShowDTO body = kafkaMessage.getBody();
 
-        if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) showRepository.save(Show.of(body));
-        else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) showRepository.save(Show.of(body));
-        else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) showRepository.delete(Show.of(body));
+        Category category = categoryRepository.findByCode(body.getCategory())
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+
+        Show show = Show.builder()
+                .title(body.getTitle())
+                .category(category)
+                .location(body.getLocation())
+                .startDate(body.getStartDate())
+                .endDate(body.getEndDate())
+                .ageLimit(body.getAgeLimit())
+                .region(body.getRegion())
+                .posterImage(body.getPoster())
+                .build();
+
+        if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) showRepository.save(show);
+        else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) showRepository.save(show);
+        else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) showRepository.delete(show);
     }
 
     // Report
