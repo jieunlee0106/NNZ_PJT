@@ -41,6 +41,7 @@ public class Show extends BaseEntity {
     public static Show of(ShowDTO showDTO){
         return Show.builder()
                 .title(showDTO.getTitle())
+                .category(showDTO.getCategory())
                 .location(showDTO.getLocation())
                 .startDate(showDTO.getStartDate())
                 .endDate(showDTO.getEndDate())

@@ -11,4 +11,5 @@ public class AskedShowKafkaDTO {
     private String title;
     private String path;
     private int status;
+    private Long createdBy;
 }
