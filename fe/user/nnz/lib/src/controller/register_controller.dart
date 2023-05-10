@@ -99,7 +99,6 @@ class RegisterController extends GetxController {
 
   //sms 인증 요청
   void onSms() async {
-    requestSms(true);
     // phoneChecked(false);
 
     logger.i(phoneChecked.value);
@@ -109,10 +108,17 @@ class RegisterController extends GetxController {
       final response =
           await UserProvider().postReqVerify(phone: smsController.text);
       if (response.statusCode == 200) {
+        requestSms(true);
         phoneChecked(false);
         startTimer();
         logger.i("본인요청 api ${response.body}");
-      } else {}
+      } else {
+        showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return sharePopup(popupMessage: "${response.body["message"]}");
+            });
+      }
       final errorMessage = "(${response.statusCode}): ${response.body}";
       logger.e(errorMessage);
       throw Exception(errorMessage);
@@ -203,12 +209,19 @@ class RegisterController extends GetxController {
       if (response.statusCode == 200) {
         logger.i(response.body);
         final available = response.body["available"];
-        nickChecked(available);
-        if (nickChecked.value == false) {
+        if (!available) {
+          nickChecked(available);
           showDialog(
               context: Get.context!,
               builder: (BuildContext context) {
                 return const sharePopup(popupMessage: "중복된 닉네임입니다.");
+              });
+        } else {
+          nickChecked(available);
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "사용가능한 닉네임입니다.");
               });
         }
         onRegisterCheck();
@@ -244,11 +257,6 @@ class RegisterController extends GetxController {
 
   Future<void> onPhoneAuthNumberVerity() async {
     logger.i(authNumberController.text);
-    smsChecked(true);
-    onRegisterCheck();
-    if (timer.isActive) {
-      timer.cancel();
-    }
 
     // 서버에서 api 통신이 가능하면 주석 풀 것
     try {

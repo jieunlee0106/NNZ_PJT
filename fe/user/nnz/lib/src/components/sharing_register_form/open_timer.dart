@@ -93,11 +93,13 @@ class _OpenTimeState extends State<OpenTime> {
                                 initialDate: DateTime.now(),
                                 lastDate: DateTime(DateTime.now().year + 5),
                                 locale: const Locale('ko', 'KR'),
+                                use24hFormat: true,
                               );
                               if (temp != null) {
                                 setState(() {
                                   date = temp;
                                 });
+                                logger.i(date);
                                 final dateFormat =
                                     date.toString().substring(0, 10);
                                 controller.openDateController.text = dateFormat;
@@ -147,9 +149,15 @@ class _OpenTimeState extends State<OpenTime> {
                                     time = temp;
                                   });
                                 }
+                                logger.i(controller.openDateController.text);
                                 final timeFormat =
                                     time.toString().substring(10, 15);
                                 controller.openTimeController.text = timeFormat;
+                                logger.i(controller.openTimeController.text);
+                                String test =
+                                    "${controller.openDateController.text}T${controller.openTimeController.text}";
+
+                                logger.i(test);
                               },
                               child: const Icon(Icons.timer)),
                         ],

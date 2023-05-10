@@ -72,7 +72,7 @@ class UserProvider extends GetConnect {
       'Content-Type': 'application/json',
     };
     final response = await post(
-      "https://k8b207.p.ssafy.io/api/user-service/users/verify",
+      "https://k8b207.p.ssafy.io/api/user-service/users/join/verify",
       body,
       headers: headers,
     );

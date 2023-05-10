@@ -311,7 +311,8 @@ class SharingRegisterController extends GetxController {
         // }
 
         // logger.i(tagList);
-        final openTime = "${openDateController.text}${openTimeController.text}";
+        final openTime =
+            "${openDateController.text}T${openTimeController.text}";
 
         shareModel = ShareModel(
           showId: showId.value,
@@ -350,7 +351,7 @@ class SharingRegisterController extends GetxController {
       // }
 
       // logger.i(tagList);
-      final openTime = "${openDateController.text}${openTimeController.text}";
+      final openTime = "${openDateController.text}T${openTimeController.text}";
 
       shareModel = ShareModel(
         showId: showId.value,

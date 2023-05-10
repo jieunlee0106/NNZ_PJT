@@ -53,6 +53,10 @@ class _RegisterFieldState extends State<RegisterField> {
 
         if (widget.formType == 'email') {
           final isValidEmail = controller.onEmailValidate(text: value);
+          controller.emailValidate(type: 'email', text: value).then((_) {
+            isTest = controller.emailChecked.value;
+            setState(() {});
+          });
           if (isValidEmail == true) {
             logger.i(emailCheck);
           }
@@ -78,10 +82,6 @@ class _RegisterFieldState extends State<RegisterField> {
           if (!isEmail) {
             return '올바른 이메일 형식으로 입력해주세요';
           } else {
-            controller.emailValidate(type: 'email', text: value).then((_) {
-              isTest = controller.emailChecked.value;
-              setState(() {});
-            });
             if (isTest == false) {
               return '중복된 이메일입니다.';
             } else {
