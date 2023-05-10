@@ -4,8 +4,10 @@ import 'package:nnz/src/pages/user/profile_edit.dart';
 import 'package:nnz/src/config/config.dart';
 
 class MyFollower extends StatelessWidget {
-  const MyFollower({super.key});
+  final int? follower;
+  final int? following;
 
+  const MyFollower({required this.follower, required this.following});
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -19,7 +21,7 @@ class MyFollower extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '213',
+                      follower.toString(),
                       style: TextStyle(
                           color: Config.blackColor,
                           fontSize: 22,
@@ -37,7 +39,7 @@ class MyFollower extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '121',
+                      following.toString(),
                       style: TextStyle(
                           color: Config.blackColor,
                           fontSize: 22,

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MyProfile extends StatelessWidget {
-  const MyProfile({super.key});
+  final String? nickname;
+
+  const MyProfile({
+    required this.nickname,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class MyProfile extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            'Nickname',
+            nickname ?? '',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
