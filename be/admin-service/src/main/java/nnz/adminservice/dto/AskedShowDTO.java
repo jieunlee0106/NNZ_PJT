@@ -11,6 +11,7 @@ import nnz.adminservice.entity.AskedShow;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AskedShowDTO {
+    private Long id;
     private String requester;
     private String title;
     private String path;

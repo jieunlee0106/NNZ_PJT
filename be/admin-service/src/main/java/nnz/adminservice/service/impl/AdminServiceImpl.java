@@ -56,6 +56,7 @@ public class AdminServiceImpl implements AdminService {
         List<AskedShow> allByStatus = askedShowRepository.findAllByStatus(AskedShow.AskedShowStatus.WAIT);
 
         return allByStatus.stream().map(askedShow -> AskedShowDTO.builder()
+                .id(askedShow.getId())
                 .requester(userRepository.findById(askedShow.getCreatedBy())
                         .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)).getNickname())
                 .title(askedShow.getTitle())
