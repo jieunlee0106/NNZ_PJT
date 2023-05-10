@@ -69,12 +69,12 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new CustomException(ErrorCode.ASKED_SHOW_NOT_FOUND));
 
         // 승인할 시
-        if(askedShowStatusVO.getAskedShowStatus() == 1){
+        if(askedShowStatusVO.getStatus() == 1){
             // asked_shows 테이블 상태 변경
             askedShow.updateStatus(1);
         }
         // 거부할 시
-        else if(askedShowStatusVO.getAskedShowStatus() == 2){
+        else if(askedShowStatusVO.getStatus() == 2){
             // asked_shows 테이블 상태 변경
             askedShow.updateStatus(2);
         }
