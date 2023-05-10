@@ -113,6 +113,7 @@ public class KafkaConsumer {
                 .title(body.getTitle())
                 .path(body.getPath())
                 .status(AskedShow.AskedShowStatus.of(body.getStatus()))
+                .createdBy(body.getCreatedBy())
                 .build();
 
         if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) askedShowRepository.save(askedShow);
