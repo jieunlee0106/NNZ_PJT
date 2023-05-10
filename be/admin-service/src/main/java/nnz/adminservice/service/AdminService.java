@@ -19,7 +19,7 @@ public interface AdminService {
 
     void handleReport(ReportStatusVO reportStatusVO) throws JsonProcessingException;
 
-    void registBanners(List<MultipartFile> files, List<Long> showIDsVO) throws JsonProcessingException;
+    void registBanners(List<MultipartFile> files, List<String> showIDsVO) throws JsonProcessingException;
 
     void createShow(ShowVO showVO, MultipartFile file);
 }
