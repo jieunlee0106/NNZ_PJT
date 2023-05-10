@@ -1,44 +1,41 @@
 import { Link } from "react-router-dom";
 import HeaderNav from "../../components/HeaderNav";
-import allow from "../../assets/allow.png";
-import reject from "../../assets/reject.png";
 import axiosApi from "../../services/axiosApi";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function PerformHome() {
-  const id = sessionStorage.getItem("userToken");
+  const [requestData, setRequestData] = useState<perform[]>([]);
 
   interface perform {
+    id: number;
+    path: string;
+    requester: string;
     title: string;
-    isPass: boolean;
-    index: number;
   }
 
-  const performData: perform[] = [
-    {
-      title: "OOO공연",
-      isPass: true,
-      index: 1,
-    },
-    {
-      title: "OOO2공연",
-      isPass: false,
-      index: 2,
-    },
-  ];
-
-  const listDataHandler = async () => {
+  const listDataHandler = useCallback(async () => {
     try {
       const res = await axiosApi.get("admin-service/admin/ask/shows");
       console.log(res);
+      setRequestData(res.data);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
+
+  // const listDataHandler = async () => {
+  //   try {
+  //     console.log(token);
+  //     const res = await axiosApi.get("admin-service/admin/ask/shows");
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     listDataHandler();
-  }, []);
+  }, [listDataHandler]);
 
   return (
     <div className="flex flex-col items-center">
@@ -54,19 +51,25 @@ function PerformHome() {
           <div className="w-4/5 pt-10 pl-10 h-100 border-solid border-2 border-gray-400 rounded">
             <div className="text-xl text-left mb-10">신청 공연</div>
             <div className="flex flex-col items-center">
-              {performData.map((el) => (
+              {requestData.map((el) => (
                 <div
-                  key={el.index}
+                  key={el.id}
                   className="w-11/12 flex justify-between border-b-2 border-b-gray-300 text-base my-4"
                 >
                   <p>
-                    <Link to={`${el.index}`}>{el.title}</Link>
+                    <Link
+                      to={`${el.id}`}
+                      state={{
+                        id: el.id,
+                        title: el.title,
+                        requester: el.requester,
+                        path: el.path,
+                      }}
+                    >
+                      {el.title}
+                    </Link>
                   </p>
-                  {el.isPass ? (
-                    <img src={allow} alt="맞" className="w-5 h-5 mr-5"></img>
-                  ) : (
-                    <img src={reject} alt="틀" className="w-5 h-5 mr-5"></img>
-                  )}
+                  <p>{el.requester}</p>
                 </div>
               ))}
             </div>

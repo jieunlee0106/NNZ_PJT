@@ -6,6 +6,7 @@ import ReportHome from "./report/ReportHome";
 import BannerForm from "./banner/BannerForm";
 import PerformDetail from "./perform/PerformDetail";
 import PerformForm from "./perform/PerformForm";
+import ReportDetail from "./report/ReportDetail";
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
         <Route path="/perform/:id" element={<PerformDetail />}></Route>
         <Route path="/perform/:id/register" element={<PerformForm />}></Route>
         <Route path="/report/*" element={<ReportHome />}></Route>
+        <Route path="/report/:id" element={<ReportDetail />}></Route>
         <Route path="/banner/*" element={<BannerForm />}></Route>
       </Routes>
     </div>

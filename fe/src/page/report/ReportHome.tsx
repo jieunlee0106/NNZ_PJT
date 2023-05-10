@@ -1,20 +1,33 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import HeaderNav from "../../components/HeaderNav";
 import axiosApi from "../../services/axiosApi";
+import { Link } from "react-router-dom";
+
+interface reportsType {
+  id: number;
+  reason: string;
+  reportedAt: string;
+  reporterId: number;
+  status: number;
+  targetId: number;
+}
 
 function ReportHome() {
-  const dataHandler = async () => {
+  const [reportData, setReportData] = useState<reportsType[]>([]);
+
+  const reportDataHandler = useCallback(async () => {
     try {
       const res = await axiosApi.get("admin-service/admin/ask/reports");
       console.log(res);
+      setReportData(res.data);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    dataHandler();
-  }, []);
+    reportDataHandler();
+  }, [reportDataHandler]);
 
   return (
     <div className="flex flex-col items-center">
@@ -30,12 +43,26 @@ function ReportHome() {
           <div className="w-4/5 pt-10 pl-10 h-100 mb-20 border-solid border-2 border-gray-400 rounded">
             <div className="text-xl text-left mb-5">전체 신고</div>
             <div className="flex flex-col items-center">
-              <div className="w-11/12 flex border-b-2 border-b-gray-300 text-base my-4">
-                <p>ㅇㅇㅇ 게시글 관련해서 00 유저 신고합니다 </p>
-              </div>
-              <div className="w-11/12 flex border-b-2 border-b-gray-300 text-base my-4">
-                <p>ㅇㅇㅇ 게시글 관련해서 신고합니다 </p>
-              </div>
+              {reportData.map((el) => (
+                <div
+                  key={el.id}
+                  className="w-11/12 flex border-b-2 border-b-gray-300 text-base my-4 justify-between"
+                >
+                  <Link
+                    to={`${el.id}`}
+                    state={{
+                      id: el.id,
+                      reason: el.reason,
+                      date: el.reportedAt,
+                    }}
+                  >
+                    <p>{el.reason}</p>
+                  </Link>
+                  <p>
+                    {el.reportedAt.slice(0, -9)} {el.reportedAt.slice(-8)}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

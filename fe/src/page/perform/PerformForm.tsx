@@ -6,12 +6,11 @@ import qs from "qs";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import axiosApi from "../../services/axiosApi";
+import useInput from "../../services/useInput";
 
 axiosApi.defaults.paramsSerializer = (params) => {
   return qs.stringify(params);
 };
-
-const params = {};
 
 interface category {
   code: string;
@@ -21,6 +20,7 @@ interface category {
 function PerformForm() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const title = useInput("");
 
   //사진
   const fileRef = useRef<HTMLInputElement>(null);
@@ -163,6 +163,7 @@ function PerformForm() {
               <input
                 type="text"
                 className="border-b-2 border-b-[#0D0D0D] w-3/6 h-12"
+                {...title}
               ></input>
             </div>
             <div className="flex">

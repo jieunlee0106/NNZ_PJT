@@ -1,11 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
 import HeaderNav from "../../components/HeaderNav";
+import { Link, useLocation } from "react-router-dom";
 import axiosApi from "../../services/axiosApi";
 
-function PerformDetail() {
+function ReportDetail() {
   const location = useLocation();
 
-  const rejectRequestHandler = async () => {
+  const rejectReportHandler = async () => {
     try {
       const res = await axiosApi.patch("admin-service/admin/ask/reports", {
         id: location.state.id,
@@ -17,7 +18,7 @@ function PerformDetail() {
     }
   };
 
-  const allowRequestHandler = async () => {
+  const allowReportHandler = async () => {
     try {
       const res = await axiosApi.patch("admin-service/admin/ask/reports", {
         id: location.state.id,
@@ -28,7 +29,6 @@ function PerformDetail() {
       console.log(err);
     }
   };
-
   return (
     <div className="flex flex-col items-center">
       <div className="w-10/12">
@@ -41,42 +41,42 @@ function PerformDetail() {
             </div>
           </div>
           <div className="w-4/5 pt-10 pl-10 h-96 border-solid border-2 border-gray-400 rounded flex flex-col items-center">
-            <div className="text-xl w-full mb-10">{location.state.title}</div>
+            <div className="text-xl w-full mb-10">{location.state.reason}</div>
             <div className="w-11/12 flex text-base">
               <div>
-                <p className="my-1">신청자 아이디</p>
-                <p className="my-1">관련 URL</p>
+                <p className="my-1">신청 날짜</p>
               </div>
               <div className="mx-16">
-                <p className="my-1">{location.state.requester}</p>
-                <p className="my-1 w-96 break-words">{location.state.path}</p>
+                <p className="my-1">
+                  {location.state.date.slice(0, -9)}{" "}
+                  {location.state.date.slice(-8)}
+                </p>
               </div>
             </div>
-            <div className="mt-10 flex">
-              <Link to="register">
-                <button
-                  className="w-28 h-8 bg-[#689F38] flex text-white rounded mx-2 font-bold justify-between items-center"
-                  onClick={allowRequestHandler}
+            <div className="mt-28 flex">
+              <button
+                className="w-28 h-8 bg-[#689F38] flex text-white rounded mx-2 font-bold justify-between items-center"
+                onClick={allowReportHandler}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 ml-2"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-6 h-6 ml-2"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <p>승인</p>
-                  <p></p>
-                </button>
-              </Link>
+                  <path
+                    fillRule="evenodd"
+                    d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <p>승인</p>
+                <p></p>
+              </button>
+
               <button
                 className="w-28 h-8 bg-[#FF6465] flex text-white rounded mx-2 font-bold justify-between items-center"
-                onClick={rejectRequestHandler}
+                onClick={rejectReportHandler}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -101,4 +101,4 @@ function PerformDetail() {
   );
 }
 
-export default PerformDetail;
+export default ReportDetail;

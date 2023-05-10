@@ -1,17 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux/es/exports";
 import logo from "../../assets/nnzlogo.png";
 import axiosApi from "../../services/axiosApi";
 import useInput from "../../services/useInput";
-import { setUser } from "../../modules/userSlice";
-import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const userId = useInput("");
   const userPassword = useInput("");
-  const [token, setToken]: any = useState("");
 
   const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,8 +15,8 @@ function Login() {
         email: userId.value,
         pwd: userPassword.value,
       });
-      setToken(res.data.accessToken);
-      dispatch(setUser(token));
+      console.log(res);
+      sessionStorage.setItem("accsesstoken", res.data.accessToken);
       navigate("/perform");
     } catch (err) {
       console.log(err);

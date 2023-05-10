@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import HeaderNav from "../../components/HeaderNav";
+import useInput from "../../services/useInput";
 
 function BannerForm() {
   const [showImages, setShowImages]: any = useState([]);
+  const [performId, setPerformId] = useState<number[]>([]);
+
+  //공연 번호 넣기
+  const showid = useInput("");
+  const insertIdHandler = () => {
+    const id = setPerformId([]);
+  };
   //사진 업로드
   const handleAddImages = (event: any) => {
     const imageLists = event.target.files;
@@ -40,7 +48,11 @@ function BannerForm() {
                   type="number"
                   className="border-solid border-2 border-gray-400 rounded w-3/5 h-8"
                 ></input>
+                <button className="border-none rounded bg-[#FFE277] px-4 text-sm">
+                  등록
+                </button>
               </div>
+              <div>{performId}</div>
               <div className="flex pt-1 pl-5 mt-5 w-5/6 justify-around">
                 <p className="w-1/5 text-sm">이미지 선택</p>
                 <input
