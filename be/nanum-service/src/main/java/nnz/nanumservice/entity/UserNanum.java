@@ -34,4 +34,8 @@ public class UserNanum extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nanum_id")
     private Nanum nanum;
+
+    public void updateIsCertificated(Boolean cert){
+        this.isCertificated = cert;
+    }
 }

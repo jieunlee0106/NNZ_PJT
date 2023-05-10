@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.NanumInfoDTO;
+import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
+import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import java.util.List;
 public class NanumController {
 
     private final NanumService nanumService;
+    private final CertificationService certificationService;
 
     @PostMapping
     public ResponseEntity<Void> createNanum(
@@ -71,4 +74,13 @@ public class NanumController {
         nanumService.createNanumInfo(nanumId, nanumInfoDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PostMapping("/{nanumId}/certification")
+    public ResponseEntity<?> handleNanumCertification(@PathVariable("nanumId") Long nanumId,
+                                                 @RequestBody NanumCertificationVO nanumCertificationVO){
+        certificationService.handleNanumCertification(nanumId, nanumCertificationVO);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
