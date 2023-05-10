@@ -61,16 +61,17 @@ public class TagServiceImpl implements TagService {
     }
 
     private void createNanumTag(TagVO tagVO, Optional<Tag> tag) throws JsonProcessingException {
-        List<Nanum> nanums = nanumRepository.findByTitleContaining(tagVO.getTitle());
+        Optional<Nanum> nanum = nanumRepository.findById(Long.parseLong(tagVO.getTitle()));
+        log.info("nanum title -> {}", nanum.get().getTitle());
 
-        for (Nanum nanum : nanums) {
-            // 공연 데이터를 받아오면 공연 태그 테이블에 값이 있는지 show 값과 tag 값으로 검색해본다.
-            Optional<NanumTag> nanumTag = nanumTagRepository.findByNanumAndTag(nanum, tag.get());
+        if (nanum.isPresent()) {
+            // 나눔 데이터를 받아오면 나눔 태그 테이블에 값이 있는지 nanum 값과 tag 값으로 검색해본다.
+            Optional<NanumTag> nanumTag = nanumTagRepository.findByNanumAndTag(nanum.get(), tag.get());
 
             // 없으면 생성하고 있으면 그대로 둔다.
             if (!nanumTag.isPresent()) {
                 NanumTag newNanumTag = NanumTag.builder()
-                        .nanum(nanum)
+                        .nanum(nanum.get())
                         .tag(tag.get())
                         .build();
                 nanumTagRepository.save(newNanumTag);

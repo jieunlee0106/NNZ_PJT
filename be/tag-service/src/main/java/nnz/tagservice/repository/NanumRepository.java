@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface NanumRepository extends JpaRepository<Nanum, Long> {
 
-    List<Nanum> findByTitleContaining(String title);
+    Optional<Nanum> findByTitle(String title);
 }
