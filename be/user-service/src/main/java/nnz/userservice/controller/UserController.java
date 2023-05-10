@@ -76,6 +76,14 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
+    @PostMapping("/users/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, DecodedToken token) {
+        String accessToken = request.getHeader("Authorization").substring(7);
+        userService.logout(accessToken, token);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/users/follow/{followingId}")
     public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) {
         // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 팔로우

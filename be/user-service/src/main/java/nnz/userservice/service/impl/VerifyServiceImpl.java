@@ -66,14 +66,6 @@ public class VerifyServiceImpl implements VerifyService {
     private void sendSms(String to) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         String randomNumber = createRandomNumber();
 
-        // 인증번호를 문자로 전송
-        MessageDTO messageDTO = MessageDTO.builder()
-                .to(to)
-                .content("NNZ 인증번호: " + randomNumber)
-                .build();
-        smsSender.sendMessage(messageDTO);
-
-
         // VerifyNumber 만료기간
         Date now = new Date();
         LocalDateTime expiration = LocalDateTime.ofInstant(
@@ -91,6 +83,13 @@ public class VerifyServiceImpl implements VerifyService {
                 .build();
         verifyNumberRepository.save(verifyNumber);
         log.info("레디스에 인증정보 저장: {}", verifyNumber);
+
+        // 인증번호를 문자로 전송
+        MessageDTO messageDTO = MessageDTO.builder()
+                .to(to)
+                .content("NNZ 인증번호: " + randomNumber)
+                .build();
+        smsSender.sendMessage(messageDTO);
     }
 
     private String createRandomNumber() {
