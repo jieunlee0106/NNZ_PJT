@@ -9,24 +9,24 @@ eureka:
 
 spring:
   application:
-    name: GATEWAY-SERVICE
+    name: DEV-GATEWAY-SERVICE
 
   cloud:
     gateway:
       routes:
-        - id: SHOW-SERVICE
-          uri: lb://SHOW-SERVICE
+        - id: DEV-SHOW-SERVICE
+          uri: lb://DEV-SHOW-SERVICE
           predicates:
             - Path=/show-service/**
         - id: DEV_USER_SERVICE
           uri: lb://DEV-USER-SERVICE
           predicates:
             - Path=/user-service/**
-        - id: NANUM-SERVICE
-          uri: lb://NANUM-SERVICE
+        - id: DEV-NANUM-SERVICE
+          uri: lb://DEV-NANUM-SERVICE
           predicates:
             - Path=/nanum-service/**
-        - id: TAG-SERVICE
-          uri: lb://TAG-SERVICE
+        - id: DEV-TAG-SERVICE
+          uri: lb://DEV-TAG-SERVICE
           predicates:
             - Path=/tag-service/**
