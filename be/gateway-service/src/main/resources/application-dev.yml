@@ -17,13 +17,13 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         - AddResponseHeader=Access-Control-Allow-Origin, *
       globalcors:
-        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
             allowedOrigins: '*'
             # allow-credentials: true
             allowedHeaders: '*'
             allowedMethods: '*'
+        add-to-simple-url-handler-mapping: true
       routes:
         #        - id: DEV-CONFIG-SERVICE
         #          uri: lb://DEV-CONFIG-SERVICE
