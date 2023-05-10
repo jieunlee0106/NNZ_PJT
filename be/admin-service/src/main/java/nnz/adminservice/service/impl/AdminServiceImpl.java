@@ -175,14 +175,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void registBanners(List<MultipartFile> files, List<Long> showIDsVO) throws JsonProcessingException {
+    public void registBanners(List<MultipartFile> files, List<String> showIDsVO) throws JsonProcessingException {
         List<BannerDTO> bannerDTOList = new ArrayList<>();
 
         for(int i=0; i<3; i++){
             Banner banner = null;
             try{
                 MultipartFile file = files.get(i);
-                Long showId = showIDsVO.get(i);
+                Long showId = Long.parseLong(showIDsVO.get(i));
 
                 Show show = showRepository.findById(showId)
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));

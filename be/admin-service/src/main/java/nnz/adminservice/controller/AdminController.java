@@ -50,7 +50,7 @@ public class AdminController {
 
     @PostMapping("/banners")
     public ResponseEntity<?> registBanners(@RequestPart(value = "banners", required = false) List<MultipartFile> files,
-                                           @RequestPart(value = "showIds") List<Long> showIDsVO) throws JsonProcessingException {
+                                           @RequestPart(value = "showIds") List<String> showIDsVO) throws JsonProcessingException {
         adminService.registBanners(files, showIDsVO);
         return ResponseEntity.ok().build();
     }
