@@ -16,6 +16,8 @@ spring:
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         - AddResponseHeader=Access-Control-Allow-Origin, *
+        - AddResponseHeader=Access-Control-Allow-Headers, *
+        - AddResponseHeader=Access-Control-Allow-Methods, *
       globalcors:
         corsConfigurations:
           '[/**]':
