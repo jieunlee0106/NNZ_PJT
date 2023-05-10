@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nnz/src/components/category/esports_list.dart';
+import 'package:nnz/src/controller/category_controller.dart';
 
 class HomeCategory extends StatelessWidget {
   final String categoryName;
   final String image;
-  final int num;
+  final String categoryListName;
   final Widget page;
+  final CategoryController categoryController = Get.find<CategoryController>();
 
-  HomeCategory(
-      {super.key,
-      required this.image,
-      required this.categoryName,
-      required this.num,
-      required this.page});
+  HomeCategory({
+    super.key,
+    required this.image,
+    required this.categoryName,
+    required this.categoryListName,
+    required this.page,
+  });
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        await categoryController.getCategoryList(categoryListName);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => page),

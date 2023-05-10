@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/components/category/category_dropdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:nnz/src/components/category/sports_list.dart';
 import 'package:nnz/src/components/category/sports_schedule.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
+import 'package:nnz/src/controller/category_controller.dart';
 
 class SportsBanner extends StatefulWidget {
   const SportsBanner({Key? key}) : super(key: key);
@@ -28,6 +30,8 @@ class _SportsBannerState extends State<SportsBanner> {
     '축구',
     '농구',
   ];
+
+  final CategoryController categoryController = Get.find<CategoryController>();
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +61,7 @@ class _SportsBannerState extends State<SportsBanner> {
                   items: _sports.map((text) {
                     return Builder(
                       builder: (BuildContext context) {
+                        Future<void> updateSportSportName() async {}
                         String sportsName;
                         String sportsNameR;
                         String sportsNameL;
@@ -172,18 +177,21 @@ class _SportsBannerState extends State<SportsBanner> {
                               startDate = '2023.04.02';
                               endDate = '2023.04.12';
                               sportsImg = ImagePath.bsbIcon;
+                              sportsName = '야구';
                             } else if (index == 1) {
                               carouselImage = ImagePath.socC;
                               league = 'Kleague';
                               startDate = '2023.04.02';
                               endDate = '2023.04.12';
                               sportsImg = ImagePath.socIcon;
+                              sportsName = '축구';
                             } else {
                               carouselImage = ImagePath.bkbC;
                               league = 'KBL';
                               startDate = '2023.04.02';
                               endDate = '2023.04.12';
                               sportsImg = ImagePath.bkbIcon;
+                              sportsName = '농구';
                             }
                             return Container(
                               width: MediaQuery.of(context).size.width,
@@ -218,6 +226,7 @@ class _SportsBannerState extends State<SportsBanner> {
         GrayLine(),
         SportsList(
           sportsImg: sportsImg,
+          sportName: sportsName,
         ),
       ],
     );

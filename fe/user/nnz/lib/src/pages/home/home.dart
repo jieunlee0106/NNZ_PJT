@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:get/get.dart';
 import 'package:nnz/src/components/home_page_form/home_banner.dart';
 import 'package:nnz/src/components/home_page_form/category_form.dart';
 import 'package:nnz/src/components/home_page_form/hash_tag.dart';
@@ -11,7 +11,7 @@ import 'package:nnz/src/components/home_page_form/home_share_list.dart';
 
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
-
+import 'package:nnz/src/controller/category_controller.dart';
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/movie.dart';
 import 'package:nnz/src/pages/category/musical.dart';
@@ -22,7 +22,8 @@ import 'package:nnz/src/pages/user/mypage.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  // const Home({Key? key}) : super(key: key);
+  final CategoryController categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -97,37 +98,38 @@ class Home extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     HomeCategory(
-                        page: ConcertPage(),
-                        image: ImagePath.concert,
-                        categoryName: '콘서트',
-                        num: 1),
+                      page: ConcertPage(),
+                      image: ImagePath.concert,
+                      categoryName: '콘서트',
+                      categoryListName: '콘서트',
+                    ),
                     HomeCategory(
                         page: const MusicalPage(),
                         image: ImagePath.musical,
                         categoryName: '뮤지컬',
-                        num: 1),
+                        categoryListName: '뮤지컬'),
                     HomeCategory(
                       page: const StagePage(),
                       image: ImagePath.stage,
                       categoryName: '연극',
-                      num: 1,
+                      categoryListName: '연극',
                     ),
                     HomeCategory(
                       page: MoviePage(),
                       image: ImagePath.movie,
                       categoryName: '페스티벌',
-                      num: 1,
+                      categoryListName: '페스티벌',
                     ),
                     HomeCategory(
                         page: SportsPage(),
                         image: ImagePath.sports,
                         categoryName: '스포츠',
-                        num: 1),
+                        categoryListName: '야구'),
                     HomeCategory(
                         page: const ESportsPage(),
                         image: ImagePath.esports,
                         categoryName: 'e스포츠',
-                        num: 1),
+                        categoryListName: '리그 오브 레전드'),
                   ],
                 ),
               ),

@@ -20,7 +20,7 @@ class App extends GetView<BottomNavController> {
               index: controller.navIndex.value,
               children: [
                 //home
-                const Home(),
+                Home(),
                 //search
                 Search(),
                 //upload

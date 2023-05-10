@@ -21,7 +21,7 @@ class _EsportsBannerState extends State<EsportsBanner> {
   String esportsNameL = 'KDL';
   String img = ImagePath.esports;
 
-  final List<String> _sports = ['LCK', 'OWL', 'GSL', 'KDL'];
+  final List<String> _sports = ['LCK', 'OWL', 'KDL'];
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +62,10 @@ class _EsportsBannerState extends State<EsportsBanner> {
                           esportsName = _sports[1];
                           esportsNameR = _sports[2];
                           esportsNameL = _sports[0];
-                        } else if (esportEventB == ImagePath.staB) {
-                          esportsName = _sports[2];
-                          esportsNameR = _sports[3];
-                          esportsNameL = _sports[1];
                         } else {
-                          esportsName = _sports[3];
+                          esportsName = _sports[2];
                           esportsNameR = _sports[0];
-                          esportsNameL = _sports[2];
+                          esportsNameL = _sports[1];
                         }
                         return Container(
                           child: Padding(
@@ -141,8 +137,6 @@ class _EsportsBannerState extends State<EsportsBanner> {
                               esportEventB = ImagePath.lolB;
                             } else if (index == 1) {
                               esportEventB = ImagePath.oveB;
-                            } else if (index == 2) {
-                              esportEventB = ImagePath.staB;
                             } else {
                               esportEventB = ImagePath.karB;
                             }
@@ -158,8 +152,6 @@ class _EsportsBannerState extends State<EsportsBanner> {
                               carouselImage = ImagePath.lol;
                             } else if (index == 1) {
                               carouselImage = ImagePath.ove;
-                            } else if (index == 2) {
-                              carouselImage = ImagePath.sta;
                             } else {
                               carouselImage = ImagePath.kar;
                             }

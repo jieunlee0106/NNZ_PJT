@@ -58,7 +58,7 @@ class SharingComplete extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GestureDetector(
-                onTap: () => Get.to(() => const Home()),
+                onTap: () => Get.to(() => Home()),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Config.yellowColor,
