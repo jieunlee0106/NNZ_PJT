@@ -151,7 +151,8 @@ public class UserController {
     }
 
     @PostMapping("/users/ask/show")
-    public ResponseEntity<Void> askRegisterShow(@RequestBody ShowRegisterVO vo) throws JsonProcessingException {
+    public ResponseEntity<Void> askRegisterShow(DecodedToken token, @RequestBody ShowRegisterVO vo) throws JsonProcessingException {
+        vo.setRequester(token.getId());
         askService.askRegisterShow(vo);
         return ResponseEntity.noContent().build();
     }

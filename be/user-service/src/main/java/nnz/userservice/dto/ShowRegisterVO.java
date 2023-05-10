@@ -13,4 +13,9 @@ public class ShowRegisterVO {
 
     String title;
     String path;
+    Long createdBy;
+
+    public void setRequester(Long requester) {
+        this.createdBy = requester;
+    }
 }
