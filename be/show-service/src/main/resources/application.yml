@@ -4,14 +4,14 @@ spring:
   application:
     name: SHOW-SERVICE
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/show_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: yyhj7424
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: ENC(CME3/hc/qLgRu1/yBUEvBM70vwxhkTbag+0NOJuen2wco8Ft1kMVQWxw0tksc7e8LTK3FE2qxv/W+pBJ15DLkDmHEWMKELVNmVDOS8V3sOx3e6y42hZpjDKlYxHlP2JoFCA6e+3JrpautIsoqEdnng==)
-#    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
-#    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+#    url: jdbc:mysql://127.0.0.1:3306/show_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: root
+#    password: yyhj7424
 #    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(CME3/hc/qLgRu1/yBUEvBM70vwxhkTbag+0NOJuen2wco8Ft1kMVQWxw0tksc7e8LTK3FE2qxv/W+pBJ15DLkDmHEWMKELVNmVDOS8V3sOx3e6y42hZpjDKlYxHlP2JoFCA6e+3JrpautIsoqEdnng==)
+    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     open-in-view: false
