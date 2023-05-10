@@ -29,9 +29,10 @@ public class KafkaConsumer {
         log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
         log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
 
-        Show show = Show.of(kafkaMessage.getBody());
-
-        showRepository.save(show);
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            Show show = Show.of(kafkaMessage.getBody());
+            showRepository.save(show);
+        }
     }
 
     @KafkaListener(topics = "dev-nanum", groupId = "tag-service-2")
@@ -41,8 +42,9 @@ public class KafkaConsumer {
         log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
         log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
 
-        Nanum nanum = Nanum.of(kafkaMessage.getBody());
-
-        nanumRepository.save(nanum);
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            Nanum nanum = Nanum.of(kafkaMessage.getBody());
+            nanumRepository.save(nanum);
+        }
     }
 }
