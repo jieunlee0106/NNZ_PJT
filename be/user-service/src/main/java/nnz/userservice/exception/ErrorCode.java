@@ -25,6 +25,11 @@ public enum ErrorCode implements AbstractErrorCode {
     PROFILE_IMAGE_UPLOAD_FAIL("U014", "프로필 이미지 업로드에 실패하였습니다.", INTERNAL_SERVER_ERROR),
     DUPLICATE_PHONE_NUMBER("U015", "해당 번호로 가입된 계정이 존재합니다.", CONFLICT),
 
+    REFRESH_TOKEN_NOT_FOUND("RT001", "존재하지 않는 리프레시 토큰입니다.", NOT_FOUND),
+    REFRESH_TOKEN_NOT_MATCHED("RT002", "리프레시 토큰이 일치하지 않습니다.", BAD_REQUEST),
+    REFRESH_TOKEN_NOT_VALID("RT003", "만료되거나 유효하지 않는 리프레시 토큰입니다.", BAD_REQUEST),
+    REFRESH_TOKEN_NOT_IN_COOKIE("RT004", "쿠키에 리프레시 토큰이 존재하지 않습니다.", BAD_REQUEST),
+
 
     NANUM_NOT_FOUND("N001", "존재하지 않는 나눔입니다.", BAD_REQUEST),
 

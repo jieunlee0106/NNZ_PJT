@@ -2,10 +2,13 @@ package nnz.userservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
+import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.userservice.dto.*;
+import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.service.*;
+import nnz.userservice.util.CookieUtils;
 import nnz.userservice.util.ValidationUtils;
 import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
@@ -16,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -153,5 +158,24 @@ public class UserController {
         vo.setReporterId(token.getId());
         askService.reportUser(vo);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/users/reissue")
+    public ResponseEntity<Map<String, String>> reissue(DecodedToken token, HttpServletRequest request) {
+        Cookie cookie = CookieUtils.getCookieByName(request, "refreshToken");
+
+        if (cookie == null) {
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_NOT_IN_COOKIE);
+        }
+
+        TokenDTO tokenDTO = TokenDTO.builder().refreshToken(cookie.getValue())
+                .userId(token.getId())
+                .build();
+
+        String reissuedAccessToken = userService.reissue(tokenDTO);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("accessToken", reissuedAccessToken);
+        return ResponseEntity.ok(response);
     }
 }

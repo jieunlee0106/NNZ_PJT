@@ -374,4 +374,24 @@ public class UserServiceImpl implements UserService {
                 .statistics(statistics)
                 .build();
     }
+
+    @Override
+    public String reissue(TokenDTO token) {
+        User user = userRepository.findById(token.getUserId())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        RefreshToken refreshToken = refreshTokenRepository.findById(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+
+        if (!refreshToken.getRefreshToken().equals(token.getRefreshToken())) {
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_NOT_MATCHED);
+        }
+
+        if (!jwtProvider.validateToken(token.getRefreshToken())) {
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_NOT_VALID);
+        }
+
+        log.info("{}님 엑세스 토큰 재발급", user.getEmail());
+        return jwtProvider.generateAccessToken(user);
+    }
 }
