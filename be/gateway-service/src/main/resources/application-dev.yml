@@ -21,13 +21,7 @@ spring:
             allowedOrigins: 'http://localhost:3000'
             allow-credentials: true
             allowedHeaders: '*'
-            allowedMethods:
-              - POST
-              - GET
-              - PUT
-              - PATCH
-              - OPTIONS
-              - DELETE
+            allowedMethods: '*'
       routes:
         #        - id: DEV-CONFIG-SERVICE
         #          uri: lb://DEV-CONFIG-SERVICE
