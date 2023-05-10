@@ -28,4 +28,5 @@ public interface UserService {
     NanumParticipantsDTO nanumParticipants(Long userId, Long nanumId);
     void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException;
     OtherUserInfoDTO otherUserInfo(Long meId, Long otherUserId);
+    String reissue(TokenDTO token);
 }
