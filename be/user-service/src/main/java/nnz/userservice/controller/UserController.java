@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.*;
 import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.service.*;
@@ -23,10 +24,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -141,6 +144,8 @@ public class UserController {
             DecodedToken token,
             @RequestPart("data") UserUpdateProfileVO vo,
             @RequestParam(value = "file", required = false) MultipartFile file) throws UnsupportedEncodingException {
+        vo.decodeNickname();
+        log.info("input nickname: {}", vo.getNickname());
         userService.updateProfile(token.getId(), vo, file);
         return ResponseEntity.noContent().build();
     }
