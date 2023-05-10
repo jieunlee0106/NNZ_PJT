@@ -7,10 +7,7 @@ import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nnz.adminservice.dto.AskedShowDTO;
-import nnz.adminservice.dto.BannerDTO;
-import nnz.adminservice.dto.ReportDTO;
-import nnz.adminservice.dto.ShowDTO;
+import nnz.adminservice.dto.*;
 import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
@@ -113,9 +110,9 @@ public class AdminServiceImpl implements AdminService {
                     .build());
 
             // Kafka에 메세지 전송
-            ShowDTO showDTO = ShowDTO.entityToDTO(save);
+            ShowKafkaDTO showKafkaDTO = ShowKafkaDTO.entityToDTO(save);
 
-            KafkaMessage<ShowDTO> message = KafkaMessage.create().body(showDTO);
+            KafkaMessage<ShowKafkaDTO> message = KafkaMessage.create().body(showKafkaDTO);
 
             kafkaProducer.sendMessage(message, "show");
 

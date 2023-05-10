@@ -51,7 +51,7 @@ public class KafkaConsumer {
 
         ShowDTO body = kafkaMessage.getBody();
 
-        Category category = categoryRepository.findByCode(body.getCategory())
+        Category category = categoryRepository.findByName(body.getCategory())
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         Show show = Show.builder()
