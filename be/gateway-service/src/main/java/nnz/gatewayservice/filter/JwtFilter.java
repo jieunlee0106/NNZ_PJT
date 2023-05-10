@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import io.jsonwebtoken.*;
 import nnz.gatewayservice.dto.ErrorResponse;
 import nnz.gatewayservice.error.ErrorCode;
+import nnz.gatewayservice.jwt.JwtValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -75,7 +76,7 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
                 claims = jwtValidator.validateToken(jwt);
             } catch (SignatureException | MalformedJwtException e) {
                 return handleUnauthorized(exchange, ErrorCode.MALFORMED_JWT);
-            }catch (ExpiredJwtException e) {
+            } catch (ExpiredJwtException e) {
                 return handleUnauthorized(exchange, ErrorCode.EXPIRED_JWT);
             } catch (UnsupportedJwtException e) {
                 return handleUnauthorized(exchange, ErrorCode.UNSUPPORTED_JWT);
