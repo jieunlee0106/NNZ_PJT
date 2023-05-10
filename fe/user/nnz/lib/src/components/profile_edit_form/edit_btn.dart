@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/controller/user_edit_controller.dart';
+
+import '../../controller/user_edit_controller.dart';
 
 class EditBtn extends StatelessWidget {
   EditBtn({super.key});
@@ -17,7 +18,7 @@ class EditBtn extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              controller.onUpdateUser();
+              Get.find<UserEditController>().onUpdateUser();
             },
             child: Container(
               decoration: BoxDecoration(

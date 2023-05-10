@@ -17,6 +17,7 @@ class UserProvider extends GetConnect {
 
     //Set baseUrl from .env file
     httpClient.baseUrl = dotenv.env['BASE_URL'];
+    httpClient.defaultContentType = '';
     httpClient.timeout = const Duration(microseconds: 5000);
     super.onInit();
   }
@@ -34,8 +35,9 @@ class UserProvider extends GetConnect {
       'pwd': password,
     };
     final response = await post(
-        "https://k8b207.p.ssafy.io/api/user-service/users/login", body,
-        headers: headers);
+      "https://k8b207.p.ssafy.io/api/user-service/users/login",
+      body,
+    );
     return response;
   }
 
@@ -45,7 +47,7 @@ class UserProvider extends GetConnect {
     required String value,
   }) async {
     final headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
     };
     final response = await get(
       "https://k8b207.p.ssafy.io/api/user-service/users/check?type=$type&val=$value",
@@ -137,26 +139,27 @@ class UserProvider extends GetConnect {
   }) async {
     final formData = FormData({
       "data": jsonEncode({
+        "nickname": base64Encode(utf8.encode(nickname)),
         "oldPwd": oldPwd,
         "newPwd": newPwd,
         "confirmNewPwd": confirmNewPwd,
-        "nickname": nickname,
       }),
-      "file": MultipartFile(image.path, filename: "profile.png")
+      "file": MultipartFile(
+        image.path,
+        filename: "profile.png",
+      ),
     });
-
     logger.i(formData.fields);
-
+    logger.i(formData.files);
     final token = Get.find<BottomNavController>().accessToken;
-    final headers = {
-      'Content-type': 'multipart/form-data;boundary=${formData.boundary}',
-      'Authorization': 'Bearer $token',
-    };
-
+    final boundary = formData.boundary;
     final response = await patch(
       "https://k8b207.p.ssafy.io/api/user-service/users",
       formData,
-      headers: headers,
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=$boundary',
+        'Authorization': 'Bearer $token',
+      },
     );
 
     return response;
