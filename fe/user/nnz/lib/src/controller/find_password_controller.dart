@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/components/register_form/share_popup.dart';
 
 import '../services/user_provider.dart';
 
@@ -45,23 +46,22 @@ class FindPasswordController extends GetxController {
 
   //sms 본인인증 요청
   Future<void> onSms() async {
-    requestSms(true);
-
-    startTimer();
-
     try {
       final response =
-          await UserProvider().postReqVerify(phone: phoneController.text);
+          await UserProvider().postReqFindVerify(phone: phoneController.text);
       //본인 핸드폰에 번호를 받았다는 이야기
       if (response.statusCode == 200) {
         //그럼 굳이 응답을 받아서 모델링을 할 필요가.....
         //인증번호가 들어갔다면 인증번호를 보냈다는 체크를 하고 유효시간 시작..
-
+        requestSms(true);
+        phoneChekced(false);
         startTimer();
       } else {
-        final errorMessage = "(${response.statusCode}): ${response.body}";
-        logger.e(errorMessage);
-        throw Exception(errorMessage);
+        showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return sharePopup(popupMessage: "${response.body["message"]}");
+            });
       }
     } catch (e) {
       final errorMessage = "$e";
@@ -171,7 +171,9 @@ class FindPasswordController extends GetxController {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Get.offNamed("/login");
+                      Navigator.of(context).pop();
+                      Get.until((route) =>
+                          route.isFirst || Get.currentRoute == '/login');
 
                       FocusScope.of(context).unfocus();
                     },

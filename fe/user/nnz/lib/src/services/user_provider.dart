@@ -61,7 +61,7 @@ class UserProvider extends GetConnect {
     logger.i("$type : $text");
   }
 
-  //본인인증 요청 api
+  //회원가입 본인인증 요청 api
   Future<Response> postReqVerify({
     required String phone,
   }) async {
@@ -73,6 +73,24 @@ class UserProvider extends GetConnect {
     };
     final response = await post(
       "https://k8b207.p.ssafy.io/api/user-service/users/join/verify",
+      body,
+      headers: headers,
+    );
+    return response;
+  }
+
+  //비밀번호 찾기 인증번호 요청
+  Future<Response> postReqFindVerify({
+    required String phone,
+  }) async {
+    final body = {
+      'phone': phone,
+    };
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+    final response = await post(
+      "https://k8b207.p.ssafy.io/api/user-service/users/find-pwd/verify",
       body,
       headers: headers,
     );
