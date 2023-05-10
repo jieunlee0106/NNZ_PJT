@@ -3,6 +3,7 @@ package nnz.userservice.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.exception.CustomException;
+import io.github.eello.nnz.common.jwt.DecodedToken;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,7 @@ public class UserServiceImpl implements UserService {
     private final KafkaProducer kafkaProducer;
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final AccessTokenBlacklistRepository accessTokenBlacklistRepository;
     private final BookmarkRepository bookmarkRepository;
     private final NanumRepository nanumRepository;
     private final ReceiveNanumRepository receiveNanumRepository;
@@ -160,6 +162,33 @@ public class UserServiceImpl implements UserService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void logout(String accessToken, DecodedToken token) {
+        // 로그인되어있는 유저 조회
+        User user = userRepository.findById(token.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 레디스 블랙리스트에 액세스 토큰 저장 ttl = 현재시간 - 만료시간
+        long ttl = (token.getExpDate().getTime() - System.currentTimeMillis()) / 1000;
+        log.info("logout: ttl -> {}", ttl);
+        AccessTokenBlacklist blacklist = AccessTokenBlacklist.builder()
+                .id(accessToken)
+                .ttl(ttl)
+                .build();
+
+        accessTokenBlacklistRepository.save(blacklist);
+        log.info("logout: 블랙리스트에 엑세스 토큰 추가");
+
+        // 리프레시 토큰 삭제
+        RefreshToken refreshToken = refreshTokenRepository.findById(user.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+        refreshTokenRepository.delete(refreshToken);
+        log.info("logout: 리프레시 토큰 삭제");
+
+        log.info("logout: {}님 로그아웃", user.getEmail());
     }
 
     @Override

@@ -1,11 +1,10 @@
 package nnz.userservice.service;
 
-import io.github.eello.nnz.common.exception.CustomException;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.entity.User;
-import nnz.userservice.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

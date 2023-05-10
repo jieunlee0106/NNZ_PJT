@@ -2,6 +2,7 @@ package nnz.userservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
+import io.github.eello.nnz.common.jwt.DecodedToken;
 import nnz.userservice.dto.*;
 import nnz.userservice.vo.FindPwdVO;
 import nnz.userservice.vo.LoginVO;
@@ -20,6 +21,7 @@ public interface UserService {
     boolean isExistByNickname(String nickname);
     boolean isExistsByPhoneNumber(String phoneNumber);
     TokenDTO login(LoginVO vo);
+    void logout(String accessToken, DecodedToken token);
     void findPwd(FindPwdVO vo);
     List<BookmarkedNanumDTO> findBookmarkedNanum(Long userId);
     UserDTO info(Long userId);
