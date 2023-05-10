@@ -140,7 +140,7 @@ public class UserController {
     public ResponseEntity<Void> updateUser(
             DecodedToken token,
             @RequestPart("data") UserUpdateProfileVO vo,
-            @RequestPart(value = "file", required = false) MultipartFile file) throws UnsupportedEncodingException {
+            @RequestParam(value = "file", required = false) MultipartFile file) throws UnsupportedEncodingException {
         userService.updateProfile(token.getId(), vo, file);
         return ResponseEntity.noContent().build();
     }
