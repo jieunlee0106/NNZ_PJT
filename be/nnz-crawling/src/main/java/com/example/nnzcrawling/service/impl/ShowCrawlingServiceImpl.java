@@ -37,7 +37,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final TeamImageRepository teamImageRepository;
 
     @Override
-    @Scheduled(cron = "0 6 14 1/1 * *")
+    @Scheduled(cron = "0 27 21 1/1 * *")
     @Transactional
     public void createShow() {
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "TAG-SERVICE")
+@FeignClient(name = "DEV-TAG-SERVICE")
 public interface TagFeignClient {
 
     @PostMapping("/tag-service/tags")
