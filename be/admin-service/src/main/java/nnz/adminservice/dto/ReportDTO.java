@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDTO {
-
+    private Long id;
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime reportedAt;
     private Long reporterId;
