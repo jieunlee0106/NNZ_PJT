@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class AskedShowStatusVO {
-    private Long askedShowsId;
+    private Long id;
     private int askedShowStatus;}
