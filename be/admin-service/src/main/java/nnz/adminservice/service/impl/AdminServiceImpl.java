@@ -161,7 +161,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void handleReport(ReportStatusVO reportStatusVO) throws JsonProcessingException {
-        Report report = reportRepository.findById(reportStatusVO.getReportId())
+        Report report = reportRepository.findById(reportStatusVO.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.REPORT_NOT_FOUND));
 
         // 승인할 시
