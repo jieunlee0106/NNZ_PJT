@@ -1,20 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
-
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/my_page_form/profile_info.dart.dart';
 import 'package:nnz/src/components/my_page_form/my_follower.dart';
 import 'package:nnz/src/components/my_page_form/sharing_info.dart';
-
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/model/mypage_model.dart';
 import 'package:nnz/src/pages/share/my_shared_list.dart';
 import 'package:nnz/src/pages/share/my_sharing_list.dart';
+import 'package:nnz/src/controller/my_page_controller.dart';
 
-class MyPage extends StatelessWidget {
-  const MyPage({super.key});
+class MyPage extends StatefulWidget {
+  const MyPage({Key? key}) : super(key: key);
+
+  @override
+  _MyPageState createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  final controller = Get.put(MyPageController());
+  late String nickname = '메렁';
+  late MyPageModel myInfo;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMyInfo();
+  }
+
+  Future<void> loadMyInfo() async {
+    await controller.getMyInfo();
+    myInfo = controller.myInfo;
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // var myInfo = controller.myInfo;
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -30,8 +61,11 @@ class MyPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      MyProfile(),
-                      MyFollower(),
+                      MyProfile(nickname: myInfo?.nickname),
+                      MyFollower(
+                        follower: myInfo?.followerCount,
+                        following: myInfo?.followingCount,
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -75,18 +109,18 @@ class MyPage extends StatelessWidget {
                   ),
                   SharingInfo(
                     share: '나눔 한 내역',
-                    total: '8',
-                    yet: '2',
-                    ing: '1',
-                    end: '4',
+                    total: myInfo?.statistics?.nanum?.totalCount ?? 0,
+                    yet: myInfo?.statistics?.nanum?.beforeCount ?? 0,
+                    ing: myInfo?.statistics?.nanum?.ongoingCount ?? 0,
+                    end: myInfo?.statistics?.nanum?.doneCount ?? 0,
                     page: MySharingList(),
                   ),
                   SharingInfo(
                     share: '나눔 받은 내역',
-                    total: '11',
-                    yet: '3',
-                    ing: '2',
-                    end: '6',
+                    total: myInfo?.statistics?.receive?.totalCount ?? 0,
+                    yet: myInfo?.statistics?.receive?.totalCount ?? 0,
+                    ing: myInfo?.statistics?.receive?.totalCount ?? 0,
+                    end: myInfo?.statistics?.receive?.totalCount ?? 0,
                     page: MySharedList(),
                   ),
                 ],

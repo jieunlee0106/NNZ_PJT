@@ -12,6 +12,7 @@ import 'package:nnz/src/components/home_page_form/home_share_list.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/category_controller.dart';
+import 'package:nnz/src/controller/my_page_controller.dart';
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/movie.dart';
 import 'package:nnz/src/pages/category/musical.dart';
@@ -21,7 +22,14 @@ import 'package:nnz/src/pages/category/stage.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  // const Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   // const Home({Key? key}) : super(key: key);
   final CategoryController categoryController = Get.put(CategoryController());
 

@@ -1,14 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
 
 class SharingInfo extends StatelessWidget {
   // 나눔 한 / 받은
-  final String share;
-  final String total;
-  final String yet;
-  final String ing;
-  final String end;
+  final String? share;
+  final int? total;
+  final int? yet;
+  final int? ing;
+  final int? end;
   final Widget page;
 
   const SharingInfo({
@@ -35,7 +37,7 @@ class SharingInfo extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      share,
+                      share ?? "",
                       style: TextStyle(
                         color: Config.blackColor,
                         fontSize: 18,
@@ -81,7 +83,7 @@ class SharingInfo extends StatelessWidget {
                             height: 4,
                           ),
                           Text(
-                            total,
+                            total.toString(),
                             style: const TextStyle(
                                 color: Color(0xffFF6666),
                                 fontSize: 16,
@@ -112,7 +114,7 @@ class SharingInfo extends StatelessWidget {
                                   height: 4,
                                 ),
                                 Text(
-                                  yet,
+                                  yet.toString(),
                                   style: const TextStyle(
                                       color: Color(0xff848484),
                                       fontSize: 16,
@@ -134,7 +136,7 @@ class SharingInfo extends StatelessWidget {
                                   height: 4,
                                 ),
                                 Text(
-                                  ing,
+                                  ing.toString(),
                                   style: const TextStyle(
                                       color: Color(0xff848484),
                                       fontSize: 16,
@@ -156,7 +158,7 @@ class SharingInfo extends StatelessWidget {
                                   height: 4,
                                 ),
                                 Text(
-                                  end,
+                                  end.toString(),
                                   style: const TextStyle(
                                       color: Color(0xff848484),
                                       fontSize: 16,
