@@ -30,8 +30,9 @@ class App extends GetView<BottomNavController> {
                   ),
                 ),
                 //likeShareList
-                LikesPage(),
+                const LikesPage(),
                 //mypage
+                // const MyPage(),
                 Navigator(
                   key: controller.mypageKey,
                   onGenerateRoute: (routeSetting) {

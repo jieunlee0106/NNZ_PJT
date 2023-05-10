@@ -18,14 +18,6 @@ class SearchProvider extends GetConnect {
   Future<Response> getPopularTag() async {
     final response = await get("/tags");
     return response;
-    // try {
-    //   final response = await get("/tags");
-    //   return response;
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //검색 페이지  => 나눔 및  공연 타입으로  목록 조회
@@ -35,20 +27,6 @@ class SearchProvider extends GetConnect {
   }) async {
     final response = await get("search?=$type?=$q");
     return response;
-    // try {
-    //   final response = await get("/search?=$type?=$q");
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
   }
 
   //나눔 공연 조회
@@ -60,46 +38,26 @@ class SearchProvider extends GetConnect {
     return response;
   }
 
-  //카테고리 조회
-  Future<Response> getCategory({String? parent}) async {
-    // try {
-    //   final response =
-    //       await get("/shows/categories?=$parent", headers: headers);
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
+  //큰 카테고리 조회
+  Future<Response> getParentCategory() async {
+    final response = await get(
+        "https://k8b207.p.ssafy.io/api/show-service/shows/categories");
+    return response;
+  }
 
-    final response = await get("/shows/categories?=$parent");
+  //작은 카테고리 조회
+  Future<Response> getChildCategory({String? parent}) async {
+    final response = await get(
+        "https://k8b207.p.ssafy.io/api/show-service/shows/categories?parent=$parent");
     return response;
   }
 
   //공연 목록 검색
-  Future<Response> getShowList({required String category}) async {
-    // try {
-    //   final response = await get("/show?=$category", headers: headers);
-    //   if (response.statusCode == 200) {
-    //     return response.body;
-    //   } else {
-    //     final errorMessage = "(${response.statusCode}): ${response.body}";
-    //     logger.e(errorMessage);
-    //     throw Exception(errorMessage);
-    //   }
-    // } catch (e) {
-    //   final errorMessage = "$e";
-    //   logger.e(errorMessage);
-    //   throw Exception(errorMessage);
-    // }
-
-    final response = await get('/show?=$category');
+  Future<Response> getShowList(
+      {required String category, String? title}) async {
+    logger.i("들와라 제발 $category $title");
+    final response = await get(
+        'https://k8b207.p.ssafy.io/api/show-service/shows/search?category=$category&title=$title');
     return response;
   }
 }

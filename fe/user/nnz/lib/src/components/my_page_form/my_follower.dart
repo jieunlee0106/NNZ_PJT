@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/pages/user/profile_edit.dart';
 import 'package:nnz/src/config/config.dart';
 
@@ -24,7 +25,7 @@ class MyFollower extends StatelessWidget {
                           fontSize: 22,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text(
+                    const Text(
                       '팔로워',
                       style: TextStyle(
                           color: Color.fromARGB(255, 59, 59, 59),
@@ -42,7 +43,7 @@ class MyFollower extends StatelessWidget {
                           fontSize: 22,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text(
+                    const Text(
                       '팔로잉',
                       style: TextStyle(
                           color: Color.fromARGB(255, 59, 59, 59),
@@ -53,15 +54,12 @@ class MyFollower extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 18,
             ),
             GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileEdit()),
-                  );
+                  Get.toNamed("/profileEdit");
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -71,7 +69,7 @@ class MyFollower extends StatelessWidget {
                   height: 40,
                   width: 1200,
                   child: Align(
-                    alignment: Alignment(0.0, 0.0),
+                    alignment: const Alignment(0.0, 0.0),
                     child: Text(
                       '프로필 수정',
                       style: TextStyle(

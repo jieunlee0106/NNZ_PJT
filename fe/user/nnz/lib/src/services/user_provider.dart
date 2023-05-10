@@ -1,15 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/register_model.dart';
 
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
   final logger = Logger();
-  @override
-  final headers = {
-    'Content-Type': 'application/json',
-  };
 
   @override
   void onInit() async {
@@ -18,6 +17,7 @@ class UserProvider extends GetConnect {
 
     //Set baseUrl from .env file
     httpClient.baseUrl = dotenv.env['BASE_URL'];
+    httpClient.defaultContentType = '';
     httpClient.timeout = const Duration(microseconds: 5000);
     super.onInit();
   }
@@ -27,13 +27,17 @@ class UserProvider extends GetConnect {
     required String email,
     required String password,
   }) async {
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final body = {
       'email': email,
       'pwd': password,
     };
     final response = await post(
-        "https://k8b207.p.ssafy.io/api/user-service/users/login", body,
-        headers: headers);
+      "https://k8b207.p.ssafy.io/api/user-service/users/login",
+      body,
+    );
     return response;
   }
 
@@ -42,6 +46,9 @@ class UserProvider extends GetConnect {
     required String type,
     required String value,
   }) async {
+    final headers = {
+      'Content-Type': 'application/json; charset=utf-8',
+    };
     final response = await get(
       "https://k8b207.p.ssafy.io/api/user-service/users/check?type=$type&val=$value",
       headers: headers,
@@ -61,6 +68,9 @@ class UserProvider extends GetConnect {
     final body = {
       'phone': phone,
     };
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final response = await post(
       "https://k8b207.p.ssafy.io/api/user-service/users/verify",
       body,
@@ -77,6 +87,9 @@ class UserProvider extends GetConnect {
     final body = {
       'phone': phone,
       'verifyNum': verifyNum,
+    };
+    final headers = {
+      'Content-Type': 'application/json',
     };
     logger.i("$phone $verifyNum");
     final response = await post(
@@ -108,9 +121,47 @@ class UserProvider extends GetConnect {
       "pwd": pwd,
       "confirmPwd": confirmPwd,
     };
+    final headers = {
+      'Content-Type': 'application/json',
+    };
     final response = await patch(
         "https://k8b207.p.ssafy.io/api/user-service/users/find-pwd", body,
         headers: headers);
+    return response;
+  }
+
+  Future<Response> patchUser({
+    required File image,
+    required String oldPwd,
+    required String newPwd,
+    required String confirmNewPwd,
+    required String nickname,
+  }) async {
+    final formData = FormData({
+      "data": jsonEncode({
+        "nickname": base64Encode(utf8.encode(nickname)),
+        "oldPwd": oldPwd,
+        "newPwd": newPwd,
+        "confirmNewPwd": confirmNewPwd,
+      }),
+      "file": MultipartFile(
+        image.path,
+        filename: "profile.png",
+      ),
+    });
+    logger.i(formData.fields);
+    logger.i(formData.files);
+    final token = Get.find<BottomNavController>().accessToken;
+    final boundary = formData.boundary;
+    final response = await patch(
+      "https://k8b207.p.ssafy.io/api/user-service/users",
+      formData,
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=$boundary',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
     return response;
   }
 }

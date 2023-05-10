@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
-import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/share_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
@@ -22,25 +21,24 @@ class SharingRegisterController extends GetxController {
   late final showSearchController;
   //나눔등록에서 공연 검색 api 통신이 완료되면
   //sportsController ~ movieController는 싹다 삭제하기
-  late final sportsController;
-  late final musicalController;
-  late final concertController;
-  late final esportsController;
-  late final theaterController;
-  late final movieController;
+
   late final conditionController;
   late final hashTagController;
   late final sharingDateController;
   late final openDateController;
   late final openTimeController;
+  late final empSearchController;
+  late final nempSearchController;
   final RxList<String> pCategories = RxList<String>();
+  final RxList<String> pCode = RxList<String>();
   final RxList<String> cCategories = RxList<String>();
   List<ImageFile> imageList = [];
 
   RxList<String> conList = RxList<String>();
   RxList<String> tagList = RxList<String>();
   RxString testText = "".obs;
-
+  RxInt showId = RxInt(0);
+  RxInt writer = 0.obs;
   RxBool isAuthentication = false.obs;
 
   RxInt peopleCount = 0.obs;
@@ -58,22 +56,24 @@ class SharingRegisterController extends GetxController {
     detailController = TextEditingController();
     sharingController = TextEditingController();
     showSearchController = TextEditingController();
-    sportsController = TextEditingController();
-    musicalController = TextEditingController();
-    esportsController = TextEditingController();
-    concertController = TextEditingController();
-    theaterController = TextEditingController();
-    movieController = TextEditingController();
+
     conditionController = TextEditingController();
     hashTagController = TextEditingController();
     sharingDateController = TextEditingController();
     openDateController = TextEditingController();
     openTimeController = TextEditingController();
+    nempSearchController = TextEditingController();
+    empSearchController = TextEditingController();
   }
 
   Future<String> getToken() async {
     final accessToken = await storage.read(key: 'accessToken');
     return accessToken!;
+  }
+
+  Future<String> getUserId() async {
+    final userId = await storage.read(key: 'userId');
+    return userId!;
   }
 
   void onChange(String text) {
@@ -152,10 +152,14 @@ class SharingRegisterController extends GetxController {
   //부모 카테고리 조회
   Future<List<String>> getParentCategory() async {
     try {
-      final response = await SearchProvider().getCategory();
+      final response = await SearchProvider().getParentCategory();
       if (response.statusCode == 200) {
+        logger.i(response.body);
+        pCategories.clear();
+        pCode.clear();
         for (var category in response.body) {
           pCategories.add(category["name"]);
+          pCode.add(category["code"]);
         }
         logger.i(pCategories);
         return pCategories;
@@ -172,15 +176,19 @@ class SharingRegisterController extends GetxController {
   }
 
   //자식 카테고리 검색
-  Future<List<String>> getChildCategory({required String parent}) async {
+  Future<List<String>> getChildCategory({required int index}) async {
+    logger.i("받아왔어 ${pCode[index]}");
     try {
-      final response = await SearchProvider().getCategory(parent: parent);
+      final response =
+          await SearchProvider().getChildCategory(parent: pCode[index]);
       if (response.statusCode == 200) {
+        logger.i(response.body);
         if (response.body != null) {
           cCategories.clear();
           for (var category in response.body) {
-            cCategories.add(category);
+            cCategories.add(category["name"]);
           }
+
           return cCategories;
         } else {
           cCategories.clear();
@@ -199,16 +207,23 @@ class SharingRegisterController extends GetxController {
   }
 
   //공연 카테고리 별 검색
-  //통신이 완료된 후 위젯을 만들겠습니다. 아니면 지금할까? 
-  Future<void> onSearchShow({
+  //통신이 완료된 후 위젯을 만들겠습니다. 아니면 지금할까?
+  Future<List> onSearchShow({
     required String category,
     required String title,
   }) async {
+    logger.i("category : $category, title : $title");
     try {
-      final response = await SearchProvider()
-          .getSharingShow(category: category, title: title);
+      final response =
+          await SearchProvider().getShowList(category: category, title: title);
       if (response.statusCode == 200) {
-        logger.i(response.body);
+        if (response.body["isEmpty"] == false) {
+          final content = response.body["content"];
+          logger.i("리스트 받아와 $content");
+          return content;
+        } else {
+          return [];
+        }
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);
@@ -299,13 +314,13 @@ class SharingRegisterController extends GetxController {
         final openTime = "${openDateController.text}${openTimeController.text}";
 
         shareModel = ShareModel(
-          showId: sharingController.text,
-          writer: "나너주",
+          showId: showId.value,
+          writer: writer.value,
           nanumDate: sharingDateController.text,
           title: titleController.text,
           openTime: openTime,
           quantity: peopleCount.value,
-          isCertification: isAuthentication.value == true ? "true" : "false",
+          isCertification: isAuthentication.value,
           condition: isAuthentication.value == true ? conList[0] : null,
           content: detailController.text,
           tags: tagList,
@@ -338,13 +353,13 @@ class SharingRegisterController extends GetxController {
       final openTime = "${openDateController.text}${openTimeController.text}";
 
       shareModel = ShareModel(
-        showId: sharingController.text,
-        writer: "나너주",
+        showId: showId.value,
+        writer: writer.value,
         nanumDate: sharingDateController.text,
         title: titleController.text,
         openTime: openTime,
         quantity: peopleCount.value,
-        isCertification: isAuthentication.value == true ? "true" : "false",
+        isCertification: isAuthentication.value,
         condition: isAuthentication.value == true
             ? conList.indexOf(0).toString()
             : null,

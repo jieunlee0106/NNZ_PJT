@@ -24,7 +24,7 @@ class SharingRegister extends StatefulWidget {
 class _SharingRegisterState extends State<SharingRegister> {
   final controller = Get.put(SharingRegisterController());
   String? token;
-
+  String? userId;
   @override
   void initState() {
     super.initState();
@@ -33,6 +33,12 @@ class _SharingRegisterState extends State<SharingRegister> {
         token = value;
       });
       print(token);
+    });
+    controller.getUserId().then((value) {
+      setState(() {
+        userId = value;
+      });
+      controller.writer.value = int.parse(userId!);
     });
   }
 

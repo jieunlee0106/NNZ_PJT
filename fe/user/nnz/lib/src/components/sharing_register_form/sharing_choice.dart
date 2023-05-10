@@ -18,7 +18,6 @@ class _SharingChoiceState extends State<SharingChoice> {
   final logger = Logger();
 
   final controller = Get.put(SharingRegisterController());
-  final List<String> _items = ['콘서트', '뮤지컬', '연극', '영화', '스포츠'];
 
   //공연 선택 조회를 눌렀을 시 모달창이 나올것이다. 모달창을 열 때 부모 카테고리는 미리 세팅이 되어있어야함.
   //initState()로 한 번 조회해야됨.
@@ -79,7 +78,6 @@ class _SharingChoiceState extends State<SharingChoice> {
                 GestureDetector(
                   onTap: () {
                     logger.i("공연 선택을 해주세요");
-                    logger.i(_items);
 
                     showDialog(
                       context: context,
