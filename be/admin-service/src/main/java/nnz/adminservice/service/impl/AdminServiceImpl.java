@@ -150,6 +150,7 @@ public class AdminServiceImpl implements AdminService {
 
         return allByStatus.stream().map(
                 report -> ReportDTO.builder()
+                        .id(report.getId())
                         .reportedAt(report.getReportedAt())
                         .reporterId(report.getReporter().getId())
                         .targetId(report.getTarget().getId())
