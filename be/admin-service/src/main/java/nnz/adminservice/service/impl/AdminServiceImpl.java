@@ -14,10 +14,7 @@ import nnz.adminservice.repository.*;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.service.KafkaProducer;
 import nnz.adminservice.service.TagFeignClient;
-import nnz.adminservice.vo.AskedShowStatusVO;
-import nnz.adminservice.vo.ReportStatusVO;
-import nnz.adminservice.vo.ShowVO;
-import nnz.adminservice.vo.TagVO;
+import nnz.adminservice.vo.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -175,14 +172,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void registBanners(List<MultipartFile> files, List<String> showIDsVO) throws JsonProcessingException {
+    public void registBanners(List<MultipartFile> files, BannerVO bannerVO) throws JsonProcessingException {
         List<BannerDTO> bannerDTOList = new ArrayList<>();
 
         for(int i=0; i<3; i++){
             Banner banner = null;
             try{
                 MultipartFile file = files.get(i);
-                Long showId = Long.parseLong(showIDsVO.get(i));
+                Long showId = Long.parseLong(bannerVO.getShowIds().get(i));
 
                 Show show = showRepository.findById(showId)
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));

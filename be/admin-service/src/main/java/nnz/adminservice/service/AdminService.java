@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import nnz.adminservice.dto.AskedShowDTO;
 import nnz.adminservice.dto.ReportDTO;
 import nnz.adminservice.vo.AskedShowStatusVO;
+import nnz.adminservice.vo.BannerVO;
 import nnz.adminservice.vo.ReportStatusVO;
 import nnz.adminservice.vo.ShowVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +20,7 @@ public interface AdminService {
 
     void handleReport(ReportStatusVO reportStatusVO) throws JsonProcessingException;
 
-    void registBanners(List<MultipartFile> files, List<String> showIDsVO) throws JsonProcessingException;
+    void registBanners(List<MultipartFile> files, BannerVO bannerVO) throws JsonProcessingException;
 
     void createShow(ShowVO showVO, MultipartFile file);
 }
