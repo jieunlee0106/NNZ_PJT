@@ -48,7 +48,7 @@ public class TagServiceImpl implements TagService {
                 TagDTO tagDTO = TagDTO.of(tag.get());
 
                 KafkaMessage<TagDTO> kafkaMessage = KafkaMessage.create().body(tagDTO);
-                producer.sendMessage(kafkaMessage, "test-tag");
+                producer.sendMessage(kafkaMessage, "dev-tag");
             }
 
             if (tagVO.getType().equals("nanum")) {
@@ -78,7 +78,7 @@ public class TagServiceImpl implements TagService {
                 NanumTagDTO nanumTagDTO = NanumTagDTO.of(newNanumTag);
 
                 KafkaMessage<NanumTagDTO> kafkaMessage = KafkaMessage.create().body(nanumTagDTO);
-                producer.sendMessage(kafkaMessage, "test-nanum-tag");
+                producer.sendMessage(kafkaMessage, "dev-nanumtag");
             }
         }
     }
@@ -102,7 +102,7 @@ public class TagServiceImpl implements TagService {
 
                 KafkaMessage<ShowTagDTO> kafkaMessage = KafkaMessage.create().body(showTagDTO);
                 log.info("body : {}", kafkaMessage.getBody());
-                producer.sendMessage(kafkaMessage, "test-show-tag");
+                producer.sendMessage(kafkaMessage, "dev-showtag");
             }
         }
     }

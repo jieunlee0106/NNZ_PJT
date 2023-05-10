@@ -22,7 +22,7 @@ public class KafkaConsumer {
     private final ShowRepository showRepository;
     private final NanumRepository nanumRepository;
 
-    @KafkaListener(topics = "test-show", groupId = "tag-service-1")
+    @KafkaListener(topics = "dev-show", groupId = "tag-service-1")
     public void getShowMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume message: {}", message);
@@ -34,7 +34,7 @@ public class KafkaConsumer {
         showRepository.save(show);
     }
 
-    @KafkaListener(topics = "test-nanum", groupId = "tag-service-2")
+    @KafkaListener(topics = "dev-nanum", groupId = "tag-service-2")
     public void getNanumMessage(String message) throws JsonProcessingException {
         KafkaMessage<NanumDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumDTO.class);
         log.info("consume message: {}", message);
