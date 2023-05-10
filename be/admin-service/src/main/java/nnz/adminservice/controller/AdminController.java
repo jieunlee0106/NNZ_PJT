@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import nnz.adminservice.service.AdminService;
 import nnz.adminservice.vo.AskedShowStatusVO;
+import nnz.adminservice.vo.BannerVO;
 import nnz.adminservice.vo.ReportStatusVO;
 import nnz.adminservice.vo.ShowVO;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,8 @@ public class AdminController {
 
     @PostMapping("/banners")
     public ResponseEntity<?> registBanners(@RequestPart(value = "banners", required = false) List<MultipartFile> files,
-                                           @RequestPart(value = "showIds") List<String> showIDsVO) throws JsonProcessingException {
-        adminService.registBanners(files, showIDsVO);
+                                           @RequestPart(value = "data") BannerVO bannerVO) throws JsonProcessingException {
+        adminService.registBanners(files, bannerVO);
         return ResponseEntity.ok().build();
     }
 }
