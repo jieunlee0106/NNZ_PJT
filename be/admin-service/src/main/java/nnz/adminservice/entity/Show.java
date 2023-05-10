@@ -37,18 +37,5 @@ public class Show extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")
     private Category category;
-
-    public static Show of(ShowDTO showDTO){
-        return Show.builder()
-                .title(showDTO.getTitle())
-                .category(showDTO.getCategory())
-                .location(showDTO.getLocation())
-                .startDate(showDTO.getStartDate())
-                .endDate(showDTO.getEndDate())
-                .ageLimit(showDTO.getAgeLimit())
-                .region(showDTO.getRegion())
-                .posterImage(showDTO.getPoster())
-                .build();
-    }
 }
 
