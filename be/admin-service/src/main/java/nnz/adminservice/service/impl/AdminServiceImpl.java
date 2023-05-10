@@ -61,6 +61,7 @@ public class AdminServiceImpl implements AdminService {
                         .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)).getNickname())
                 .title(askedShow.getTitle())
                 .path(askedShow.getPath())
+                .status(askedShow.getStatus().getCode())
                 .build()).collect(Collectors.toList());
     }
 

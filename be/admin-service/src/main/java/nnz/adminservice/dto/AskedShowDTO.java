@@ -15,4 +15,6 @@ public class AskedShowDTO {
     private String requester;
     private String title;
     private String path;
+    private int status;
+
 }
