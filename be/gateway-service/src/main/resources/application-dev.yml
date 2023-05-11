@@ -10,6 +10,9 @@ eureka:
 spring:
   application:
     name: DEV-GATEWAY-SERVICE
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
 
   cloud:
     gateway:
