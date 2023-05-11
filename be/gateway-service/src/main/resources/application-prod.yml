@@ -23,6 +23,9 @@ spring:
           predicates:
             - Path=/user-service/**
 
+jwt:
+  secret-key: ENC(2bt45uuZQZSHRdWQ4RGBElZIhPfKOHGw8mwhf9qpcOQYQGXEHjjgjjgAnjyN7CoqJx1p4swr+Jc0AqutMKJZCIFKYZ77u/mHnX/5yL85nglcpZeYPWbG6aFPVKfEvmQBi1mVOjTkPJWQ6U19Y1Kyj2n6+eYRfHBu+fO5TkkD6QnRQwtuQJFa0lgj2fxnCumruxNrNz7lMNs86EjJ23TpD13RNhtdi5TMz91qqWTNpNuookxw/yoTrz9FS3loDB7ScJwwjErPiuPY4rWrLN9nn1XvfYAoteUzjoVDQajVTRfUKg4bRoC75i16klQXunlSk1CpQ771+34EZJOw7dKOMwkgwtgFQif6tr6SrKmT3hY=)
+
 #yml 암호화 yml 설정
 jasypt:
   encryptor:
