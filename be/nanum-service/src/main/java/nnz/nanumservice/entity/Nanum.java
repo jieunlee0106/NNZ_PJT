@@ -50,13 +50,15 @@ public class Nanum extends BaseEntity {
 
     private String condition;
 
+    // 전체 수량
     private Integer quantity;
 
+    // 남은 수량
     private Integer stock;
 
     private String content;
 
-    // 나눔 진행상태 = 나눔 전(0), 나눔 중(1), 마감(2), 종료(3)
+    // 나눔 진행상태 = 나눔 전(0), 마감(1), 나눔 중(2), 종료(3)
     private Integer status;
 
     // 썸네일 이미지 주소
@@ -78,7 +80,6 @@ public class Nanum extends BaseEntity {
     private List<NanumTag> tags = new ArrayList<>();
 
     public static Nanum voToEntity(NanumVO data, User user, Show show) {
-        // todo : 기본 값 처리 어떻게 할 것인지
         NanumInfo nanumInfo = NanumInfo.builder()
                 .lat(null)
                 .lng(null)

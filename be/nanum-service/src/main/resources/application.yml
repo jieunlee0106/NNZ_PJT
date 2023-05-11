@@ -35,6 +35,9 @@ spring:
 #      topic: test-nanum # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
 
 eureka:
   client:

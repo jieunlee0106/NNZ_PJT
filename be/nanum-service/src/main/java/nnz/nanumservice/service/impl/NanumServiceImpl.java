@@ -134,7 +134,8 @@ public class NanumServiceImpl implements NanumService {
     @Override
     public PageDTO readNanumsByLocation(Double lat, Double lng, PageRequest pageRequest) {
 
-        List<Nanum> nanums = nanumRepository.findAllByStatus(1);
+        // 즉시 나눔 가능 -> 무조건 진행중인 나눔만 조회
+        List<Nanum> nanums = nanumRepository.findAllByStatus(2);
         List<NanumDTO> nanumDTOs = new ArrayList<>();
         for (Nanum nanum : nanums) {
             nanumDTOs.add(NanumDTO.of(nanum));
@@ -222,9 +223,6 @@ public class NanumServiceImpl implements NanumService {
         if (follow.isPresent()) {
             // 팔로우 true 체크
             writer.setIsFollow(true);
-
-            // todo: 트위터 true 체크
-
         } //
         else {
             writer.setIsFollow(false);
@@ -246,6 +244,7 @@ public class NanumServiceImpl implements NanumService {
     }
 
     @Override
+    @Transactional
     public void createUserNanum(Long nanumId, Long userId) {
         //todo: error handling
         Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
@@ -258,12 +257,25 @@ public class NanumServiceImpl implements NanumService {
                 .build();
 
         if (nanum.getIsCertification()) {
-            userNanum.updateIsCertificated(true);
+            userNanum.updateIsCertificated(false);
         } //
         else {
-            userNanum.updateIsCertificated(false);
+            userNanum.updateIsCertificated(true);
         }
 
         userNanumRepository.save(userNanum);
+
+        UserNanumDTO userNanumDTO = UserNanumDTO.of(userNanum);
+        KafkaMessage<UserNanumDTO> userNanumDTOKafkaMessage = KafkaMessage.update().body(userNanumDTO);
+        producer.sendMessage(userNanumDTOKafkaMessage, "dev-usernanum");
+
+        List<UserNanum> userNanums = userNanumRepository.findAllByNanumAndIsCertificatedTrue(nanum);
+        if (userNanums.size() == nanum.getQuantity()) {
+            nanum.updateStatus(1);
+
+            NanumDTO nanumDTO = NanumDTO.of(nanum);
+            KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.update().body(nanumDTO);
+            producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
+        }
     }
 }

@@ -102,12 +102,13 @@ public class NanumController {
     @PostMapping("/{nanumId}")
     public ResponseEntity<Void> createUserNanum(
             @PathVariable(name = "nanumId") Long nanumId,
-            DecodedToken userToken) {
-        if (userToken.getId() == null) {
+//            DecodedToken userToken,
+            @RequestHeader Long userId) {
+        if (userId == null) {
 //            todo : error handling
 //            throw new Exception();
         }
-        nanumService.createUserNanum(nanumId, userToken.getId());
+        nanumService.createUserNanum(nanumId, userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

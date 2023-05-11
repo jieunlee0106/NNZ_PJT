@@ -25,6 +25,7 @@ public class UserNanum extends BaseEntity {
     private Long id;
 
     private Boolean isCertificated;
+
     private Boolean isReceived;
 
     @ManyToOne(fetch = FetchType.LAZY)
