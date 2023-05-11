@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/myshared_info_controller.dart';
 import 'package:time_picker_sheet/widget/sheet.dart';
 import 'package:time_picker_sheet/widget/time_picker.dart';
 
 class SharedTimePicker extends StatefulWidget {
-  const SharedTimePicker({Key? key, required this.title}) : super(key: key);
-
+  SharedTimePicker({Key? key, required this.title}) : super(key: key);
+  var infoFormController = Get.put(MysharedInfoController());
   final String title;
 
   @override
@@ -16,6 +18,7 @@ class _SharedTimePickerState extends State<SharedTimePicker> {
   DateTime dateTimeSelected = DateTime.now();
 
   void _openTimePickerSheet(BuildContext context) async {
+    var infoFormController = Get.put(MysharedInfoController());
     final result = await TimePicker.show<DateTime?>(
       context: context,
       sheet: TimePickerSheet(
@@ -29,6 +32,8 @@ class _SharedTimePickerState extends State<SharedTimePicker> {
     if (result != null) {
       setState(() {
         dateTimeSelected = result;
+        final insertTime = dateTimeSelected.toString().substring(10, 19);
+        infoFormController.openTimeController.text = insertTime;
       });
     }
   }
@@ -39,7 +44,9 @@ class _SharedTimePickerState extends State<SharedTimePicker> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         GestureDetector(
-          onTap: () => _openTimePickerSheet(context),
+          onTap: () {
+            _openTimePickerSheet(context);
+          },
           child: Container(
             decoration: BoxDecoration(
                 border: Border.all(color: Config.blackColor),

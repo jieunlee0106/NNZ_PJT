@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
 
 class ShareCard extends StatelessWidget {
-  const ShareCard({super.key, required this.datum});
+  const ShareCard({super.key, required this.title, required this.opentime});
 
-  final int datum;
+  final String title;
+  final DateTime opentime;
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +31,17 @@ class ShareCard extends StatelessWidget {
             height: 10,
           ),
           Text(
-            "$datum번 정국 포토카드 나눔",
+            title,
             style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Config.blackColor),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
             child: Text(
-              "2023.01.01",
-              style: TextStyle(
+              opentime.toString(),
+              style: const TextStyle(
                 fontSize: 12,
                 color: Color(0xFF585858),
               ),

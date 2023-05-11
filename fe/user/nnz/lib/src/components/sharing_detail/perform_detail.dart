@@ -14,8 +14,8 @@ class PerformDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: Row(
         children: [
           Icon(
@@ -23,7 +23,7 @@ class PerformDetail extends StatelessWidget {
             color: const Color(0xFFF3C906),
             size: textSize + 10,
           ),
-          const SizedBox(
+          Container(
             width: 6,
           ),
           Text(
