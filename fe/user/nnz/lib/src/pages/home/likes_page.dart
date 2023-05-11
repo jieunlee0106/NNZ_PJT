@@ -75,7 +75,7 @@ class _LikesPageState extends State<LikesPage> {
                       fontSize: 12,
                     ),
                   ),
-                  // LikesList(items: likes. ?? []),
+                  LikesList(),
                 ],
               ),
             ),
