@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -309,17 +311,23 @@ class SharingRegisterController extends GetxController {
 
         final titleText = titleController.text;
         logger.i("값들어와라 $titleText");
+        final tagReqList = [];
+        for (var element in tagList) {
+          tagReqList.add(base64Encode(utf8.encode(element)));
+        }
         shareModel = ShareModel.fromJson({
           "showId": showId.value,
           "writer": writer.value,
           "nanumDate": sharingDateController.text,
-          "title": titleController.text,
+          "title": base64Encode(utf8.encode(titleController.text)),
           "openTime": openTime,
           "quantity": peopleCount.value,
           "isCertification": isAuthentication.value,
-          "condition": isAuthentication.value == true ? conList[0] : null,
-          "content": detailController.text,
-          "tags": tagList,
+          "condition": isAuthentication.value == true
+              ? base64Encode(utf8.encode(conList[0]))
+              : "",
+          "content": base64Encode(utf8.encode(detailController.text)),
+          "tags": tagReqList,
         });
 
         logger.i("shareModel $shareModel");
@@ -347,23 +355,34 @@ class SharingRegisterController extends GetxController {
           });
     } else {
       final openTime = "${openDateController.text}T${openTimeController.text}";
+      final tagReqList = [];
+      for (var element in tagList) {
+        tagReqList.add(base64Encode(utf8.encode(element)));
+      }
+      logger.i("태그 $tagReqList");
+      shareModel = ShareModel.fromJson({
+        "showId": showId.value,
+        "writer": writer.value,
+        "nanumDate": sharingDateController.text,
+        "title": base64Encode(utf8.encode(titleController.text)),
+        "openTime": openTime,
+        "quantity": peopleCount.value,
+        "isCertification": isAuthentication.value,
+        "condition": isAuthentication.value == true
+            ? base64Encode(utf8.encode(conList[0]))
+            : "",
+        "content": base64Encode(utf8.encode(detailController.text)),
+        "tags": tagReqList,
+      });
 
-      shareModel = ShareModel(
-        showId: showId.value,
-        writer: writer.value,
-        nanumDate: sharingDateController.text,
-        title: titleController.text,
-        openTime: openTime,
-        quantity: peopleCount.value,
-        isCertification: isAuthentication.value,
-        condition: isAuthentication.value == true
-            ? conList.indexOf(0).toString()
-            : null,
-        content: detailController.text,
-        tags: tagList,
-      );
-      SharingRegisterProvider()
-          .testShare(shareModel: shareModel, images: imageController.images);
+      try {
+        final response = await SharingRegisterProvider()
+            .testShare(shareModel: shareModel, images: imageController.images);
+        logger.i(response.statusCode);
+        logger.i(response.statusText);
+      } catch (e) {
+        logger.i("$e");
+      }
     }
   }
 }

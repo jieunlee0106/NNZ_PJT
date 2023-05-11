@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/otherUserProfile/11",
+      initialRoute: "/",
       getPages: [
         GetPage(
           name: "/",
