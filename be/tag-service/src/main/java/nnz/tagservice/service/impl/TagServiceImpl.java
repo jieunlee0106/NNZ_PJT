@@ -50,7 +50,7 @@ public class TagServiceImpl implements TagService {
                 createdTags.add(tagDTO);
 
                 KafkaMessage<TagDTO> kafkaMessage = KafkaMessage.create().body(tagDTO);
-                producer.sendMessage(kafkaMessage, "dev-tag");
+                producer.sendMessage(kafkaMessage, "tag");
             } else {
                 createdTags.add(TagDTO.of(tag.get()));
             }
