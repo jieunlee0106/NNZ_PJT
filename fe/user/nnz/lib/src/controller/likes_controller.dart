@@ -15,7 +15,6 @@ class LikesController extends GetxController {
   late ReceiveTypeList receiveTypeList;
 
   getLikesList() async {
-    print('asdasd');
     try {
       final response = await LikesService().getLikesList();
       likes = Likes.fromJson(response.data);

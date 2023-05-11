@@ -21,6 +21,7 @@ class LikesService extends GetConnect {
 
   Future<dynamic> getLikesList() async {
     try {
+      print('찜 리스트 통신한다');
       final response = await dio.get(
         'https://k8b207.p.ssafy.io/api/user-service/users/bookmarks?userId=12',
         options: Options(

@@ -29,6 +29,7 @@ class _MySharingState extends State<MySharingList> {
 
   Future<void> loadMyInfo() async {
     await controller.getShareList('give');
+
     nanumTypeList = controller.nanumTypeList;
     setState(() {
       _isLoading = false;

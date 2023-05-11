@@ -20,26 +20,6 @@ class LikesPage extends StatefulWidget {
 }
 
 class _LikesPageState extends State<LikesPage> {
-  final likesController = Get.put(LikesController());
-
-  late Likes likes;
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    loadLikeList();
-  }
-
-  Future<void> loadLikeList() async {
-    await likesController.getLikesList();
-    likes = likesController.likes;
-    print(likes);
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
