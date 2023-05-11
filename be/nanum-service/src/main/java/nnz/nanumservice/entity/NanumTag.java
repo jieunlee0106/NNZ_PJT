@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,9 +20,10 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NanumTag {
+public class NanumTag extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,16 +34,16 @@ public class NanumTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime updatedAt;
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+//    private LocalDateTime updatedAt;
 
     public static NanumTag of(NanumTagDTO nanumTagDTO, Nanum nanum, Tag tag) {
         return NanumTag.builder()
                 .id(nanumTagDTO.getId())
                 .nanum(nanum)
                 .tag(tag)
-                .updatedAt(nanumTagDTO.getUpdatedAt())
+//                .updatedAt(nanumTagDTO.getUpdatedAt())
                 .build();
     }
 }

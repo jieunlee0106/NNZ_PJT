@@ -11,5 +11,5 @@ import java.util.List;
 public interface TagFeignClient {
 
     @PostMapping("/tag-service/tags")
-    void createTag(@RequestBody List<TagDTO> tags);
+    List<TagDTO> createTag(@RequestBody List<TagDTO> tags);
 }

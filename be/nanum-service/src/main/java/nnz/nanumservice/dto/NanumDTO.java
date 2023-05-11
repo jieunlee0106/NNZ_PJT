@@ -1,5 +1,6 @@
 package nnz.nanumservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -15,6 +16,7 @@ import nnz.nanumservice.entity.NanumInfo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -66,6 +68,12 @@ public class NanumDTO {
 
     private Long showId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<NanumImageDTO> nanumImages;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<NanumTagDTO> nanumTags;
+
     public static NanumDTO of(Nanum nanum) {
         NanumInfo nanumInfo = nanum.getNanumInfo();
         return NanumDTO.builder()
@@ -85,6 +93,20 @@ public class NanumDTO {
                 .location(nanumInfo.getLocation())
                 .outfit(nanumInfo.getOutfit())
                 .showId(nanum.getShow().getId())
+                .providerId(nanum.getProvider().getId())
+                .nanumDate(nanum.getNanumDate())
                 .build();
+    }
+
+    public void setNanumImages(List<NanumImageDTO> nanumImages) {
+        this.nanumImages = nanumImages;
+    }
+
+    public void setNanumTags(List<NanumTagDTO> nanumTags) {
+        this.nanumTags = nanumTags;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +48,7 @@ public class NanumServiceImpl implements NanumService {
     private final LocationDistance locationDistance;
     private final FollowerRepository followerRepository;
     private final UserNanumRepository userNanumRepository;
+    private final EntityManager em;
 
     // todo : status 바뀌는 로직 필요
 
@@ -63,8 +66,8 @@ public class NanumServiceImpl implements NanumService {
         nanum = nanumRepository.save(nanum);
         NanumDTO nanumDTO = NanumDTO.of(nanum);
 
-        KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.create().body(nanumDTO);
-        producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
+//        KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.create().body(nanumDTO);
+//        producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
 
         // todo: error handling
         List<TagDTO> tagDTOs = new ArrayList<>();
@@ -72,10 +75,32 @@ public class NanumServiceImpl implements NanumService {
             tagDTOs.add(new TagDTO(Long.toString(nanumDTO.getId()), tag, "nanum"));
         });
 
-        tagFeignClient.createTag(tagDTOs);
+        // 태그 생성 요청
+        List<TagDTO> createdTags = tagFeignClient.createTag(tagDTOs);
+        // 서비스 db에 생성된 태그 저장
+        List<Tag> tags = tagRepository.saveAll(
+                createdTags.stream()
+                        .map(Tag::of)
+                        .collect(Collectors.toList())
+        );
 
+        // 나눔 태그 리스트 저장
+        List<NanumTag> nanumTags = new ArrayList<>();
+        for (Tag tag : tags) {
+            NanumTag nanumTag = NanumTag.builder()
+                    .nanum(nanum)
+                    .tag(tag)
+                    .build();
+            nanumTags.add(nanumTag);
+        }
+        nanumTags = nanumTagRepository.saveAll(nanumTags);
+        // 나눔 태그 dto 리스트
+        List<NanumTagDTO> nanumTagDTOs = nanumTags.stream()
+                .map(NanumTagDTO::of)
+                .collect(Collectors.toList());
+
+        List<NanumImageDTO> nanumImageDTOs = new ArrayList<>();
         Boolean isThumbnail = true;
-
         for (MultipartFile image : images) {
             String path = s3FileService.getS3Url(image);
             String originalName = image.getOriginalFilename();
@@ -88,16 +113,25 @@ public class NanumServiceImpl implements NanumService {
                     .build();
             nanumImageRepository.save(nanumImage);
 
-            NanumImageDTO nanumImageDTO = NanumImageDTO.of(nanumImage);
+            nanumImageDTOs.add(NanumImageDTO.of(nanumImage));
 
-            KafkaMessage<NanumImageDTO> nanumImageDTOKafkaMessage = KafkaMessage.create().body(nanumImageDTO);
-            producer.sendMessage(nanumImageDTOKafkaMessage, "dev-nanumimage");
+//            KafkaMessage<NanumImageDTO> nanumImageDTOKafkaMessage = KafkaMessage.create().body(nanumImageDTO);
+//            producer.sendMessage(nanumImageDTOKafkaMessage, "dev-nanumimage");
 
             if (isThumbnail) {
                 nanum.updateThumbnail(path);
+                nanumDTO.setThumbnail(path);
             }
             isThumbnail = false;
         }
+
+        nanumDTO.setNanumTags(nanumTagDTOs);
+        nanumDTO.setNanumImages(nanumImageDTOs);
+
+        em.flush();
+
+        KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.create().body(nanumDTO);
+        producer.sendMessage(kafkaMessage, "nanum");
     }
 
     @Override
