@@ -51,7 +51,7 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     @Transactional
-    public void createNanum(NanumVO data, List<MultipartFile> images) throws JsonProcessingException {
+    public void createNanum(NanumVO data, List<MultipartFile> images) {
 
         // todo : error handling
         User user = userRepository.findById(data.getWriter()).orElseThrow();

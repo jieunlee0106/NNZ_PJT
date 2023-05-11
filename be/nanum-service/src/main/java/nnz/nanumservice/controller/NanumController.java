@@ -30,11 +30,8 @@ public class NanumController {
             @RequestPart(name = "data") NanumVO data,
             @RequestPart(name = "images") List<MultipartFile> images
     ) {
-        try {
-            nanumService.createNanum(data, images);
-        } catch (JsonProcessingException e) {
-            // todo: error handling
-        }
+        data.decode();
+        nanumService.createNanum(data, images);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -27,7 +27,7 @@ public class KafkaConsumer {
     private final NanumRepository nanumRepository;
 
     @Transactional
-    @KafkaListener(topics = "dev-show", groupId = "nanum-service-1")
+    @KafkaListener(topics = {"dev-show", "dev-show-admin"}, groupId = "nanum-service-1")
     public void getShowMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume message: {}", message);

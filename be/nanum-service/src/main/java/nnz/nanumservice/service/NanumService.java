@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface NanumService {
 
-    void createNanum(NanumVO data, List<MultipartFile> images) throws JsonProcessingException;
+    void createNanum(NanumVO data, List<MultipartFile> images);
 
     PageDTO readNanumsByShowId(Long showId, PageRequest pageRequest);
 
