@@ -115,13 +115,17 @@ class MySharedInfoForm extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          const Center(
-            child: SharingButton(
+          Center(
+              child: GestureDetector(
+            onTap: () {
+              infoFormController.onregistInfo();
+            },
+            child: const SharingButton(
               btnheight: 10,
               btnwidth: 80,
               btntext: "등록",
             ),
-          )
+          ))
         ],
       ),
     );

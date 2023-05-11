@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/",
+      initialRoute: "/myShareInfoForm",
       getPages: [
         GetPage(
           name: "/",
