@@ -76,4 +76,35 @@ public class FollowServiceImpl implements FollowService {
     public boolean isFollow(User me, User following) {
         return followRepository.existsByFollowerAndFollowing(me, following);
     }
+
+    @Override
+    @Transactional
+    public void toggleFollow(Long meId, Long followingId) {
+        User me = userRepository.findById(meId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 내가 구독할 사용자
+        User following = userRepository.findById(followingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        Follow follow = followRepository.findByFollowerAndFollowing(me, following).orElse(null);
+        if (follow != null) { // 팔로우 한 이력이 있다면
+            if (follow.getIsDelete()) { // 언팔로우 상태
+                follow.reFollow(); // 재팔로우
+                log.info("{}님이 {}님을 팔로우", me.getEmail(), following.getEmail());
+            } else { // 팔로우 상태
+                follow.unfollow(); // 언팔로우
+                log.info("{}님이 {}님을 언팔로우", me.getEmail(), following.getEmail());
+            }
+        } else { // 새로운 팔로우 등록
+            follow = Follow.builder()
+                    .follower(me)
+                    .following(following)
+                    .build();
+
+            followRepository.save(follow);
+            log.info("{}님이 {}님을 팔로우", me.getEmail(), following.getEmail());
+        }
+
+    }
 }

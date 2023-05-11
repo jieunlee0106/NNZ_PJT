@@ -86,17 +86,24 @@ public class UserController {
 
     @PostMapping("/users/follow/{followingId}")
     public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) {
-        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 팔로우
-        followService.follow(token.getId(), followingId);
+        // 팔로우가 되어 있으면 언팔로우, 언팔로우면 팔로우
+        followService.toggleFollow(token.getId(), followingId);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/users/unfollow/{followingId}")
-    public ResponseEntity<Void> unfollow(@PathVariable Long followingId, DecodedToken token) {
-        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 언팔로우
-        followService.unfollow(token.getId(), followingId);
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/users/follow/{followingId}")
+//    public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) {
+//        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 팔로우
+//        followService.follow(token.getId(), followingId);
+//        return ResponseEntity.noContent().build();
+//    }
+
+//    @PostMapping("/users/unfollow/{followingId}")
+//    public ResponseEntity<Void> unfollow(@PathVariable Long followingId, DecodedToken token) {
+//        // 요청자(token.getId()) 가 followingId에 해당하는 사용자를 언팔로우
+//        followService.unfollow(token.getId(), followingId);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @PatchMapping("/users/find-pwd")
     public ResponseEntity<Void> findPwd(@RequestBody FindPwdVO vo) {
