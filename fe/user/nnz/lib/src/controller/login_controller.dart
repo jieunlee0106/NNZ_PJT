@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 
+import '../components/register_form/share_popup.dart';
 import '../services/user_provider.dart';
 
 class LoginController extends GetxController {
@@ -68,21 +69,25 @@ class LoginController extends GetxController {
             email: emailController.text, password: passwordController.text);
         logger.i(response.statusCode);
         if (response.statusCode == 200) {
-          logger.i(response.body);
-
-          final accessToken = response.body["accessToken"];
-          final userId = response.body["userId"];
-          // final userId = response.body["userId"];
-          Get.find<BottomNavController>().setToken(accessToken: accessToken);
-          Get.find<BottomNavController>().setUserId(userId: userId);
-          final token = Get.find<BottomNavController>().getToken();
-          Get.offAllNamed("/app");
-          Get.find<BottomNavController>()
-              .changeBottomNav(Get.find<BottomNavController>().curIndex.value);
-        } else {
-          final errorMessage = "(${response.statusCode}): ${response.body}";
-          logger.e(errorMessage);
-          throw Exception(errorMessage);
+          if (response.body["code"] != null) {
+            logger.i(response.body);
+            await showDialog(
+                context: Get.context!,
+                builder: (BuildContext context) {
+                  return sharePopup(
+                      popupMessage: "${response.body["message"]}");
+                });
+          } else {
+            final accessToken = response.body["accessToken"];
+            final userId = response.body["userId"];
+            // final userId = response.body["userId"];
+            Get.find<BottomNavController>().setToken(accessToken: accessToken);
+            Get.find<BottomNavController>().setUserId(userId: userId);
+            final token = Get.find<BottomNavController>().getToken();
+            Get.offAllNamed("/app");
+            Get.find<BottomNavController>().changeBottomNav(
+                Get.find<BottomNavController>().curIndex.value);
+          }
         }
       } catch (e) {
         final errorMessage = "$e";

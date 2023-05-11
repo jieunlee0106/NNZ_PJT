@@ -236,7 +236,7 @@ class SharingRegisterController extends GetxController {
     }
   }
 
-  void onShareRegister() {
+  void onShareRegister() async {
     if (imageController.images.length == 0) {
       //popup창으로 바꿀 것
       showDialog(
@@ -304,32 +304,34 @@ class SharingRegisterController extends GetxController {
               return const sharePopup(popupMessage: "상세 정보를 입력해주세요");
             });
       } else {
-        // imageList.clear();
-        // for (var image in imageController.images) {
-        //   imageList.add(image);
-        //   logger.i("$image");
-        // }
-
-        // logger.i(tagList);
         final openTime =
             "${openDateController.text}T${openTimeController.text}";
 
-        shareModel = ShareModel(
-          showId: showId.value,
-          writer: writer.value,
-          nanumDate: sharingDateController.text,
-          title: titleController.text,
-          openTime: openTime,
-          quantity: peopleCount.value,
-          isCertification: isAuthentication.value,
-          condition: isAuthentication.value == true ? conList[0] : null,
-          content: detailController.text,
-          tags: tagList,
-        );
+        final titleText = titleController.text;
+        logger.i("값들어와라 $titleText");
+        shareModel = ShareModel.fromJson({
+          "showId": showId.value,
+          "writer": writer.value,
+          "nanumDate": sharingDateController.text,
+          "title": titleController.text,
+          "openTime": openTime,
+          "quantity": peopleCount.value,
+          "isCertification": isAuthentication.value,
+          "condition": isAuthentication.value == true ? conList[0] : null,
+          "content": detailController.text,
+          "tags": tagList,
+        });
 
-        // logger.i("shareModel $shareModel");
-        SharingRegisterProvider()
-            .testShare(shareModel: shareModel, images: imageController.images);
+        logger.i("shareModel $shareModel");
+        logger.i("images ${imageController.images[1].path}");
+        try {
+          final response = await SharingRegisterProvider().testShare(
+              shareModel: shareModel, images: imageController.images);
+          logger.i(response.statusCode);
+          logger.i(response.statusText);
+        } catch (e) {
+          logger.i("$e");
+        }
       }
     } else if (peopleCount <= 0) {
       showDialog(
@@ -344,13 +346,6 @@ class SharingRegisterController extends GetxController {
             return const sharePopup(popupMessage: "상세 정보를 입력해주세요");
           });
     } else {
-      // imageList.clear();
-      // for (var image in imageController.images) {
-      //   imageList.add(image);
-      //   logger.i("$image");
-      // }
-
-      // logger.i(tagList);
       final openTime = "${openDateController.text}T${openTimeController.text}";
 
       shareModel = ShareModel(
@@ -367,7 +362,6 @@ class SharingRegisterController extends GetxController {
         content: detailController.text,
         tags: tagList,
       );
-
       SharingRegisterProvider()
           .testShare(shareModel: shareModel, images: imageController.images);
     }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/components/register_form/share_popup.dart';
 import 'package:nnz/src/services/user_provider.dart';
 
 class UserEditController extends GetxController {
@@ -53,10 +54,19 @@ class UserEditController extends GetxController {
       if (response.statusCode == 200) {
         logger.i(response.body);
         final available = response.body["available"];
-        nickChecked.value = response.body["available"];
-        if (!available) {
+        nickChecked(available);
+        if (nickChecked.value == false) {
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "중복된 닉네임입니다.");
+              });
         } else {
-          nickChecked.value = true;
+          showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const sharePopup(popupMessage: "사용가능한 닉네임입니다.");
+              });
         }
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";

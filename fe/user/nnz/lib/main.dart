@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/",
+      initialRoute: "/otherUserProfile/11",
       getPages: [
         GetPage(
           name: "/",
@@ -194,7 +194,7 @@ class MyApp extends StatelessWidget {
           transition: Transition.rightToLeft,
         ),
         GetPage(
-          name: "/otherUserProfile",
+          name: "/otherUserProfile/:userId",
           page: () => const OtherProfile(),
           transition: Transition.rightToLeft,
         ),
