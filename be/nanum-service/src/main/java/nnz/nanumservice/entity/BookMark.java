@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookMark {
+public class Bookmark {
 
     @Id
     private Long id;

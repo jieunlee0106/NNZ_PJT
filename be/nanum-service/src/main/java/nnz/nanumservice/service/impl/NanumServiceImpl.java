@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.*;
+import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.dto.res.show.ResNanumDetailShowDTO;
 import nnz.nanumservice.dto.res.tag.ResTagDTO;
@@ -23,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,8 +44,7 @@ public class NanumServiceImpl implements NanumService {
     private final LocationDistance locationDistance;
     private final FollowerRepository followerRepository;
     private final UserNanumRepository userNanumRepository;
-
-    // todo : status 바뀌는 로직 필요
+    private final BookmarkRepository bookmarkRepository;
 
     @Override
     @Transactional
@@ -277,5 +274,26 @@ public class NanumServiceImpl implements NanumService {
             KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.update().body(nanumDTO);
             producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
         }
+    }
+
+    @Override
+    public List<ResNanumDTO> readPopularNaums() {
+
+        List<Nanum> nanums = nanumRepository.findAllByStatusLessThan(3);
+        Map<Nanum, Double> popularMap = new HashMap<>();
+        for (Nanum nanum : nanums) {
+            List<Bookmark> bookmarks = bookmarkRepository.findAllByNanum(nanum);
+            popularMap.put(nanum, bookmarks.size() * 0.7 + nanum.getViews() * 0.3);
+        }
+
+        List<Nanum> keySet = new ArrayList<>(popularMap.keySet());
+        keySet.sort((o1, o2) -> popularMap.get(o2).compareTo(popularMap.get(o1)));
+
+        List<ResNanumDTO> resNanumDTOs = new ArrayList<>();
+        keySet.subList(0, 9).forEach(nanum -> {
+            resNanumDTOs.add(ResNanumDTO.of(nanum));
+        });
+
+        return resNanumDTOs;
     }
 }

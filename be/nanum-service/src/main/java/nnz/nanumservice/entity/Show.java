@@ -26,6 +26,8 @@ public class Show {
 
     private String title;
 
+    private String location;
+
     private String endDate;
 
     private String startDate;
@@ -39,6 +41,7 @@ public class Show {
                 .id(showDTO.getId())
                 .startDate(showDTO.getStartDate())
                 .endDate(showDTO.getEndDate())
+                .location(showDTO.getLocation())
                 .title(showDTO.getTitle())
                 .updatedAt(showDTO.getUpdatedAt())
                 .build();

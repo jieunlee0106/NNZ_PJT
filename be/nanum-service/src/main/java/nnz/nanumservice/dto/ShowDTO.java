@@ -21,6 +21,8 @@ public class ShowDTO {
 
     private String title;
 
+    private String location;
+
     private String endDate;
 
     private String startDate;
