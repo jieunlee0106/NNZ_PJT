@@ -119,4 +119,8 @@ public class Nanum extends BaseEntity {
     public void plusViews() {
         this.views += 1;
     }
+
+    public void updateStatus(int status) {
+        this.status = status;
+    }
 }

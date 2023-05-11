@@ -38,4 +38,8 @@ public class UserNanum extends BaseEntity {
     public void updateIsCertificated(Boolean cert){
         this.isCertificated = cert;
     }
+
+    public void updateIsReceived(){
+        this.isReceived = true;
+    }
 }
