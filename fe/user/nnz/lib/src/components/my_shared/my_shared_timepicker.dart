@@ -34,6 +34,7 @@ class _SharedTimePickerState extends State<SharedTimePicker> {
         dateTimeSelected = result;
         final insertTime = dateTimeSelected.toString().substring(10, 19);
         infoFormController.openTimeController.text = insertTime;
+        print(insertTime);
       });
     }
   }
