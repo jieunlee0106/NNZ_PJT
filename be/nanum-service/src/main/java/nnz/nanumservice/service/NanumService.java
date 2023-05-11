@@ -1,6 +1,5 @@
 package nnz.nanumservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
@@ -25,4 +24,6 @@ public interface NanumService {
     NanumInfoDTO readNanumInfo(Long nanumId);
 
     ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId);
+
+    void createUserNanum(Long nanumId, Long userId);
 }

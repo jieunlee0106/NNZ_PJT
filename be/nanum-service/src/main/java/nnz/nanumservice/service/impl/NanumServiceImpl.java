@@ -187,6 +187,7 @@ public class NanumServiceImpl implements NanumService {
     }
 
     @Override
+    @Transactional
     public ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId) {
         // todo : error handling
         Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
@@ -239,6 +240,30 @@ public class NanumServiceImpl implements NanumService {
             resNanumDetailDTO.setIsBooking(false);
         }
 
+        nanum.plusViews();
+
         return resNanumDetailDTO;
+    }
+
+    @Override
+    public void createUserNanum(Long nanumId, Long userId) {
+        //todo: error handling
+        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
+
+        UserNanum userNanum = UserNanum.builder()
+                .nanum(nanum)
+                .receiver(user)
+                .isReceived(false)
+                .build();
+
+        if (nanum.getIsCertification()) {
+            userNanum.updateIsCertificated(true);
+        } //
+        else {
+            userNanum.updateIsCertificated(false);
+        }
+
+        userNanumRepository.save(userNanum);
     }
 }

@@ -27,7 +27,6 @@ public class UserNanum extends BaseEntity {
     private Boolean isCertificated;
     private Boolean isReceived;
 
-    //todo: user -> receiver 변수명 바꿈 유리한테 알려줄것
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User receiver;
