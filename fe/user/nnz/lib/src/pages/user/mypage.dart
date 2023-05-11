@@ -20,7 +20,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   final controller = Get.put(MyPageController());
-  late String nickname = '메렁';
+
   late MyPageModel myInfo;
   bool _isLoading = true;
 
@@ -61,10 +61,13 @@ class _MyPageState extends State<MyPage> {
                 children: [
                   Row(
                     children: [
-                      MyProfile(nickname: myInfo?.nickname),
+                      MyProfile(
+                        nickname: myInfo.nickname,
+                        profileImage: myInfo.profileImage,
+                      ),
                       MyFollower(
-                        follower: myInfo?.followerCount,
-                        following: myInfo?.followingCount,
+                        follower: myInfo.followerCount,
+                        following: myInfo.followingCount,
                       ),
                     ],
                   ),
@@ -109,18 +112,18 @@ class _MyPageState extends State<MyPage> {
                   ),
                   SharingInfo(
                     share: '나눔 한 내역',
-                    total: myInfo?.statistics?.nanum?.totalCount ?? 0,
-                    yet: myInfo?.statistics?.nanum?.beforeCount ?? 0,
-                    ing: myInfo?.statistics?.nanum?.ongoingCount ?? 0,
-                    end: myInfo?.statistics?.nanum?.doneCount ?? 0,
+                    total: myInfo.statistics?.nanum?.totalCount ?? 0,
+                    yet: myInfo.statistics?.nanum?.beforeCount ?? 0,
+                    ing: myInfo.statistics?.nanum?.ongoingCount ?? 0,
+                    end: myInfo.statistics?.nanum?.doneCount ?? 0,
                     page: MySharingList(),
                   ),
                   SharingInfo(
                     share: '나눔 받은 내역',
-                    total: myInfo?.statistics?.receive?.totalCount ?? 0,
-                    yet: myInfo?.statistics?.receive?.totalCount ?? 0,
-                    ing: myInfo?.statistics?.receive?.totalCount ?? 0,
-                    end: myInfo?.statistics?.receive?.totalCount ?? 0,
+                    total: myInfo.statistics?.receive?.totalCount ?? 0,
+                    yet: myInfo.statistics?.receive?.totalCount ?? 0,
+                    ing: myInfo.statistics?.receive?.totalCount ?? 0,
+                    end: myInfo.statistics?.receive?.totalCount ?? 0,
                     page: MySharedList(),
                   ),
                 ],

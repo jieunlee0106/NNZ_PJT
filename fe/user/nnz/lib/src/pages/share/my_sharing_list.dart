@@ -1,13 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/components/my_page_form/share_list_info.dart';
+import 'package:nnz/src/components/nullPage.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/components/icon_data.dart';
+import 'package:nnz/src/controller/mypage_share_list_controller.dart';
+import 'package:nnz/src/model/nanum_type_list_model.dart';
 
-class MySharingList extends StatelessWidget {
-  const MySharingList({super.key});
+class MySharingList extends StatefulWidget {
+  const MySharingList({Key? key}) : super(key: key);
+
+  @override
+  _MySharingState createState() => _MySharingState();
+}
+
+class _MySharingState extends State<MySharingList> {
+  final controller = Get.put(MyPageShareListController());
+
+  late NanumTypeList nanumTypeList;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMyInfo();
+  }
+
+  Future<void> loadMyInfo() async {
+    await controller.getShareList('give');
+    nanumTypeList = controller.nanumTypeList;
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading == true) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -42,7 +77,9 @@ class MySharingList extends StatelessWidget {
                     color: Config.yellowColor,
                   ),
                 ),
-                ShareList(),
+                ShareList(
+                  items: nanumTypeList.content ?? [],
+                )
               ],
             ),
           ),

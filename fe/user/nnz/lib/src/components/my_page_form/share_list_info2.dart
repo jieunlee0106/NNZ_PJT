@@ -3,18 +3,18 @@ import 'package:nnz/src/components/nullPage.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
-import 'package:nnz/src/model/nanum_type_list_model.dart';
+import 'package:nnz/src/model/receive_type_list_model.dart';
 
-class ShareList extends StatefulWidget {
+class ShareList2 extends StatefulWidget {
   final List<Content> items;
 
-  const ShareList({Key? key, required this.items}) : super(key: key);
+  const ShareList2({Key? key, required this.items}) : super(key: key);
 
   @override
   _ShareListState createState() => _ShareListState();
 }
 
-class _ShareListState extends State<ShareList> {
+class _ShareListState extends State<ShareList2> {
   @override
   Widget build(BuildContext context) {
     if (widget.items.length == 0) {

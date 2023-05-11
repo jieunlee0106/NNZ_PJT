@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class MyProfile extends StatelessWidget {
   final String? nickname;
+  final String? profileImage;
 
   const MyProfile({
     required this.nickname,
+    required this.profileImage,
   });
 
   @override
@@ -16,7 +18,8 @@ class MyProfile extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+            backgroundImage:
+                NetworkImage(profileImage ?? 'https://via.placeholder.com/150'),
           ),
           SizedBox(height: 20),
           Text(

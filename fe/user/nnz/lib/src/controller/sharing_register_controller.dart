@@ -68,6 +68,7 @@ class SharingRegisterController extends GetxController {
 
   Future<String> getToken() async {
     final accessToken = await storage.read(key: 'accessToken');
+    print('$accessToken ########');
     return accessToken!;
   }
 

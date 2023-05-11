@@ -11,7 +11,7 @@ class MyPageController extends GetxController {
   getMyInfo() async {
     try {
       final response = await MyPageService().getMyPageInfo();
-      print('API 통신 중 ~~~~~~~~~~~~~~');
+      print('마이 페이지 API 통신 중 ~~~~~~~~~~~~~~');
       myInfo = MyPageModel.fromJson(response.data);
       print('값 할당');
     } catch (e) {
