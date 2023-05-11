@@ -123,4 +123,8 @@ public class Nanum extends BaseEntity {
     public void updateStatus(int status) {
         this.status = status;
     }
+
+    public void updateStock(int stock) {
+        this.stock = stock;
+    }
 }
