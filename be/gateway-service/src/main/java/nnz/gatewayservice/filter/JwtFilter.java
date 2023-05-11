@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Component
 public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
@@ -87,7 +88,7 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
             String role = claims.get("role", String.class);
 
             // 일반 사용자가 관리자 API에 접근하는 경우
-            if (requestPath.startsWith(PermilAllUrlList.ADMIN_SERVICE) && !"ADMIN".equals(role)) {
+            if (requestPath.startsWith(PermilAllUrlPattern.ADMIN_SERVICE) && !"ADMIN".equals(role)) {
                 return handleForbidden(exchange, ErrorCode.FORBIDDEN);
             }
 
@@ -124,18 +125,13 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
 
     /**
      * HTTP METHOD에 따라 인증이 필요 없는 서비스인지 확인하는 메소드
-     * 인증이 없는 서비스 -> return true;
+     * 인증이 필요 없는 서비스 -> return true;
      */
     private boolean isPermit(HttpMethod httpMethod, String url) {
-        String[] permitAllUrls = PermilAllUrlList.findPermitAllUrl(httpMethod);
+        Pattern[] permitAllUrlPatterns = PermilAllUrlPattern.getPermitAllPatternBy(httpMethod);
 
-        // 해당 메소드에 인증이 필요없는 서비스가 없으면
-        if (permitAllUrls == null) {
-            return false;
-        }
-
-        for (String permitAllUrl : permitAllUrls) {
-            if (permitAllUrl.equals(url)) {
+        for (Pattern permitAllUrlPattern : permitAllUrlPatterns) {
+            if (permitAllUrlPattern.matcher(url).matches()) {
                 return true;
             }
         }
