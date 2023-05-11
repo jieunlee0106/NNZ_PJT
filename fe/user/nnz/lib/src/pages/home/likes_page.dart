@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/components/category/category_dropdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:nnz/src/components/category/sports_list.dart';
@@ -7,6 +8,9 @@ import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
 import 'package:nnz/src/components/my_page_form/likes_list.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/likes_controller.dart';
+import 'package:nnz/src/model/likes_model.dart';
+import 'package:nnz/src/model/mypage_model.dart';
 
 class LikesPage extends StatefulWidget {
   const LikesPage({Key? key}) : super(key: key);
@@ -16,6 +20,26 @@ class LikesPage extends StatefulWidget {
 }
 
 class _LikesPageState extends State<LikesPage> {
+  final likesController = Get.put(LikesController());
+
+  late Likes likes;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadLikeList();
+  }
+
+  Future<void> loadLikeList() async {
+    await likesController.getLikesList();
+    likes = likesController.likes;
+    print(likes);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +95,7 @@ class _LikesPageState extends State<LikesPage> {
                       fontSize: 12,
                     ),
                   ),
-                  LikesList(),
+                  // LikesList(items: likes. ?? []),
                 ],
               ),
             ),

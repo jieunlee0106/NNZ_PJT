@@ -8,7 +8,10 @@ import 'package:nnz/src/model/nanum_type_list_model.dart';
 class ShareList extends StatefulWidget {
   final List<Content> items;
 
-  const ShareList({Key? key, required this.items}) : super(key: key);
+  const ShareList({
+    Key? key,
+    required this.items,
+  }) : super(key: key);
 
   @override
   _ShareListState createState() => _ShareListState();
