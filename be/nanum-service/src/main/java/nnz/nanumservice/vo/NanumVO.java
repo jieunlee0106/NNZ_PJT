@@ -8,8 +8,11 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Getter;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Getter
@@ -38,4 +41,16 @@ public class NanumVO {
     private String content;
 
     private List<String> tags;
+
+    public void decode() {
+        this.condition = new String(Base64.getDecoder().decode(this.condition.getBytes(StandardCharsets.UTF_8)));
+        this.title = new String(Base64.getDecoder().decode(this.title.getBytes(StandardCharsets.UTF_8)));
+        this.content = new String(Base64.getDecoder().decode(this.content.getBytes(StandardCharsets.UTF_8)));
+
+        List<String> tags = new ArrayList<>();
+        for (String tag : this.tags) {
+            tags.add(new String(Base64.getDecoder().decode(tag.getBytes(StandardCharsets.UTF_8))));
+        }
+        this.tags = tags;
+    }
 }

@@ -1,6 +1,5 @@
 package nnz.nanumservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public interface NanumService {
 
-    void createNanum(NanumVO data, List<MultipartFile> images) throws JsonProcessingException;
+    void createNanum(NanumVO data, List<MultipartFile> images);
 
     PageDTO readNanumsByShowId(Long showId, PageRequest pageRequest);
 
@@ -25,4 +24,6 @@ public interface NanumService {
     NanumInfoDTO readNanumInfo(Long nanumId);
 
     ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId);
+
+    void createUserNanum(Long nanumId, Long userId);
 }

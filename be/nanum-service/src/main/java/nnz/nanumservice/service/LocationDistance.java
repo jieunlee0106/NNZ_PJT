@@ -7,11 +7,10 @@ public class LocationDistance {
 
     /**
      * 두 지점간의 거리 계산
-     *
-     * @param lat1 지점 1 위도
-     * @param lng1 지점 1 경도
-     * @param lat2 지점 2 위도
-     * @param lng2 지점 2 경도
+     * @param lat
+     * @param lnt
+     * @param lat2
+     * @param lnt2
      * @return
      */
     public Double getDistance(Double lat, Double lnt, Double lat2, Double lnt2) {

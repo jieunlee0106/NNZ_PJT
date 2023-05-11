@@ -15,9 +15,13 @@ public class KafkaProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(KafkaMessage<?> message, String topic) throws JsonProcessingException {
-        String jsonMessage = KafkaMessageUtils.serialize(message); // 카프카 메시지 직렬화
-        kafkaTemplate.send(topic, jsonMessage); // 해당 토픽에 jsonMessage 전송
-        log.info("produce message: {} to: {}", jsonMessage, topic);
+    public void sendMessage(KafkaMessage<?> message, String topic) {
+        try {
+            String jsonMessage = KafkaMessageUtils.serialize(message); // 카프카 메시지 직렬화
+            kafkaTemplate.send(topic, jsonMessage); // 해당 토픽에 jsonMessage 전송
+            log.info("produce message: {} to: {}", jsonMessage, topic);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+        }
     }
 }
