@@ -13,6 +13,12 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - name: JwtFilter
+          args:
+            baseMessage: Jwt Filter
+            preLogger: false
+            postLogger: false
       routes:
         - id: show-service
           uri: lb://SHOW-SERVICE
