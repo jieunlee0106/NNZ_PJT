@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
+import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.vo.NanumCertificationVO;
@@ -93,5 +94,11 @@ public class NanumController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{nanumId}/qr/{receiveId}")
+    public ResponseEntity<?> certifyQRCode(@PathVariable("nanumId") Long nanumId,
+                                           @PathVariable("receiveId") Long receiveId){
+        NanumStock nanumStock = certificationService.certifyQRCode(nanumId, receiveId);
+        return ResponseEntity.ok(nanumStock);
+    }
 
 }

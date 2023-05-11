@@ -115,4 +115,8 @@ public class Nanum extends BaseEntity {
     public void setNanumInfo(NanumInfoDTO nanumInfoDTO) {
         this.nanumInfo = NanumInfo.of(nanumInfoDTO);
     }
+
+    public void updateStatus(int status) {
+        this.status = status;
+    }
 }
