@@ -5,12 +5,9 @@ import lombok.RequiredArgsConstructor;
 import nnz.showservice.dto.ShowDTO;
 import nnz.showservice.dto.ShowTagDTO;
 import nnz.showservice.dto.SportsDTO;
-import nnz.showservice.entity.Category;
-import nnz.showservice.entity.Show;
-import nnz.showservice.entity.TeamImage;
-import nnz.showservice.repository.CategoryRepository;
-import nnz.showservice.repository.ShowRepository;
-import nnz.showservice.repository.TeamImageRepository;
+import nnz.showservice.dto.res.ResShowDTO;
+import nnz.showservice.entity.*;
+import nnz.showservice.repository.*;
 import nnz.showservice.service.ShowService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,6 +27,8 @@ public class ShowServiceImpl implements ShowService {
     private final ShowRepository showRepository;
     private final CategoryRepository categoryRepository;
     private final TeamImageRepository teamImageRepository;
+    private final TagRepository tagRepository;
+    private final ShowTagRepository showTagRepository;
 
     @Override
     public ShowDTO readShowInfo(Long showId) {
@@ -108,5 +107,25 @@ public class ShowServiceImpl implements ShowService {
 
         Page<ShowDTO> showDTOPage = showPage.map(ShowDTO::entityToDTO);
         return PageDTO.of(showDTOPage);
+    }
+
+    @Override
+    public PageDTO readShowsByShowTag(String showTagName, PageRequest pageRequest) {
+
+        // todo : error handling
+        Tag tag = tagRepository.findByTag(showTagName).orElseThrow();
+        List<ShowTag> showTags = showTagRepository.findAllByTag(tag);
+
+        List<Show> shows = new ArrayList<>();
+        showTags.forEach(showTag -> {
+            shows.add(showTag.getShow());
+        });
+
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), shows.size());
+        Page<Show> showPage = new PageImpl<>(shows.subList(start, end), pageRequest, shows.size());
+
+        Page<ResShowDTO> resShowDTOPage = showPage.map(ResShowDTO::of);
+        return PageDTO.of(resShowDTOPage);
     }
 }

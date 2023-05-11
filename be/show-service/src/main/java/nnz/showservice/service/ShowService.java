@@ -16,4 +16,6 @@ public interface ShowService {
     PageDTO readShowsByCategory(String category, PageRequest pageRequest);
 
     PageDTO searchShowsByCategoryAndTitle(String categoryName, String title, PageRequest pageRequest);
+
+    PageDTO readShowsByShowTag(String showTagName, PageRequest pageRequest);
 }

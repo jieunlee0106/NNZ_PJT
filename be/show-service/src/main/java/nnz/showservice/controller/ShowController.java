@@ -7,6 +7,7 @@ import nnz.showservice.dto.ShowDTO;
 import nnz.showservice.service.CategoryService;
 import nnz.showservice.service.ShowService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,5 +48,14 @@ public class ShowController {
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> readCategories(@RequestParam(name = "parent", required = false) String parent) {
         return ResponseEntity.ok().body(categoryService.readCategories(parent));
+    }
+
+    @GetMapping("/tag")
+    ResponseEntity<PageDTO> readShowsByShowTag(
+            @RequestParam(name = "tag") String showTagName,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "20") Integer size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return new ResponseEntity<>(showService.readShowsByShowTag(showTagName, pageRequest), HttpStatus.OK);
     }
 }
