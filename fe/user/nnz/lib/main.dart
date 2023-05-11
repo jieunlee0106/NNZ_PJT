@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
 import 'package:nnz/src/components/other_user_from/other_user_profile_twitter.dart';
+import 'package:nnz/src/components/sharing_detail/test_infinite.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
@@ -194,7 +195,7 @@ class MyApp extends StatelessWidget {
           transition: Transition.rightToLeft,
         ),
         GetPage(
-          name: "/otherUserProfile",
+          name: "/otherUserProfile/:userId",
           page: () => const OtherProfile(),
           transition: Transition.rightToLeft,
         ),
@@ -210,6 +211,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/performDetail",
           page: () => SharePerfomDetail(),
+        ),
+        GetPage(
+          name: "/testing",
+          page: () => const TestInfinite(),
         ),
       ],
     );

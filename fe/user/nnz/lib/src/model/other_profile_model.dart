@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-OtherProfileModel otherProfileModelFromJson(String str) =>
-    OtherProfileModel.fromJson(json.decode(str));
+OtherUserProfileModel otherUserProfileModelFromJson(String str) =>
+    OtherUserProfileModel.fromJson(json.decode(str));
 
-String otherProfileModelToJson(OtherProfileModel data) =>
+String otherUserProfileModelToJson(OtherUserProfileModel data) =>
     json.encode(data.toJson());
 
-class OtherProfileModel {
-  String? id;
+class OtherUserProfileModel {
+  int? id;
   String? nickname;
   String? profileImage;
-  String? isFollow;
-  String? isTwitterFollow;
-  String? followerCount;
-  String? followingCount;
+  bool? isFollow;
+  dynamic isTwitterFollow;
+  int? followerCount;
+  int? followingCount;
   Statistics? statistics;
 
-  OtherProfileModel({
+  OtherUserProfileModel({
     this.id,
     this.nickname,
     this.profileImage,
@@ -27,8 +27,8 @@ class OtherProfileModel {
     this.statistics,
   });
 
-  factory OtherProfileModel.fromJson(Map<String, dynamic> json) =>
-      OtherProfileModel(
+  factory OtherUserProfileModel.fromJson(Map<String, dynamic> json) =>
+      OtherUserProfileModel(
         id: json["id"],
         nickname: json["nickname"],
         profileImage: json["profileImage"],
@@ -52,35 +52,35 @@ class OtherProfileModel {
 
   @override
   String toString() {
-    return "OtherProfileModel : (id : $id, nickname : $nickname, profileImage : $profileImage, isFollow : $isFollow, isTwitterFollow : $isTwitterFollow, followerCount : $followerCount, followingCount : $followingCount, statistics : $statistics)";
+    return "OtherProfileUserModel : (id : $id, nickname : $nickname, profileImage : $profileImage, isFollow : $isFollow, isTwitterFollow : $isTwitterFollow, followerCount : $followerCount, followingCount : $followingCount, statistics :  $statistics)";
   }
 }
 
 class Statistics {
-  String total;
-  String nanumCount;
-  String receiveCount;
+  int totalCount;
+  int nanumCount;
+  int receiveCount;
 
   Statistics({
-    required this.total,
+    required this.totalCount,
     required this.nanumCount,
     required this.receiveCount,
   });
 
   factory Statistics.fromJson(Map<String, dynamic> json) => Statistics(
-        total: json["total"],
+        totalCount: json["totalCount"],
         nanumCount: json["nanumCount"],
         receiveCount: json["receiveCount"],
       );
 
   Map<String, dynamic> toJson() => {
-        "total": total,
+        "totalCount": totalCount,
         "nanumCount": nanumCount,
         "receiveCount": receiveCount,
       };
 
   @override
   String toString() {
-    return "Statistics : (total : $total, nanumCount : $nanumCount, receiveCount : $receiveCount)";
+    return "Statistics : (totalCount : $totalCount, nanumCount : $nanumCount, receiveCount : $receiveCount)";
   }
 }

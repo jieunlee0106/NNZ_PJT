@@ -21,6 +21,9 @@ class _MusicalCategoryState extends State<MusicalCategory> {
   List<dynamic> showList = [];
   Widget showListResult() {
     return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+      ),
       child: Column(
         children: List.generate(
           showList.length,
@@ -37,6 +40,7 @@ class _MusicalCategoryState extends State<MusicalCategory> {
                 ),
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
+                  horizontal: 20,
                 ),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -49,14 +53,22 @@ class _MusicalCategoryState extends State<MusicalCategory> {
                       )
                     ]),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("포스터"),
+                    Expanded(
+                      child: Image.network(
+                        "${showList[index]["poster"]}",
+                        width: 120,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            // horizontal: 14,
-                            ),
+                          // horizontal: 14,
+                          vertical: 8,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -71,14 +83,19 @@ class _MusicalCategoryState extends State<MusicalCategory> {
                               height: 8,
                             ),
                             Text(
-                              "공연시작",
+                              "공연 기간",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Config.blackColor,
                               ),
                             ),
                             Text(
-                              showList[index]["startDate"],
+                              "${showList[index]["startDate"]}",
+                              style: TextStyle(
+                                  fontSize: 14, color: Config.blackColor),
+                            ),
+                            Text(
+                              "${showList[index]["endDate"]}",
                               style: TextStyle(
                                   fontSize: 14, color: Config.blackColor),
                             ),

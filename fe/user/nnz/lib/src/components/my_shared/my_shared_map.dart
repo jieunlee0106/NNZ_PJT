@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/myshared_info_controller.dart';
 
 class MyMapWidget extends StatefulWidget {
   const MyMapWidget({super.key});
@@ -12,6 +14,7 @@ class MyMapWidget extends StatefulWidget {
 
 class _MyMapWidgetState extends State<MyMapWidget> {
   late GoogleMapController googleMapController;
+  var infoFormController = Get.put(MysharedInfoController());
 
   static const CameraPosition initialCameraPosition =
       CameraPosition(target: LatLng(36.355291, 127.298157), zoom: 16);
@@ -39,6 +42,10 @@ class _MyMapWidgetState extends State<MyMapWidget> {
           backgroundColor: Config.yellowColor,
           onPressed: () async {
             Position position = await _determinedPosition();
+            infoFormController.userlatController.text =
+                position.latitude.toString();
+            infoFormController.userlongController.text =
+                position.longitude.toString();
 
             googleMapController.animateCamera(
               CameraUpdate.newCameraPosition(

@@ -17,10 +17,10 @@ class OtherProfile extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: const Column(
+        body: Column(
           children: [
             OtherUserProfile(),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             OtherSharingDetail(),

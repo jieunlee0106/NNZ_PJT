@@ -28,7 +28,7 @@ class ShareModel {
       showId: json['showId'],
       writer: json['writer'],
       nanumDate: json['nanumDate'],
-      title: json['json'],
+      title: json['title'],
       openTime: json['openTime'],
       isCertification: json['isCertification'],
       condition: json['condition'],
@@ -55,7 +55,6 @@ class ShareModel {
 
   @override
   String toString() {
-    // TODO: implement toString
     return "ShareModel : (showId : $showId, writer : $writer, nanumDate : $nanumDate, title : $title, openTime : $openTime, isCertification : $isCertification, condition : $condition, quantity : $quantity, content :$content, tag : $tags)";
   }
 }

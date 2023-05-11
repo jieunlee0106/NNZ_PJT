@@ -182,4 +182,13 @@ class UserProvider extends GetConnect {
 
     return response;
   }
+
+  //타 프로필 정보 조회
+  Future<Response> getOtherProfile({required int userId}) async {
+    final headers = {'Content-Type': 'application/json'};
+    final response = await get(
+        "https://k8b207.p.ssafy.io/api/user-service/users/$userId",
+        headers: headers);
+    return response;
+  }
 }

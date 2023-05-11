@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+
 import 'package:nnz/src/services/perform_provider.dart';
 
 class PerformController extends GetxController {
+  static PerformController get to => Get.find();
   final PerformProvider _performProvider = Get.put(PerformProvider());
 
   final Rx<Map<String, dynamic>> performData = Rx<Map<String, dynamic>>({});
