@@ -81,6 +81,12 @@ public class CertificationServiceImpl implements CertificationService {
 
         NanumStock save = nanumStockRepository.save(ns);
 
+        // 재고가 0이면 나눔 종료 and 재고 0
+        if(save.getStock() == 0){
+            nanum.updateStatus(2);
+            nanum.updateStock(0);
+        }
+
         // 남은 수량 return
         return save;
     }
