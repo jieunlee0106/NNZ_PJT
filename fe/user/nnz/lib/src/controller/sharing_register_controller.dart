@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:nnz/src/model/share_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
 import '../services/sharing_register.dart';
+import 'package:oauth1/oauth1.dart' as oauth1;
 
 enum Condition { INIT, YES, NO }
 
@@ -21,7 +24,13 @@ class SharingRegisterController extends GetxController {
   late final showSearchController;
   //나눔등록에서 공연 검색 api 통신이 완료되면
   //sportsController ~ movieController는 싹다 삭제하기
+  final _isLoading = false.obs;
+  final String apiKey = 'Py5cGhPQyRt1kzrvQzmGuu9Ox';
+  final String apiSecret = 'MLraP08zkwSc2G3ToamG5E9qmKj1oksHPXnOqLxOlTIp5sDn0V';
+  final String callbackUrlScheme = 'twittercallback://';
+  bool isAuthenticated = false;
 
+  get isLoading => _isLoading.value;
   late final conditionController;
   late final hashTagController;
   late final sharingDateController;
@@ -236,7 +245,7 @@ class SharingRegisterController extends GetxController {
     }
   }
 
-  void onShareRegister() {
+  void onShareRegister() async {
     if (imageController.images.length == 0) {
       //popup창으로 바꿀 것
       showDialog(
@@ -304,32 +313,56 @@ class SharingRegisterController extends GetxController {
               return const sharePopup(popupMessage: "상세 정보를 입력해주세요");
             });
       } else {
-        // imageList.clear();
-        // for (var image in imageController.images) {
-        //   imageList.add(image);
-        //   logger.i("$image");
-        // }
-
-        // logger.i(tagList);
         final openTime =
             "${openDateController.text}T${openTimeController.text}";
 
-        shareModel = ShareModel(
-          showId: showId.value,
-          writer: writer.value,
-          nanumDate: sharingDateController.text,
-          title: titleController.text,
-          openTime: openTime,
-          quantity: peopleCount.value,
-          isCertification: isAuthentication.value,
-          condition: isAuthentication.value == true ? conList[0] : null,
-          content: detailController.text,
-          tags: tagList,
+        final titleText = titleController.text;
+
+        final tagReqList = [];
+        for (var element in tagList) {
+          tagReqList.add(base64Encode(utf8.encode(element)));
+        }
+        shareModel = ShareModel.fromJson({
+          "showId": showId.value,
+          "writer": writer.value,
+          "nanumDate": sharingDateController.text,
+          "title": base64Encode(utf8.encode(titleController.text)),
+          "openTime": openTime,
+          "quantity": peopleCount.value,
+          "isCertification": isAuthentication.value,
+          "condition": isAuthentication.value == true
+              ? base64Encode(utf8.encode(conList[0]))
+              : "",
+          "content": base64Encode(utf8.encode(detailController.text)),
+          "tags": tagReqList,
+        });
+
+        var platform = oauth1.Platform(
+          'https://api.twitter.com/oauth/request_token',
+          'https://api.twitter.com/oauth/authorize',
+          'https://api.twitter.com/oauth/access_token',
+          oauth1.SignatureMethods.hmacSha1,
         );
 
-        // logger.i("shareModel $shareModel");
-        SharingRegisterProvider()
-            .testShare(shareModel: shareModel, images: imageController.images);
+        const String apiKey = 'Py5cGhPQyRt1kzrvQzmGuu9Ox';
+        const String apiSecret =
+            'MLraP08zkwSc2G3ToamG5E9qmKj1oksHPXnOqLxOlTIp5sDn0V';
+
+        var clientCredentials = oauth1.ClientCredentials(apiKey, apiSecret);
+        var auth = oauth1.Authorization(clientCredentials, platform);
+
+        try {
+          final response = await SharingRegisterProvider().testShare(
+              shareModel: shareModel, images: imageController.images);
+          logger.i(response.statusCode);
+          logger.i(response.statusText);
+          if (response.statusCode == 201) {
+            Get.snackbar("완료", "등록완료하였습니다.");
+            Get.offNamed("/app");
+          }
+        } catch (e) {
+          logger.i("$e");
+        }
       }
     } else if (peopleCount <= 0) {
       showDialog(
@@ -344,32 +377,39 @@ class SharingRegisterController extends GetxController {
             return const sharePopup(popupMessage: "상세 정보를 입력해주세요");
           });
     } else {
-      // imageList.clear();
-      // for (var image in imageController.images) {
-      //   imageList.add(image);
-      //   logger.i("$image");
-      // }
-
-      // logger.i(tagList);
       final openTime = "${openDateController.text}T${openTimeController.text}";
+      final tagReqList = [];
+      for (var element in tagList) {
+        tagReqList.add(base64Encode(utf8.encode(element)));
+      }
+      logger.i("태그 $tagReqList");
+      shareModel = ShareModel.fromJson({
+        "showId": showId.value,
+        "writer": writer.value,
+        "nanumDate": sharingDateController.text,
+        "title": base64Encode(utf8.encode(titleController.text)),
+        "openTime": openTime,
+        "quantity": peopleCount.value,
+        "isCertification": isAuthentication.value,
+        "condition": isAuthentication.value == true
+            ? base64Encode(utf8.encode(conList[0]))
+            : "",
+        "content": base64Encode(utf8.encode(detailController.text)),
+        "tags": tagReqList,
+      });
 
-      shareModel = ShareModel(
-        showId: showId.value,
-        writer: writer.value,
-        nanumDate: sharingDateController.text,
-        title: titleController.text,
-        openTime: openTime,
-        quantity: peopleCount.value,
-        isCertification: isAuthentication.value,
-        condition: isAuthentication.value == true
-            ? conList.indexOf(0).toString()
-            : null,
-        content: detailController.text,
-        tags: tagList,
-      );
-
-      SharingRegisterProvider()
-          .testShare(shareModel: shareModel, images: imageController.images);
+      try {
+        final response = await SharingRegisterProvider()
+            .testShare(shareModel: shareModel, images: imageController.images);
+        logger.i(response.statusCode);
+        logger.i(response.statusText);
+        if (response.statusCode == 201) {
+          Get.snackbar("완료", "등록완료하였습니다.");
+          Get.offNamed("/app");
+        }
+      } catch (e) {
+        logger.i("$e");
+      }
     }
   }
 }

@@ -194,7 +194,7 @@ class MyApp extends StatelessWidget {
           transition: Transition.rightToLeft,
         ),
         GetPage(
-          name: "/otherUserProfile",
+          name: "/otherUserProfile/:userId",
           page: () => const OtherProfile(),
           transition: Transition.rightToLeft,
         ),

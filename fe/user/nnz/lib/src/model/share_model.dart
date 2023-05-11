@@ -28,7 +28,7 @@ class ShareModel {
       showId: json['showId'],
       writer: json['writer'],
       nanumDate: json['nanumDate'],
-      title: json['json'],
+      title: json['title'],
       openTime: json['openTime'],
       isCertification: json['isCertification'],
       condition: json['condition'],
