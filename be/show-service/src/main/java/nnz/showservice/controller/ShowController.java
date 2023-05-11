@@ -4,6 +4,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
 import nnz.showservice.dto.CategoryDTO;
 import nnz.showservice.dto.ShowDTO;
+import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.service.CategoryService;
 import nnz.showservice.service.ShowService;
 import org.springframework.data.domain.PageRequest;
@@ -57,5 +58,10 @@ public class ShowController {
             @RequestParam(name = "size", defaultValue = "20") Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return new ResponseEntity<>(showService.readShowsByShowTag(showTagName, pageRequest), HttpStatus.OK);
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<ResShowDTO>> readPopularShowsByCategory(@RequestParam(name = "category") String categoryName) {
+        return new ResponseEntity<>(showService.readPopularShowsByCategory(categoryName), HttpStatus.OK);
     }
 }

@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,7 @@ public class ShowServiceImpl implements ShowService {
     private final TeamImageRepository teamImageRepository;
     private final TagRepository tagRepository;
     private final ShowTagRepository showTagRepository;
+    private final NanumRepository nanumRepository;
 
     @Override
     public ShowDTO readShowInfo(Long showId) {
@@ -127,5 +130,28 @@ public class ShowServiceImpl implements ShowService {
 
         Page<ResShowDTO> resShowDTOPage = showPage.map(ResShowDTO::of);
         return PageDTO.of(resShowDTOPage);
+    }
+
+    @Override
+    public List<ResShowDTO> readPopularShowsByCategory(String categoryName) {
+
+        // todo : error handling
+        Category category = categoryRepository.findByName(categoryName).orElseThrow();
+        List<Show> shows = showRepository.findAllByCategory(category);
+
+        Map<Show, Integer> popularMap = new HashMap<>();
+        for (Show show: shows) {
+            popularMap.put(show, show.getNanums().size());
+        }
+
+        List<Show> keySet = new ArrayList<>(popularMap.keySet());
+        keySet.sort(((o1, o2) -> popularMap.get(o2).compareTo(popularMap.get(o1))));
+
+        List<ResShowDTO> resShowDTOs = new ArrayList<>();
+        keySet.subList(0, 9).forEach(show -> {
+            resShowDTOs.add(ResShowDTO.of(show));
+        });
+
+        return resShowDTOs;
     }
 }

@@ -49,4 +49,7 @@ public class Show {
 
     @OneToMany(mappedBy = "show")
     private List<ShowTag> showTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "show")
+    private List<Nanum> nanums = new ArrayList<>();
 }
