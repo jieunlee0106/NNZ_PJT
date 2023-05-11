@@ -310,7 +310,7 @@ class SharingRegisterController extends GetxController {
             "${openDateController.text}T${openTimeController.text}";
 
         final titleText = titleController.text;
-        logger.i("값들어와라 $titleText");
+
         final tagReqList = [];
         for (var element in tagList) {
           tagReqList.add(base64Encode(utf8.encode(element)));
@@ -329,14 +329,15 @@ class SharingRegisterController extends GetxController {
           "content": base64Encode(utf8.encode(detailController.text)),
           "tags": tagReqList,
         });
-
-        logger.i("shareModel $shareModel");
-        logger.i("images ${imageController.images[1].path}");
         try {
           final response = await SharingRegisterProvider().testShare(
               shareModel: shareModel, images: imageController.images);
           logger.i(response.statusCode);
           logger.i(response.statusText);
+          if (response.statusCode == 201) {
+            Get.snackbar("완료", "등록완료하였습니다.");
+            Get.offNamed("/app");
+          }
         } catch (e) {
           logger.i("$e");
         }
@@ -380,6 +381,10 @@ class SharingRegisterController extends GetxController {
             .testShare(shareModel: shareModel, images: imageController.images);
         logger.i(response.statusCode);
         logger.i(response.statusText);
+        if (response.statusCode == 201) {
+          Get.snackbar("완료", "등록완료하였습니다.");
+          Get.offNamed("/app");
+        }
       } catch (e) {
         logger.i("$e");
       }
