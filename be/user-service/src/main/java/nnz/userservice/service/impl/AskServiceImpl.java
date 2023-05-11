@@ -7,11 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.ShowRegisterVO;
 import nnz.userservice.dto.UserReportVO;
-import nnz.userservice.entity.User;
 import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.repository.UserRepository;
 import nnz.userservice.service.AskService;
-import nnz.userservice.service.KafkaProducer;
+import nnz.userservice.kafka.KafkaProducer;
 import org.springframework.stereotype.Service;
 
 @Slf4j

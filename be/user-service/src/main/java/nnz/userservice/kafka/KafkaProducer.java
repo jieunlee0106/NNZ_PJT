@@ -1,4 +1,4 @@
-package nnz.userservice.service;
+package nnz.userservice.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class NanumDTO {
 
+    private Long id;
     private String thumbnail;
     private String title;
     private LocalDate date;
@@ -19,6 +20,7 @@ public class NanumDTO {
 
     public static NanumDTO of(Nanum nanum) {
         NanumDTO dto = new NanumDTO();
+        dto.id = nanum.getId();
         dto.thumbnail = nanum.getThumbnail();
         dto.title = nanum.getTitle();
         dto.date = nanum.getDate();
