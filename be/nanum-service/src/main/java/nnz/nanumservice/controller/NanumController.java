@@ -2,6 +2,7 @@ package nnz.nanumservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
+import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
@@ -79,8 +80,8 @@ public class NanumController {
     @GetMapping("/{nanumId}")
     public ResponseEntity<ResNanumDetailDTO> readNanumDetail(
             @PathVariable(name = "nanumId") Long nanumId,
-            @RequestHeader(name = "userId") Long userId) {
-        return new ResponseEntity<>(nanumService.readNanumDetail(nanumId, userId), HttpStatus.OK);
+            DecodedToken userToken) {
+        return new ResponseEntity<>(nanumService.readNanumDetail(nanumId, userToken.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/{nanumId}/certification")
@@ -90,5 +91,8 @@ public class NanumController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @PostMapping("/{nanumId}")
+    public ResponseEntity<Void> createUserNanum(@PathVariable(name = "nanumId") Long nanumId) {
+        return null;
+    }
 }
