@@ -74,7 +74,7 @@ jasypt:
 jwt:
   secret-key: ENC(unin5/kUnBeNBeVor/OAPJdWELA1uM5T6djQzn4udV8D7xa7+ohvH6WcZCl23xP62a8IPnHr7EyRnb2wdmlMyB1HyVbAplW3iyuF0Kc3iL6e/cnpZ3uwQUrwkx4h1qLZK1iJmAVROIFlUpAOtd4/iYrBmTM21IgaSEIAHPY+9WFY01Mn/08TWFHzB896vnSb/IhmyEoVV9dXwWAS4dq30opTksk05omgDjIV9Id7BuWkErC5bJ3zPvAIg+ulLZXS4p/PwULB3Lz968PFlItQ0Hhg/casKwiTQCQZRxrtF/7Uf6rQ+Y06sGJSXZvqv/sofJwMH+f9DCOowG0nwgF6D23ngzOzURxdzo/xvKTpjdM=)
   expiration-period:
-    access-token: 3600000 # 1hour
+    access-token: 1296000000 # 1hour
     refresh-token: 1296000000 # 15day
 
 eureka:
