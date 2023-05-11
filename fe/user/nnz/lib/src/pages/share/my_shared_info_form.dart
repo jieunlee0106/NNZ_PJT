@@ -5,12 +5,16 @@ import 'package:nnz/src/components/my_shared/my_shared_map.dart';
 import 'package:nnz/src/components/my_shared/my_shared_timepicker.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/myshared_info_controller.dart';
 import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
 class MySharedInfoForm extends StatelessWidget {
   final controller = Get.put(ShareDetailController());
-  MySharedInfoForm({super.key});
+  var infoFormController = Get.put(MysharedInfoController());
+  MySharedInfoForm({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +74,8 @@ class MySharedInfoForm extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: SharedTimePicker(title: "나눔 오픈 시간"),
           ),
           const SizedBox(
@@ -98,8 +102,8 @@ class MySharedInfoForm extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextField(
-              controller: controller.userclothController,
+            child: TextFormField(
+              controller: infoFormController.userClothController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 hintText: "착장을 입력해주세요",

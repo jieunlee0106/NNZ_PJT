@@ -55,7 +55,6 @@ class ShareModel {
 
   @override
   String toString() {
-    // TODO: implement toString
     return "ShareModel : (showId : $showId, writer : $writer, nanumDate : $nanumDate, title : $title, openTime : $openTime, isCertification : $isCertification, condition : $condition, quantity : $quantity, content :$content, tag : $tags)";
   }
 }

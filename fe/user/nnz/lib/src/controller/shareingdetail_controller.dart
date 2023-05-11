@@ -4,7 +4,6 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
 class ShareDetailController extends GetxController {
   late final authImageController;
-  late final userclothController;
 
   List<ImageFile> authImageList = [];
 
@@ -15,7 +14,6 @@ class ShareDetailController extends GetxController {
         maxImages: 5,
         withReadStream: true,
         allowedImageTypes: ['png', 'jpg', 'jpeg']);
-    userclothController = TextEditingController();
   }
 
   void onApplyShare() {
