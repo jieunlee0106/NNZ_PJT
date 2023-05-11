@@ -10,6 +10,7 @@ import 'package:nnz/src/model/share_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
 import '../services/sharing_register.dart';
+import 'package:oauth1/oauth1.dart' as oauth1;
 
 enum Condition { INIT, YES, NO }
 
@@ -23,7 +24,13 @@ class SharingRegisterController extends GetxController {
   late final showSearchController;
   //나눔등록에서 공연 검색 api 통신이 완료되면
   //sportsController ~ movieController는 싹다 삭제하기
+  final _isLoading = false.obs;
+  final String apiKey = 'Py5cGhPQyRt1kzrvQzmGuu9Ox';
+  final String apiSecret = 'MLraP08zkwSc2G3ToamG5E9qmKj1oksHPXnOqLxOlTIp5sDn0V';
+  final String callbackUrlScheme = 'twittercallback://';
+  bool isAuthenticated = false;
 
+  get isLoading => _isLoading.value;
   late final conditionController;
   late final hashTagController;
   late final sharingDateController;
@@ -329,6 +336,21 @@ class SharingRegisterController extends GetxController {
           "content": base64Encode(utf8.encode(detailController.text)),
           "tags": tagReqList,
         });
+
+        var platform = oauth1.Platform(
+          'https://api.twitter.com/oauth/request_token',
+          'https://api.twitter.com/oauth/authorize',
+          'https://api.twitter.com/oauth/access_token',
+          oauth1.SignatureMethods.hmacSha1,
+        );
+
+        const String apiKey = 'Py5cGhPQyRt1kzrvQzmGuu9Ox';
+        const String apiSecret =
+            'MLraP08zkwSc2G3ToamG5E9qmKj1oksHPXnOqLxOlTIp5sDn0V';
+
+        var clientCredentials = oauth1.ClientCredentials(apiKey, apiSecret);
+        var auth = oauth1.Authorization(clientCredentials, platform);
+
         try {
           final response = await SharingRegisterProvider().testShare(
               shareModel: shareModel, images: imageController.images);
