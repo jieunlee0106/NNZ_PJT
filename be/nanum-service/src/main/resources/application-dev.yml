@@ -72,7 +72,7 @@ cloud:
     s3:
       bucket: nnz-bucket
     credentials:
-      access-key: ENC(PdQNWXQOFh3q9jjFpv5l2UJnzekivRv1WcaCMYs+mwPUfuFqlbvNcKlALm5wygwsbmMOwVZpXrk=)
+      access-key: ENC(XB6m0cHn6sbhEZjKAXAEg3EgDzW/1xvoVh7z2/2ws2M=)
       secret-key: ENC(nELP12TIzhQjAX4lzXgQW7piL1YPjdafQ+QYuR+k8djMVSmLIMH269QErPwDZ8Wgjw4Wic7JnWM=)
     region:
       static: ap-southeast-2
