@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Getter
-public class NanumTag extends BaseEntity {
+public class NanumTag {
 
     @Id
     private Long id;
@@ -21,4 +21,6 @@ public class NanumTag extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nanum_id")
     private Nanum nanum;
+
+    private boolean is_delete;
 }

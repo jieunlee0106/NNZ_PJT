@@ -9,4 +9,6 @@ import java.util.List;
 public interface NanumTagRepository extends JpaRepository<NanumTag, Long> {
 
     List<NanumTag> findByNanumIn(List<Nanum> nanums);
+
+    void deleteByNanum(Nanum nanum);
 }

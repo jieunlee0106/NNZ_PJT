@@ -12,7 +12,7 @@ import nnz.userservice.entity.*;
 import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.repository.*;
 import nnz.userservice.service.JwtProvider;
-import nnz.userservice.service.KafkaProducer;
+import nnz.userservice.kafka.KafkaProducer;
 import nnz.userservice.service.S3Service;
 import nnz.userservice.service.UserService;
 import nnz.userservice.util.ValidationUtils;
