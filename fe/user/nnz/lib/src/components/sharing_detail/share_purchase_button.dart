@@ -1,41 +1,95 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_timer.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/pages/share/sharing_complete.dart';
+import 'package:nnz/src/model/share_detail_model.dart';
 import "../../controller/shareingdetail_controller.dart";
-import 'package:multi_image_picker_view/multi_image_picker_view.dart';
+import 'package:nnz/src/pages/share/sharing_complete.dart';
 
-class PurchaseButton extends StatelessWidget {
+class SharePurchaseBottom extends StatefulWidget {
   final bool condition;
-  bool isOpen;
   final int leftday;
+  bool isOpen;
   final int lefthour;
   final int leftmin;
   final int leftsec;
 
-  PurchaseButton({
+  SharePurchaseBottom({
     super.key,
-    required this.condition,
     required this.isOpen,
+    required this.condition,
     required this.leftday,
     required this.lefthour,
     required this.leftmin,
     required this.leftsec,
   });
-  // 0이면 조건 없음 1이면 조건 있음
 
+  @override
+  State<SharePurchaseBottom> createState() => _SharePurchaseBottomState();
+}
+
+class _SharePurchaseBottomState extends State<SharePurchaseBottom> {
+  final ShareDetailController sharedetailController =
+      Get.put(ShareDetailController());
+  Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  bool isOpen = false;
+  bool isCondition = false;
   final controller = Get.put(ShareDetailController());
+  List<String> timeParts = [];
+  int nanumId = 36;
+  String durationTime = "";
+  int day = 0;
+  int hour = 0;
+  int minute = 0;
+  int second = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    var res = await http.get(
+        Uri.parse(
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId"),
+        headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg',
+          "Accept-Charset": "utf-8",
+        });
+    ShareDetailModel shareDetailModelclass =
+        ShareDetailModel.fromJson(jsonDecode(res.body));
+    result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    print(result.value);
+    durationTime = result.value["leftTime"];
+    timeParts = durationTime.split(", ");
+    day = int.parse(timeParts[0].split(" : ")[1]);
+    hour = int.parse(timeParts[1].split(" : ")[1]);
+    minute = int.parse(timeParts[2].split(" : ")[1]);
+    second = int.parse(timeParts[3].split(" : ")[1]);
+    print(day);
+    setState(() {
+      result.value;
+      timeParts;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final duration =
+        Duration(days: day, hours: hour, minutes: minute, seconds: second);
     return SizedBox(
       width: 300,
       height: 40,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: Config.yellowColor),
         onPressed: () {
-          print(leftday);
+          print(duration);
           if (isOpen) {
             showModalBottomSheet(
               context: context,
@@ -55,7 +109,7 @@ class PurchaseButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Visibility(
-                        visible: condition,
+                        visible: widget.condition,
                         child: Column(
                           children: [
                             const SizedBox(
@@ -106,7 +160,7 @@ class PurchaseButton extends StatelessWidget {
                         ),
                       ),
                       Visibility(
-                          visible: !condition,
+                          visible: !widget.condition,
                           child: const Text("나눔을 받으시겠습니까?")),
                       SizedBox(
                         width: 370,
@@ -140,6 +194,8 @@ class PurchaseButton extends StatelessWidget {
         child: Container(
             decoration: BoxDecoration(color: Config.yellowColor),
             child: SharingDateTimer(
+              duration: Duration(
+                  days: day, hours: hour, minutes: minute, seconds: second),
               onTimerFinished: () => {isOpen = true},
             )),
       ),

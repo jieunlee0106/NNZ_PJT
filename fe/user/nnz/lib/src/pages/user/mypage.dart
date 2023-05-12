@@ -42,16 +42,16 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     // var myInfo = controller.myInfo;
     if (_isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          actions: [Icon(Icons.more_vert)],
+          actions: const [Icon(Icons.more_vert)],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -71,7 +71,7 @@ class _MyPageState extends State<MyPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GrayLine(),
@@ -104,7 +104,8 @@ class _MyPageState extends State<MyPage> {
                             child: Container(
                                 width: 135,
                                 height: 5,
-                                color: Color.fromARGB(255, 230, 230, 230)),
+                                color:
+                                    const Color.fromARGB(255, 230, 230, 230)),
                           ),
                         ],
                       ),
@@ -116,7 +117,7 @@ class _MyPageState extends State<MyPage> {
                     yet: myInfo.statistics?.nanum?.beforeCount ?? 0,
                     ing: myInfo.statistics?.nanum?.ongoingCount ?? 0,
                     end: myInfo.statistics?.nanum?.doneCount ?? 0,
-                    page: MySharingList(),
+                    page: const MySharingList(),
                   ),
                   SharingInfo(
                     share: '나눔 받은 내역',
@@ -124,7 +125,7 @@ class _MyPageState extends State<MyPage> {
                     yet: myInfo.statistics?.receive?.totalCount ?? 0,
                     ing: myInfo.statistics?.receive?.totalCount ?? 0,
                     end: myInfo.statistics?.receive?.totalCount ?? 0,
-                    page: MySharedList(),
+                    page: const MySharedList(),
                   ),
                 ],
               ),
