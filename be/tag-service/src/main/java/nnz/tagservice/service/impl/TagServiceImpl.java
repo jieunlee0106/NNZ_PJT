@@ -14,6 +14,7 @@ import nnz.tagservice.service.TagService;
 import nnz.tagservice.vo.TagVO;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,13 +31,13 @@ public class TagServiceImpl implements TagService {
     private final KafkaProducer producer;
 
     @Override
-    public void createTag(List<TagVO> tags) throws JsonProcessingException {
-
+    public List<TagDTO> createTag(List<TagVO> tags) throws JsonProcessingException {
+        List<TagDTO> createdTags = new ArrayList<>();
         for (TagVO tagVO : tags) {
 
             Optional<Tag> tag = tagRepository.findByTag(tagVO.getTag());
 
-            if (!tag.isPresent()) {
+            if (!tag.isPresent()) { // 생성된 태그가 없으면
                 Tag newTag = Tag.builder()
                         .tag(tagVO.getTag())
                         .views(0)
@@ -46,18 +47,27 @@ public class TagServiceImpl implements TagService {
                 log.info("tag = {}", tag.get());
 
                 TagDTO tagDTO = TagDTO.of(tag.get());
+                createdTags.add(tagDTO);
 
                 KafkaMessage<TagDTO> kafkaMessage = KafkaMessage.create().body(tagDTO);
-                producer.sendMessage(kafkaMessage, "dev-tag");
+                producer.sendMessage(kafkaMessage, "tag");
+            } else {
+                createdTags.add(TagDTO.of(tag.get()));
             }
 
-            if (tagVO.getType().equals("nanum")) {
-                createNanumTag(tagVO, tag);
-            } //
-            else {
+            if ("show".equals(tagVO.getTag())) {
                 createShowTag(tagVO, tag);
             }
+
+//            if (tagVO.getType().equals("nanum")) {
+//                createNanumTag(tagVO, tag);
+//            } //
+//            else {
+//                createShowTag(tagVO, tag);
+//            }
         }
+
+        return createdTags;
     }
 
     private void createNanumTag(TagVO tagVO, Optional<Tag> tag) throws JsonProcessingException {

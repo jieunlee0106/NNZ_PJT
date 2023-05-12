@@ -14,9 +14,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
+    @Value("${spring.kafka.prefix}")
+    private String prefix;
+
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendMessage(KafkaMessage<?> message, String topic) throws JsonProcessingException {
+        topic = prefix + topic;
         String jsonMessage = KafkaMessageUtils.serialize(message); // 카프카 메시지 직렬화
         kafkaTemplate.send(topic, jsonMessage); // 해당 토픽에 jsonMessage 전송
         log.info("produce message: {} to: {}", jsonMessage, topic);
