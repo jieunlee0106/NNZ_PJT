@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.NanumInfoDTO;
+import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
@@ -102,13 +103,17 @@ public class NanumController {
     @PostMapping("/{nanumId}")
     public ResponseEntity<Void> createUserNanum(
             @PathVariable(name = "nanumId") Long nanumId,
-//            DecodedToken userToken,
-            @RequestHeader Long userId) {
-        if (userId == null) {
+            DecodedToken userToken) {
+        if (userToken.getId() == null) {
 //            todo : error handling
 //            throw new Exception();
         }
-        nanumService.createUserNanum(nanumId, userId);
+        nanumService.createUserNanum(nanumId, userToken.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<ResNanumDTO>> readPopularNanums() {
+        return new ResponseEntity<>(nanumService.readPopularNaums(), HttpStatus.OK);
     }
 }

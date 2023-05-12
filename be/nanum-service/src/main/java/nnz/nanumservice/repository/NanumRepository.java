@@ -13,4 +13,6 @@ public interface NanumRepository extends JpaRepository<Nanum, Long> {
     Page<Nanum> findByShowAndIsDeleteFalse(Show show, Pageable pageRequest);
 
     List<Nanum> findAllByStatus(int status);
+
+    List<Nanum> findAllByStatusLessThan(int status);
 }

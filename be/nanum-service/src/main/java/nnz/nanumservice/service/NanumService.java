@@ -2,6 +2,7 @@ package nnz.nanumservice.service;
 
 import io.github.eello.nnz.common.dto.PageDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
+import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
@@ -26,4 +27,6 @@ public interface NanumService {
     ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId);
 
     void createUserNanum(Long nanumId, Long userId);
+
+    List<ResNanumDTO> readPopularNaums();
 }
