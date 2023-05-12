@@ -111,7 +111,7 @@ public class AdminServiceImpl implements AdminService {
 
             KafkaMessage<ShowKafkaDTO> message = KafkaMessage.create().body(showKafkaDTO);
 
-            kafkaProducer.sendMessage(message, "show");
+            kafkaProducer.sendMessage(message, "show-admin");
 
 
             // 태그 생성
