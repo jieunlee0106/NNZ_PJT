@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
 import 'package:nnz/src/model/share_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../services/sharing_register.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
 
@@ -49,11 +50,19 @@ class SharingRegisterController extends GetxController {
   RxInt showId = RxInt(0);
   RxInt writer = 0.obs;
   RxBool isAuthentication = false.obs;
-
   RxInt peopleCount = 0.obs;
   final logger = Logger();
   final storage = const FlutterSecureStorage();
 
+  final clientCredentials = oauth1.ClientCredentials(
+      "Py5cGhPQyRt1kzrvQzmGuu9Ox",
+      "MLraP08zkwSc2G3ToamG5E9qmKj1oksHPXnOqLxOlTIp5sDn0V");
+  final platform = oauth1.Platform(
+    'https://api.twitter.com/oauth/request_token',
+    'https://api.twitter.com/oauth/authorize',
+    'https://api.twitter.com/oauth/access_token',
+    oauth1.SignatureMethods.hmacSha1,
+  );
   @override
   void onInit() {
     super.onInit();
@@ -245,11 +254,85 @@ class SharingRegisterController extends GetxController {
     }
   }
 
+  //트위터 트윗 등록
+  Future<void> register() async {
+    final oauth = oauth1.Authorization(clientCredentials, platform);
+    final textController = TextEditingController();
+    try {
+      final res = await oauth.requestTemporaryCredentials('oob');
+      final authorizationUrl =
+          oauth.getResourceOwnerAuthorizationURI(res.credentials.token);
+      if (await canLaunch(authorizationUrl)) {
+        await launch(authorizationUrl);
+      } else {
+        throw 'Could not launch $authorizationUrl';
+      }
+      await showDialog(
+        context: Get.context!,
+        builder: (context) => AlertDialog(
+          title: const Text('Enter PIN'),
+          content: TextField(
+            controller: textController,
+            keyboardType: TextInputType.number,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      final tokenCred = await oauth.requestTokenCredentials(
+        res.credentials,
+        textController.text,
+      );
+      final client = oauth1.Client(
+        platform.signatureMethod,
+        clientCredentials,
+        tokenCred.credentials,
+      );
+      final fileInfo = imageController.images[0];
+      logger.i(fileInfo.name);
+      final formData = FormData({});
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'https://api.twitter.com/1.1/statuses/update_with_media.json'),
+      );
+      request.fields.addAll({'status': 'Hello World'}); // 트윗 메시지를 추가합니다.
+      request.files.add(await http.MultipartFile.fromPath(
+        'media',
+        fileInfo.path,
+      ));
+      final response = await client.send(request);
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          const SnackBar(content: Text('Tweet posted successfully')),
+        );
+      } else {
+        print('Failed to upload file. Error: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(content: Text('Failed to post tweet: $e')),
+      );
+    }
+  }
+
   void onShareRegister() async {
     if (imageController.images.length == 0) {
       //popup창으로 바꿀 것
       showDialog(
-          context: Get.context!,
+          context: Get.context ?? Get.overlayContext!,
           builder: (context) {
             return AlertDialog(
               content: const Text("이미지를 선택해주세요"),
@@ -351,6 +434,8 @@ class SharingRegisterController extends GetxController {
         var clientCredentials = oauth1.ClientCredentials(apiKey, apiSecret);
         var auth = oauth1.Authorization(clientCredentials, platform);
 
+        //트위터 계정인지 파악을 해서 트윗 등록할 수 있게 함....
+        // register();
         try {
           final response = await SharingRegisterProvider().testShare(
               shareModel: shareModel, images: imageController.images);
