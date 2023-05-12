@@ -68,6 +68,8 @@ public class NanumDTO {
 
     private Long showId;
 
+    private Integer views;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<NanumImageDTO> nanumImages;
 

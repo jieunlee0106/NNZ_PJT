@@ -33,12 +33,26 @@ public class User {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
 
+    private boolean isDelete;
+
     public static User of(UserDTO userDTO) {
         return User.builder()
                 .id(userDTO.getId())
                 .nickname(userDTO.getNickname())
                 .profileImage(userDTO.getProfileImage())
                 .updatedAt(userDTO.getUpdatedAt())
+                .isDelete(false)
                 .build();
+    }
+
+    public void updateUser(UserDTO userDTO) {
+        this.id = userDTO.getId();
+        this.nickname = userDTO.getNickname();
+        this.profileImage = userDTO.getProfileImage();
+        this.updatedAt = userDTO.getUpdatedAt();
+    }
+
+    public void deleteUser() {
+        this.isDelete = true;
     }
 }

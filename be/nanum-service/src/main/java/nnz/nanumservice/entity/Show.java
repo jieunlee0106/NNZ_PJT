@@ -36,6 +36,8 @@ public class Show {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
 
+    private boolean isDelete;
+
     public static Show of(ShowDTO showDTO) {
         return Show.builder()
                 .id(showDTO.getId())
@@ -47,11 +49,16 @@ public class Show {
                 .build();
     }
 
-//    private String posterImage;
-//
-//    private String region;
-//
-//    private String ageLimit;
-//
-//    private String location;
+    public void updateShow(ShowDTO showDTO) {
+        this.id = showDTO.getId();
+        this.startDate = showDTO.getStartDate();
+        this.endDate = showDTO.getEndDate();
+        this.location = showDTO.getLocation();
+        this.title = showDTO.getTitle();
+        this.updatedAt = showDTO.getUpdatedAt();
+    }
+
+    public void deleteShow() {
+        this.isDelete = true;
+    }
 }

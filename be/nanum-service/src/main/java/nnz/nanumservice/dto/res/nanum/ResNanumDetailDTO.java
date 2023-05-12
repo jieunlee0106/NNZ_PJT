@@ -87,10 +87,10 @@ public class ResNanumDetailDTO {
         Long minute = now.until(openTime, ChronoUnit.MINUTES) % 60;
         Long second = now.until(openTime, ChronoUnit.SECONDS) % 60;
 
-        leftTime.append(now.until(openTime, ChronoUnit.DAYS)).append("일 ");
-        leftTime.append(hour).append("시간 ");
-        leftTime.append(minute).append("분 ");
-        leftTime.append(second).append("초");
+        leftTime.append("day : ").append(now.until(openTime, ChronoUnit.DAYS));
+        leftTime.append(", hour : ").append(hour);
+        leftTime.append(", min : ").append(minute);
+        leftTime.append(", sec : ").append(second);
 
         return leftTime.toString();
     }
