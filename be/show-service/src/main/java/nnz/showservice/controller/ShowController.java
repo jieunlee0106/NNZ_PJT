@@ -2,8 +2,10 @@ package nnz.showservice.controller;
 
 import io.github.eello.nnz.common.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
+import nnz.showservice.dto.BannerDTO;
 import nnz.showservice.dto.CategoryDTO;
 import nnz.showservice.dto.ShowDTO;
+import nnz.showservice.dto.res.ResBannerDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.service.CategoryService;
 import nnz.showservice.service.ShowService;
@@ -52,7 +54,7 @@ public class ShowController {
     }
 
     @GetMapping("/tag")
-    ResponseEntity<PageDTO> readShowsByShowTag(
+    public ResponseEntity<PageDTO> readShowsByShowTag(
             @RequestParam(name = "tag") String showTagName,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "20") Integer size) {
@@ -63,5 +65,10 @@ public class ShowController {
     @GetMapping("/popular")
     public ResponseEntity<List<ResShowDTO>> readPopularShowsByCategory(@RequestParam(name = "category") String categoryName) {
         return new ResponseEntity<>(showService.readPopularShowsByCategory(categoryName), HttpStatus.OK);
+    }
+
+    @GetMapping("/poster")
+    public ResponseEntity<List<ResBannerDTO>> readBanners() {
+        return new ResponseEntity<>(showService.readBanner(), HttpStatus.OK);
     }
 }

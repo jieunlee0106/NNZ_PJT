@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import nnz.showservice.dto.ShowDTO;
 import nnz.showservice.dto.ShowTagDTO;
 import nnz.showservice.dto.SportsDTO;
+import nnz.showservice.dto.res.ResBannerDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.entity.*;
 import nnz.showservice.repository.*;
@@ -31,7 +32,7 @@ public class ShowServiceImpl implements ShowService {
     private final TeamImageRepository teamImageRepository;
     private final TagRepository tagRepository;
     private final ShowTagRepository showTagRepository;
-    private final NanumRepository nanumRepository;
+    private final BannerRepository bannerRepository;
 
     @Override
     public ShowDTO readShowInfo(Long showId) {
@@ -153,5 +154,12 @@ public class ShowServiceImpl implements ShowService {
         });
 
         return resShowDTOs;
+    }
+
+    @Override
+    public List<ResBannerDTO> readBanner() {
+        List<Banner> banners = bannerRepository.findTop3ByOrderByUpdatedAtDesc();
+        List<ResBannerDTO> resBannerDTOs = banners.stream().map(ResBannerDTO::of).collect(Collectors.toList());
+        return resBannerDTOs;
     }
 }
