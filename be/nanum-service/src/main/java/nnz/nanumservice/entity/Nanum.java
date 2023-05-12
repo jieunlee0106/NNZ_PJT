@@ -74,10 +74,10 @@ public class Nanum extends BaseEntity {
     private Show show;
 
     @OneToMany(mappedBy = "nanum")
-    private List<NanumImage> thumbnails = new ArrayList<>();
+    private final List<NanumImage> thumbnails = new ArrayList<>();
 
     @OneToMany(mappedBy = "nanum")
-    private List<NanumTag> tags = new ArrayList<>();
+    private final List<NanumTag> tags = new ArrayList<>();
 
     public static Nanum voToEntity(NanumVO data, User user, Show show) {
         NanumInfo nanumInfo = NanumInfo.builder()
