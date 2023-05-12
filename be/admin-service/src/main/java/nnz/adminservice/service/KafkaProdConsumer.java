@@ -10,6 +10,7 @@ import nnz.adminservice.dto.*;
 import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +21,15 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class KafkaConsumer {
+@Profile("prod")
+public class KafkaProdConsumer {
     private final UserRepository userRepository;
     private final ShowRepository showRepository;
     private final ReportRepository reportRepository;
     private final AskedShowRepository askedShowRepository;
     private final CategoryRepository categoryRepository;
     // User
-    @KafkaListener(topics = "dev-user", groupId = "dev-admin-service")
+    @KafkaListener(topics = "prod-user", groupId = "prod-admin-service")
     public void userMessage(String message) throws JsonProcessingException {
         KafkaMessage<UserDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, UserDTO.class);
         log.info("consume userMessage: {}", message);
@@ -42,7 +44,7 @@ public class KafkaConsumer {
     }
 
     // Show
-    @KafkaListener(topics = "dev-show", groupId = "dev-admin-service")
+    @KafkaListener(topics = "prod-show-crawling", groupId = "prod-admin-service")
     public void showMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume showMessage: {}", message);
@@ -71,7 +73,7 @@ public class KafkaConsumer {
     }
 
     // Report
-    @KafkaListener(topics = "dev-report", groupId = "dev-admin-service")
+    @KafkaListener(topics = "prod-report", groupId = "prod-admin-service")
     public void reportMessage(String message) throws JsonProcessingException {
         KafkaMessage<ReportDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ReportDTO.class);
         log.info("consume reportMessage: {}", message);
@@ -100,7 +102,7 @@ public class KafkaConsumer {
     }
 
     // AskedShow
-    @KafkaListener(topics = "dev-askedshow", groupId = "dev-admin-service")
+    @KafkaListener(topics = "prod-askedshow", groupId = "prod-admin-service")
     public void askedShowMessage(String message) throws JsonProcessingException {
         KafkaMessage<AskedShowKafkaDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, AskedShowKafkaDTO.class);
         log.info("consume askedShowMessage: {}", message);
@@ -120,5 +122,4 @@ public class KafkaConsumer {
         else if(Objects.equals(kafkaMessage.getType().toString(), "UPDATE")) askedShowRepository.save(askedShow);
         else if(Objects.equals(kafkaMessage.getType().toString(), "DELETE")) askedShowRepository.delete(askedShow);
     }
-
 }
