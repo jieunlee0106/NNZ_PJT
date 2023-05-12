@@ -26,7 +26,7 @@ public interface NanumService {
 
     ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId);
 
-    void createUserNanum(Long nanumId, Long userId);
+    void createUserNanum(Long nanumId, Long userId, MultipartFile file);
 
     List<ResNanumDTO> readPopularNaums();
 }
