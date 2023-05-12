@@ -11,6 +11,7 @@ import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/my_shared_info_form.dart';
 import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/share/my_snappingtest.dart';
+import 'package:nnz/src/pages/share/share_detail.dart';
 import 'package:nnz/src/pages/share/sharing_perform.dart';
 import 'package:nnz/src/pages/share/sharing_register.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
@@ -22,7 +23,6 @@ import 'package:nnz/src/pages/user/register.dart';
 import 'package:nnz/src/pages/user/register_form.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 import 'package:nnz/src/pages/home/home.dart';
-import 'package:nnz/src/pages/share/sharing_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_list.dart';
 import 'package:nnz/src/pages/share/my_sharing_list.dart';
 
@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/test",
+      initialRoute: "/sharingDetail",
       getPages: [
         GetPage(
           name: "/",
@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
             name: "/sharingDetail",
-            page: () => SharingDetail(),
+            page: () => const ShareDatail(),
             transition: Transition.rightToLeft),
         GetPage(
           name: "/myPage",

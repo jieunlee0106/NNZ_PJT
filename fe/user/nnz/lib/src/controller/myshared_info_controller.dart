@@ -19,7 +19,7 @@ class MysharedInfoController extends GetxController {
 
   void onregistInfo() async {
     ShareInfoModel shareInfoModel = ShareInfoModel(
-      nanumTime: openTimeController.text,
+      nanumTime: "2023-05-11T${openTimeController.text}",
       location: "나눔 장소",
       lat: userlatController.text,
       lng: userlongController.text,

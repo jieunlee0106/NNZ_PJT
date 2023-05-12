@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SharingDetailCard extends StatelessWidget {
-  const SharingDetailCard({super.key});
+  final String performTitle;
+  final String openDate;
+  final String condition;
+
+  const SharingDetailCard(
+      {super.key,
+      required this.performTitle,
+      required this.openDate,
+      required this.condition});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +26,9 @@ class SharingDetailCard extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.7)),
           ],
         ),
-        child: const Row(
+        child: Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 13),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +44,7 @@ class SharingDetailCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    "오픈 시간",
+                    "오픈 날짜",
                     style: TextStyle(
                       fontSize: 13,
                       color: Color(0xFF525252),
@@ -56,33 +64,33 @@ class SharingDetailCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Peak Festival 2023",
-                    style: TextStyle(
+                    performTitle,
+                    style: const TextStyle(
                       fontSize: 13,
                       color: Color(0xFF0d0d0d),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 9,
                   ),
                   Text(
-                    "2023.01.01 12:00",
-                    style: TextStyle(
+                    openDate,
+                    style: const TextStyle(
                       fontSize: 13,
                       color: Color(0xFF0d0d0d),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   Text(
-                    "사전녹화 참가 1회 이상",
-                    style: TextStyle(
+                    condition,
+                    style: const TextStyle(
                       fontSize: 13,
                       color: Color(0xFF0d0d0d),
                     ),
