@@ -11,6 +11,7 @@ enum PageName { HOME, SERACH, UPLOAD, ACTIVITY, MYPAGE }
 class BottomNavController extends GetxController {
   RxInt navIndex = 0.obs;
   RxInt curIndex = 0.obs;
+  String? currentRoute;
   List<int> bottomHistory = [0];
   GlobalKey<NavigatorState> mypageKey = GlobalKey<NavigatorState>();
   final storage = const FlutterSecureStorage();

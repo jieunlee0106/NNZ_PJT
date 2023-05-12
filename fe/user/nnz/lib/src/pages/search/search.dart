@@ -48,17 +48,17 @@ class Search extends StatelessWidget {
                   ),
                   controller.searchText.value.isEmpty
                       ? const PopularHashTag()
-                      : const Column(
+                      : Column(
                           children: [
-                            RelatedHashTag(),
-                            SizedBox(
+                            const RelatedHashTag(),
+                            const SizedBox(
                               height: 32,
                             ),
-                            SearchShow(),
-                            // const SizedBox(
-                            //   height: 10,
-                            // ),
-                            // NoResultSearch(),
+                            // SearchShow(),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            NoResultSearch(),
                           ],
                         ),
                 ],

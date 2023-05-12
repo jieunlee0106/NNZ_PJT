@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/components/icon_data.dart';
@@ -43,8 +44,15 @@ class NoResultSearch extends StatelessWidget {
                 height: 24,
               ),
               GestureDetector(
-                onTap: () {
-                  Get.toNamed("/proposeShow");
+                onTap: () async {
+                  logger.i(Get.currentRoute);
+                  if (await const FlutterSecureStorage()
+                          .read(key: 'accessToken') ==
+                      null) {
+                    Get.offNamed("/register");
+                  } else {
+                    Get.toNamed("/proposeShow");
+                  }
                 },
                 child: Text(
                   "+ 공연제안하기",

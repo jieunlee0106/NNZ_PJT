@@ -12,6 +12,7 @@ class LoginController extends GetxController {
   final storage = const FlutterSecureStorage();
   RxBool visiblePassword = true.obs;
   RxBool isChecked = false.obs;
+  String? currenRoute;
   final logger = Logger();
   var loginKey = GlobalKey<FormState>();
   late final emailController;

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "175235208758",
+    "project_id": "naneozoo",
+    "storage_bucket": "naneozoo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175235208758:android:0373d542e41dde7981ea97",
+        "android_client_info": {
+          "package_name": "com.nnz.nnz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175235208758-ghrqocodgjkbcrhpem89qdg0k6fa52gc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAuWqHRzLF2Rx0DzYOiWuo07llf3zrVtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175235208758-ghrqocodgjkbcrhpem89qdg0k6fa52gc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
