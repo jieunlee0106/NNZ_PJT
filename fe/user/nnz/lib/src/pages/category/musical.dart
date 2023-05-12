@@ -35,7 +35,9 @@ class _MusicalPageState extends State<MusicalPage> {
                 smallText: '나눔 활동이 활발한 뮤지컬이에요'),
             HotShareList(),
             GrayLine(),
-            ShowList(),
+            ShowList(
+              category: "뮤지컬",
+            ),
           ],
         ),
       ),

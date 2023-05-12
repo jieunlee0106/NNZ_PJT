@@ -30,7 +30,6 @@ class LikesService extends GetConnect {
           },
         ),
       );
-      print(userId);
       print('찜 리스트 통신 성공');
       return response;
     } catch (e) {

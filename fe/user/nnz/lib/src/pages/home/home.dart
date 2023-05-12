@@ -12,6 +12,7 @@ import 'package:nnz/src/components/home_page_form/home_share_list.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/category_controller.dart';
+import 'package:nnz/src/controller/home_controller.dart';
 import 'package:nnz/src/controller/my_page_controller.dart';
 import 'package:nnz/src/controller/sharing_register_controller.dart';
 import 'package:nnz/src/pages/category/concert.dart';
@@ -22,6 +23,7 @@ import 'package:nnz/src/pages/category/esports.dart';
 import 'package:nnz/src/pages/category/stage.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
+import 'package:nnz/src/model/popularity.dart';
 
 class Home extends StatefulWidget {
   // const Home({Key? key}) : super(key: key);
@@ -32,7 +34,35 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // const Home({Key? key}) : super(key: key);
-  final CategoryController categoryController = Get.put(CategoryController());
+  final HomeController controller = Get.put(HomeController());
+
+  late List<PopularityList> Plist;
+  // late List<LoctaionList> Llist;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadPData();
+    loadLData();
+    print('홈 인잇스테이트');
+  }
+
+  Future<void> loadPData() async {
+    await controller.getHomeList();
+    Plist = controller.popularity;
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> loadLData() async {
+    await controller.getHomeList();
+    Plist = controller.popularity;
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +157,7 @@ class _HomeState extends State<Home> {
                       page: MoviePage(),
                       image: ImagePath.movie,
                       categoryName: '페스티벌',
-                      categoryListName: '페스티벌',
+                      categoryListName: '뮤직 페스티벌',
                     ),
                     HomeCategory(
                         page: SportsPage(),
@@ -170,13 +200,13 @@ class _HomeState extends State<Home> {
                   text: '즉시 줄서기 가능한 나눔',
                   image: ImagePath.pin,
                   smallText: '근처에서 진행중인 나눔에 줄서기를 해보세요'),
-              HomeShareList(),
+              HomeShareList(items: Plist),
               GrayLine(),
               HomeShareText(
                   text: '인기 나눔',
                   image: ImagePath.fire,
                   smallText: '현재 가장 인기있는 나눔이에요'),
-              HomeShareList(),
+              HomeShareList(items: Plist),
               // Add other widgets here...
             ],
           ),

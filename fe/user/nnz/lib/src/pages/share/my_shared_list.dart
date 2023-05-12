@@ -77,9 +77,9 @@ class _MySharedState extends State<MySharedList> {
                     color: Config.yellowColor,
                   ),
                 ),
-                ShareList2(
-                  items: receiveTypeList.content ?? [],
-                )
+                // ShareList2(
+                //   items: receiveTypeList.content ?? [],
+                // )
               ],
             ),
           ),

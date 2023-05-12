@@ -1,4 +1,4 @@
-class Likes {
+class PopularityList {
   int? id;
   String? title;
   String? thumbnail;
@@ -6,7 +6,7 @@ class Likes {
   int? status;
   Show? show;
 
-  Likes({
+  PopularityList({
     this.id,
     this.title,
     this.thumbnail,
@@ -15,7 +15,7 @@ class Likes {
     this.show,
   });
 
-  Likes.fromJson(Map<String, dynamic> json) {
+  PopularityList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     thumbnail = json['thumbnail'];

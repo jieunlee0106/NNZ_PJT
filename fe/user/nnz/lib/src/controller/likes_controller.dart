@@ -11,13 +11,15 @@ import 'package:nnz/src/services/my_page_service.dart';
 import 'package:nnz/src/services/mypage_share_list_service.dart';
 
 class LikesController extends GetxController {
-  late Likes likes;
-  late ReceiveTypeList receiveTypeList;
+  late List<Likes> likesList;
 
   getLikesList() async {
     try {
       final response = await LikesService().getLikesList();
-      likes = Likes.fromJson(response.data);
+      List<dynamic> items =
+          response.data.map((item) => Map<String, dynamic>.from(item)).toList();
+      likesList = items.map((item) => Likes.fromJson(item)).toList();
+      print(likesList.runtimeType);
       print('좋아요 나눔 목록 불러오기');
     } catch (e) {
       print(e);
