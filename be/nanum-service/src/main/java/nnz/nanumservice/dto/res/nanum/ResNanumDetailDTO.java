@@ -95,11 +95,15 @@ public class ResNanumDetailDTO {
         return leftTime.toString();
     }
 
-    public void setWriter(ResNanumWriterDTO writer) {
+    public void updateWriter(ResNanumWriterDTO writer) {
         this.writer = writer;
     }
 
-    public void setIsBooking(boolean isBooking) {
+    public void updateIsBooking(boolean isBooking) {
         this.isBooking = isBooking;
+    }
+
+    public void updateIsBookmark(boolean isBookmark) {
+        this.isBookmark = isBookmark;
     }
 }

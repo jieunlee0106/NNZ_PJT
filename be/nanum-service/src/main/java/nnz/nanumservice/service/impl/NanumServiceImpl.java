@@ -258,15 +258,24 @@ public class NanumServiceImpl implements NanumService {
         else {
             writer.setIsFollow(false);
         }
-        resNanumDetailDTO.setWriter(writer);
+        resNanumDetailDTO.updateWriter(writer);
 
         // 예약 여부 확인
         Optional<UserNanum> userNanum = userNanumRepository.findByReceiver(follower);
         if (userNanum.isPresent()) {
-            resNanumDetailDTO.setIsBooking(true);
+            resNanumDetailDTO.updateIsBooking(true);
         } //
         else {
-            resNanumDetailDTO.setIsBooking(false);
+            resNanumDetailDTO.updateIsBooking(false);
+        }
+
+        // 찜 여부 확인
+        Optional<Bookmark> bookmark = bookmarkRepository.findByNanumAndUser(nanum, follower);
+        if (bookmark.isPresent()) {
+            resNanumDetailDTO.updateIsBookmark(true);
+        } //
+        else {
+            resNanumDetailDTO.updateIsBookmark(false);
         }
 
         nanum.plusViews();
