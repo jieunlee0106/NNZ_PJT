@@ -28,7 +28,7 @@ public interface UserService {
     PageDTO receivedNanums(Long userId, Pageable pageable);
     PageDTO providedNanums(Long userId, Pageable pageable);
     NanumParticipantsDTO nanumParticipants(Long userId, Long nanumId);
-    void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException;
+    void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException, JsonProcessingException;
     OtherUserInfoDTO otherUserInfo(Long meId, Long otherUserId);
     String reissue(TokenDTO token);
 }
