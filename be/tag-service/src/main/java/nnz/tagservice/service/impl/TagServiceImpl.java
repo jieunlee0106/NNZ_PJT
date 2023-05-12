@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import nnz.tagservice.dto.NanumTagDTO;
 import nnz.tagservice.dto.ShowTagDTO;
 import nnz.tagservice.dto.TagDTO;
+import nnz.tagservice.dto.res.ResTagDTO;
 import nnz.tagservice.entity.*;
 import nnz.tagservice.repository.*;
 import nnz.tagservice.service.KafkaProducer;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +70,14 @@ public class TagServiceImpl implements TagService {
         }
 
         return createdTags;
+    }
+
+    @Override
+    public List<ResTagDTO> readPopularTags() {
+
+        List<Tag> tags = tagRepository.findTop8ByOrderByViewsDesc();
+        List<ResTagDTO> resTagDTOs = tags.stream().map(ResTagDTO::of).collect(Collectors.toList());
+        return resTagDTOs;
     }
 
     private void createNanumTag(TagVO tagVO, Optional<Tag> tag) throws JsonProcessingException {

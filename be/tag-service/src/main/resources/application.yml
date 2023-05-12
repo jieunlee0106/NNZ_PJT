@@ -26,6 +26,7 @@ spring:
         format_sql: true
 
   kafka:
+    prefix: dev-
     bootstrap-servers: localhost:9092
     consumer:
 #      group-id: tag-service-1 # ex) user-service-1

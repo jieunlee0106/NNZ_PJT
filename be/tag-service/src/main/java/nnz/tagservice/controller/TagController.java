@@ -3,6 +3,7 @@ package nnz.tagservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import nnz.tagservice.dto.TagDTO;
+import nnz.tagservice.dto.res.ResTagDTO;
 import nnz.tagservice.service.TagService;
 import nnz.tagservice.vo.TagVO;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,12 @@ public class TagController {
             return new ResponseEntity<>(createdTags, HttpStatus.CREATED);
         } catch (JsonProcessingException e) {
             // todo : error handling
-            System.out.println("asdfasdfasdfasdf");
             throw new RuntimeException();
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResTagDTO>> readPopularTags() {
+        return new ResponseEntity<>(tagService.readPopularTags(), HttpStatus.OK);
     }
 }
