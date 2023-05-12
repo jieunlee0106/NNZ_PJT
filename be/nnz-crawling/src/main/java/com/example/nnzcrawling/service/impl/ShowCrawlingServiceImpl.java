@@ -37,7 +37,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final TeamImageRepository teamImageRepository;
 
     @Override
-    @Scheduled(cron = "0 21 23 1/1 * *")
+    @Scheduled(cron = "10 12 16 1/1 * *")
     @Transactional
     public void createShow() {
 
@@ -45,19 +45,22 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         List<TagCrawling> tagCrawlingEntities = new ArrayList<>();
 
         try {
-            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
+//            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
             List<ShowCrawling> eSports = crawlingESports.getCrawlingData();
-            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
-            List<TagCrawling> showTags = crawlingShows.getTags();
+//            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
+//            List<TagCrawling> showTags = crawlingShows.getTags();
             List<TagCrawling> eSportsTags = crawlingESports.getTags();
-            List<TagCrawling> sportsTags = crawlingSports.getTags();
+            eSportsTags.forEach(v -> {
+                System.out.println(v);
+            });
+//            List<TagCrawling> sportsTags = crawlingSports.getTags();
 
-            showCrawlingEntities.addAll(shows);
-            tagCrawlingEntities.addAll(showTags);
+//            showCrawlingEntities.addAll(shows);
+//            tagCrawlingEntities.addAll(showTags);
             showCrawlingEntities.addAll(eSports);
             tagCrawlingEntities.addAll(eSportsTags);
-            showCrawlingEntities.addAll(sports);
-            tagCrawlingEntities.addAll(sportsTags);
+//            showCrawlingEntities.addAll(sports);
+//            tagCrawlingEntities.addAll(sportsTags);
 
             // 공연 크롤링 정보 저장
             List<Show> showEntities = new ArrayList<>();
@@ -71,7 +74,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                     showRepository.save(show);
                 }
             });
-            showCrawlingRepository.createShows(showCrawlingEntities);
+//            showCrawlingRepository.createShows(showCrawlingEntities);
 
             // kafka producer 등록
             for (ShowCrawling showCrawling : showCrawlingEntities) {
@@ -93,7 +96,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             // 태그 생성 메소드 호출
             tagFeignClient.createTag(tagDTOs);
 
-            createTeamImage(sports);
+//            createTeamImage(sports);
         } catch (InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }

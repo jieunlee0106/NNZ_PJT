@@ -131,7 +131,7 @@ public class CrawlingESports {
                         // 태그 추가 : "vs"를 제외하고 팀 이름 두개 추가하기
                         StringTokenizer st = new StringTokenizer(titles.get(i).getText(), "vs");
                         while (st.hasMoreTokens()) {
-                            tags.add(new TagCrawling(title, st.nextToken()));
+                            tags.add(new TagCrawling(st.nextToken(), title));
                         }
 
                         // 날짜 설정. 시작날짜 = 경기 당일 날짜. 종료날짜는 없음
