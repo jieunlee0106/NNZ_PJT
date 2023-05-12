@@ -40,36 +40,36 @@ public class KafkaConsumer {
         }
     }
 
-    @Transactional
-    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
-    public void getTagMessage(String message) throws JsonProcessingException {
-        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//    @Transactional
+//    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
+//    public void getTagMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
+//        log.info("consume message: {}", message);
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+//            Tag tag = Tag.of(kafkaMessage.getBody());
+//            tagRepository.save(tag);
+//        }
+//    }
 
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            Tag tag = Tag.of(kafkaMessage.getBody());
-            tagRepository.save(tag);
-        }
-    }
-
-    @Transactional
-    @KafkaListener(topics = "dev-nanumtag", groupId = "nanum-service-3")
-    public void getNanumTagMessage(String message) throws JsonProcessingException {
-        KafkaMessage<NanumTagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumTagDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            // todo: error handling
-            Nanum nanum = nanumRepository.findById(kafkaMessage.getBody().getNanumId()).orElseThrow();
-            Tag tag = tagRepository.findById(kafkaMessage.getBody().getTagId()).orElseThrow();
-            NanumTag nanumTag = NanumTag.of(kafkaMessage.getBody(), nanum, tag);
-            nanumTagRepository.save(nanumTag);
-        }
-    }
+//    @Transactional
+//    @KafkaListener(topics = "dev-nanumtag", groupId = "nanum-service-3")
+//    public void getNanumTagMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<NanumTagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumTagDTO.class);
+//        log.info("consume message: {}", message);r
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+//            // todo: error handling
+//            Nanum nanum = nanumRepository.findById(kafkaMessage.getBody().getNanumId()).orElseThrow();
+//            Tag tag = tagRepository.findById(kafkaMessage.getBody().getTag()).orElseThrow();
+//            NanumTag nanumTag = NanumTag.of(kafkaMessage.getBody(), nanum, tag);
+//            nanumTagRepository.save(nanumTag);
+//        }
+//    }
 
     @KafkaListener(topics = "dev-user", groupId = "nanum-service-4")
     public void getUserMessage(String message) throws JsonProcessingException {

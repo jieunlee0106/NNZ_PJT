@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nnz.nanumservice.entity.Tag;
 
 import java.time.LocalDateTime;
 
@@ -31,5 +32,13 @@ public class TagDTO {
         this.title = title;
         this.tag = tag;
         this.type = type;
+    }
+
+    public static TagDTO of(Tag tag) {
+        TagDTO dto = new TagDTO();
+        dto.id = tag.getId();
+        dto.tag = tag.getTag();
+        dto.updatedAt = tag.getUpdatedAt();
+        return dto;
     }
 }

@@ -21,6 +21,7 @@ spring:
         format_sql: true
 
   kafka:
+    prefix: dev-
     bootstrap-servers: ENC(vnF1qX7/cGuFJKdaVCpPbDq2oQTClGEqEADAc4WeZNhVo0YdwP/Xow==)
     consumer:
 #      group-id: show-service-1 # ex) user-service-1

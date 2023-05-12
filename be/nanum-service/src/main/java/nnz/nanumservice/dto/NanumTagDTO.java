@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nnz.nanumservice.entity.NanumTag;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,18 @@ public class NanumTagDTO {
 
     private Long nanumId;
 
-    private Long tagId;
+    private TagDTO tag;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
+
+    public static NanumTagDTO of(NanumTag nanumTag) {
+        NanumTagDTO dto = new NanumTagDTO();
+        dto.id = nanumTag.getId();
+        dto.nanumId = nanumTag.getNanum().getId();
+        dto.tag = TagDTO.of(nanumTag.getTag());
+        dto.updatedAt = nanumTag.getUpdatedAt();
+        return dto;
+    }
 }
