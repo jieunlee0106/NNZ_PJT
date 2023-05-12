@@ -6,6 +6,8 @@ import 'package:logger/logger.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
 import 'package:nnz/src/services/user_provider.dart';
 
+import 'my_page_controller.dart';
+
 class UserEditController extends GetxController {
   late final curPwdController;
   late final newPwdController;
@@ -90,6 +92,7 @@ class UserEditController extends GetxController {
           confirmNewPwd: newPwdConfirmController.text,
           nickname: nickController.text);
       if (response.statusCode == 204) {
+        Get.find<MyPageController>().getMyInfo();
         await showDialog(
             context: Get.context!,
             builder: (BuildContext context) {
@@ -105,7 +108,8 @@ class UserEditController extends GetxController {
                 ],
               );
             });
-        Get.back();
+
+        Get.offNamed("/app");
       } else {
         await showDialog(
             context: Get.context!,

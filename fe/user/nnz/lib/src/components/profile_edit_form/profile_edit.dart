@@ -18,6 +18,11 @@ class ProfileEditUser extends StatefulWidget {
 class _ProfileEditUserState extends State<ProfileEditUser> {
   final controller = Get.put(UserEditController());
   bool _permissionGranted = false;
+  @override
+  void initState() {
+    super.initState();
+    logger.i(Get.arguments);
+  }
 
   final logger = Logger();
   Future<void> _checkPermission() async {
@@ -38,12 +43,15 @@ class _ProfileEditUserState extends State<ProfileEditUser> {
     }
   }
 
-  File? _imageFile;
+  File _imageFile = File("${Get.arguments}");
+  bool isPicked = false;
   final picker = ImagePicker();
   Future<void> _getImageFromCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     setState(() {
-      _imageFile = pickedFile != null ? File(pickedFile.path) : null;
+      isPicked = true;
+      _imageFile =
+          pickedFile != null ? File(pickedFile.path) : File("${Get.arguments}");
     });
     controller.imageFile = _imageFile;
     setState(() {});
@@ -54,7 +62,9 @@ class _ProfileEditUserState extends State<ProfileEditUser> {
   Future<void> _getImageFromGallery() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      _imageFile = pickedFile != null ? File(pickedFile.path) : null;
+      isPicked = true;
+      _imageFile =
+          pickedFile != null ? File(pickedFile.path) : File("${Get.arguments}");
     });
     controller.imageFile = _imageFile;
     setState(() {});
@@ -101,10 +111,15 @@ class _ProfileEditUserState extends State<ProfileEditUser> {
       color: Colors.white,
       child: Column(
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: _imageFile == null ? null : FileImage(_imageFile!),
-          ),
+          isPicked == true
+              ? CircleAvatar(
+                  radius: 50,
+                  backgroundImage: FileImage(_imageFile),
+                )
+              : CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(Get.arguments),
+                ),
           const SizedBox(
             height: 16,
           ),
