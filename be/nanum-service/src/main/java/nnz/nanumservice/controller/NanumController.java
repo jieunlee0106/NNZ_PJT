@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
+import nnz.nanumservice.dto.FCMNotificationDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
+import nnz.nanumservice.service.impl.FCMService;
 import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,7 @@ public class NanumController {
 
     private final NanumService nanumService;
     private final CertificationService certificationService;
+    private final FCMService fcmService;
 
     @PostMapping
     public ResponseEntity<Void> createNanum(
@@ -115,5 +118,11 @@ public class NanumController {
     @GetMapping("/popular")
     public ResponseEntity<List<ResNanumDTO>> readPopularNanums() {
         return new ResponseEntity<>(nanumService.readPopularNaums(), HttpStatus.OK);
+    }
+
+    @GetMapping("/push")
+    public ResponseEntity<?> testNotifictaion(@RequestBody FCMNotificationDTO fcmNotificationDTO){
+        fcmService.sendMessage(fcmNotificationDTO);
+        return ResponseEntity.ok().build();
     }
 }
