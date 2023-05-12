@@ -64,8 +64,8 @@ public class User extends BaseEntity {
         user.nickname = userDTO.getNickname();
         user.phoneNumber = userDTO.getPhone();
         user.profileImage = userDTO.getProfileImage();
-        user.authProvider = userDTO.getAuthProvider();
-        user.lastLoginAt = userDTO.getLastLoginAt();
+        user.authProvider = AuthProvider.valueOf(userDTO.getAuthProvider());
+        user.role = Role.valueOf(userDTO.getRole());
         return user;
     }
 }
