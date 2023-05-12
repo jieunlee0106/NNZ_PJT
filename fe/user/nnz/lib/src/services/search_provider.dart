@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class SearchProvider extends GetConnect {
   final logger = Logger();
-
+  final storage = const FlutterSecureStorage();
   @override
   void onInit() async {
     await dotenv.load();
@@ -58,6 +61,23 @@ class SearchProvider extends GetConnect {
     logger.i("들와라 제발 $category $title");
     final response = await get(
         'https://k8b207.p.ssafy.io/api/show-service/shows/search?category=$category&title=$title');
+    return response;
+  }
+
+  //공연 등록 요청
+  Future<Response> postReqShow({
+    required String title,
+    required String path,
+  }) async {
+    logger.i("공연 등록 요청 $title, $path");
+    final token = await storage.read(key: 'accessToken');
+    final response = await post(
+        'https://k8b207.p.ssafy.io/api/user-service/users/ask/show',
+        jsonEncode({
+          'title': title,
+          'path': path,
+        }),
+        headers: {'Authorization': 'Bearer $token'});
     return response;
   }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:nnz/src/bindings/init_bindings.dart';
 import 'package:nnz/src/components/other_user_from/other_user_profile_twitter.dart';
 import 'package:nnz/src/components/sharing_detail/test_infinite.dart';
+import 'package:nnz/src/components/test_message/firebase_message.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
@@ -31,8 +32,14 @@ import 'package:nnz/src/pages/category/musical.dart';
 import 'src/app.dart';
 import 'src/config/config.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // 세로모드만 허용
@@ -74,11 +81,15 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/myShareInfoForm",
+      initialRoute: "/test",
       getPages: [
         GetPage(
           name: "/",
           page: () => const App(),
+        ),
+        GetPage(
+          name: "/test",
+          page: () => FirebaseMessage(),
         ),
         GetPage(
           name: "/home",

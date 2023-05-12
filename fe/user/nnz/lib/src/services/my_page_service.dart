@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 
 class MyPageService extends GetConnect {
+  // final token =
+  //     'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMCIsImlzcyI6Im5ueiIsImlhdCI6MTY4MzY5ODQ3MCwiYXV0aFByb3ZpZGVyIjoiTk5aIiwicm9sZSI6IlVTRVIiLCJpZCI6MTAsImVtYWlsIjoiYXNkYXNkQGdtYWkuY29tIiwiZXhwIjoxNjgzNzAyMDcwfQ.468vxyCopH-PT__CWw16bvZj00NkhF2L7Xq-OgPL96xejPfmjcuHijceO3Ta7LwPIF7wb7FFaY6KTlrSAqLvYA';
   final token = Get.find<BottomNavController>().accessToken;
   final dio = Dio();
 
@@ -30,7 +32,7 @@ class MyPageService extends GetConnect {
     } catch (e) {
       print(token);
       print('!!!!!Error occurred: $e');
-      throw e;
+      rethrow;
     }
   }
 }
