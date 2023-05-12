@@ -3,6 +3,7 @@ package nnz.nanumservice.service.impl;
 import io.github.eello.nnz.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nnz.nanumservice.dto.CertificationDTO;
 import nnz.nanumservice.exception.ErrorCode;
 import nnz.nanumservice.entity.Nanum;
 import nnz.nanumservice.entity.NanumStock;
@@ -16,7 +17,9 @@ import nnz.nanumservice.vo.NanumCertificationVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -89,5 +92,20 @@ public class CertificationServiceImpl implements CertificationService {
 
         // 남은 수량 return
         return save;
+    }
+
+    @Override
+    public List<CertificationDTO> findCertificationList(Long nanumId) {
+
+        Nanum nanum = nanumRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
+
+        List<UserNanum> allByNanum = userNanumRepository.findAllByNanum(nanum);
+
+        return allByNanum.stream().map(userNanum -> CertificationDTO.builder()
+                .id(userNanum.getId())
+                .email(userNanum.getReceiver().getEmail())
+                .image(userNanum.getCertificationImage())
+                .build()).collect(Collectors.toList());
     }
 }

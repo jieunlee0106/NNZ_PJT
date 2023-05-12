@@ -25,6 +25,8 @@ public class User {
     @Id
     private Long id;
 
+    private String email;
+
     private String nickname;
 
     private String profileImage;
@@ -38,6 +40,7 @@ public class User {
     public static User of(UserDTO userDTO) {
         return User.builder()
                 .id(userDTO.getId())
+                .email(userDTO.getEmail())
                 .nickname(userDTO.getNickname())
                 .profileImage(userDTO.getProfileImage())
                 .updatedAt(userDTO.getUpdatedAt())

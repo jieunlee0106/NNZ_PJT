@@ -22,6 +22,8 @@ public class UserNanumDTO {
 
     private Long nanumId;
 
+    private String certificationImage;
+
     public static UserNanumDTO of(UserNanum userNanum) {
         return UserNanumDTO.builder()
                 .id(userNanum.getId())
@@ -29,6 +31,7 @@ public class UserNanumDTO {
                 .isReceived(userNanum.getIsReceived())
                 .userId(userNanum.getReceiver().getId())
                 .nanumId(userNanum.getNanum().getId())
+                .certificationImage(userNanum.getCertificationImage())
                 .build();
     }
 }
