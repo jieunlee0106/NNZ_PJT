@@ -5,25 +5,28 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
-@Getter
 @Entity
-@Table(name = "tags")
+@Table(name = "nanum_images")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Where(clause = "is_delete  = 0")
-public class Tag extends BaseEntity {
+@Getter
+public class NanumImage extends BaseEntity {
 
     @Id
     private Long id;
 
-    private String tag;
+    private String path;
 
-    // 조회수
-    private Integer views;
+    private String originalName;
+
+    private Boolean isThumbnail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nanum_id")
+    private Nanum nanum;
+
 }
-

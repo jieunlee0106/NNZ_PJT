@@ -1,29 +1,28 @@
 package nnz.adminservice.entity;
 
-import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
-@Getter
 @Entity
-@Table(name = "tags")
+@Table(name = "bookmarks")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Where(clause = "is_delete  = 0")
-public class Tag extends BaseEntity {
+public class Bookmark {
 
     @Id
     private Long id;
 
-    private String tag;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nanum_id")
+    private Nanum nanum;
 
-    // 조회수
-    private Integer views;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
-

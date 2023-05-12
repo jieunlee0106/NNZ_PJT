@@ -17,7 +17,6 @@ import javax.persistence.*;
 public class Banner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String image;

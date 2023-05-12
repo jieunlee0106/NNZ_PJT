@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Where(clause = "is_delete  = 0")
 public class User extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     @Column(nullable = false)
