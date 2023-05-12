@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 public class ShowTag {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,6 +39,10 @@ public class ShowTag {
     private LocalDateTime updatedAt;
 
     protected boolean isDelete;
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
 
     public static ShowTag of(ShowTagDTO showTagDTO, Show show, Tag tag) {
         return ShowTag.builder()

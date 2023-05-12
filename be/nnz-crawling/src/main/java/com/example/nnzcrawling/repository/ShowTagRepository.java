@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ShowTagRepository extends JpaRepository<ShowTag, Long> {
 
     Optional<ShowTag> findByShowAndTag(Show show, Tag tag);
+    Optional<ShowTag> findByShowAndTagId(Show show, Long tagId);
 }

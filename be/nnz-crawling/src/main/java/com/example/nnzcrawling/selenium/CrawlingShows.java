@@ -21,7 +21,7 @@ public class CrawlingShows {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\SSAFY\\Desktop\\ssafy\\nnz-services\\crawling_service\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
@@ -58,8 +58,8 @@ public class CrawlingShows {
 
         // 1번 인덱스는 전체 탭이므로 스킵
         int categoryCnt = 2;
-//        while (categoryCnt <= categories.size()) {
-        while (categoryCnt <= 2) {
+        while (categoryCnt <= categories.size()) {
+//        while (categoryCnt <= 2) {
 
             Thread.sleep(1000);
             // 공연의 카테고리 선택하기.

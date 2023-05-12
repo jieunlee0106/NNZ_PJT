@@ -19,7 +19,7 @@ public class CrawlingESports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\SSAFY\\Desktop\\ssafy\\nnz-services\\crawling_service\\be\\nnz-crawling\\chromedriver.exe";
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
@@ -82,7 +82,7 @@ public class CrawlingESports {
 
             Thread.sleep(1000);
 
-            tags.add(new TagCrawling(categoryName, categoryName));
+//            tags.add(new TagCrawling(categoryName, categoryName));
 
             // 일정이 적혀 있는 테이블의 tr 태그들을 모두 불러온다
             List<WebElement> schedules = driver.findElements(
@@ -130,8 +130,9 @@ public class CrawlingESports {
 
                         // 태그 추가 : "vs"를 제외하고 팀 이름 두개 추가하기
                         StringTokenizer st = new StringTokenizer(titles.get(i).getText(), "vs");
+                        tags.add(new TagCrawling(titles.get(i).getText(), categoryName));
                         while (st.hasMoreTokens()) {
-                            tags.add(new TagCrawling(title, st.nextToken()));
+                            tags.add(new TagCrawling(titles.get(i).getText(), st.nextToken()));
                         }
 
                         // 날짜 설정. 시작날짜 = 경기 당일 날짜. 종료날짜는 없음
