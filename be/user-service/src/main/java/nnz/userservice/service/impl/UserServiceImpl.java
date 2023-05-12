@@ -114,14 +114,13 @@ public class UserServiceImpl implements UserService {
         newUser = userRepository.save(newUser);
         log.info("새로운 유저 가입: {}", newUser);
 
-        UserDTO userDTO = UserDTO.of(newUser);
-
-        KafkaMessage<UserDTO> kafkaMessage = KafkaMessage.create().body(userDTO);
+        KafkaMessage<UserDTO> kafkaMessage =
+                KafkaMessage.create().body(UserSyncDTO.of(newUser));
 
         // kafka에 가입한 사용자에 대한 메시지 발생
         kafkaProducer.sendMessage(TOPIC, kafkaMessage);
 
-        return userDTO;
+        return UserDTO.of(newUser);
     }
 
     @Override
@@ -312,7 +311,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException {
+    public void updateProfile(Long userId, UserUpdateProfileVO vo, MultipartFile file) throws UnsupportedEncodingException, JsonProcessingException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -370,6 +369,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        KafkaMessage kafkaMessage = KafkaMessage.update().body(UserSyncDTO.of(user));
+        kafkaProducer.sendMessage(TOPIC, kafkaMessage);
         log.info("user profile update -> After: {}", user);
     }
 

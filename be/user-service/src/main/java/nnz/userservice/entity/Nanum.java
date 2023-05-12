@@ -2,6 +2,7 @@ package nnz.userservice.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "nanums")
 @Where(clause = "is_delete = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @AllArgsConstructor
 @Builder
 @Getter
