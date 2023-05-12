@@ -57,6 +57,7 @@ public class KafkaProdConsumer {
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         Show show = Show.builder()
+                .id(body.getId())
                 .title(body.getTitle())
                 .category(category)
                 .location(body.getLocation())
@@ -89,6 +90,7 @@ public class KafkaProdConsumer {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Report report = Report.builder()
+                .id(body.getId())
                 .reporter(reporter)
                 .target(target)
                 .reason(body.getReason())
