@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
+import nnz.nanumservice.dto.CertificationDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
@@ -103,17 +104,24 @@ public class NanumController {
     @PostMapping("/{nanumId}")
     public ResponseEntity<Void> createUserNanum(
             @PathVariable(name = "nanumId") Long nanumId,
+            @RequestPart(value = "image", required = false) MultipartFile file,
             DecodedToken userToken) {
         if (userToken.getId() == null) {
 //            todo : error handling
 //            throw new Exception();
         }
-        nanumService.createUserNanum(nanumId, userToken.getId());
+        nanumService.createUserNanum(nanumId, userToken.getId(), file);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/popular")
     public ResponseEntity<List<ResNanumDTO>> readPopularNanums() {
         return new ResponseEntity<>(nanumService.readPopularNaums(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{nanumId}/certification")
+    public ResponseEntity<?> findCertificationList(@PathVariable("nanumId") Long nanumId){
+        List<CertificationDTO> certList = certificationService.findCertificationList(nanumId);
+        return ResponseEntity.ok(certList);
     }
 }

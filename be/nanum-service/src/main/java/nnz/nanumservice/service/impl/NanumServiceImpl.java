@@ -1,6 +1,7 @@
 package nnz.nanumservice.service.impl;
 
 import io.github.eello.nnz.common.dto.PageDTO;
+import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.*;
@@ -10,6 +11,7 @@ import nnz.nanumservice.dto.res.show.ResNanumDetailShowDTO;
 import nnz.nanumservice.dto.res.tag.ResTagDTO;
 import nnz.nanumservice.dto.res.user.ResNanumWriterDTO;
 import nnz.nanumservice.entity.*;
+import nnz.nanumservice.exception.ErrorCode;
 import nnz.nanumservice.repository.*;
 import nnz.nanumservice.service.KafkaProducer;
 import nnz.nanumservice.service.LocationDistance;
@@ -285,14 +287,24 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     @Transactional
-    public void createUserNanum(Long nanumId, Long userId) {
+    public void createUserNanum(Long nanumId, Long userId, MultipartFile file) {
         //todo: error handling
         Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
         User user = userRepository.findById(userId).orElseThrow();
 
+        if(userNanumRepository.findByNanumAndReceiver(nanum, user).isPresent())
+            throw new CustomException(ErrorCode.DUPLICATED_USER_NANUM);
+
+        String image = null;
+        if(nanum.getIsCertification()) {
+            if(file == null) throw new CustomException(ErrorCode.USER_NANUM_NEED_CERTIFICATION);
+            image = s3FileService.getS3Url(file);
+        }
+
         UserNanum userNanum = UserNanum.builder()
                 .nanum(nanum)
                 .receiver(user)
+                .certificationImage(image)
                 .isReceived(false)
                 .build();
 
