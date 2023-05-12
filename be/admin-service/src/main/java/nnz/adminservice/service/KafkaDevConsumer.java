@@ -7,6 +7,7 @@ import io.github.eello.nnz.common.kafka.KafkaMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.adminservice.dto.*;
+import nnz.adminservice.dto.kafka.AskedShowKafkaDTO;
 import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
@@ -44,7 +45,7 @@ public class KafkaDevConsumer {
     }
 
     // Show
-    @KafkaListener(topics = "dev-show-crawling", groupId = "dev-admin-service")
+    @KafkaListener(topics = "dev-show", groupId = "dev-admin-service")
     public void showMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume showMessage: {}", message);
