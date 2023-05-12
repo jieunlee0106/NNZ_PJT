@@ -263,7 +263,7 @@ public class NanumServiceImpl implements NanumService {
         resNanumDetailDTO.updateWriter(writer);
 
         // 예약 여부 확인
-        Optional<UserNanum> userNanum = userNanumRepository.findByReceiver(follower);
+        Optional<UserNanum> userNanum = userNanumRepository.findByNanumAndReceiver(nanum, follower);
         if (userNanum.isPresent()) {
             resNanumDetailDTO.updateIsBooking(true);
         } //
