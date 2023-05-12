@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
@@ -13,6 +14,7 @@ class UserEditController extends GetxController {
   late final newPwdController;
   late final newPwdConfirmController;
   late final nickController;
+  final storage = const FlutterSecureStorage();
   File? imageFile;
   final logger = Logger();
   RxBool nickChecked = false.obs;
@@ -131,6 +133,24 @@ class UserEditController extends GetxController {
       final errorMessage = "$e";
       logger.e(errorMessage);
       throw Exception(errorMessage);
+    }
+  }
+
+  //유저 탈퇴
+  Future<void> deleteUser() async {
+    try {
+      final response = await UserProvider().deleteUserService();
+      logger.i(response.statusCode);
+      if (response.statusCode == 204) {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          const SnackBar(content: Text('성공적으로 회원 탈퇴 되었습니다.')),
+        );
+        Get.offNamed('/app');
+      } else {
+        logger.e("${response.statusCode} ${response.statusText}");
+      }
+    } catch (e) {
+      logger.e(e);
     }
   }
 }

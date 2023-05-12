@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,7 +10,7 @@ import 'package:nnz/src/model/register_model.dart';
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
   final logger = Logger();
-
+  final storage = const FlutterSecureStorage();
   @override
   void onInit() async {
     //load env file
@@ -189,6 +190,18 @@ class UserProvider extends GetConnect {
     final response = await get(
         "https://k8b207.p.ssafy.io/api/user-service/users/$userId",
         headers: headers);
+    return response;
+  }
+
+  //유저 탈퇴
+  Future<Response> deleteUserService() async {
+    final token = await storage.read(key: 'accessToken');
+    final headers = {'Authorization': 'Bearer $token'};
+
+    final response = await delete(
+        'https://k8b207.p.ssafy.io/api/user-service/users/exit',
+        headers: headers);
+
     return response;
   }
 }
