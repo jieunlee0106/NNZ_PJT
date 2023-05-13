@@ -112,6 +112,8 @@ class UserEditController extends GetxController {
             });
 
         Get.offNamed("/app");
+      } else if (response.statusCode == 401) {
+        logger.e("${response.statusCode} ${response.statusText}");
       } else {
         await showDialog(
             context: Get.context!,

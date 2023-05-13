@@ -438,8 +438,12 @@ class SharingRegisterController extends GetxController {
         //트위터 계정인지 파악을 해서 트윗 등록할 수 있게 함....
         // register();
         try {
-          final response = await SharingRegisterProvider().testShare(
-              shareModel: shareModel, images: imageController.images);
+          final response = await SharingRegisterProvider()
+              .testShare(shareModel: shareModel, images: imageController.images)
+              .catchError((error) async {
+            logger.e("들어와 ${error.response?.statusCode}");
+            throw error;
+          });
           logger.i(response.statusCode);
           logger.i(response.statusText);
           if (response.statusCode == 201) {
@@ -486,15 +490,18 @@ class SharingRegisterController extends GetxController {
 
       try {
         final response = await SharingRegisterProvider()
-            .testShare(shareModel: shareModel, images: imageController.images);
-        logger.i(response.statusCode);
-        logger.i(response.statusText);
-        if (response.statusCode == 201) {
-          Get.snackbar("완료", "등록완료하였습니다.");
-          Get.offNamed("/app");
-        }
+            .testShare(shareModel: shareModel, images: imageController.images)
+            .catchError((error) async {
+          logger.e("들어와 ${error.response?.statusCode}");
+        });
+        // logger.i(response.statusCode);
+        // logger.i(response.statusText);
+        // if (response.statusCode == 201) {
+        //   Get.snackbar("완료", "등록완료하였습니다.");
+        //   Get.offNamed("/app");
+        // }
       } catch (e) {
-        logger.i("$e");
+        logger.e("$e");
       }
     }
   }

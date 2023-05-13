@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/controller/my_page_controller.dart';
-import 'package:nnz/src/pages/user/profile_edit.dart';
 import 'package:nnz/src/config/config.dart';
 
 class MyFollower extends StatelessWidget {
   final int? follower;
   final int? following;
-
-  const MyFollower(
-      {super.key, required this.follower, required this.following});
+  final controller = Get.put(MyPageController());
+  MyFollower({super.key, required this.follower, required this.following});
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -64,8 +62,7 @@ class MyFollower extends StatelessWidget {
             GestureDetector(
                 onTap: () {
                   Get.toNamed("/profileEdit",
-                      arguments:
-                          Get.find<MyPageController>().myInfo.profileImage);
+                      arguments: controller.myInfo.profileImage);
                 },
                 child: Container(
                   decoration: BoxDecoration(

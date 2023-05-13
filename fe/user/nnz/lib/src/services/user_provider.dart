@@ -204,4 +204,17 @@ class UserProvider extends GetConnect {
 
     return response;
   }
+
+  //토근 재발급 코드
+  Future<Response> refreshToken(
+      {required String accessToken, required String refreshToken}) async {
+    final body = null;
+    final response = await post(
+        "https://k8b207.p.ssafy.io/api/user-service/users/reissue", body,
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Cookie': 'refreshToken= $refreshToken'
+        });
+    return response;
+  }
 }

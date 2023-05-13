@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:nnz/src/config/token.dart';
 
 import '../components/message_popup.dart';
 
@@ -16,6 +17,7 @@ class BottomNavController extends GetxController {
   GlobalKey<NavigatorState> mypageKey = GlobalKey<NavigatorState>();
   final storage = const FlutterSecureStorage();
   String? accessToken;
+  String? refreshToken;
   String? userId;
   void changeBottomNav(int value, {bool hasGesture = true}) async {
     var page = PageName.values[value];
@@ -24,9 +26,11 @@ class BottomNavController extends GetxController {
       case PageName.UPLOAD:
         curIndex(page.index);
         accessToken = await getToken();
+        refreshToken = await Token.getRefreshToken();
         userId = await getUserId();
+
         if (accessToken == null) {
-          print(accessToken);
+          print("$accessToken $refreshToken");
           Get.offNamed("/register");
           // return;
         } else {
@@ -41,6 +45,7 @@ class BottomNavController extends GetxController {
       case PageName.ACTIVITY:
         curIndex(page.index);
         accessToken = await getToken();
+
         if (accessToken == null) {
           print(accessToken);
           Get.offNamed("/register");

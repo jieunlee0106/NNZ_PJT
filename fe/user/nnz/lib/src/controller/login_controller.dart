@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 
 import '../components/register_form/share_popup.dart';
@@ -79,10 +80,14 @@ class LoginController extends GetxController {
                       popupMessage: "${response.body["message"]}");
                 });
           } else {
+            logger.i(response.body);
             final accessToken = response.body["accessToken"];
+            final refreshToken = response.body["refreshToken"];
             final userId = response.body["userId"];
             // final userId = response.body["userId"];
-            Get.find<BottomNavController>().setToken(accessToken: accessToken);
+            Token.saveAccessToken(accessToken);
+            Token.saveRefreshToken(refreshToken);
+            
             Get.find<BottomNavController>().setUserId(userId: userId);
             final token = Get.find<BottomNavController>().getToken();
             Get.offAllNamed("/app");
