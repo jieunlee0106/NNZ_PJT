@@ -10,13 +10,13 @@ public class KafkaLocalConsumer extends KafkaConsumer {
     }
 
     @Override
-    @KafkaListener(topics = "js-nanum", groupId = KAFKA_GROUP_ID)
+    @KafkaListener(topics = "js-nanum")
     public void consumeNanumMessage(String message) throws JsonProcessingException {
         super.consumeNanumMessage(message);
     }
 
     @Override
-    @KafkaListener(topics = "dev-show-sync", groupId = KAFKA_GROUP_ID)
+    @KafkaListener(topics = "dev-show-sync")
     public void consumeShowMessage(String message) throws JsonProcessingException {
         super.consumeShowMessage(message);
     }
