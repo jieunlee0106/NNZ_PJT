@@ -5,13 +5,11 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import io.github.eello.nnz.common.kafka.KafkaMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nnz.userservice.dto.NanumDTO;
-import nnz.userservice.service.DBSynchronizer;
 import nnz.userservice.service.impl.NanumSynchronizer;
+import nnz.userservice.service.impl.ShowSynchronizer;
+import nnz.userservice.vo.ShowSyncVO;
 import nnz.userservice.vo.sync.NanumSyncVO;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 import static io.github.eello.nnz.common.kafka.KafkaMessage.*;
 
@@ -20,7 +18,8 @@ import static io.github.eello.nnz.common.kafka.KafkaMessage.*;
 @RequiredArgsConstructor
 public class KafkaMessageHandler {
 
-    private final NanumSynchronizer nanumSyncService;
+    private final NanumSynchronizer nanumSynchronizer;
+    private final ShowSynchronizer showSynchronizer;
 
     public void handleNanumMessage(String message) throws JsonProcessingException {
         KafkaMessage<NanumSyncVO> data = deserializeMessage(message, NanumSyncVO.class);
@@ -28,10 +27,22 @@ public class KafkaMessageHandler {
         NanumSyncVO body = getMessageBody(data);
 
         if (messageType == KafkaMessageType.CREATE) {
-            nanumSyncService.create(body);
+            nanumSynchronizer.create(body);
         } else if (messageType == KafkaMessageType.UPDATE) {
-            nanumSyncService.update(body);
-        } else nanumSyncService.delete(body);
+            nanumSynchronizer.update(body);
+        } else nanumSynchronizer.delete(body);
+    }
+
+    public void handleShowMessage(String message) throws JsonProcessingException {
+        KafkaMessage<ShowSyncVO> data = deserializeMessage(message, ShowSyncVO.class);
+        KafkaMessageType messageType = getMessageType(data);
+        ShowSyncVO body = getMessageBody(data);
+
+        if (messageType == KafkaMessageType.CREATE) {
+            showSynchronizer.create(body);
+        } else if (messageType == KafkaMessageType.UPDATE) {
+            showSynchronizer.update(body);
+        } else showSynchronizer.delete(body);
     }
 
     private <T> KafkaMessage<T> deserializeMessage(String message, Class<T> clazz) throws JsonProcessingException {
