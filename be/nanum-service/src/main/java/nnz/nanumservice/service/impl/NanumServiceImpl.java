@@ -320,7 +320,7 @@ public class NanumServiceImpl implements NanumService {
         userNanumRepository.save(userNanum);
 
         UserNanumDTO userNanumDTO = UserNanumDTO.of(userNanum);
-        KafkaMessage<UserNanumDTO> userNanumDTOKafkaMessage = KafkaMessage.update().body(userNanumDTO);
+        KafkaMessage<UserNanumDTO> userNanumDTOKafkaMessage = KafkaMessage.create().body(userNanumDTO);
         producer.sendMessage(userNanumDTOKafkaMessage, "dev-usernanum");
 
         List<UserNanum> userNanums = userNanumRepository.findAllByNanumAndIsCertificatedTrue(nanum);
