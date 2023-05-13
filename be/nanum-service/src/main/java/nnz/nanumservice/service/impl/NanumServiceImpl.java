@@ -177,7 +177,9 @@ public class NanumServiceImpl implements NanumService {
         List<NearNanumDTO> nearNanumDTOs = new ArrayList<>();
         nanumDTOs.forEach(nanumDTO -> {
             if (nanumDTO.getLat() != null && nanumDTO.getLng() != null) {
-                double distance = locationDistance.getDistance(lat, lng, nanumDTO.getLat(), nanumDTO.getLng());
+                double lat2 = Double.parseDouble(nanumDTO.getLat());
+                double lng2 = Double.parseDouble(nanumDTO.getLng());
+                double distance = locationDistance.getDistance(lat, lng, lat2, lng2);
                 if (distance <= 10.0 && nearNanumDTOs.size() <= 8) {
                     nearNanumDTOs.add(new NearNanumDTO(distance, nanumDTO));
                 }
