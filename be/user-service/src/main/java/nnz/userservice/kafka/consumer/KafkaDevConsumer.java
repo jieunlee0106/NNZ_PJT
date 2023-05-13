@@ -16,4 +16,10 @@ public class KafkaDevConsumer extends KafkaConsumer {
     public void consumeNanumMessage(String message) throws JsonProcessingException {
         super.consumeNanumMessage(message);
     }
+
+    @Override
+    @KafkaListener(topics = "dev-show-sync", groupId = KAFKA_GROUP_ID)
+    public void consumeShowMessage(String message) throws JsonProcessingException {
+        super.consumeShowMessage(message);
+    }
 }

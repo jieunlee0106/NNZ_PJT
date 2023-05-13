@@ -2,7 +2,6 @@ package nnz.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nnz.userservice.dto.NanumTagDTO;
 import nnz.userservice.entity.Nanum;
 import nnz.userservice.entity.Nanum.NanumStatus;
 import nnz.userservice.entity.NanumTag;

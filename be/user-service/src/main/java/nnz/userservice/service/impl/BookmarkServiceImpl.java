@@ -1,12 +1,15 @@
 package nnz.userservice.service.impl;
 
 import io.github.eello.nnz.common.exception.CustomException;
+import io.github.eello.nnz.common.kafka.KafkaMessage;
+import io.github.eello.nnz.common.kafka.KafkaMessage.KafkaMessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.entity.Bookmark;
 import nnz.userservice.entity.Nanum;
 import nnz.userservice.entity.User;
 import nnz.userservice.exception.ErrorCode;
+import nnz.userservice.kafka.KafkaProducer;
 import nnz.userservice.repository.BookmarkRepository;
 import nnz.userservice.repository.NanumRepository;
 import nnz.userservice.repository.UserRepository;
@@ -24,6 +27,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final UserRepository userRepository;
     private final NanumRepository nanumRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     @Transactional
@@ -93,6 +97,8 @@ public class BookmarkServiceImpl implements BookmarkService {
                 bookmark.cancel();
                 log.info("{}님이 '{}'를 찜 해제", user.getEmail(), nanum.getTitle());
             }
+
+
         } else {
             bookmark = Bookmark.builder()
                     .user(user)

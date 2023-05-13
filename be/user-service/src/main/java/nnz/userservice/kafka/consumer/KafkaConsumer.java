@@ -12,5 +12,9 @@ public abstract class KafkaConsumer {
     public void consumeNanumMessage(String message) throws JsonProcessingException {
         handler.handleNanumMessage(message);
     }
+
+    public void consumeShowMessage(String message) throws JsonProcessingException {
+        handler.handleShowMessage(message);
+    }
 }
 
