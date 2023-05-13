@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/sharingDetail",
+      initialRoute: "/",
       getPages: [
         GetPage(
           name: "/",

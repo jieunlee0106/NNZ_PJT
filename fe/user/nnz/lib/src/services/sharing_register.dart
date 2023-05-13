@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:nnz/src/controller/bottom_nav_controller.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/share_model.dart';
 
 class SharingRegisterProvider extends GetConnect {
@@ -36,6 +36,7 @@ class SharingRegisterProvider extends GetConnect {
         "nanumDate": shareModel.nanumDate,
         "title": shareModel.title,
         "openTime": shareModel.openTime,
+        'isCertification': shareModel.isCertification,
         'condition': shareModel.condition,
         "quantity": shareModel.quantity,
         "content": shareModel.content,
@@ -49,11 +50,25 @@ class SharingRegisterProvider extends GetConnect {
     for (var element in formData.files) {
       logger.i("${element.key} ${element.value.filename}");
     }
-    token = Get.find<BottomNavController>().accessToken;
+    token = await Token.getAccessToken();
     logger.i("토큰 값 : $token");
     final response = await post(
         "https://k8b207.p.ssafy.io/api/nanum-service/nanums", formData,
         contentType: '', headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 500) {
+      logger.e("에러 들어왔어? ${response.statusCode}");
+    } else if (response.statusCode == 401) {
+      //토큰 재발급 받기
+      await Token.refreshAccessToken();
+      final newToken = await Token.getAccessToken();
+
+      //요청 다시 보내기
+      final newResponse = await post(
+          "https://k8b207.p.ssafy.io/api/nanum-service/nanums", formData,
+          contentType: '', headers: {'Authorization': 'Bearer $newToken'});
+
+      return newResponse;
+    }
     return response;
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/model/popular_tag_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
 class ShowSearchController extends GetxController {
@@ -9,7 +10,7 @@ class ShowSearchController extends GetxController {
   final logger = Logger();
   RxString category = ''.obs;
   RxBool hasFocus = false.obs;
-  List<String> tagList = [];
+  List<PopularTagModel> tagList = [];
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -19,13 +20,15 @@ class ShowSearchController extends GetxController {
   }
 
   //인기 해시 태그
-  Future<List<String>> onPopularTag() async {
+  Future<List<PopularTagModel>> onPopularTag() async {
     try {
       final response = await SearchProvider().getPopularTag();
       if (response.statusCode == 200) {
-        for (var tag in response.body) {
-          tagList.add(tag);
+        tagList.clear();
+        for (var data in response.body) {
+          tagList.add(PopularTagModel.fromJson(data));
         }
+        logger.i(tagList);
         return tagList;
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
