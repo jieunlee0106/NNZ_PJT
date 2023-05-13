@@ -50,7 +50,7 @@ spring:
     prefix: dev-
     bootstrap-servers: ENC(BG51LqW1PA/R5Kv9vmE3csMCX5xor0pj+NQbZEJka6wnMr2Z9wq0Vg==)
     consumer:
-      group-id: ENC(pGfFK/W6nLA1LQTs+6y/GWjRrIy5szhD)
+      group-id: dev-user-service-1
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
