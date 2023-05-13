@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReceiveNanumRepository extends JpaRepository<ReceiveNanum, Long> {
 
@@ -28,4 +29,6 @@ public interface ReceiveNanumRepository extends JpaRepository<ReceiveNanum, Long
     List<ReceiveNanum> findByNanum(Nanum nanum);
 
     Integer countByReceiver(User receiver);
+
+    Optional<ReceiveNanum> findByNanumAndReceiver(Nanum nanum, User receiver);
 }

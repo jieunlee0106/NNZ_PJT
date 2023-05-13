@@ -22,4 +22,10 @@ public class KafkaDevConsumer extends KafkaConsumer {
     public void consumeShowMessage(String message) throws JsonProcessingException {
         super.consumeShowMessage(message);
     }
+
+    @Override
+    @KafkaListener(topics = "dev-usernanum")
+    public void consumeReceiveNanumMessage(String message) throws JsonProcessingException {
+        super.consumeReceiveNanumMessage(message);
+    }
 }

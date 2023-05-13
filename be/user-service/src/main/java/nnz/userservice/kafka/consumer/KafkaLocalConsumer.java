@@ -16,8 +16,14 @@ public class KafkaLocalConsumer extends KafkaConsumer {
     }
 
     @Override
-    @KafkaListener(topics = "dev-show-sync")
+    @KafkaListener(topics = "js-show-sync")
     public void consumeShowMessage(String message) throws JsonProcessingException {
         super.consumeShowMessage(message);
+    }
+
+    @Override
+    @KafkaListener(topics = "js-usernanum")
+    public void consumeReceiveNanumMessage(String message) throws JsonProcessingException {
+        super.consumeReceiveNanumMessage(message);
     }
 }

@@ -20,4 +20,10 @@ public class KafkaProdConsumer extends KafkaConsumer {
     public void consumeShowMessage(String message) throws JsonProcessingException {
         super.consumeShowMessage(message);
     }
+
+    @Override
+    @KafkaListener(topics = "prod-usernanum")
+    public void consumeReceiveNanumMessage(String message) throws JsonProcessingException {
+        super.consumeReceiveNanumMessage(message);
+    }
 }

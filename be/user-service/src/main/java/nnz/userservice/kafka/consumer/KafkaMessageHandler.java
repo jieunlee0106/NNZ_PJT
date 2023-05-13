@@ -5,8 +5,11 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import io.github.eello.nnz.common.kafka.KafkaMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nnz.userservice.service.DBSynchronizer;
 import nnz.userservice.service.impl.NanumSynchronizer;
+import nnz.userservice.service.impl.ReceiveNanumSynchronizer;
 import nnz.userservice.service.impl.ShowSynchronizer;
+import nnz.userservice.vo.ReceiveNanumSyncVO;
 import nnz.userservice.vo.ShowSyncVO;
 import nnz.userservice.vo.sync.NanumSyncVO;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ public class KafkaMessageHandler {
 
     private final NanumSynchronizer nanumSynchronizer;
     private final ShowSynchronizer showSynchronizer;
+    private final ReceiveNanumSynchronizer receiveNanumSynchronizer;
 
     public void handleNanumMessage(String message) throws JsonProcessingException {
         KafkaMessage<NanumSyncVO> data = deserializeMessage(message, NanumSyncVO.class);
@@ -43,6 +47,18 @@ public class KafkaMessageHandler {
         } else if (messageType == KafkaMessageType.UPDATE) {
             showSynchronizer.update(body);
         } else showSynchronizer.delete(body);
+    }
+
+    public void handleReceiveNanumMessage(String message) throws JsonProcessingException {
+        KafkaMessage<ReceiveNanumSyncVO> data = deserializeMessage(message, ReceiveNanumSyncVO.class);
+        KafkaMessageType messageType = getMessageType(data);
+        ReceiveNanumSyncVO body = getMessageBody(data);
+
+        if (messageType == KafkaMessageType.CREATE) {
+            receiveNanumSynchronizer.create(body);
+        } else if (messageType == KafkaMessageType.UPDATE) {
+            receiveNanumSynchronizer.update(body);
+        } else receiveNanumSynchronizer.delete(body);
     }
 
     private <T> KafkaMessage<T> deserializeMessage(String message, Class<T> clazz) throws JsonProcessingException {
