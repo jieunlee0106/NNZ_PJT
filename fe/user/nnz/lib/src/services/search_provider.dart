@@ -19,7 +19,7 @@ class SearchProvider extends GetConnect {
 
   //인기 해시 태그 조회
   Future<Response> getPopularTag() async {
-    final response = await get("/tags");
+    final response = await get("https://k8b207.p.ssafy.io/api//tag-service/tags");
     return response;
   }
 
