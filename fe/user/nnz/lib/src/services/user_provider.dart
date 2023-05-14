@@ -7,6 +7,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/register_model.dart';
 
+import '../config/token.dart';
+
 //회원 관련 프로바이더 ex) login, register, findPassword
 class UserProvider extends GetConnect {
   final logger = Logger();
@@ -149,6 +151,7 @@ class UserProvider extends GetConnect {
     return response;
   }
 
+  //프로필 수정
   Future<Response> patchUser({
     required File image,
     required String oldPwd,
@@ -180,7 +183,19 @@ class UserProvider extends GetConnect {
         'Authorization': 'Bearer $token',
       },
     );
+    if (response.statusCode == 500) {
+      logger.e("${response.statusCode} : ${response.statusText}");
+    }else if(response.statusCode == 401){
+       //토큰 재발급 받기
+      await Token.refreshAccessToken();
+      final newToken = await Token.getAccessToken();
+      //요청 다시 보내기
+      final newResponse = await post(
+          "https://k8b207.p.ssafy.io/api/nanum-service/nanums", formData,
+          contentType: '', headers: {'Authorization': 'Bearer $newToken'});
 
+      return newResponse;
+    }
     return response;
   }
 

@@ -6,6 +6,7 @@ import 'package:nnz/src/services/category_service.dart';
 class CategoryController extends GetxController {
   var categoryList = [];
   final token = SharingRegisterController().getToken();
+
   getCategoryList(String categoryName) async {
     try {
       final data =

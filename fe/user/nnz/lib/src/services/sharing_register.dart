@@ -55,9 +55,12 @@ class SharingRegisterProvider extends GetConnect {
     final response = await post(
         "https://k8b207.p.ssafy.io/api/nanum-service/nanums", formData,
         contentType: '', headers: {'Authorization': 'Bearer $token'});
+    //서버 에러 
     if (response.statusCode == 500) {
       logger.e("에러 들어왔어? ${response.statusCode}");
-    } else if (response.statusCode == 401) {
+    } 
+    //controller에서 응답을 받기 전 토큰이 만료되었다면 중간에 가로채서 refresh를 한다. 
+    else if (response.statusCode == 401) {
       //토큰 재발급 받기
       await Token.refreshAccessToken();
       final newToken = await Token.getAccessToken();

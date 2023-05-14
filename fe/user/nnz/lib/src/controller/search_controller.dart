@@ -24,9 +24,12 @@ class ShowSearchController extends GetxController {
     try {
       final response = await SearchProvider().getPopularTag();
       if (response.statusCode == 200) {
+        logger.i(response.body);
         tagList.clear();
         for (var data in response.body) {
-          tagList.add(PopularTagModel.fromJson(data));
+          tagList.add(
+            PopularTagModel.fromJson(data),
+          );
         }
         logger.i(tagList);
         return tagList;
