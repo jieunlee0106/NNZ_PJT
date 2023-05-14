@@ -321,7 +321,7 @@ public class NanumServiceImpl implements NanumService {
 
         UserNanumDTO userNanumDTO = UserNanumDTO.of(userNanum);
         KafkaMessage<UserNanumDTO> userNanumDTOKafkaMessage = KafkaMessage.create().body(userNanumDTO);
-        producer.sendMessage(userNanumDTOKafkaMessage, "dev-usernanum");
+        producer.sendMessage(userNanumDTOKafkaMessage, "usernanum");
 
         List<UserNanum> userNanums = userNanumRepository.findAllByNanumAndIsCertificatedTrue(nanum);
         if (userNanums.size() == nanum.getQuantity()) {
@@ -329,7 +329,7 @@ public class NanumServiceImpl implements NanumService {
 
             NanumDTO nanumDTO = NanumDTO.of(nanum);
             KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.update().body(nanumDTO);
-            producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
+            producer.sendMessage(nanumDTOKafkaMessage, "nanum");
         }
     }
 
