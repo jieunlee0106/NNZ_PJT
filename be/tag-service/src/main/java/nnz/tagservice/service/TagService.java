@@ -12,4 +12,6 @@ public interface TagService {
     List<TagDTO> createTag(List<TagVO> tags) throws JsonProcessingException;
 
     List<ResTagDTO> readPopularTags();
+
+    String readBySearchAllTag(String search);
 }

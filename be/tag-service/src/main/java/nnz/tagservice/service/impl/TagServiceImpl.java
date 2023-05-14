@@ -1,11 +1,10 @@
 package nnz.tagservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nnz.tagservice.dto.NanumTagDTO;
-import nnz.tagservice.dto.ShowTagDTO;
 import nnz.tagservice.dto.TagDTO;
 import nnz.tagservice.dto.res.ResTagDTO;
 import nnz.tagservice.entity.*;
@@ -13,6 +12,7 @@ import nnz.tagservice.repository.*;
 import nnz.tagservice.service.KafkaProducer;
 import nnz.tagservice.service.TagService;
 import nnz.tagservice.vo.TagVO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,10 +26,6 @@ import java.util.stream.Collectors;
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
-    private final NanumRepository nanumRepository;
-    private final NanumTagRepository nanumTagRepository;
-    private final ShowRepository showRepository;
-    private final ShowTagRepository showTagRepository;
     private final KafkaProducer producer;
 
     @Override
@@ -71,51 +67,24 @@ public class TagServiceImpl implements TagService {
         return resTagDTOs;
     }
 
-    private void createNanumTag(TagVO tagVO, Optional<Tag> tag) throws JsonProcessingException {
-        Optional<Nanum> nanum = nanumRepository.findById(Long.parseLong(tagVO.getTitle()));
-        log.info("nanum title -> {}", nanum.get().getTitle());
+    @Override
+    @Cacheable(key = "#search", value = "ResTagDTO", cacheManager = "cacheManager")
+    public String readBySearchAllTag(String search) {
 
-        if (nanum.isPresent()) {
-            // 나눔 데이터를 받아오면 나눔 태그 테이블에 값이 있는지 nanum 값과 tag 값으로 검색해본다.
-            Optional<NanumTag> nanumTag = nanumTagRepository.findByNanumAndTag(nanum.get(), tag.get());
+        List<Tag> tags = tagRepository.findAllByTagContaining(search);
+        List<ResTagDTO> resTagDTOs = new ArrayList<>();
+        tags.forEach(tag -> {
+            resTagDTOs.add(ResTagDTO.of(tag));
+        });
 
-            // 없으면 생성하고 있으면 그대로 둔다.
-            if (!nanumTag.isPresent()) {
-                NanumTag newNanumTag = NanumTag.builder()
-                        .nanum(nanum.get())
-                        .tag(tag.get())
-                        .build();
-                nanumTagRepository.save(newNanumTag);
-
-                NanumTagDTO nanumTagDTO = NanumTagDTO.of(newNanumTag);
-
-                KafkaMessage<NanumTagDTO> kafkaMessage = KafkaMessage.create().body(nanumTagDTO);
-                producer.sendMessage(kafkaMessage, "dev-nanumtag");
-            }
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = null;
+        try {
+            jsonStr = mapper.writeValueAsString(resTagDTOs);
+        } catch (JsonProcessingException e) {
+            //todo: error handling
         }
-    }
 
-    private void createShowTag(TagVO tagVO, Optional<Tag> tag) throws JsonProcessingException {
-        List<Show> shows = showRepository.findByTitleContaining(tagVO.getTitle());
-
-        for (Show show : shows) {
-            // 공연 데이터를 받아오면 공연 태그 테이블에 값이 있는지 show 값과 tag 값으로 검색해본다.
-            Optional<ShowTag> showTag = showTagRepository.findByShowAndTag(show, tag.get());
-
-            // 없으면 생성하고 있으면 그대로 둔다.
-            if (!showTag.isPresent()) {
-                ShowTag newShowTag = ShowTag.builder()
-                        .show(show)
-                        .tag(tag.get())
-                        .build();
-                showTagRepository.save(newShowTag);
-
-                ShowTagDTO showTagDTO = ShowTagDTO.of(newShowTag);
-
-                KafkaMessage<ShowTagDTO> kafkaMessage = KafkaMessage.create().body(showTagDTO);
-                log.info("body : {}", kafkaMessage.getBody());
-                producer.sendMessage(kafkaMessage, "dev-showtag");
-            }
-        }
+        return jsonStr;
     }
 }

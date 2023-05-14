@@ -34,4 +34,9 @@ public class TagController {
     public ResponseEntity<List<ResTagDTO>> readPopularTags() {
         return new ResponseEntity<>(tagService.readPopularTags(), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/search", produces = "application/json")
+    public ResponseEntity<String> readBySearchAllTag(@RequestParam(name = "search") String search) {
+        return new ResponseEntity<>(tagService.readBySearchAllTag(search), HttpStatus.OK);
+    }
 }

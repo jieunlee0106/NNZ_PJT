@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nnz.tagservice.entity.Tag;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResTagDTO {
+public class ResTagDTO implements Serializable {
 
     private Long id;
 

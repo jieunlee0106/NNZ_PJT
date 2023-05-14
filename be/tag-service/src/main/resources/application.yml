@@ -2,16 +2,16 @@ server:
   port: 8084
 spring:
   application:
-    name: TAG-SERVICE
+    name: DEV-TAG-SERVICE
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/nnz_tag?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: root
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: ENC(10aUuPU1LkpGUa67GY3ftGHQ+lpr1ULpXY0CNPJv8vXPhuT+/YLca2wuYNH+Y1yPlVyf3Hx8wF9+enItfNDa9mYytGyxvM6RWTHMsy0yKUqkvUTZZSjHaWTNRo3PNGisRGJXvQqBF21NpWw5Xv9WrA==)
-#    username: ENC(r9+5XUFLaQJxTySGqeygbA==)
-#    password: ENC(mqPyqNcjpm9xW79zMYa9pzmuOdmwHnvE)
+#    url: jdbc:mysql://127.0.0.1:3306/tag_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: root
+#    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(10aUuPU1LkpGUa67GY3ftGHQ+lpr1ULpXY0CNPJv8vXPhuT+/YLca2wuYNH+Y1yPlVyf3Hx8wF9+enItfNDa9mYytGyxvM6RWTHMsy0yKUqkvUTZZSjHaWTNRo3PNGisRGJXvQqBF21NpWw5Xv9WrA==)
+    username: ENC(r9+5XUFLaQJxTySGqeygbA==)
+    password: ENC(mqPyqNcjpm9xW79zMYa9pzmuOdmwHnvE)
 
 
   jpa:
@@ -37,6 +37,14 @@ spring:
 #      topic: test-tag # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  redis:
+    host: ENC(0lb6U5bLxtLRV/9hNevi1egkI8FMnyZk)
+    port: 6379
+#    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+  cache:
+    type: redis
+
 
 eureka:
   client:
