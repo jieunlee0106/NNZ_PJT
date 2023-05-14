@@ -250,7 +250,7 @@ public class NanumServiceImpl implements NanumService {
         ResNanumDetailDTO resNanumDetailDTO = ResNanumDetailDTO.of(nanum, thumbnails, tags, show);
 
         User follower = userRepository.findById(userId).orElseThrow();
-        Optional<Follower> follow = followerRepository.findByFollowingAndFollower(nanum.getProvider(), follower);
+        Optional<Follower> follow = followerRepository.findByFollowingAndFollowerAndIsDeleteFalse(nanum.getProvider(), follower);
 
         // writer(나눠주는 사람) 정보 설정
         ResNanumWriterDTO writer = new ResNanumWriterDTO();
@@ -274,7 +274,7 @@ public class NanumServiceImpl implements NanumService {
         }
 
         // 찜 여부 확인
-        Optional<Bookmark> bookmark = bookmarkRepository.findByNanumAndUser(nanum, follower);
+        Optional<Bookmark> bookmark = bookmarkRepository.findByNanumAndUserAndIsDeleteFalse(nanum, follower);
         if (bookmark.isPresent()) {
             resNanumDetailDTO.updateIsBookmark(true);
         } //
@@ -339,7 +339,7 @@ public class NanumServiceImpl implements NanumService {
         List<Nanum> nanums = nanumRepository.findAllByStatusLessThan(3);
         Map<Nanum, Double> popularMap = new HashMap<>();
         for (Nanum nanum : nanums) {
-            List<Bookmark> bookmarks = bookmarkRepository.findAllByNanum(nanum);
+            List<Bookmark> bookmarks = bookmarkRepository.findAllByNanumAndIsDeleteFalse(nanum);
             popularMap.put(nanum, bookmarks.size() * 0.7 + nanum.getViews() * 0.3);
         }
 
