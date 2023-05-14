@@ -1,12 +1,9 @@
 package com.example.nnzcrawling.service.impl;
 
-import com.example.nnzcrawling.dto.ShowDTO;
+import com.example.nnzcrawling.dto.ShowSyncDTO;
 import com.example.nnzcrawling.dto.TagDTO;
 import com.example.nnzcrawling.entity.*;
-import com.example.nnzcrawling.repository.CategoryRepository;
-import com.example.nnzcrawling.repository.ShowCrawlingRepository;
-import com.example.nnzcrawling.repository.ShowRepository;
-import com.example.nnzcrawling.repository.TeamImageRepository;
+import com.example.nnzcrawling.repository.*;
 import com.example.nnzcrawling.selenium.CrawlingESports;
 import com.example.nnzcrawling.selenium.CrawlingShows;
 import com.example.nnzcrawling.selenium.CrawlingSports;
@@ -16,12 +13,17 @@ import com.example.nnzcrawling.service.TagFeignClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShowCrawlingServiceImpl implements ShowCrawlingService {
@@ -35,12 +37,15 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final CategoryRepository categoryRepository;
     private final ShowRepository showRepository;
     private final TeamImageRepository teamImageRepository;
+    private final ShowTagRepository showTagRepository;
+    private final TagRepository tagRepository;
+    private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "10 12 16 1/1 * *")
+    @Scheduled(cron = "00 00 02 1/1 * *")
     @Transactional
     public void createShow() {
-
+        LocalDateTime startTime = LocalDateTime.now();
         List<ShowCrawling> showCrawlingEntities = new ArrayList<>();
         List<TagCrawling> tagCrawlingEntities = new ArrayList<>();
 
@@ -69,34 +74,51 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                 showEntities.add(Show.of(v, category));
                 Optional<Show> findShow = showRepository.findByTitleAndStartDateAndIsDeleteFalse(v.getTitle(), v.getStartDate());
 
-                if (!findShow.isPresent()) {
+                if (findShow.isEmpty()) {
                     Show show = Show.of(v, category);
                     showRepository.save(show);
                 }
             });
-//            showCrawlingRepository.createShows(showCrawlingEntities);
-
-            // kafka producer 등록
-            for (ShowCrawling showCrawling : showCrawlingEntities) {
-                // todo : error handling
-                Show show = showRepository.findByTitleAndStartDateAndIsDeleteFalse(
-                        showCrawling.getTitle(), showCrawling.getStartDate()
-                ).orElseThrow();
-
-                ShowDTO showDTO = ShowDTO.of(show);
-
-                KafkaMessage<ShowDTO> kafkaMessage = KafkaMessage.create().body(showDTO);
-                producer.sendMessage(kafkaMessage);
-            }
 
             List<TagDTO> tagDTOs = new ArrayList<>();
             tagCrawlingEntities.forEach(v -> {
                 tagDTOs.add(new TagDTO(v.getTitle(), v.getTag(), "show"));
             });
-            // 태그 생성 메소드 호출
-            tagFeignClient.createTag(tagDTOs);
 
-//            createTeamImage(sports);
+            System.out.println("tagDTOs.size() = " + tagDTOs.size());
+
+            // 태그 생성 메소드 호출 및 태그 저장
+            List<TagDTO> createdTags = tagFeignClient.createTag(tagDTOs);
+            System.out.println("createdTags.size() = " + createdTags.size());
+            System.out.println("createdTags = " + createdTags);
+
+
+            List<ShowTag> newShowTags = new ArrayList<>();
+            for (TagDTO tagDTO : createdTags) {
+                List<Show> findShows = showRepository.findByTitleContaining(tagDTO.getTitle());
+
+                for (Show show : findShows) {
+                    List<ShowTag> showTag = showTagRepository.findByShowAndTagId(show, tagDTO.getId());
+
+                    // 없으면 생성하고 있으면 그대로 둔다.
+                    if (showTag.isEmpty()) {
+                        Tag tag = tagRepository.findById(tagDTO.getId()).orElse(null);
+                        ShowTag newShowTag = ShowTag.builder()
+                                .show(show)
+                                .tag(tag)
+                                .build();
+                        newShowTags.add(newShowTag);
+                        show.addTag(newShowTag);
+                        showTagRepository.save(newShowTag);
+
+                    }
+                }
+            }
+
+            em.flush();
+
+            sendShowToKafka(startTime);
+            createTeamImage(sports);
         } catch (InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -129,5 +151,15 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             TeamImage teamImage = teamImageRepository.findById(name).orElse(new TeamImage(name, image));
             teamImageRepository.save(teamImage);
         });
+    }
+
+    private void sendShowToKafka(LocalDateTime startTime) throws JsonProcessingException {
+        log.info("send crawling data to kafka");
+        List<Show> shows = showRepository.findAllByCreatedAtAfter(startTime);
+        for (Show show : shows) {
+            KafkaMessage message = KafkaMessage.create().body(ShowSyncDTO.of(show));
+            producer.sendMessage(message);
+        }
+        log.info("send complete.");
     }
 }

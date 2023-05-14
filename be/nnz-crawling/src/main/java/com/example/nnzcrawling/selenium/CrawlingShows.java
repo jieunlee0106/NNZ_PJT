@@ -3,12 +3,15 @@ package com.example.nnzcrawling.selenium;
 import com.example.nnzcrawling.dto.CrawlingShowDTO;
 import com.example.nnzcrawling.entity.ShowCrawling;
 import com.example.nnzcrawling.entity.TagCrawling;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,28 +19,33 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+@Slf4j
 @Component
 public class CrawlingShows {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+//    private final String WEB_DRIVER_PATH = "/Users/jongseong/dev/ssafy/2nd/free-project/crawling_service/be/nnz-crawling/chromedriver";
+
+    @Value("${web-driver.chrome.driver-path}")
+    private String webDriverPath;
+
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
+        log.info("Show crawling start.");
+        System.setProperty(WEB_DRIVER_ID, webDriverPath);
 
-        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
-
-        //크롬 설정을 담은 객체 생성
+//        //크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
 
-        //위에서 설정한 옵션은 담은 드라이버 객체 생성
-        //옵션을 설정하지 않았을 때에는 생략 가능하다.
-        //WebDriver객체가 곧 하나의 브라우저 창이라 생각한다.
+//        위에서 설정한 옵션은 담은 드라이버 객체 생성
+//        옵션을 설정하지 않았을 때에는 생략 가능하다.
+//        WebDriver객체가 곧 하나의 브라우저 창이라 생각한다.
         WebDriver driver = new ChromeDriver(options);
 
         //이동을 원하는 url
@@ -58,8 +66,8 @@ public class CrawlingShows {
 
         // 1번 인덱스는 전체 탭이므로 스킵
         int categoryCnt = 2;
-//        while (categoryCnt <= categories.size()) {
-        while (categoryCnt <= 2) {
+        while (categoryCnt <= categories.size()) {
+//        while (categoryCnt <= 2) {
 
             Thread.sleep(1000);
             // 공연의 카테고리 선택하기.
@@ -238,6 +246,7 @@ public class CrawlingShows {
             throw new RuntimeException(e.getMessage());
         }
 
+        log.info("Show crawling end.");
         return responses;
     }
 

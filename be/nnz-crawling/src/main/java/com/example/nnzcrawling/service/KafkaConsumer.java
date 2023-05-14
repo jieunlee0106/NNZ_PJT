@@ -30,37 +30,37 @@ public class KafkaConsumer {
     private final ShowRepository showRepository;
     private final CategoryRepository categoryRepository;
 
-    @Transactional
-    @KafkaListener(topics = "dev-tag", groupId = "crawling-service-1")
-    public void getTagMessage(String message) throws JsonProcessingException {
-        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//    @Transactional
+//    @KafkaListener(topics = "dev-tag", groupId = "crawling-service-1")
+//    public void getTagMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
+//        log.info("consume message: {}", message);
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+//            Tag tag = Tag.of(kafkaMessage.getBody());
+//            tagRepository.save(tag);
+//        }
+//    }
 
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            Tag tag = Tag.of(kafkaMessage.getBody());
-            tagRepository.save(tag);
-        }
-    }
-
-    @Transactional
-    @KafkaListener(topics = "dev-showtag", groupId = "crawling-service-2")
-//    @KafkaHandler // 카프카의 해당 토픽에서 메시지를 얻으면 실행되는 함수
-    public void getShowTagMessage(String message) throws JsonProcessingException {
-        KafkaMessage<ShowTagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowTagDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            // todo: error handling
-            Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();
-            Tag tag = tagRepository.findById(kafkaMessage.getBody().getTagId()).orElseThrow();
-            ShowTag showTag = ShowTag.of(kafkaMessage.getBody(), show, tag);
-            showTagRepository.save(showTag);
-        }
-    }
+//    @Transactional
+//    @KafkaListener(topics = "dev-showtag", groupId = "crawling-service-2")
+////    @KafkaHandler // 카프카의 해당 토픽에서 메시지를 얻으면 실행되는 함수
+//    public void getShowTagMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<ShowTagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowTagDTO.class);
+//        log.info("consume message: {}", message);
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+//            // todo: error handling
+//            Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();
+//            Tag tag = tagRepository.findById(kafkaMessage.getBody().getTagId()).orElseThrow();
+//            ShowTag showTag = ShowTag.of(kafkaMessage.getBody(), show, tag);
+//            showTagRepository.save(showTag);
+//        }
+//    }
 
     // todo: 관리자에서 등록하는 공연에 대한 토픽은 따로 분리해야 할듯.
 //    @Transactional

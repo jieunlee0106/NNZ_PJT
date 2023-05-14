@@ -2,28 +2,36 @@ package com.example.nnzcrawling.selenium;
 
 import com.example.nnzcrawling.entity.ShowCrawling;
 import com.example.nnzcrawling.entity.TagCrawling;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.*;
 
+@Slf4j
 @Component
 public class CrawlingSports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+//    private final String WEB_DRIVER_PATH = "/Users/jongseong/dev/ssafy/2nd/free-project/crawling_service/be/nnz-crawling/chromedriver";
+
+    @Value("${web-driver.chrome.driver-path}")
+    private String webDriverPath;
+
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
-
-        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
+        log.info("Sports crawling start.");
+        System.setProperty(WEB_DRIVER_ID, webDriverPath);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless");
@@ -55,6 +63,7 @@ public class CrawlingSports {
             throw new RuntimeException(e.getMessage());
         }
 
+        log.info("Sports crawling end.");
         return responses;
     }
 

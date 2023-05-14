@@ -20,9 +20,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShowTag {
+public class ShowTag extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,19 +34,21 @@ public class ShowTag {
     @JoinColumn(name = "tag_id")
     Tag tag;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime updatedAt;
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+//    private LocalDateTime updatedAt;
+//
+//    protected boolean isDelete;
 
-    protected boolean isDelete;
+    public void setShow(Show show) {
+        this.show = show;
+    }
 
     public static ShowTag of(ShowTagDTO showTagDTO, Show show, Tag tag) {
         return ShowTag.builder()
                 .id(showTagDTO.getId())
                 .show(show)
                 .tag(tag)
-                .updatedAt(showTagDTO.getUpdatedAt())
-                .isDelete(showTagDTO.isDelete())
                 .build();
     }
 }

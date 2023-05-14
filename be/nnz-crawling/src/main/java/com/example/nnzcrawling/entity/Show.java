@@ -5,9 +5,13 @@ import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "shows")
+@Table(name = "shows", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_constraint", columnNames = {"title", "startDate", "isDelete"})
+})
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,11 +35,24 @@ public class Show extends BaseEntity {
 
     private String region;
 
+    @Column(length = 1000)
     private String posterImage;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")
     private Category category;
+
+    @OneToMany(mappedBy = "show")
+    private List<ShowTag> tags = new ArrayList<>();
+
+    public void addTag(ShowTag tag) {
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+
+        this.tags.add(tag);
+        tag.setShow(this);
+    }
 
     public static Show of(ShowCrawling v, Category category) {
         return Show.builder()
@@ -47,6 +64,7 @@ public class Show extends BaseEntity {
                 .region(v.getRegion())
                 .posterImage(v.getPosterImage())
                 .category(category)
+                .tags(new ArrayList<>())
                 .build();
     }
 

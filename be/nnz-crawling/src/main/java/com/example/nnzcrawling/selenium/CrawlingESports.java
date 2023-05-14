@@ -2,31 +2,40 @@ package com.example.nnzcrawling.selenium;
 
 import com.example.nnzcrawling.entity.ShowCrawling;
 import com.example.nnzcrawling.entity.TagCrawling;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+@Slf4j
 @Component
 public class CrawlingESports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+//    private final String WEB_DRIVER_PATH = "/Users/jongseong/dev/ssafy/2nd/free-project/crawling_service/be/nnz-crawling/chromedriver";
+
+    @Value("${web-driver.chrome.driver-path}")
+    private String webDriverPath;
+
+
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
+        log.info("ESports crawling start.");
+        System.setProperty(WEB_DRIVER_ID, webDriverPath);
 
-        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
-
-        //크롬 설정을 담은 객체 생성
+        // 크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless");
@@ -37,7 +46,6 @@ public class CrawlingESports {
 
         // 리턴할 리스트
         List<ShowCrawling> eSports = new ArrayList<>();
-
         eSports = getData(driver, eSports);
 
         try {
@@ -54,6 +62,7 @@ public class CrawlingESports {
             throw new RuntimeException(e.getMessage());
         }
 
+        log.info("ESports crawling end.");
         return eSports;
     }
 
@@ -82,7 +91,7 @@ public class CrawlingESports {
 
             Thread.sleep(1000);
 
-            tags.add(new TagCrawling(categoryName, categoryName));
+//            tags.add(new TagCrawling(categoryName, categoryName));
 
             // 일정이 적혀 있는 테이블의 tr 태그들을 모두 불러온다
             List<WebElement> schedules = driver.findElements(
@@ -130,8 +139,10 @@ public class CrawlingESports {
 
                         // 태그 추가 : "vs"를 제외하고 팀 이름 두개 추가하기
                         StringTokenizer st = new StringTokenizer(titles.get(i).getText(), "vs");
+                        tags.add(new TagCrawling(titles.get(i).getText(), categoryName));
                         while (st.hasMoreTokens()) {
-                            tags.add(new TagCrawling(st.nextToken(), title));
+                            tags.add(new TagCrawling(titles.get(i).getText(), st.nextToken()));
+//                            tags.add(new TagCrawling(st.nextToken(), title));
                         }
 
                         // 날짜 설정. 시작날짜 = 경기 당일 날짜. 종료날짜는 없음
