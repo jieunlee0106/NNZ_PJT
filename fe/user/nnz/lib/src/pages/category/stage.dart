@@ -35,9 +35,7 @@ class _StagePageState extends State<StagePage> {
                 smallText: '나눔 활동이 활발한 연극이에요'),
             HotShareList(),
             GrayLine(),
-            ShowList(
-              category: '연극',
-            ),
+            ShowList(categoryName: '연극'),
           ],
         ),
       ),

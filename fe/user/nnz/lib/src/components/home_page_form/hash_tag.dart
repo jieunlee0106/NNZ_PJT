@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/model/hash_tag_model.dart';
 
 class HashTag extends StatelessWidget {
-  const HashTag({Key? key});
+  final List<HashTagModel> items;
+  const HashTag({Key? key, required this.items}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -16,10 +16,12 @@ class LikesController extends GetxController {
   getLikesList() async {
     try {
       final response = await LikesService().getLikesList();
+      print(response);
+      print(response.data.runtimeType);
       List<dynamic> items =
           response.data.map((item) => Map<String, dynamic>.from(item)).toList();
       likesList = items.map((item) => Likes.fromJson(item)).toList();
-      print(likesList.runtimeType);
+      // print(items);
       print('좋아요 나눔 목록 불러오기');
     } catch (e) {
       print(e);

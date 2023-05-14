@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nnz/src/components/category/category_dropdown.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/category/hot_style.dart';
 import 'package:nnz/src/components/category/hot_share_list.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
 import 'package:nnz/src/components/category/show_list.dart';
+import 'package:nnz/src/controller/category_controller.dart';
 
 class MusicalPage extends StatefulWidget {
   const MusicalPage({Key? key}) : super(key: key);
@@ -36,7 +38,7 @@ class _MusicalPageState extends State<MusicalPage> {
             HotShareList(),
             GrayLine(),
             ShowList(
-              category: "뮤지컬",
+              categoryName: '뮤지컬',
             ),
           ],
         ),

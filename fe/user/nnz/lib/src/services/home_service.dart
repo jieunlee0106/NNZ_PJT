@@ -23,7 +23,19 @@ class HomeService extends GetConnect {
       );
       return response;
     } catch (e) {
-      print('####Error occurred: $e');
+      print('Error occurred: $e');
+      throw e;
+    }
+  }
+
+  Future<dynamic> getHashTag() async {
+    try {
+      final response = await dio.get(
+        'https://k8b207.p.ssafy.io/api/tag-service/tags',
+      );
+      return response;
+    } catch (e) {
+      print('Error occurred: $e');
       throw e;
     }
   }

@@ -28,7 +28,7 @@ class MyPageShareListService extends GetConnect {
           },
         ),
       );
-      print(type);
+      print(response.data.runtimeType);
       print('리스트 통신 성공');
       return response;
     } catch (e) {

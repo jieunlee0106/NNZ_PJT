@@ -15,6 +15,7 @@ import 'package:nnz/src/controller/category_controller.dart';
 import 'package:nnz/src/controller/home_controller.dart';
 import 'package:nnz/src/controller/my_page_controller.dart';
 import 'package:nnz/src/controller/sharing_register_controller.dart';
+import 'package:nnz/src/model/hash_tag_model.dart';
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/movie.dart';
 import 'package:nnz/src/pages/category/musical.dart';
@@ -36,6 +37,7 @@ class _HomeState extends State<Home> {
   // const Home({Key? key}) : super(key: key);
   final HomeController controller = Get.put(HomeController());
 
+  late List<HashTagModel> Tlist;
   late List<PopularityList> Plist;
   // late List<LoctaionList> Llist;
   bool _isLoading = true;
@@ -51,6 +53,7 @@ class _HomeState extends State<Home> {
   Future<void> loadPData() async {
     await controller.getHomeList();
     Plist = controller.popularity;
+    Tlist = controller.hashTag;
     setState(() {
       _isLoading = false;
     });
@@ -59,6 +62,7 @@ class _HomeState extends State<Home> {
   Future<void> loadLData() async {
     await controller.getHomeList();
     Plist = controller.popularity;
+    Tlist = controller.hashTag;
     setState(() {
       _isLoading = false;
     });
@@ -193,7 +197,9 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              const HashTag(),
+              HashTag(
+                items: Tlist,
+              ),
               const SizedBox(height: 10),
               GrayLine(),
               HomeShareText(

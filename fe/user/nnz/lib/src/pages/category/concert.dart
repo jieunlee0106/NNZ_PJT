@@ -35,9 +35,7 @@ class _ConcertPageState extends State<ConcertPage> {
                 smallText: '나눔 활동이 활발한 콘서트에요'),
             HotShareList(),
             GrayLine(),
-            ShowList(
-              category: '콘서트',
-            ),
+            ShowList(categoryName: '콘서트'),
           ],
         ),
       ),

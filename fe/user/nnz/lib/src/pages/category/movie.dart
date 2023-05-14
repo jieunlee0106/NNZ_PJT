@@ -35,7 +35,7 @@ class _MoviePageState extends State<MoviePage> {
                 smallText: '나눔 활동이 활발한 페스티벌이에요'),
             HotShareList(),
             GrayLine(),
-            ShowList(category: '뮤직 페스티벌'),
+            ShowList(categoryName: '뮤직 페스티벌'),
           ],
         ),
       ),

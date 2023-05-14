@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final showListModel = showListModelFromJson(jsonString);
+
 import 'dart:convert';
 
 ShowListModel showListModelFromJson(String str) =>
@@ -6,28 +10,28 @@ ShowListModel showListModelFromJson(String str) =>
 String showListModelToJson(ShowListModel data) => json.encode(data.toJson());
 
 class ShowListModel {
-  bool? isFirst;
-  bool? isLast;
-  bool? empty;
-  String? totalElement;
-  String? totalPage;
-  List<Content>? content;
+  bool isFirst;
+  bool isLast;
+  bool isEmpty;
+  int totalElements;
+  int totalPages;
+  List<Content> content;
 
   ShowListModel({
-    this.isFirst,
-    this.isLast,
-    this.empty,
-    this.totalElement,
-    this.totalPage,
-    this.content,
+    required this.isFirst,
+    required this.isLast,
+    required this.isEmpty,
+    required this.totalElements,
+    required this.totalPages,
+    required this.content,
   });
 
   factory ShowListModel.fromJson(Map<String, dynamic> json) => ShowListModel(
         isFirst: json["isFirst"],
         isLast: json["isLast"],
-        empty: json["empty"],
-        totalElement: json["totalElement"],
-        totalPage: json["totalPage"],
+        isEmpty: json["isEmpty"],
+        totalElements: json["totalElements"],
+        totalPages: json["totalPages"],
         content:
             List<Content>.from(json["content"].map((x) => Content.fromJson(x))),
       );
@@ -35,84 +39,81 @@ class ShowListModel {
   Map<String, dynamic> toJson() => {
         "isFirst": isFirst,
         "isLast": isLast,
-        "empty": empty,
-        "totalElement": totalElement,
-        "totalPage": totalPage,
-        "content": List<dynamic>.from(content!.map((x) => x.toJson())),
+        "isEmpty": isEmpty,
+        "totalElements": totalElements,
+        "totalPages": totalPages,
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
       };
-
-  @override
-  String toString() {
-    return "ShowListModel : (isFirst : $isFirst, isLast : $isLast, empty : $empty, totalElement : $totalElement, totalPage : $totalPage, content : $content)";
-  }
 }
 
 class Content {
-  String id;
+  int id;
   String title;
+  String location;
   String startDate;
   String endDate;
-  String location;
+  String ageLimit;
+  Region region;
+  List<dynamic> showTags;
   String poster;
-  List<Tag> tags;
+  dynamic categoryCode;
+  DateTime updatedAt;
 
   Content({
     required this.id,
     required this.title,
+    required this.location,
     required this.startDate,
     required this.endDate,
-    required this.location,
+    required this.ageLimit,
+    required this.region,
+    required this.showTags,
     required this.poster,
-    required this.tags,
+    this.categoryCode,
+    required this.updatedAt,
   });
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
         id: json["id"],
         title: json["title"],
+        location: json["location"],
         startDate: json["startDate"],
         endDate: json["endDate"],
-        location: json["location"],
+        ageLimit: json["ageLimit"],
+        region: regionValues.map[json["region"]]!,
+        showTags: List<dynamic>.from(json["showTags"].map((x) => x)),
         poster: json["poster"],
-        tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
+        categoryCode: json["categoryCode"],
+        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
+        "location": location,
         "startDate": startDate,
         "endDate": endDate,
-        "location": location,
+        "ageLimit": ageLimit,
+        "region": regionValues.reverse[region],
+        "showTags": List<dynamic>.from(showTags.map((x) => x)),
         "poster": poster,
-        "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
+        "categoryCode": categoryCode,
+        "updatedAt": updatedAt.toIso8601String(),
       };
-
-  @override
-  String toString() {
-    return "Content : (id :$id, title, $title, startDate, $startDate, endDate : $endDate, location : $location, poster : $poster, tags : $tags)";
-  }
 }
 
-class Tag {
-  String id;
-  String tag;
+enum Region { EMPTY }
 
-  Tag({
-    required this.id,
-    required this.tag,
-  });
+final regionValues = EnumValues({"서울": Region.EMPTY});
 
-  factory Tag.fromJson(Map<String, dynamic> json) => Tag(
-        id: json["id"],
-        tag: json["tag"],
-      );
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "tag": tag,
-      };
+  EnumValues(this.map);
 
-  @override
-  String toString() {
-    return "Tags(id : $id, tag : $tag)";
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
   }
 }
