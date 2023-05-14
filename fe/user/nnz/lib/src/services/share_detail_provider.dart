@@ -5,12 +5,23 @@ class ShareDetailProvider extends GetConnect {
   void onInit() async {}
 
   Future<Response> getShareDetail() async {
-    int nanumId = 35;
+    int nanumId = 11;
     final res = await get(
         "https://k8b207.p.ssafy.io/api/nanum-service/nanums/35",
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzNzk0OTY4LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUwOTA5Njh9.s9tLxl5DcZ3PqYicv-qJ-zNixXvX5sHZ5wY-q_gRL5Ute-JWsxiO-oqj7qpQCR4Hl5mYeP-jOd3HR7CZBgnc2g'
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODc5OTE1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNzU5MTV9.2LYhwfVY3IqYppIDG1M5RVYxCM_0mShx4h0CApbpS7J02Fw2d6SQQl4ZJgbpJfKX9RicTjQ_8rcJ9V3zWyBmcA'
+        });
+    return res;
+  }
+
+  Future<Response> getMyShareRequest() async {
+    int nanumId = 21;
+    final res = await get(
+        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/certification",
+        headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODc5OTE1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNzU5MTV9.2LYhwfVY3IqYppIDG1M5RVYxCM_0mShx4h0CApbpS7J02Fw2d6SQQl4ZJgbpJfKX9RicTjQ_8rcJ9V3zWyBmcA'
         });
     return res;
   }

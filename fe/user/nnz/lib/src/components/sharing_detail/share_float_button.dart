@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_timer.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/pages/share/sharing_complete.dart';
 import "../../controller/shareingdetail_controller.dart";
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
@@ -115,7 +114,7 @@ class PurchaseButton extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Config.yellowColor),
                           onPressed: () {
-                            Get.to(() => const SharingComplete());
+                            Get.find<ShareDetailController>().sendAuthImage();
                           },
                           child: Container(
                             decoration:
