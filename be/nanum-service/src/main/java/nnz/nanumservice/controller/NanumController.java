@@ -12,6 +12,7 @@ import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.service.impl.FCMService;
+import nnz.nanumservice.service.impl.NcpPushNotificationService;
 import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -31,6 +36,7 @@ public class NanumController {
     private final NanumService nanumService;
     private final CertificationService certificationService;
     private final FCMService fcmService;
+    private final NcpPushNotificationService ncpPushNotificationService;
 
     @PostMapping
     public ResponseEntity<Void> createNanum(
@@ -123,9 +129,16 @@ public class NanumController {
 
     @GetMapping("/push")
     public ResponseEntity<?> testNotifictaion(@RequestBody FCMNotificationDTO fcmNotificationDTO) throws IOException {
-        fcmService.sendMessage(fcmNotificationDTO);
+//        fcmService.sendMessage(fcmNotificationDTO);
 //        fcmService.sendMessgeTo(fcmNotificationDTO);
 //        fcmService.chatgpt(fcmNotificationDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/ncp/push/registDevice/{userId}/{token}")
+    public ResponseEntity<?> registDevice(@PathVariable("userId") Long id,
+                                          @PathVariable("token") String token) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        ncpPushNotificationService.registDevice(id, token);
         return ResponseEntity.ok().build();
     }
 }

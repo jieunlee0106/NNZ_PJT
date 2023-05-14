@@ -33,7 +33,7 @@ public class FCMService {
 
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/naneozoo/messages:send";
     private final ObjectMapper objectMapper;
-    private final FirebaseMessaging firebaseMessaging;
+//    private final FirebaseMessaging firebaseMessaging;
 
 
     public void sendMessage(FCMNotificationDTO fcmNotificationDTO) throws FirebaseMessagingException {
