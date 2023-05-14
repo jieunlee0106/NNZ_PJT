@@ -5,6 +5,7 @@ import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.*;
+import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.dto.res.show.ResNanumDetailShowDTO;
@@ -47,9 +48,8 @@ public class NanumServiceImpl implements NanumService {
     private final FollowerRepository followerRepository;
     private final UserNanumRepository userNanumRepository;
     private final EntityManager em;
-
-    // todo : status 바뀌는 로직 필요
     private final BookmarkRepository bookmarkRepository;
+    private final NanumStockRepository nanumStockRepository;
 
     @Override
     @Transactional
@@ -352,5 +352,16 @@ public class NanumServiceImpl implements NanumService {
         });
 
         return resNanumDTOs;
+    }
+
+    @Override
+    public ResNanumStockDTO readNanumStock(Long nanumId) {
+
+        // todo: error handling
+        // 나눔이 있는지 먼저 유효성 검사
+        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+        NanumStock nanumStock = nanumStockRepository.findById(nanumId).orElseThrow();
+        ResNanumStockDTO resNanumStockDTO = ResNanumStockDTO.of(nanum.getQuantity(), nanumStock.getStock());
+        return resNanumStockDTO;
     }
 }

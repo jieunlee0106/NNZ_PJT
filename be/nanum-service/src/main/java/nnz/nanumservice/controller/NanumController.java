@@ -6,6 +6,7 @@ import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import nnz.nanumservice.dto.CertificationDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
+import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.entity.NanumStock;
@@ -123,5 +124,10 @@ public class NanumController {
     public ResponseEntity<?> findCertificationList(@PathVariable("nanumId") Long nanumId){
         List<CertificationDTO> certList = certificationService.findCertificationList(nanumId);
         return ResponseEntity.ok(certList);
+    }
+
+    @GetMapping("/{nanumId}/quantity")
+    public ResponseEntity<ResNanumStockDTO> readNanumStock(@PathVariable(name = "nanumId") Long nanumId) {
+        return new ResponseEntity<>(nanumService.readNanumStock(nanumId), HttpStatus.OK);
     }
 }

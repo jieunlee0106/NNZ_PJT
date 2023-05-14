@@ -2,6 +2,7 @@ package nnz.nanumservice.service;
 
 import io.github.eello.nnz.common.dto.PageDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
+import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.vo.NanumVO;
@@ -29,4 +30,6 @@ public interface NanumService {
     void createUserNanum(Long nanumId, Long userId, MultipartFile file);
 
     List<ResNanumDTO> readPopularNaums();
+
+    ResNanumStockDTO readNanumStock(Long nanumId);
 }
