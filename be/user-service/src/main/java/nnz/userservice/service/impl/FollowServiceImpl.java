@@ -1,11 +1,15 @@
 package nnz.userservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.exception.CustomException;
+import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nnz.userservice.dto.sync.FollowSyncDTO;
 import nnz.userservice.entity.Follow;
 import nnz.userservice.entity.User;
 import nnz.userservice.exception.ErrorCode;
+import nnz.userservice.kafka.KafkaProducer;
 import nnz.userservice.repository.FollowRepository;
 import nnz.userservice.repository.UserRepository;
 import nnz.userservice.service.FollowService;
@@ -20,6 +24,7 @@ public class FollowServiceImpl implements FollowService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     @Transactional
@@ -79,7 +84,7 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     @Transactional
-    public void toggleFollow(Long meId, Long followingId) {
+    public void toggleFollow(Long meId, Long followingId) throws JsonProcessingException {
         User me = userRepository.findById(meId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -87,6 +92,7 @@ public class FollowServiceImpl implements FollowService {
         User following = userRepository.findById(followingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
+        KafkaMessage kafkaMessage;
         Follow follow = followRepository.findByFollowerAndFollowing(me, following).orElse(null);
         if (follow != null) { // 팔로우 한 이력이 있다면
             if (follow.getIsDelete()) { // 언팔로우 상태
@@ -96,6 +102,7 @@ public class FollowServiceImpl implements FollowService {
                 follow.unfollow(); // 언팔로우
                 log.info("{}님이 {}님을 언팔로우", me.getEmail(), following.getEmail());
             }
+            kafkaMessage = KafkaMessage.update().body(FollowSyncDTO.of(follow));
         } else { // 새로운 팔로우 등록
             follow = Follow.builder()
                     .follower(me)
@@ -104,7 +111,10 @@ public class FollowServiceImpl implements FollowService {
 
             followRepository.save(follow);
             log.info("{}님이 {}님을 팔로우", me.getEmail(), following.getEmail());
+
+            kafkaMessage = KafkaMessage.create().body(FollowSyncDTO.of(follow));
         }
 
+        kafkaProducer.sendMessage("follow", kafkaMessage);
     }
 }

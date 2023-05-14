@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.entity.Show;
 import nnz.userservice.repository.ShowRepository;
 import nnz.userservice.service.DBSynchronizer;
-import nnz.userservice.vo.ShowSyncVO;
+import nnz.userservice.vo.sync.ShowSyncVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

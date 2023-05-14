@@ -9,7 +9,7 @@ import nnz.userservice.repository.NanumRepository;
 import nnz.userservice.repository.ReceiveNanumRepository;
 import nnz.userservice.repository.UserRepository;
 import nnz.userservice.service.DBSynchronizer;
-import nnz.userservice.vo.ReceiveNanumSyncVO;
+import nnz.userservice.vo.sync.ReceiveNanumSyncVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
