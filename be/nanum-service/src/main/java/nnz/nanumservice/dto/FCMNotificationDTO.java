@@ -11,5 +11,4 @@ public class FCMNotificationDTO {
     private String userToken;
     private String title;
     private String body;
-    private LocalDateTime eventTime;
 }

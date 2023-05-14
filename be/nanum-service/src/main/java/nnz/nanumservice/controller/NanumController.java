@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -121,8 +122,10 @@ public class NanumController {
     }
 
     @GetMapping("/push")
-    public ResponseEntity<?> testNotifictaion(@RequestBody FCMNotificationDTO fcmNotificationDTO){
+    public ResponseEntity<?> testNotifictaion(@RequestBody FCMNotificationDTO fcmNotificationDTO) throws IOException {
         fcmService.sendMessage(fcmNotificationDTO);
+//        fcmService.sendMessgeTo(fcmNotificationDTO);
+//        fcmService.chatgpt(fcmNotificationDTO);
         return ResponseEntity.ok().build();
     }
 }

@@ -42,7 +42,13 @@ dependencies {
     implementation 'com.github.eello:naneozoo-common:0.4.1'
 
     // Firebase SDK
-    implementation 'com.google.firebase:firebase-admin:6.14.0'
+//    implementation 'com.google.firebase:firebase-admin:6.8.1'
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
+    // okhttp
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation group: 'org.json', name: 'json', version: '20220320'
+
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
