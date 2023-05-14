@@ -274,7 +274,7 @@ public class NanumServiceImpl implements NanumService {
         }
 
         // 찜 여부 확인
-        Optional<Bookmark> bookmark = bookmarkRepository.findByNanumAndUser(nanum, follower);
+        Optional<Bookmark> bookmark = bookmarkRepository.findByNanumAndUserAndIsDeleteFalse(nanum, follower);
         if (bookmark.isPresent()) {
             resNanumDetailDTO.updateIsBookmark(true);
         } //
@@ -339,7 +339,7 @@ public class NanumServiceImpl implements NanumService {
         List<Nanum> nanums = nanumRepository.findAllByStatusLessThan(3);
         Map<Nanum, Double> popularMap = new HashMap<>();
         for (Nanum nanum : nanums) {
-            List<Bookmark> bookmarks = bookmarkRepository.findAllByNanum(nanum);
+            List<Bookmark> bookmarks = bookmarkRepository.findAllByNanumAndIsDeleteFalse(nanum);
             popularMap.put(nanum, bookmarks.size() * 0.7 + nanum.getViews() * 0.3);
         }
 

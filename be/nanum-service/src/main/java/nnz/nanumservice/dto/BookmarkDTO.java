@@ -17,6 +17,8 @@ public class BookmarkDTO {
 
     private Long userId;
 
+    private Boolean isDelete;
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
