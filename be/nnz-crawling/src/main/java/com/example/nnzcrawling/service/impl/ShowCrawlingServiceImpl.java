@@ -1,6 +1,5 @@
 package com.example.nnzcrawling.service.impl;
 
-import com.example.nnzcrawling.dto.ShowDTO;
 import com.example.nnzcrawling.dto.ShowSyncDTO;
 import com.example.nnzcrawling.dto.TagDTO;
 import com.example.nnzcrawling.entity.*;
@@ -14,14 +13,17 @@ import com.example.nnzcrawling.service.TagFeignClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShowCrawlingServiceImpl implements ShowCrawlingService {
@@ -40,29 +42,27 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "00 19 15 1/1 * *")
+    @Scheduled(cron = "00 00 02 1/1 * *")
     @Transactional
     public void createShow() {
-
+        LocalDateTime startTime = LocalDateTime.now();
         List<ShowCrawling> showCrawlingEntities = new ArrayList<>();
         List<TagCrawling> tagCrawlingEntities = new ArrayList<>();
 
         try {
-//            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
+            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
             List<ShowCrawling> eSports = crawlingESports.getCrawlingData();
-//            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
-//            List<TagCrawling> showTags = crawlingShows.getTags();
+            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
+            List<TagCrawling> showTags = crawlingShows.getTags();
             List<TagCrawling> eSportsTags = crawlingESports.getTags();
-//            List<TagCrawling> sportsTags = crawlingSports.getTags();
+            List<TagCrawling> sportsTags = crawlingSports.getTags();
 
-//            showCrawlingEntities.addAll(shows);
-//            tagCrawlingEntities.addAll(showTags);
+            showCrawlingEntities.addAll(shows);
+            tagCrawlingEntities.addAll(showTags);
             showCrawlingEntities.addAll(eSports);
             tagCrawlingEntities.addAll(eSportsTags);
-//            showCrawlingEntities.addAll(sports);
-//            tagCrawlingEntities.addAll(sportsTags);
-
-            System.out.println("tagCrawlingEntities.size() = " + tagCrawlingEntities.size());
+            showCrawlingEntities.addAll(sports);
+            tagCrawlingEntities.addAll(sportsTags);
 
             // 공연 크롤링 정보 저장
             List<Show> showEntities = new ArrayList<>();
@@ -76,20 +76,6 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                     showRepository.save(show);
                 }
             });
-//            showCrawlingRepository.createShows(showCrawlingEntities);
-
-            // kafka producer 등록
-//            for (ShowCrawling showCrawling : showCrawlingEntities) {
-//                // todo : error handling
-//                Show show = showRepository.findByTitleAndStartDateAndIsDeleteFalse(
-//                        showCrawling.getTitle(), showCrawling.getStartDate()
-//                ).orElseThrow();
-//
-//                ShowDTO showDTO = ShowDTO.of(show);
-//
-//                KafkaMessage<ShowDTO> kafkaMessage = KafkaMessage.create().body(showDTO);
-//                producer.sendMessage(kafkaMessage);
-//            }
 
             List<TagDTO> tagDTOs = new ArrayList<>();
             tagCrawlingEntities.forEach(v -> {
@@ -102,7 +88,6 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             List<TagDTO> createdTags = tagFeignClient.createTag(tagDTOs);
             System.out.println("createdTags.size() = " + createdTags.size());
             System.out.println("createdTags = " + createdTags);
-            List<Tag> tagList = tagRepository.saveAll(createdTags.stream().map(Tag::of).collect(Collectors.toList()));
 
 
             List<ShowTag> newShowTags = new ArrayList<>();
@@ -110,11 +95,10 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                 List<Show> findShows = showRepository.findByTitleContaining(tagDTO.getTitle());
 
                 for (Show show : findShows) {
-                    Optional<ShowTag> showTag = showTagRepository.findByShowAndTagId(show, tagDTO.getId());
-                    System.out.println("show = " + show.getTitle());
+                    List<ShowTag> showTag = showTagRepository.findByShowAndTagId(show, tagDTO.getId());
 
                     // 없으면 생성하고 있으면 그대로 둔다.
-                    if (!showTag.isPresent()) {
+                    if (showTag.isEmpty()) {
                         Tag tag = tagRepository.findById(tagDTO.getId()).orElse(null);
                         ShowTag newShowTag = ShowTag.builder()
                                 .show(show)
@@ -122,19 +106,16 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                                 .build();
                         newShowTags.add(newShowTag);
                         show.addTag(newShowTag);
-//                        showTagRepository.save(newShowTag);
+                        showTagRepository.save(newShowTag);
 
                     }
                 }
             }
-//            System.out.println("newShowTags.size() = " + newShowTags.size());
-            showTagRepository.saveAll(newShowTags);
 
-//            createTeamImage(sports);
-//
             em.flush();
 
-            sendShowToKafka();
+            sendShowToKafka(startTime);
+            createTeamImage(sports);
         } catch (InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -169,14 +150,13 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         });
     }
 
-    private void sendShowToKafka() throws JsonProcessingException {
-        System.out.println("ShowCrawlingServiceImpl.sendShowToKafka");
-        List<Show> shows = showRepository.findAll();
+    private void sendShowToKafka(LocalDateTime startTime) throws JsonProcessingException {
+        log.info("send crawling data to kafka");
+        List<Show> shows = showRepository.findAllByCreatedAtAfter(startTime);
         for (Show show : shows) {
-            System.out.println("send to kafka");
             KafkaMessage message = KafkaMessage.create().body(ShowSyncDTO.of(show));
-            System.out.println("send to kafka");
             producer.sendMessage(message);
         }
+        log.info("send complete.");
     }
 }

@@ -76,7 +76,7 @@ public class ShowSyncDTO {
                     .id(showTag.getId())
                     .tag(tag)
                     .updatedAt(showTag.getUpdatedAt())
-                    .isDelete(showTag.isDelete())
+                    .isDelete(showTag.getIsDelete())
                     .build();
         }
 

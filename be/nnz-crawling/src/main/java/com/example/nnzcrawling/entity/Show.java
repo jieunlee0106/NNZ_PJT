@@ -35,6 +35,7 @@ public class Show extends BaseEntity {
 
     private String region;
 
+    @Column(length = 1000)
     private String posterImage;
 
     @ManyToOne(fetch = FetchType.LAZY)

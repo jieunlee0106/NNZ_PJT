@@ -5,10 +5,11 @@ import com.example.nnzcrawling.entity.ShowTag;
 import com.example.nnzcrawling.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ShowTagRepository extends JpaRepository<ShowTag, Long> {
 
     Optional<ShowTag> findByShowAndTag(Show show, Tag tag);
-    Optional<ShowTag> findByShowAndTagId(Show show, Long tagId);
+    List<ShowTag> findByShowAndTagId(Show show, Long tagId);
 }

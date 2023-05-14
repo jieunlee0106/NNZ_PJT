@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShowTag {
+public class ShowTag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +34,11 @@ public class ShowTag {
     @JoinColumn(name = "tag_id")
     Tag tag;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime updatedAt;
-
-    protected boolean isDelete;
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+//    private LocalDateTime updatedAt;
+//
+//    protected boolean isDelete;
 
     public void setShow(Show show) {
         this.show = show;
@@ -49,8 +49,6 @@ public class ShowTag {
                 .id(showTagDTO.getId())
                 .show(show)
                 .tag(tag)
-                .updatedAt(showTagDTO.getUpdatedAt())
-                .isDelete(showTagDTO.isDelete())
                 .build();
     }
 }
