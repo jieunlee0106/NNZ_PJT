@@ -50,19 +50,22 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         List<TagCrawling> tagCrawlingEntities = new ArrayList<>();
 
         try {
-            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
+//            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
             List<ShowCrawling> eSports = crawlingESports.getCrawlingData();
-            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
-            List<TagCrawling> showTags = crawlingShows.getTags();
+//            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
+//            List<TagCrawling> showTags = crawlingShows.getTags();
             List<TagCrawling> eSportsTags = crawlingESports.getTags();
-            List<TagCrawling> sportsTags = crawlingSports.getTags();
+            eSportsTags.forEach(v -> {
+                System.out.println(v);
+            });
+//            List<TagCrawling> sportsTags = crawlingSports.getTags();
 
-            showCrawlingEntities.addAll(shows);
-            tagCrawlingEntities.addAll(showTags);
+//            showCrawlingEntities.addAll(shows);
+//            tagCrawlingEntities.addAll(showTags);
             showCrawlingEntities.addAll(eSports);
             tagCrawlingEntities.addAll(eSportsTags);
-            showCrawlingEntities.addAll(sports);
-            tagCrawlingEntities.addAll(sportsTags);
+//            showCrawlingEntities.addAll(sports);
+//            tagCrawlingEntities.addAll(sportsTags);
 
             // 공연 크롤링 정보 저장
             List<Show> showEntities = new ArrayList<>();
