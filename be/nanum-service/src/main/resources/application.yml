@@ -39,7 +39,7 @@ spring:
   redis:
     host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
     port: 6379
-
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
 eureka:
   client:
     register-with-eureka: true
