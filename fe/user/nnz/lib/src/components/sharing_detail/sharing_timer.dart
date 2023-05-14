@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import "../../controller/shareingdetail_controller.dart";
 import 'package:nnz/src/model/share_detail_model.dart';
 
@@ -19,6 +20,7 @@ class SharingDateTimer extends StatefulWidget {
 }
 
 class _SharingDateTimerState extends State<SharingDateTimer> {
+  final token = Get.find<BottomNavController>().accessToken;
   final ShareDetailController sharedetailController =
       Get.put(ShareDetailController());
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
@@ -26,7 +28,7 @@ class _SharingDateTimerState extends State<SharingDateTimer> {
   bool isCondition = false;
   final controller = Get.put(ShareDetailController());
   List<String> timeParts = [];
-  int nanumId = 34;
+  int nanumId = 11;
   String durationTime = "";
   int day = 0;
   int hour = 0;
@@ -67,7 +69,6 @@ class _SharingDateTimerState extends State<SharingDateTimer> {
     hour = int.parse(timeParts[1].split(" : ")[1]);
     minute = int.parse(timeParts[2].split(" : ")[1]);
     second = int.parse(timeParts[3].split(" : ")[1]);
-    print(day);
     _remainingTime =
         Duration(days: day, hours: hour, minutes: minute, seconds: second);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {

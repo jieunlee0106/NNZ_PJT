@@ -8,6 +8,7 @@ import 'package:nnz/src/components/sharing_detail/share_float_button.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_card.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_tag.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/model/share_detail_model.dart';
 
@@ -19,9 +20,10 @@ class ShareDatail extends StatefulWidget {
 }
 
 class _ShareDatailState extends State<ShareDatail> {
+  final token = Get.find<BottomNavController>().accessToken;
   final ShareDetailController sharedetailController =
       Get.put(ShareDetailController());
-  int nanumId = 34;
+  int nanumId = 11;
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> showData = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> nunumwriter = Rx<Map<dynamic, dynamic>>({});
@@ -74,10 +76,6 @@ class _ShareDatailState extends State<ShareDatail> {
     } else {
       isCondition = true;
     }
-    // print(result.value);
-    // print(day.runtimeType);
-
-    // print(thumbnailData);
 
     setState(() {
       result.value;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
+import 'package:nnz/src/services/share_auth_provider.dart';
 
 class ShareDetailController extends GetxController {
   late final authImageController;
@@ -11,7 +12,7 @@ class ShareDetailController extends GetxController {
   void onInit() {
     super.onInit();
     authImageController = MultiImagePickerController(
-        maxImages: 5,
+        maxImages: 1,
         withReadStream: true,
         allowedImageTypes: ['png', 'jpg', 'jpeg']);
   }
@@ -40,6 +41,17 @@ class ShareDetailController extends GetxController {
       for (var image in authImageController.images) {
         authImageList.add(image);
       }
+    }
+  }
+
+  Future<void> sendAuthImage() async {
+    try {
+      final res = await ShareAuthProvider()
+          .postShareAuth(authImage: authImageController.images[0]);
+    } catch (err) {
+      print("사진 에러에용");
+      print(authImageController.images);
+      print(err);
     }
   }
 }

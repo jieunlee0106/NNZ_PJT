@@ -18,6 +18,7 @@ class ShareDetailController extends GetxController {
     final res = await _shareDetailProvider.getShareDetail();
     if (res.statusCode == 200) {
       shareDetailData.value = res.body;
+
       print('들어는오니?');
     } else {
       print("나눔정보 에러");

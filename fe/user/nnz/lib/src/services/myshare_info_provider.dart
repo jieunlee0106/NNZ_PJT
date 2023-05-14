@@ -25,7 +25,7 @@ class MyShareInfoProvider extends GetConnect {
   Future<Response> postShareInfo(
       {required ShareInfoModel shareInfoModel}) async {
     final body = shareInfoModel.toJson();
-    int nanumId = 35;
+    int nanumId = 37;
     token = Get.find<BottomNavController>().accessToken;
     logger.i("토큰 값 : $token");
     final res = await post(
@@ -33,7 +33,7 @@ class MyShareInfoProvider extends GetConnect {
         body,
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzNzk0OTY4LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUwOTA5Njh9.s9tLxl5DcZ3PqYicv-qJ-zNixXvX5sHZ5wY-q_gRL5Ute-JWsxiO-oqj7qpQCR4Hl5mYeP-jOd3HR7CZBgnc2g'
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODc5OTE1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNzU5MTV9.2LYhwfVY3IqYppIDG1M5RVYxCM_0mShx4h0CApbpS7J02Fw2d6SQQl4ZJgbpJfKX9RicTjQ_8rcJ9V3zWyBmcA'
         });
     return res;
   }
