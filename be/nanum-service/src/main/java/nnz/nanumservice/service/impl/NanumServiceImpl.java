@@ -250,7 +250,7 @@ public class NanumServiceImpl implements NanumService {
         ResNanumDetailDTO resNanumDetailDTO = ResNanumDetailDTO.of(nanum, thumbnails, tags, show);
 
         User follower = userRepository.findById(userId).orElseThrow();
-        Optional<Follower> follow = followerRepository.findByFollowingAndFollower(nanum.getProvider(), follower);
+        Optional<Follower> follow = followerRepository.findByFollowingAndFollowerAndIsDeleteFalse(nanum.getProvider(), follower);
 
         // writer(나눠주는 사람) 정보 설정
         ResNanumWriterDTO writer = new ResNanumWriterDTO();
