@@ -8,6 +8,7 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.userservice.dto.*;
+import nnz.userservice.dto.sync.UserSyncDTO;
 import nnz.userservice.entity.*;
 import nnz.userservice.exception.ErrorCode;
 import nnz.userservice.repository.*;

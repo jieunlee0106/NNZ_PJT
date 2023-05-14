@@ -1,4 +1,4 @@
-package nnz.userservice.dto;
+package nnz.userservice.dto.sync;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;

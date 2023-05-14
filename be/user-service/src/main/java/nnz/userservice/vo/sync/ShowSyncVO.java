@@ -1,4 +1,4 @@
-package nnz.userservice.vo;
+package nnz.userservice.vo.sync;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;

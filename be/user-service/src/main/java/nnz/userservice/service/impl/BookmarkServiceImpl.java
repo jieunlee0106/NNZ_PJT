@@ -1,10 +1,11 @@
 package nnz.userservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
-import io.github.eello.nnz.common.kafka.KafkaMessage.KafkaMessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nnz.userservice.dto.sync.BookmarkSyncDTO;
 import nnz.userservice.entity.Bookmark;
 import nnz.userservice.entity.Nanum;
 import nnz.userservice.entity.User;
@@ -14,7 +15,6 @@ import nnz.userservice.repository.BookmarkRepository;
 import nnz.userservice.repository.NanumRepository;
 import nnz.userservice.repository.UserRepository;
 import nnz.userservice.service.BookmarkService;
-import nnz.userservice.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +79,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void toggleWish(Long userId, Long nanumId) {
+    public void toggleWish(Long userId, Long nanumId) throws JsonProcessingException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -89,6 +89,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         Bookmark bookmark = bookmarkRepository.findByUserAndNanum(user, nanum)
                 .orElse(null);
 
+        KafkaMessage<BookmarkSyncDTO> kafkaMessage;
         if (bookmark != null) {
             if (bookmark.getIsDelete()) { // 찜했던 나눔이면
                 bookmark.reBookmark();
@@ -98,7 +99,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                 log.info("{}님이 '{}'를 찜 해제", user.getEmail(), nanum.getTitle());
             }
 
-
+            kafkaMessage = KafkaMessage.update().body(BookmarkSyncDTO.of(bookmark));
         } else {
             bookmark = Bookmark.builder()
                     .user(user)
@@ -107,6 +108,10 @@ public class BookmarkServiceImpl implements BookmarkService {
 
             bookmarkRepository.save(bookmark);
             log.info("{}님이 '{}'를 찜", user.getEmail(), nanum.getTitle());
+
+            kafkaMessage = KafkaMessage.create().body(BookmarkSyncDTO.of(bookmark));
         }
+
+        kafkaProducer.sendMessage("bookmark", kafkaMessage);
     }
 }

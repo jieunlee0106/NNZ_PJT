@@ -5,12 +5,11 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import io.github.eello.nnz.common.kafka.KafkaMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nnz.userservice.service.DBSynchronizer;
 import nnz.userservice.service.impl.NanumSynchronizer;
 import nnz.userservice.service.impl.ReceiveNanumSynchronizer;
 import nnz.userservice.service.impl.ShowSynchronizer;
-import nnz.userservice.vo.ReceiveNanumSyncVO;
-import nnz.userservice.vo.ShowSyncVO;
+import nnz.userservice.vo.sync.ReceiveNanumSyncVO;
+import nnz.userservice.vo.sync.ShowSyncVO;
 import nnz.userservice.vo.sync.NanumSyncVO;
 import org.springframework.stereotype.Service;
 

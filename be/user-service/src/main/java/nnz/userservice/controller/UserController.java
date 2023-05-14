@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @PostMapping("/users/follow/{followingId}")
-    public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) {
+    public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) throws JsonProcessingException {
         // 팔로우가 되어 있으면 언팔로우, 언팔로우면 팔로우
         followService.toggleFollow(token.getId(), followingId);
         return ResponseEntity.noContent().build();
@@ -112,7 +112,7 @@ public class UserController {
     }
 
     @PostMapping("/users/bookmarks/{nanumId}")
-    public ResponseEntity<Void> toggleWish(@PathVariable Long nanumId, DecodedToken token) {
+    public ResponseEntity<Void> toggleWish(@PathVariable Long nanumId, DecodedToken token) throws JsonProcessingException {
         bookmarkService.toggleWish(token.getId(), nanumId);
         return ResponseEntity.noContent().build();
     }
