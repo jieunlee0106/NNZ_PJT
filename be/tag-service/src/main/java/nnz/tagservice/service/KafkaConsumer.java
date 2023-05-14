@@ -22,29 +22,29 @@ public class KafkaConsumer {
     private final ShowRepository showRepository;
     private final NanumRepository nanumRepository;
 
-    @KafkaListener(topics = "dev-show", groupId = "tag-service-1")
-    public void getShowMessage(String message) throws JsonProcessingException {
-        KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            Show show = Show.of(kafkaMessage.getBody());
-            showRepository.save(show);
-        }
-    }
-
-    @KafkaListener(topics = "dev-nanum", groupId = "tag-service-2")
-    public void getNanumMessage(String message) throws JsonProcessingException {
-        KafkaMessage<NanumDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            Nanum nanum = Nanum.of(kafkaMessage.getBody());
-            nanumRepository.save(nanum);
-        }
-    }
+//    @KafkaListener(topics = "dev-show-sync", groupId = "tag-service-1")
+//    public void getShowMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
+//        log.info("consume message: {}", message);
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+//            Show show = Show.of(kafkaMessage.getBody());
+//            showRepository.save(show);
+//        }
+//    }
+//
+//    @KafkaListener(topics = "dev-nanum", groupId = "tag-service-2")
+//    public void getNanumMessage(String message) throws JsonProcessingException {
+//        KafkaMessage<NanumDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumDTO.class);
+//        log.info("consume message: {}", message);
+//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+//
+//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+//            Nanum nanum = Nanum.of(kafkaMessage.getBody());
+//            nanumRepository.save(nanum);
+//        }
+//    }
 }

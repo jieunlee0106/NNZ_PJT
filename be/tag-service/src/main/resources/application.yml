@@ -2,12 +2,12 @@ server:
   port: 8084
 spring:
   application:
-    name: DEV-TAG-SERVICE
+    name: TAG-SERVICE
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/tag_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/nnz_tag?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: yyhj7424
+    password: root
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: ENC(10aUuPU1LkpGUa67GY3ftGHQ+lpr1ULpXY0CNPJv8vXPhuT+/YLca2wuYNH+Y1yPlVyf3Hx8wF9+enItfNDa9mYytGyxvM6RWTHMsy0yKUqkvUTZZSjHaWTNRo3PNGisRGJXvQqBF21NpWw5Xv9WrA==)
 #    username: ENC(r9+5XUFLaQJxTySGqeygbA==)
@@ -26,8 +26,8 @@ spring:
         format_sql: true
 
   kafka:
-    prefix: dev-
-    bootstrap-servers: localhost:9092
+    prefix: gggg-
+    bootstrap-servers: http://k8b207.p.ssafy.io:29092
     consumer:
 #      group-id: tag-service-1 # ex) user-service-1
       auto-offset-reset: earliest

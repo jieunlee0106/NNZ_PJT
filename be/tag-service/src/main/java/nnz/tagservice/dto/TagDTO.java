@@ -42,4 +42,8 @@ public class TagDTO {
                 .isDelete(tag.getIsDelete())
                 .build();
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

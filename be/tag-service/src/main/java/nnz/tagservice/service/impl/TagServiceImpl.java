@@ -38,35 +38,26 @@ public class TagServiceImpl implements TagService {
         for (TagVO tagVO : tags) {
 
             Optional<Tag> tag = tagRepository.findByTag(tagVO.getTag());
-
+            TagDTO dto;
             if (!tag.isPresent()) { // 생성된 태그가 없으면
                 Tag newTag = Tag.builder()
                         .tag(tagVO.getTag())
                         .views(0)
                         .build();
 
-                tag = Optional.of(tagRepository.save(newTag));
-                log.info("tag = {}", tag.get());
+                newTag = tagRepository.save(newTag);
+                dto = TagDTO.of(newTag);
 
-                TagDTO tagDTO = TagDTO.of(tag.get());
-                createdTags.add(tagDTO);
-
-                KafkaMessage<TagDTO> kafkaMessage = KafkaMessage.create().body(tagDTO);
-                producer.sendMessage(kafkaMessage, "tag");
+                KafkaMessage<TagDTO> kafkaMessage = KafkaMessage.create().body(dto);
+                producer.sendMessage(kafkaMessage, "tag-sync");
             } else {
-                createdTags.add(TagDTO.of(tag.get()));
+                dto = TagDTO.of(tag.get());
             }
 
-            if ("show".equals(tagVO.getTag())) {
-                createShowTag(tagVO, tag);
+            if (tagVO.getTitle() != null) {
+                dto.setTitle(tagVO.getTitle());
             }
-
-//            if (tagVO.getType().equals("nanum")) {
-//                createNanumTag(tagVO, tag);
-//            } //
-//            else {
-//                createShowTag(tagVO, tag);
-//            }
+            createdTags.add(dto);
         }
 
         return createdTags;
