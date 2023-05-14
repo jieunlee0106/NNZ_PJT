@@ -43,6 +43,7 @@ public class Show extends BaseEntity {
     private Category category;
 
     @OneToMany(mappedBy = "show")
+    @Builder.Default
     private List<ShowTag> tags = new ArrayList<>();
 
     public void addTag(ShowTag tag) {

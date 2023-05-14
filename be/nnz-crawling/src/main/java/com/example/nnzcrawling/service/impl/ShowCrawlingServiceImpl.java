@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -50,22 +49,19 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         List<TagCrawling> tagCrawlingEntities = new ArrayList<>();
 
         try {
-//            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
+            List<ShowCrawling> shows = crawlingShows.getCrawlingData();
             List<ShowCrawling> eSports = crawlingESports.getCrawlingData();
-//            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
-//            List<TagCrawling> showTags = crawlingShows.getTags();
+            List<ShowCrawling> sports = crawlingSports.getCrawlingData();
+            List<TagCrawling> showTags = crawlingShows.getTags();
             List<TagCrawling> eSportsTags = crawlingESports.getTags();
-            eSportsTags.forEach(v -> {
-                System.out.println(v);
-            });
-//            List<TagCrawling> sportsTags = crawlingSports.getTags();
+            List<TagCrawling> sportsTags = crawlingSports.getTags();
 
-//            showCrawlingEntities.addAll(shows);
-//            tagCrawlingEntities.addAll(showTags);
+            showCrawlingEntities.addAll(shows);
+            tagCrawlingEntities.addAll(showTags);
             showCrawlingEntities.addAll(eSports);
             tagCrawlingEntities.addAll(eSportsTags);
-//            showCrawlingEntities.addAll(sports);
-//            tagCrawlingEntities.addAll(sportsTags);
+            showCrawlingEntities.addAll(sports);
+            tagCrawlingEntities.addAll(sportsTags);
 
             // 공연 크롤링 정보 저장
             List<Show> showEntities = new ArrayList<>();
@@ -84,14 +80,10 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             tagCrawlingEntities.forEach(v -> {
                 tagDTOs.add(new TagDTO(v.getTitle(), v.getTag(), "show"));
             });
-
-            System.out.println("tagDTOs.size() = " + tagDTOs.size());
+            log.info("tagDTOs.size() =  {}", tagDTOs.size());
 
             // 태그 생성 메소드 호출 및 태그 저장
             List<TagDTO> createdTags = tagFeignClient.createTag(tagDTOs);
-            System.out.println("createdTags.size() = " + createdTags.size());
-            System.out.println("createdTags = " + createdTags);
-
 
             List<ShowTag> newShowTags = new ArrayList<>();
             for (TagDTO tagDTO : createdTags) {
