@@ -1,16 +1,23 @@
 package nnz.showservice.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "nanums")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Nanum {
 
     @Id
@@ -19,4 +26,20 @@ public class Nanum {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id")
     private Show show;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime updatedAt;
+
+    private boolean isDelete;
+
+    public void updateNanum(LocalDateTime updatedAt, Show show) {
+        this.updatedAt = updatedAt;
+        this.show = show;
+    }
+
+    public void deleteNanum(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+        this.isDelete = true;
+    }
 }
