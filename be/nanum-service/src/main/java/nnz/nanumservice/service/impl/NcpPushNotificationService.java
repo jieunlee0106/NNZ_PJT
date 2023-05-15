@@ -34,6 +34,9 @@ public class NcpPushNotificationService {
     @Value("${ncp.push.secret-key}")
     private String secretKey;
 
+    @Value("${ncp.push.service-id}")
+    private String serviceId;
+
     public void registDevice(Long userId, String token) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException, URISyntaxException {
 
         Long time = System.currentTimeMillis();
@@ -60,7 +63,7 @@ public class NcpPushNotificationService {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         restTemplate.postForObject(
-                new URI("https://sens.apigw.ntruss.com/push/v2/services/nnz-push/users"),
+                new URI("https://sens.apigw.ntruss.com/push/v2/services/" + serviceId + "/users"),
                 httpBody, String.class
         );
     }
@@ -89,7 +92,7 @@ public class NcpPushNotificationService {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         restTemplate.postForObject(
-                new URI("https://sens.apigw.ntruss.com/push/v2/services/nnz-push/messages"),
+                new URI("https://sens.apigw.ntruss.com/push/v2/services/" + serviceId + "/messages"),
                 httpBody, JSONObject.class
         );
 
@@ -99,7 +102,7 @@ public class NcpPushNotificationService {
         String space = " ";					// one space
         String newLine = "\n";					// new line
         String method = "POST";					// method
-        String url = "/push/v2/services/nnz-push/messages";	// url (include query string)
+        String url = "/push/v2/services/" + serviceId + "/users";	// url (include query string)
         String timestamp = time.toString();			// current timestamp (epoch)
         String accessKey = this.accessKey;			// access key id (from portal or Sub Account)
         String secretKey = this.secretKey;
