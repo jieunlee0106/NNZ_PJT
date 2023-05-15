@@ -39,9 +39,9 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   redis:
-    host: ENC(0lb6U5bLxtLRV/9hNevi1egkI8FMnyZk)
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
     port: 6379
-#    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
   cache:
     type: redis
 
