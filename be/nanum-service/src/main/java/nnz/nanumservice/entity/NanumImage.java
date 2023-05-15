@@ -35,4 +35,7 @@ public class NanumImage extends BaseEntity {
     @JoinColumn(name = "nanum_id")
     private Nanum nanum;
 
+    public void deleteNanumImage() {
+        this.isDelete = true;
+    }
 }

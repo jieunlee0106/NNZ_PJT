@@ -50,6 +50,7 @@ public class NanumServiceImpl implements NanumService {
     private final EntityManager em;
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
+    private final NanumImageService nanumImageService;
 
     @Override
     @Transactional
@@ -64,9 +65,6 @@ public class NanumServiceImpl implements NanumService {
         // -> 나눔 이미지 엔티티에 Show 객체 필요하기 때문.
         nanum = nanumRepository.save(nanum);
         NanumDTO nanumDTO = NanumDTO.of(nanum);
-
-//        KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.create().body(nanumDTO);
-//        producer.sendMessage(nanumDTOKafkaMessage, "dev-nanum");
 
         // todo: error handling
         List<TagDTO> tagDTOs = new ArrayList<>();
@@ -93,36 +91,14 @@ public class NanumServiceImpl implements NanumService {
             nanumTags.add(nanumTag);
         }
         nanumTags = nanumTagRepository.saveAll(nanumTags);
+
         // 나눔 태그 dto 리스트
         List<NanumTagDTO> nanumTagDTOs = nanumTags.stream()
                 .map(NanumTagDTO::of)
                 .collect(Collectors.toList());
 
         List<NanumImageDTO> nanumImageDTOs = new ArrayList<>();
-        Boolean isThumbnail = true;
-        for (MultipartFile image : images) {
-            String path = s3FileService.getS3Url(image);
-            String originalName = image.getOriginalFilename();
-
-            NanumImage nanumImage = NanumImage.builder()
-                    .path(path)
-                    .originalName(originalName)
-                    .isThumbnail(isThumbnail)
-                    .nanum(nanum)
-                    .build();
-            nanumImageRepository.save(nanumImage);
-
-            nanumImageDTOs.add(NanumImageDTO.of(nanumImage));
-
-//            KafkaMessage<NanumImageDTO> nanumImageDTOKafkaMessage = KafkaMessage.create().body(nanumImageDTO);
-//            producer.sendMessage(nanumImageDTOKafkaMessage, "dev-nanumimage");
-
-            if (isThumbnail) {
-                nanum.updateThumbnail(path);
-                nanumDTO.setThumbnail(path);
-            }
-            isThumbnail = false;
-        }
+        nanumImageService.createNanumImage(nanum, nanumImageDTOs, nanumDTO, images);
 
         nanumDTO.setNanumTags(nanumTagDTOs);
         nanumDTO.setNanumImages(nanumImageDTOs);
@@ -360,5 +336,97 @@ public class NanumServiceImpl implements NanumService {
         NanumStock nanumStock = nanumStockRepository.findById(nanumId).orElseThrow();
         ResNanumStockDTO resNanumStockDTO = ResNanumStockDTO.of(nanum.getQuantity(), nanumStock.getStock());
         return resNanumStockDTO;
+    }
+
+    @Override
+    @Transactional
+    public void updateNanum(Long id, Long writerId, NanumVO data, List<MultipartFile> images) {
+
+        // todo : error handling
+        Nanum nanum = nanumRepository.findById(id).orElseThrow();
+
+        // todo : error handling 사용자 불일치에 대한 예외처리 굳이 해야할까
+        if (nanum.getProvider().getId() != writerId) {
+            // throw new CustomException();
+        }
+        // 나눔 기본 정보 업데이트
+        nanum.updateNanum(data);
+
+        NanumDTO nanumDTO = NanumDTO.of(nanum);
+
+        if (data.getTags() != null) {
+            List<TagDTO> tagDTOs = new ArrayList<>();
+            // 태그에 대한 수정 작업을 위해 태그 전부 삭제 후 수정된 태그 삽입
+            nanum.getTags().forEach(nanumTag -> {
+                nanumTag.deleteNanumTag();
+            });
+
+            data.getTags().forEach(tag -> {
+                tagDTOs.add(new TagDTO(Long.toString(id), tag, "nanum"));
+            });
+
+            List<TagDTO> createdTags = tagFeignClient.createTag(tagDTOs);
+            List<Tag> tags = tagRepository.saveAll(
+                    createdTags.stream()
+                            .map(Tag::of)
+                            .collect(Collectors.toList())
+            );
+
+            // 새로운(수정된) 나눔 태그 리스트 저장
+            List<NanumTag> nanumTags = new ArrayList<>();
+            for (Tag tag : tags) {
+                NanumTag nanumTag = NanumTag.builder()
+                        .nanum(nanum)
+                        .tag(tag)
+                        .build();
+                nanumTags.add(nanumTag);
+            }
+
+            nanumTags.forEach(nanumTag -> {
+                Optional<NanumTag> findNanumTag = nanumTagRepository.findByNanumAndTag(nanum, nanumTag.getTag());
+                if (findNanumTag.isPresent()) {
+                    // 값이 이미 존재한다면 삭제 되돌리기
+                    findNanumTag.get().cancelDeleteNanumTag();
+                } //
+                else {
+                    // 값이 없다면 새로 저장
+                    nanumTagRepository.save(nanumTag);
+                }
+            });
+
+            // 나눔 태그 dto 리스트
+            List<NanumTagDTO> nanumTagDTOs = nanumTags.stream()
+                    .map(NanumTagDTO::of)
+                    .collect(Collectors.toList());
+
+            nanumDTO.setNanumTags(nanumTagDTOs);
+        } //
+        else {
+            nanumDTO.setNanumTags(nanum.getTags().stream()
+                    .map(NanumTagDTO::of)
+                    .collect(Collectors.toList()));
+        }
+
+        if (images != null) {
+            List<NanumImage> nanumImages = nanumImageRepository.findAllByNanum(nanum);
+            nanumImages.forEach(nanumImage -> {
+                nanumImage.deleteNanumImage();
+            });
+
+            List<NanumImageDTO> nanumImageDTOs = new ArrayList<>();
+            nanumImageService.createNanumImage(nanum, nanumImageDTOs, nanumDTO, images);
+
+            nanumDTO.setNanumImages(nanumImageDTOs);
+        } //
+        else {
+            nanumDTO.setNanumImages(nanum.getThumbnails().stream()
+                            .map(NanumImageDTO::of)
+                            .collect(Collectors.toList()));
+        }
+
+        em.flush();
+
+        KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.update().body(nanumDTO);
+        producer.sendMessage(kafkaMessage, "nanum");
     }
 }

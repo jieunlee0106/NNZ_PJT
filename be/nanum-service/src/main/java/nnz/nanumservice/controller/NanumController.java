@@ -132,4 +132,14 @@ public class NanumController {
     public ResponseEntity<ResNanumStockDTO> readNanumStock(@PathVariable(name = "nanumId") Long nanumId) {
         return new ResponseEntity<>(nanumService.readNanumStock(nanumId), HttpStatus.OK);
     }
+
+    @PatchMapping("/{nanumId}")
+    public ResponseEntity<Void> updateNanum(
+            @PathVariable(name = "nanumId") Long id,
+            DecodedToken userToken,
+            @RequestPart(name = "data") NanumVO data,
+            @RequestPart(name = "images", required = false) List<MultipartFile> images) {
+        nanumService.updateNanum(id, userToken.getId(), data, images);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

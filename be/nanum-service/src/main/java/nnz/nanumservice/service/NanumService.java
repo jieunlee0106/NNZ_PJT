@@ -32,4 +32,6 @@ public interface NanumService {
     List<ResNanumDTO> readPopularNaums();
 
     ResNanumStockDTO readNanumStock(Long nanumId);
+
+    void updateNanum(Long id, Long writerId, NanumVO data, List<MultipartFile> images);
 }
