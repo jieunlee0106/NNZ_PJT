@@ -16,7 +16,7 @@ class MyPageShareListController extends GetxController {
     try {
       final response = await MyPageShareListService().getShareList(type: type);
       print(response.data);
-      print(response.data.totalElements.toString());
+      print(response.data.isEmpty);
       if (type == 'give') {
         nanumTypeList = NanumTypeList.fromJson(response.data);
         print(nanumTypeList);

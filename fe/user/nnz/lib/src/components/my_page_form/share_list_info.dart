@@ -23,7 +23,6 @@ class _ShareListState extends State<ShareList> {
     if (widget.items.length == 0) {
       return Center(child: NullPage(message: '나눔 목록이 존재하지 않습니다'));
     }
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Column(

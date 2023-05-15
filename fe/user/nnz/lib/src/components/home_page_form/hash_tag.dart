@@ -35,8 +35,8 @@ class HashTag extends StatelessWidget {
                           offset: Offset(0, 5),
                         ),
                       ],
-                      color: Color.fromARGB(255, 251, 247, 185),
-                      borderRadius: BorderRadius.circular(10),
+                      color: Config.rigthYellowColor,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       items[index].tag,
