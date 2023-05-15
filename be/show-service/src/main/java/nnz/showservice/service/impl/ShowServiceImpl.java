@@ -75,8 +75,8 @@ public class ShowServiceImpl implements ShowService {
                         .location(show.getLocation())
                         .leftTeam(leftTeam)
                         .rightTeam(rightTeam)
-                        .leftTeamImage(leftTeamImage.getImage())
-                        .rightTeamImage(rightTeamImage.getImage())
+                        .leftTeamImage(leftTeamImage.getImage() != null ? leftTeamImage.getImage() : null)
+                        .rightTeamImage(rightTeamImage.getImage() != null ? rightTeamImage.getImage() : null)
                         .date(show.getStartDate())
                         .showTags(showTags)
                         .build();
