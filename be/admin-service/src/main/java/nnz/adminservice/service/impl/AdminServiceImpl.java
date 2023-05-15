@@ -173,7 +173,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void registBanners(List<MultipartFile> files, BannerVO bannerVO) throws JsonProcessingException {
-        List<BannerDTO> bannerDTOList = new ArrayList<>();
+        List<BannerKafkaDTO> bannerDTOList = new ArrayList<>();
 
         for(int i=0; i<3; i++){
             Banner banner = null;
@@ -207,13 +207,9 @@ public class AdminServiceImpl implements AdminService {
             }catch (NullPointerException e){
                 throw new CustomException(ErrorCode.FILE_NOT_ENOUGH);
             }
-            bannerDTOList.add(BannerDTO.builder()
-                            .id(banner.getId())
-                            .image(banner.getImage())
-                            .showId(banner.getShow().getId())
-                            .build());
+            bannerDTOList.add(BannerKafkaDTO.toDTO(banner));
         }
-        KafkaMessage<List<BannerDTO>> message = KafkaMessage.create().body(bannerDTOList);
+        KafkaMessage<List<BannerKafkaDTO>> message = KafkaMessage.create().body(bannerDTOList);
 
         kafkaProducer.sendMessage(message, "banner");
     }
