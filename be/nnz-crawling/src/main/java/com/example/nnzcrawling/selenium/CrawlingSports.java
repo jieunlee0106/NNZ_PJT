@@ -117,12 +117,17 @@ public class CrawlingSports {
             String day = null;
             try {
                 day = driver.findElement(By.cssSelector(
-                        "div.api_cs_wrap > div.db_area._schedule_info > div.nv_date.today > strong"
+                        "div.nv_date.today > strong"
                 )).getText();
             } catch (Exception e) {
-                day = driver.findElement(By.cssSelector(
-                        "div.api_cs_wrap > div.db_area._schedule_info > div.nv_date > strong"
-                )).getText();
+                try {
+                    Thread.sleep(1000);
+                    day = driver.findElement(By.cssSelector(
+                            "div.nv_date > strong"
+                    )).getText();
+                } catch (Exception e2) {
+                    continue;
+                }
             }
 
             // 해당 날짜

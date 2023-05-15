@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,7 +42,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "10 49 15 1/1 * *")
+    @Scheduled(cron = "10 56 16 1/1 * *")
     @Transactional
     public void createShow() {
         LocalDateTime startTime = LocalDateTime.now();
@@ -84,6 +85,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
 
             // 태그 생성 메소드 호출 및 태그 저장
             List<TagDTO> createdTags = tagFeignClient.createTag(tagDTOs);
+            List<Tag> tagList = tagRepository.saveAll(createdTags.stream().map(Tag::of).collect(Collectors.toList()));
 
             List<ShowTag> newShowTags = new ArrayList<>();
             for (TagDTO tagDTO : createdTags) {
