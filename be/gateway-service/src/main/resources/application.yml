@@ -21,11 +21,11 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         - AddResponseHeader=Access-Control-Allow-Headers, *
         - AddResponseHeader=Access-Control-Allow-Methods, *
-      #        - name: JwtFilter
-      #          args:
-      #            baseMessage: Jwt Filter
-      #            preLogger: false
-      #            postLogger: false
+        - name: JwtFilter
+          args:
+            baseMessage: Jwt Filter
+            preLogger: false
+            postLogger: false
       globalcors:
         corsConfigurations:
           '[/**]':
