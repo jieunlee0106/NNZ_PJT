@@ -1,8 +1,8 @@
 class HashTagModel {
-  int? id;
-  String? tag;
+  late int id;
+  late String tag;
 
-  HashTagModel({this.id, this.tag});
+  HashTagModel({required this.id, required this.tag});
 
   HashTagModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

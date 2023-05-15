@@ -28,7 +28,9 @@ class _MySharedState extends State<MySharedList> {
 
   Future<void> loadMyInfo() async {
     await controller.getShareList('receive');
+    print('sdfdsf');
     receiveTypeList = controller.receiveTypeList;
+
     print(receiveTypeList);
     setState(() {
       _isLoading = false;

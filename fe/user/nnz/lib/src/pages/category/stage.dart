@@ -32,8 +32,9 @@ class _StagePageState extends State<StagePage> {
             HotShareText(
                 text: 'HOT한 연극',
                 image: ImagePath.fire,
-                smallText: '나눔 활동이 활발한 연극이에요'),
-            HotShareList(),
+                smallText: '나눔 활동이 활발한 연극이에요',
+                categoryName: '연극'),
+            HotShareList(categoryName: '뮤지컬'),
             GrayLine(),
             ShowList(categoryName: '연극'),
           ],

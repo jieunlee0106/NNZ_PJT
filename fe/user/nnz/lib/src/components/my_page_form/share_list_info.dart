@@ -48,7 +48,7 @@ class _ShareListState extends State<ShareList> {
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 255, 253, 253),
                                 image: DecorationImage(
-                                  image: NetworkImage(item.thumbnail!),
+                                  image: NetworkImage(item.thumbnail ?? ''),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -118,7 +118,7 @@ class _ShareListState extends State<ShareList> {
                                       onTap: () =>
                                           Get.to(() => MySharedDetail()),
                                       child: Text(
-                                        item.title!,
+                                        item.title ?? '',
                                         style: TextStyle(
                                           color: Config.blackColor,
                                           fontSize: 14,
@@ -130,7 +130,7 @@ class _ShareListState extends State<ShareList> {
                                   ),
                                   const SizedBox(height: 7),
                                   Text(
-                                    item.date!,
+                                    item.date ?? '',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Config.grayFontColor,
@@ -141,7 +141,7 @@ class _ShareListState extends State<ShareList> {
                                   ),
                                   const SizedBox(height: 7),
                                   Text(
-                                    item.location!,
+                                    item.location ?? '',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Config.grayFontColor,

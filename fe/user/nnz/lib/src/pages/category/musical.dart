@@ -34,8 +34,9 @@ class _MusicalPageState extends State<MusicalPage> {
             HotShareText(
                 text: 'HOT한 뮤지컬',
                 image: ImagePath.fire,
-                smallText: '나눔 활동이 활발한 뮤지컬이에요'),
-            HotShareList(),
+                smallText: '나눔 활동이 활발한 뮤지컬이에요',
+                categoryName: '뮤지컬'),
+            HotShareList(categoryName: '뮤지컬'),
             GrayLine(),
             ShowList(
               categoryName: '뮤지컬',

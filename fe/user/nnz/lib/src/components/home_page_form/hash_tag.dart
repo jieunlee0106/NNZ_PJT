@@ -23,7 +23,7 @@ class HashTag extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: List.generate(
-                  10,
+                  items.length,
                   (index) => Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -36,13 +36,13 @@ class HashTag extends StatelessWidget {
                         ),
                       ],
                       color: Color.fromARGB(255, 251, 247, 185),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      "#해시태그$index",
+                      items[index].tag,
                       style: TextStyle(
                         color: Config.blackColor,
-                        fontSize: 10,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

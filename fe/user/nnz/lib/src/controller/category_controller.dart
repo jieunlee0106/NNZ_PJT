@@ -11,6 +11,21 @@ class CategoryController extends GetxController {
   // final token = SharingRegisterController().getToken();
   late ShowListModel showList;
 
+  // 뮤지컬, 연극, 콘서트, 뮤직 페스티벌
+  getShowCategoryList(String categoryName) async {
+    try {
+      final response = await CategoryService()
+          .getShowCategoryList(categoryName: categoryName);
+      print('API 통신 중~~~$categoryName');
+
+      showList = ShowListModel.fromJson(response.data);
+      print('값 할당');
+      return categoryList.toList();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   // sport
   getCategoryList(String categoryName) async {
     try {
@@ -24,11 +39,11 @@ class CategoryController extends GetxController {
     }
   }
 
-  // 뮤지컬, 연극, 콘서트, 뮤직 페스티벌
-  getShowCategoryList(String categoryName) async {
+  // Hot 한 공연
+  getHotList(String categoryName) async {
     try {
-      final response = await CategoryService()
-          .getShowCategoryList(categoryName: categoryName);
+      final response =
+          await CategoryService().getHotList(categoryName: categoryName);
       print('API 통신 중~~~$categoryName');
 
       showList = ShowListModel.fromJson(response.data);

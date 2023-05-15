@@ -16,6 +16,13 @@ class HomeController extends GetxController {
   late List<PopularityList> popularity;
   late List<HashTagModel> hashTag;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getHashTag();
+    getHomeList();
+  }
+
   // 인기 해시테그 불러오기
   getHashTag() async {
     try {

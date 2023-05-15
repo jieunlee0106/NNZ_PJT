@@ -46,20 +46,10 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     loadPData();
-    loadLData();
     print('홈 인잇스테이트');
   }
 
   Future<void> loadPData() async {
-    await controller.getHomeList();
-    Plist = controller.popularity;
-    Tlist = controller.hashTag;
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  Future<void> loadLData() async {
     await controller.getHomeList();
     Plist = controller.popularity;
     Tlist = controller.hashTag;
