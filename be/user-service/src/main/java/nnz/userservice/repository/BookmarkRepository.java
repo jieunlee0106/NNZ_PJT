@@ -17,6 +17,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query("select bm.nanum from Bookmark bm " +
 //            "join fetch bm.nanum.tags t " +
             "join fetch bm.nanum.show s " +
-            "where bm.user = :user")
+            "where bm.user = :user and bm.isDelete = false")
     List<Nanum> findNanumByUser(@Param("user") User user);
 }
