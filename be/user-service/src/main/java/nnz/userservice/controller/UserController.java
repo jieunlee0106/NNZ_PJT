@@ -112,9 +112,13 @@ public class UserController {
     }
 
     @PostMapping("/users/bookmarks/{nanumId}")
-    public ResponseEntity<Void> toggleWish(@PathVariable Long nanumId, DecodedToken token) throws JsonProcessingException {
-        bookmarkService.toggleWish(token.getId(), nanumId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Map<String, Boolean>> toggleWish(@PathVariable Long nanumId, DecodedToken token) throws JsonProcessingException {
+        boolean wish = bookmarkService.toggleWish(token.getId(), nanumId);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("bookmark", wish);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/users/bookmarks")

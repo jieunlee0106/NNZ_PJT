@@ -6,5 +6,5 @@ public interface BookmarkService {
 
     void wish(Long userId, Long nanumId);
     void cancelWish(Long userId, Long nanumId);
-    void toggleWish(Long userId, Long nanumId) throws JsonProcessingException;
+    boolean toggleWish(Long userId, Long nanumId) throws JsonProcessingException;
 }

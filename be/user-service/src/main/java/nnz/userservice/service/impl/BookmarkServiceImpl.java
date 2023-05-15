@@ -79,7 +79,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public void toggleWish(Long userId, Long nanumId) throws JsonProcessingException {
+    public boolean toggleWish(Long userId, Long nanumId) throws JsonProcessingException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -89,11 +89,13 @@ public class BookmarkServiceImpl implements BookmarkService {
         Bookmark bookmark = bookmarkRepository.findByUserAndNanum(user, nanum)
                 .orElse(null);
 
+        boolean wish = false;
         KafkaMessage<BookmarkSyncDTO> kafkaMessage;
         if (bookmark != null) {
             if (bookmark.getIsDelete()) { // 찜했던 나눔이면
                 bookmark.reBookmark();
                 log.info("{}님이 '{}'를 찜", user.getEmail(), nanum.getTitle());
+                wish = true;
             } else { // 찜한 나눔이면 나눔 취소
                 bookmark.cancel();
                 log.info("{}님이 '{}'를 찜 해제", user.getEmail(), nanum.getTitle());
@@ -107,11 +109,13 @@ public class BookmarkServiceImpl implements BookmarkService {
                     .build();
 
             bookmarkRepository.save(bookmark);
+            wish = true;
             log.info("{}님이 '{}'를 찜", user.getEmail(), nanum.getTitle());
 
             kafkaMessage = KafkaMessage.create().body(BookmarkSyncDTO.of(bookmark));
         }
 
         kafkaProducer.sendMessage("bookmark", kafkaMessage);
+        return wish;
     }
 }
