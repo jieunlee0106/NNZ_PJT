@@ -219,6 +219,10 @@ public class NanumServiceImpl implements NanumService {
     public NanumInfoDTO readNanumInfo(Long nanumId, Long userId) {
         // todo : error handling
         Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+        // 작성자 본인의 경우
+        if (nanum.getProvider().getId() == userId) {
+            return NanumInfoDTO.of(nanum, null);
+        }
         User user = userRepository.findById(userId).orElseThrow();
         UserNanum userNanum = userNanumRepository.findByNanumAndReceiver(nanum, user).orElseThrow();
         return NanumInfoDTO.of(nanum, userNanum.getId());
@@ -333,9 +337,16 @@ public class NanumServiceImpl implements NanumService {
         keySet.sort((o1, o2) -> popularMap.get(o2).compareTo(popularMap.get(o1)));
 
         List<ResNanumDTO> resNanumDTOs = new ArrayList<>();
-        keySet.subList(0, 9).forEach(nanum -> {
-            resNanumDTOs.add(ResNanumDTO.of(nanum));
-        });
+        if (keySet.size() > 8) {
+            keySet.subList(0, 9).forEach(nanum -> {
+                resNanumDTOs.add(ResNanumDTO.of(nanum));
+            });
+        } //
+        else {
+            keySet.forEach(nanum -> {
+                resNanumDTOs.add(ResNanumDTO.of(nanum));
+            });
+        }
 
         return resNanumDTOs;
     }
