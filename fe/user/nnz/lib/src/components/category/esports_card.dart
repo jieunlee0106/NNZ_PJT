@@ -51,7 +51,7 @@ class EsportsCard extends StatelessWidget {
                           Text(
                             date,
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black),
                           ),
@@ -62,8 +62,8 @@ class EsportsCard extends StatelessWidget {
                             location,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -77,42 +77,75 @@ class EsportsCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(AteamLogo),
-                                Text(
-                                  AteamName,
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 12, 12, 12),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                          Expanded(
+                            flex: 3, 
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 22,
+                                    height: 22,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: const Color.fromARGB(
+                                          255, 255, 253, 253),
+                                      image: DecorationImage(
+                                        image: NetworkImage(AteamLogo),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    AteamName,
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 12, 12, 12),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Text(
-                            'VS',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
+                          Expanded(
+                            flex:1, 
+                            child: Text(
+                              'VS',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(BteamLogo),
-                                Text(
-                                  BteamName,
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 12, 12, 12),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                          Expanded(
+                            flex:3,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 22,
+                                    height: 22,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: const Color.fromARGB(
+                                          255, 255, 253, 253),
+                                      image: DecorationImage(
+                                        image: NetworkImage(AteamLogo),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    BteamName,
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 12, 12, 12),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

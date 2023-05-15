@@ -86,7 +86,7 @@ class Content {
         "leftTeam": leftTeam,
         "rightTeam": rightTeam,
         "location": location,
-        "date": dateValues.reverse[date],
+        "date": date,
         "ageLimit": ageLimit,
         // "showTags": List<dynamic>.from(showTags.map((x) => x)),
         "leftTeamImage": leftTeamImage,
@@ -94,19 +94,19 @@ class Content {
       };
 }
 
-enum Date {
-  THE_2023510_T18_30,
-  THE_2023511_T18_30,
-  THE_2023512_T18_30,
-  THE_2023513_T17_00
-}
+// enum Date {
+//   THE_2023510_T18_30,
+//   THE_2023511_T18_30,
+//   THE_2023512_T18_30,
+//   THE_2023513_T17_00
+// }
 
-final dateValues = EnumValues({
-  "2023.5.10T18:30": Date.THE_2023510_T18_30,
-  "2023.5.11T18:30": Date.THE_2023511_T18_30,
-  "2023.5.12T18:30": Date.THE_2023512_T18_30,
-  "2023.5.13T17:00": Date.THE_2023513_T17_00
-});
+// final dateValues = EnumValues({
+//   "2023.5.10T18:30": Date.THE_2023510_T18_30,
+//   "2023.5.11T18:30": Date.THE_2023511_T18_30,
+//   "2023.5.12T18:30": Date.THE_2023512_T18_30,
+//   "2023.5.13T17:00": Date.THE_2023513_T17_00
+// });
 
 class EnumValues<T> {
   Map<String, T> map;

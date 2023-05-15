@@ -13,6 +13,7 @@ import 'package:nnz/src/controller/likes_controller.dart';
 import 'package:nnz/src/model/likes_model.dart';
 import 'package:nnz/src/model/mypage_model.dart';
 import 'package:nnz/src/pages/home/home.dart';
+import 'package:nnz/src/pages/user/mypage.dart';
 
 class LikesPage extends StatefulWidget {
   const LikesPage({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _LikesPageState extends State<LikesPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ()),
+                MaterialPageRoute(builder: (context) => MyPage()),
               );
             },
           ),

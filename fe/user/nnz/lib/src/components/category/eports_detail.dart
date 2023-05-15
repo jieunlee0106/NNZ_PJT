@@ -171,7 +171,8 @@ class _EsportsBannerState extends State<EsportsBanner> {
                       }).toList(),
                     ),
                   ),
-                  EsportsList(sportsImg: img)
+                  ESportsList(sportsImg: img,
+                  sportName: esportsName)
                 ],
               ),
             ],

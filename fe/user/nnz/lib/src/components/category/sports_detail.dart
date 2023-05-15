@@ -24,7 +24,6 @@ class _SportsBannerState extends State<SportsBanner> {
   String startDate = '2023.04.01';
   String endDate = '미정';
   String sportsImg = ImagePath.bsbIcon;
-  String now = '';
 
   final List<String> _sports = [
     '야구',
