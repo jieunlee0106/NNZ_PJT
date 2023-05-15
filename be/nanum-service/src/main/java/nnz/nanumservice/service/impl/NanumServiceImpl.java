@@ -8,6 +8,8 @@ import nnz.nanumservice.dto.*;
 import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
+import nnz.nanumservice.dto.res.nanum.ResSearchNanumDTO;
+import nnz.nanumservice.dto.res.search.ResSearchDTO;
 import nnz.nanumservice.dto.res.show.ResNanumDetailShowDTO;
 import nnz.nanumservice.dto.res.tag.ResTagDTO;
 import nnz.nanumservice.dto.res.user.ResNanumWriterDTO;
@@ -19,9 +21,7 @@ import nnz.nanumservice.service.LocationDistance;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.service.TagFeignClient;
 import nnz.nanumservice.vo.NanumVO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -428,5 +428,23 @@ public class NanumServiceImpl implements NanumService {
 
         KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.update().body(nanumDTO);
         producer.sendMessage(kafkaMessage, "nanum");
+    }
+
+    @Override
+    public ResSearchDTO searchNanum(String query, Pageable pageable) {
+        PageRequest pageRequest =
+                PageRequest.of(
+                        pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdAt").descending()
+                );
+
+        // 제목, 나눔이 속한 공연의 제목, 나눔에 속한 태그의 이름에 검색어가 포함된 나눔을 검색
+        Page<Nanum> nanums = nanumRepository.findByQuery(query, pageRequest);
+        // 관련 태그: 나눔에 속한 태그 중에 조회수가 높은 순으로 10개
+        List<Tag> relatedTags = tagRepository.findByNanum(
+                nanums.getContent(),
+                PageRequest.of(0, 10, Sort.by("views").descending())
+        );
+
+        return ResSearchDTO.of(nanums, relatedTags);
     }
 }

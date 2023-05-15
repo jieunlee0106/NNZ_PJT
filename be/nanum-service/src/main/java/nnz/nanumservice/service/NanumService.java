@@ -5,8 +5,11 @@ import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
+import nnz.nanumservice.dto.res.nanum.ResSearchNanumDTO;
+import nnz.nanumservice.dto.res.search.ResSearchDTO;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -34,4 +37,5 @@ public interface NanumService {
     ResNanumStockDTO readNanumStock(Long nanumId);
 
     void updateNanum(Long id, Long writerId, NanumVO data, List<MultipartFile> images);
+    ResSearchDTO searchNanum(String query, Pageable pageable);
 }
