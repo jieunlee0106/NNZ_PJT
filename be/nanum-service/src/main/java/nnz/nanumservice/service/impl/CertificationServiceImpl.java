@@ -45,6 +45,11 @@ public class CertificationServiceImpl implements CertificationService {
 
         // true : 인증 성공, false : 인증 실패
         userNanum.updateIsCertificated(nanumCertificationVO.getCertification());
+
+        int countByIsCertificated = userNanumRepository.countByNanumAndIsCertificated(nanum, true);
+        if(countByIsCertificated == nanum.getQuantity()){
+            nanum.updateStatus(1);
+        }
     }
 
     @Override
