@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:get/get.dart';
 
 class SharingInfo extends StatelessWidget {
   // 나눔 한 / 받은
