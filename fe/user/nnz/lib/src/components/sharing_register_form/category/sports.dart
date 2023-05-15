@@ -124,7 +124,7 @@ class _SportsCategoryState extends State<SportsCategory> {
                     ),
                     icon: const Padding(
                       padding: EdgeInsets.only(
-                        left: 64,
+                        left: 42,
                       ),
                       child: Icon(
                         Icons.keyboard_arrow_down,

@@ -68,7 +68,7 @@ class _ShareAlertState extends State<ShareAlert> {
                             ),
                             icon: Padding(
                               padding: EdgeInsets.only(
-                                left: Get.width * 0.3,
+                                left: Get.width * 0.25,
                               ),
                               child: const Icon(
                                 Icons.keyboard_arrow_down,

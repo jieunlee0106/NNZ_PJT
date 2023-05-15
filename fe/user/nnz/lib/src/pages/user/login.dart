@@ -18,6 +18,7 @@ class Login extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: GestureDetector(
             onTap: () {
@@ -109,7 +110,7 @@ class Login extends StatelessWidget {
                               Get.toNamed("/findPassword");
                             },
                             child: const Text(
-                              "비밀번호를 잊어버리셨나요?",
+                              "비밀번호를\t잊어버리셨나요?",
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                               ),

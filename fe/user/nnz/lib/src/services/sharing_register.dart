@@ -19,7 +19,6 @@ class SharingRegisterProvider extends GetConnect {
   void onInit() async {
     await dotenv.load();
     httpClient.baseUrl = dotenv.env['BASE_URL'];
-    httpClient.timeout = const Duration(milliseconds: 5000);
     token = await storage.read(key: 'accessToken');
     super.onInit();
   }

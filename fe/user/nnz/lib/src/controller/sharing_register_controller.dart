@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
+import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/model/share_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -271,21 +272,27 @@ class SharingRegisterController extends GetxController {
       await showDialog(
         context: Get.context!,
         builder: (context) => AlertDialog(
-          title: const Text('Enter PIN'),
+          title: Text(
+            '핀번호를 입력해주세요',
+            style: TextStyle(
+              fontSize: 18,
+              color: Config.blackColor,
+            ),
+          ),
           content: TextField(
             controller: textController,
             keyboardType: TextInputType.number,
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('OK'),
+              child: const Text('확인'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('취소'),
             ),
           ],
         ),
@@ -307,7 +314,7 @@ class SharingRegisterController extends GetxController {
         Uri.parse(
             'https://api.twitter.com/1.1/statuses/update_with_media.json'),
       );
-      request.fields.addAll({'status': 'Hello World'}); // 트윗 메시지를 추가합니다.
+      request.fields.addAll({'status': titleController.text}); // 트윗 메시지를 추가합니다.
       request.files.add(await http.MultipartFile.fromPath(
         'media',
         fileInfo.path,
@@ -316,8 +323,10 @@ class SharingRegisterController extends GetxController {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(Get.context!).showSnackBar(
-          const SnackBar(content: Text('Tweet posted successfully')),
+          const SnackBar(content: Text('성공적으로 트윗 등록하였습니다.')),
         );
+        Get.until((route) => route.isFirst);
+        Get.offNamed("/app");
       } else {
         print('Failed to upload file. Error: ${response.reasonPhrase}');
       }
@@ -447,8 +456,30 @@ class SharingRegisterController extends GetxController {
           logger.i(response.statusCode);
           logger.i(response.statusText);
           if (response.statusCode == 201) {
-            Get.snackbar("완료", "등록완료하였습니다.");
-            Get.offNamed("/app");
+            ScaffoldMessenger.of(Get.context!).showSnackBar(
+              const SnackBar(content: Text('등록 완료하였습니다.')),
+            );
+            await showDialog(
+                context: Get.context!,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: const Text("트윗 등록하시겠습니까?"),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            register();
+                          },
+                          child: const Text("예")),
+                      TextButton(
+                        onPressed: () {
+                          Get.until((route) => route.isFirst);
+                          Get.offNamed("/app");
+                        },
+                        child: const Text("아니오"),
+                      ),
+                    ],
+                  );
+                });
           }
         } catch (e) {
           logger.i("$e");
@@ -490,16 +521,36 @@ class SharingRegisterController extends GetxController {
 
       try {
         final response = await SharingRegisterProvider()
-            .testShare(shareModel: shareModel, images: imageController.images)
-            .catchError((error) async {
-          logger.e("들어와 ${error.response?.statusCode}");
-        });
-        // logger.i(response.statusCode);
-        // logger.i(response.statusText);
-        // if (response.statusCode == 201) {
-        //   Get.snackbar("완료", "등록완료하였습니다.");
-        //   Get.offNamed("/app");
-        // }
+            .testShare(shareModel: shareModel, images: imageController.images);
+
+        logger.i(response.statusCode);
+        logger.i(response.statusText);
+        if (response.statusCode == 201) {
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            const SnackBar(content: Text('등록 완료하였습니다.')),
+          );
+          await showDialog(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: const Text("트윗 등록하시겠습니까?"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          register();
+                        },
+                        child: const Text("예")),
+                    TextButton(
+                      onPressed: () {
+                        Get.until((route) => route.isFirst);
+                        Get.offNamed("/app");
+                      },
+                      child: const Text("아니오"),
+                    ),
+                  ],
+                );
+              });
+        }
       } catch (e) {
         logger.e("$e");
       }
