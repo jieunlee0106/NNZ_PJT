@@ -5,13 +5,15 @@ import 'package:marquee/marquee.dart';
 class ShowCard extends StatelessWidget {
   final String image;
   final String title;
-  final String date;
+  final String startDate;
+  final String endDate;
   final String location;
 
   ShowCard({
     required this.image,
     required this.title,
-    required this.date,
+    required this.startDate,
+    required this.endDate,
     required this.location,
   });
 
@@ -72,8 +74,9 @@ class ShowCard extends StatelessWidget {
                       ),
                       Text('공연 기간'),
                       Text(
-                        date,
+                        '$startDate ~ $endDate',
                         style: TextStyle(
+                          fontSize: 12,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),

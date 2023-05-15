@@ -8,6 +8,7 @@ import 'package:nnz/src/model/register_model.dart';
 class LikesService extends GetConnect {
   final token = Get.find<BottomNavController>().accessToken;
   final dio = Dio();
+  final userId = Get.find<BottomNavController>().userId;
 
   @override
   void onInit() async {
@@ -18,17 +19,17 @@ class LikesService extends GetConnect {
     super.onInit();
   }
 
-  Future<dynamic> getLikesList({required int userId}) async {
+  Future<dynamic> getLikesList() async {
     try {
+      print('찜 리스트 통신한다');
       final response = await dio.get(
-        'https://k8b207.p.ssafy.io/api/user-service/users/bookmarks?userId=$userId',
+        'https://k8b207.p.ssafy.io/api/user-service/users/bookmarks?userId=12',
         options: Options(
           headers: {
             "authorization": "Bearer $token",
           },
         ),
       );
-      print(userId);
       print('찜 리스트 통신 성공');
       return response;
     } catch (e) {

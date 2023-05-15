@@ -8,7 +8,10 @@ import 'package:nnz/src/model/nanum_type_list_model.dart';
 class ShareList extends StatefulWidget {
   final List<Content> items;
 
-  const ShareList({Key? key, required this.items}) : super(key: key);
+  const ShareList({
+    Key? key,
+    required this.items,
+  }) : super(key: key);
 
   @override
   _ShareListState createState() => _ShareListState();
@@ -45,7 +48,7 @@ class _ShareListState extends State<ShareList> {
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 255, 253, 253),
                                 image: DecorationImage(
-                                  image: NetworkImage(item.thumbnail!),
+                                  image: NetworkImage(item.thumbnail ?? ''),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -115,7 +118,7 @@ class _ShareListState extends State<ShareList> {
                                       onTap: () =>
                                           Get.to(() => MySharedDetail()),
                                       child: Text(
-                                        item.title!,
+                                        item.title ?? '',
                                         style: TextStyle(
                                           color: Config.blackColor,
                                           fontSize: 14,
@@ -127,7 +130,7 @@ class _ShareListState extends State<ShareList> {
                                   ),
                                   const SizedBox(height: 7),
                                   Text(
-                                    item.date!,
+                                    item.date ?? '',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Config.grayFontColor,
@@ -138,7 +141,7 @@ class _ShareListState extends State<ShareList> {
                                   ),
                                   const SizedBox(height: 7),
                                   Text(
-                                    item.location!,
+                                    item.location ?? '',
                                     style: TextStyle(
                                       fontSize: 13,
                                       color: Config.grayFontColor,

@@ -8,7 +8,6 @@ class HomeCategory extends StatelessWidget {
   final String image;
   final String categoryListName;
   final Widget page;
-  final CategoryController categoryController = Get.find<CategoryController>();
 
   HomeCategory({
     super.key,
@@ -22,7 +21,6 @@ class HomeCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await categoryController.getCategoryList(categoryListName);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => page),

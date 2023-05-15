@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/controller/list_scroll_controller.dart';
+import 'package:nnz/src/model/nanum_type_list_model.dart';
 import 'package:nnz/src/model/receive_type_list_model.dart';
 import 'package:nnz/src/model/share_request_model.dart';
 

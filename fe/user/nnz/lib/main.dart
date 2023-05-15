@@ -5,6 +5,7 @@ import 'package:nnz/src/bindings/init_bindings.dart';
 import 'package:nnz/src/components/other_user_from/other_user_profile_twitter.dart';
 import 'package:nnz/src/components/sharing_detail/test_infinite.dart';
 import 'package:nnz/src/components/test_message/firebase_message.dart';
+import 'package:nnz/src/pages/home/likes_page.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/pages/share/my_shared_info.dart';
@@ -236,6 +237,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/otherShareInfo",
           page: () => const ShareInfoPage(),
+        ),
+        GetPage(
+          name: "/likes",
+          page: () => const LikesPage(),
         ),
       ],
     );

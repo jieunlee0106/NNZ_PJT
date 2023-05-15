@@ -3,77 +3,60 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/config/token.dart';
-import 'package:nnz/src/pages/home/likes_page.dart';
-import 'package:nnz/src/pages/user/mypage.dart';
-import 'package:nnz/src/pages/user/register.dart';
 
 import '../components/message_popup.dart';
 
-enum PageName {
-  HOME,
-  SEARCH,
-  UPLOAD,
-  ACTIVITY,
-  MYPAGE,
-}
+enum PageName { HOME, SERACH, UPLOAD, ACTIVITY, MYPAGE }
 
 class BottomNavController extends GetxController {
   RxInt navIndex = 0.obs;
   RxInt curIndex = 0.obs;
-  String? currentRoute;
   List<int> bottomHistory = [0];
   GlobalKey<NavigatorState> mypageKey = GlobalKey<NavigatorState>();
   final storage = const FlutterSecureStorage();
   String? accessToken;
-  String? refreshToken;
   String? userId;
-
   void changeBottomNav(int value, {bool hasGesture = true}) async {
     var page = PageName.values[value];
     print(page);
     switch (page) {
-      case PageName.HOME:
-        changeIndex(value);
-        break;
-      case PageName.SEARCH:
-        changeIndex(value);
-        break;
       case PageName.UPLOAD:
         curIndex(page.index);
         accessToken = await getToken();
-        refreshToken = await Token.getRefreshToken();
         userId = await getUserId();
-
-        print(accessToken);
         if (accessToken == null) {
-          print("$accessToken $refreshToken");
+          print(accessToken);
           Get.offNamed("/register");
+          // return;
         } else {
           Get.toNamed("/sharingRegister");
         }
+        // Get.toNamed("/sharingRegister");
         break;
+      case PageName.HOME:
+      case PageName.SERACH:
+        changeIndex(value);
         break;
+      case PageName.ACTIVITY:
+        curIndex(page.index);
+        accessToken = await getToken();
+        if (accessToken == null) {
+          print(accessToken);
+          Get.offNamed("/register");
+          return;
+        }
+        changeIndex(value);
+        break;
+
       case PageName.MYPAGE:
         curIndex(page.index);
         accessToken = await getToken();
         if (accessToken == null) {
           print(accessToken);
           Get.offNamed("/register");
-        } else {
-          Get.to(() => MyPage());
+          return;
         }
-        break;
-      case PageName.ACTIVITY:
-        curIndex(page.index);
-        accessToken = await getToken();
-
-        if (accessToken == null) {
-          print(accessToken);
-          Get.offNamed("/register");
-        } else {
-          Get.to(() => LikesPage());
-        }
+        changeIndex(value);
         break;
     }
   }
@@ -123,7 +106,7 @@ class BottomNavController extends GetxController {
   }
 
   Future<bool> willPopAction() async {
-    //bottomHistory가 하나 요소가 남았을 때 시스템 종료 할 수 있게끔....
+    //bottomHisttory가 하나 요소가 남았을 떄 시스템 종료 할 수 있게끔....
     if (bottomHistory.length == 1) {
       showDialog(
         context: Get.context!,
@@ -139,15 +122,11 @@ class BottomNavController extends GetxController {
       );
       return true;
     }
-//아직 요소들이 남아있다면 마지막 요소를 제거하고 changeIndex까지 해준다.
+    //아직 요소들이 남아있다면 마지막 요소를 제거하고 체인지 index까지 해주면 된다.
     else {
       bottomHistory.removeLast();
       var index = bottomHistory.last;
       changeIndex(index, hasGesture: false);
-//Mypage 페이지를 떠날 때 네비게이터 스택을 제거한다.
-      if (index != PageName.MYPAGE.index) {
-        mypageKey.currentState!.popUntil((route) => route.isFirst);
-      }
       return false;
     }
   }

@@ -6,17 +6,22 @@ import 'package:nnz/src/model/receive_type_list_model.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
 import 'package:nnz/src/services/category_service.dart';
+import 'package:nnz/src/services/likes_service.dart';
 import 'package:nnz/src/services/my_page_service.dart';
 import 'package:nnz/src/services/mypage_share_list_service.dart';
 
 class LikesController extends GetxController {
-  late Likes likes;
-  late ReceiveTypeList receiveTypeList;
+  late List<Likes> likesList;
 
-  getShareList(String type) async {
+  getLikesList() async {
     try {
-      final response = await MyPageShareListService().getShareList(type: type);
-      likes = Likes.fromJson(response.data);
+      final response = await LikesService().getLikesList();
+      print(response);
+      print(response.data.runtimeType);
+      List<dynamic> items =
+          response.data.map((item) => Map<String, dynamic>.from(item)).toList();
+      likesList = items.map((item) => Likes.fromJson(item)).toList();
+      // print(items);
       print('좋아요 나눔 목록 불러오기');
     } catch (e) {
       print(e);

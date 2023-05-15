@@ -6,12 +6,14 @@ class HotShareText extends StatelessWidget {
   final String text;
   final String image;
   final String smallText;
+  final String categoryName;
 
   const HotShareText({
     super.key,
     required this.text,
     required this.image,
     required this.smallText,
+    required this.categoryName,
   });
 
   @override

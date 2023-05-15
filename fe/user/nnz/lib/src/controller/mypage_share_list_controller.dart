@@ -15,14 +15,18 @@ class MyPageShareListController extends GetxController {
   getShareList(String type) async {
     try {
       final response = await MyPageShareListService().getShareList(type: type);
-      if (type == 'nanums') {
+      print(response.data);
+      print(response.data.totalElements.toString());
+      if (type == 'give') {
         nanumTypeList = NanumTypeList.fromJson(response.data);
+        print(nanumTypeList);
         print('한 나눔 목록 저장');
       } else {
         receiveTypeList = ReceiveTypeList.fromJson(response.data);
         print('받은 나눔 목록 저장');
       }
       print('값 할당');
+      print(nanumTypeList);
     } catch (e) {
       print(e);
     }

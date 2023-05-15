@@ -1,24 +1,54 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nnz/src/components/category/show_list.dart';
+import 'package:nnz/src/model/show_list_model.dart';
 import 'package:nnz/src/controller/sharing_register_controller.dart';
 
 import 'package:nnz/src/services/category_service.dart';
 
 class CategoryController extends GetxController {
   var categoryList = [];
-  final token = SharingRegisterController().getToken();
+  // final token = SharingRegisterController().getToken();
+  late ShowListModel showList;
+
+  // 뮤지컬, 연극, 콘서트, 뮤직 페스티벌
+  getShowCategoryList(String categoryName) async {
+    try {
+      final response = await CategoryService()
+          .getShowCategoryList(categoryName: categoryName);
+      print('API 통신 중~~~$categoryName');
+
+      showList = ShowListModel.fromJson(response.data);
+      print('값 할당');
+      return categoryList.toList();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // sport
   getCategoryList(String categoryName) async {
     try {
-      final data =
+      final response =
           await CategoryService().getCategoryList(categoryName: categoryName);
-      // categoryList.assignAll(data.date['content']);
-      // print(data.data['content']);
-      print('API 통신 중~~~~~~~~~~~~~~$categoryName');
-      categoryList = data.data['content'];
-      print('$token !!!!!!!!!');
+      print(response);
+      // categoryList = data.data['content'];
       return categoryList.toList();
+    } catch (e) {
+      print(e);
+    }
+  }
 
-      // print('할당 완');
-      // assignAll 메소드는 RxList에 새로운 요소를 추가하고, 리스트를 업데이트합니다.
+  // Hot 한 공연
+  getHotList(String categoryName) async {
+    try {
+      final response =
+          await CategoryService().getHotList(categoryName: categoryName);
+      print('API 통신 중~~~$categoryName');
+
+      showList = ShowListModel.fromJson(response.data);
+      print('값 할당');
+      return categoryList.toList();
     } catch (e) {
       print(e);
     }
