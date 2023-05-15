@@ -22,6 +22,10 @@ public class PermilAllUrlPattern {
             Pattern.compile(NANUM_SERVICE + "/nanums" + ID_PATH_VARIABLE), // 나눔 상세 조회
             Pattern.compile(NANUM_SERVICE + "/nanums"), // 나눔 조회
             Pattern.compile(NANUM_SERVICE + "/nanums/popular"), // 인기 나눔 조회
+            Pattern.compile(NANUM_SERVICE + "/nanums/location"), // 위치 기반 즉시 가능 나눔 조회
+            Pattern.compile(NANUM_SERVICE + "/nanums/tag"), // 해시태그로 나눔 목록 조회
+
+
 
 //                "/search", // 검색
             // Show Service
@@ -31,9 +35,12 @@ public class PermilAllUrlPattern {
             Pattern.compile(SHOW_SERVICE + "/shows" + ID_PATH_VARIABLE), // 공연 상세 조회
             Pattern.compile(SHOW_SERVICE + "/shows/popular"), // 인기 공연 조회
             Pattern.compile(SHOW_SERVICE + "/shows/search"), // 나눔 등록 시 공연 조회
+            Pattern.compile(SHOW_SERVICE + "/shows/tag"), // 해시태그로 공연 목록 조회
+
 
             // Tag Service
             Pattern.compile(TAG_SERVICE + "/tags"), // 인기 해시태그 조회
+            Pattern.compile(TAG_SERVICE + "/tags/search"), // 검색어 연관 해시태그 조회
     };
 
     private static final Pattern[] postPermitAllPatterns = {
