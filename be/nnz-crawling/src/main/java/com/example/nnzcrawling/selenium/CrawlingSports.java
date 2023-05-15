@@ -22,16 +22,16 @@ public class CrawlingSports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+//    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
 
-//    @Value("${web-driver.chrome.driver-path}")
-//    private String webDriverPath;
+    @Value("${web-driver.chrome.driver-path}")
+    private String webDriverPath;
 
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
         log.info("Sports crawling start.");
-        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
+        System.setProperty(WEB_DRIVER_ID, webDriverPath);
 //        System.setProperty(WEB_DRIVER_ID, webDriverPath);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
@@ -167,12 +167,12 @@ public class CrawlingSports {
                 String rTeamImg = null;
                 try {
                     Thread.sleep(1000);
-                    lTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
-                    rTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
+                    lTeamImg = leftTeams.get(j).findElement(By.cssSelector("a > img")).getAttribute("src");
+                    rTeamImg = rightTeams.get(j).findElement(By.cssSelector("a > img")).getAttribute("src");
                 } catch (Exception e) {
                     Thread.sleep(1000);
-                    lTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
-                    rTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
+                    lTeamImg = leftTeams.get(j).findElement(By.cssSelector("a > img")).getAttribute("src");
+                    rTeamImg = rightTeams.get(j).findElement(By.cssSelector("a > img")).getAttribute("src");
                 }
                 String title = leftTeam + " vs " + rightTeam;
 
