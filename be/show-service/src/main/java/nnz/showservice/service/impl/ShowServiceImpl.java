@@ -1,7 +1,9 @@
 package nnz.showservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.exception.CustomException;
+import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import nnz.showservice.dto.ShowDTO;
 import nnz.showservice.dto.ShowTagDTO;
@@ -11,6 +13,7 @@ import nnz.showservice.dto.res.ResBannerDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.entity.*;
 import nnz.showservice.repository.*;
+import nnz.showservice.service.KafkaProducer;
 import nnz.showservice.service.ShowService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,6 +40,7 @@ public class ShowServiceImpl implements ShowService {
     private final TagRepository tagRepository;
     private final ShowTagRepository showTagRepository;
     private final BannerRepository bannerRepository;
+    private final KafkaProducer producer;
 
     @Override
     public ShowDTO readShowInfo(Long showId) {
@@ -118,10 +122,21 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
+    @Transactional
     public PageDTO readShowsByShowTag(String showTagName, PageRequest pageRequest) {
 
         // todo : error handling
         Tag tag = tagRepository.findByTag(showTagName).orElseThrow();
+        // 태그로 검색하는 경우는 공연, 나눔 API 둘다 호출하기 때문에
+        // 공연 정보가 없더라도 해당 태그의 카운트만 하나 증가시켜 주면 된다.
+        tag.updatePlusViews();
+        KafkaMessage<TagDTO> message = KafkaMessage.update().body(TagDTO.of(tag));
+        try {
+            producer.sendMessage(message);
+        } catch (JsonProcessingException e) {
+            // todo: error handling
+        }
+
         List<ShowTag> showTags = showTagRepository.findAllByTag(tag);
 
         List<Show> shows = new ArrayList<>();
@@ -145,7 +160,7 @@ public class ShowServiceImpl implements ShowService {
         List<Show> shows = showRepository.findAllByCategory(category);
 
         Map<Show, Integer> popularMap = new HashMap<>();
-        for (Show show: shows) {
+        for (Show show : shows) {
             popularMap.put(show, show.getNanums().size());
         }
 
@@ -153,9 +168,16 @@ public class ShowServiceImpl implements ShowService {
         keySet.sort(((o1, o2) -> popularMap.get(o2).compareTo(popularMap.get(o1))));
 
         List<ResShowDTO> resShowDTOs = new ArrayList<>();
-        keySet.subList(0, 9).forEach(show -> {
-            resShowDTOs.add(ResShowDTO.of(show));
-        });
+        if (keySet.size() > 8) {
+            keySet.subList(0, 9).forEach(show -> {
+                resShowDTOs.add(ResShowDTO.of(show));
+            });
+        } //
+        else {
+            keySet.forEach(show -> {
+                resShowDTOs.add(ResShowDTO.of(show));
+            });
+        }
 
         return resShowDTOs;
     }

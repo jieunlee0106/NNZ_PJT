@@ -24,6 +24,19 @@ spring:
         globally_quoted_identifiers: true
         format_sql: true
 
+  kafka:
+    prefix: dev-
+    bootstrap-servers: http://localhost:9092
+    consumer:
+      #      group-id: dev-user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      topic: dev-tag
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 eureka:
   client:
     register-with-eureka: true

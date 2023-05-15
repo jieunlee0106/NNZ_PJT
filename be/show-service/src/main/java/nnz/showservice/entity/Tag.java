@@ -30,4 +30,8 @@ public class Tag {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
+
+    public void updatePlusViews() {
+        this.views += 1;
+    }
 }
