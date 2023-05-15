@@ -28,12 +28,15 @@ public class BannerDTO {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
 
+    private boolean isDelete;
+
     public static BannerDTO of(Banner banner) {
         return BannerDTO.builder()
                 .id(banner.getId())
                 .image(banner.getImage())
                 .showId(banner.getShow().getId())
                 .updatedAt(banner.getUpdatedAt())
+                .isDelete(banner.isDelete())
                 .build();
     }
 }

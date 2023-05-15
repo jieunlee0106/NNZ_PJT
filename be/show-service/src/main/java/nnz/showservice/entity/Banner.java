@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import nnz.showservice.dto.BannerDTO;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,4 +33,18 @@ public class Banner {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
+
+    private boolean isDelete;
+
+    public void updateBanner(BannerDTO bannerDTO, Show show) {
+        this.id = bannerDTO.getId();
+        this.image = bannerDTO.getImage();
+        this.show = show;
+        this.updatedAt = bannerDTO.getUpdatedAt();
+    }
+
+    public void deleteBanner(LocalDateTime updatedAt) {
+        this.isDelete = true;
+        this.updatedAt = updatedAt;
+    }
 }

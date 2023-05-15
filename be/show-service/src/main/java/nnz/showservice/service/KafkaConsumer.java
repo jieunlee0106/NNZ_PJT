@@ -5,9 +5,12 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import io.github.eello.nnz.common.kafka.KafkaMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nnz.showservice.dto.BannerDTO;
 import nnz.showservice.dto.NanumDTO;
+import nnz.showservice.entity.Banner;
 import nnz.showservice.entity.Nanum;
 import nnz.showservice.entity.Show;
+import nnz.showservice.repository.BannerRepository;
 import nnz.showservice.repository.NanumRepository;
 import nnz.showservice.repository.ShowRepository;
 import org.springframework.data.domain.Page;
@@ -19,14 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@KafkaListener(topics = "dev-nanum", groupId = "show-service-1")
 public class KafkaConsumer {
 
     private final ShowRepository showRepository;
     private final NanumRepository nanumRepository;
+    private final BannerRepository bannerRepository;
 
-    @KafkaHandler // 카프카의 해당 토픽에서 메시지를 얻으면 실행되는 함수
     @Transactional
+    @KafkaListener(topics = "dev-nanum", groupId = "show-service-1")
     public void getNanumMessage(String message) throws JsonProcessingException {
         KafkaMessage<NanumDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumDTO.class);
         log.info("consume message: {}", message);
@@ -61,6 +64,45 @@ public class KafkaConsumer {
         else {
             nanum = nanumRepository.findById(kafkaMessage.getBody().getId()).orElseThrow();
             nanum.deleteNanum(kafkaMessage.getBody().getUpdatedAt());
+        }
+    }
+
+    @Transactional
+    @KafkaListener(topics = "dev-banner", groupId = "show-service-2")
+    public void getBannerMessage(String message) throws JsonProcessingException {
+        KafkaMessage<BannerDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, BannerDTO.class);
+        log.info("consume message: {}", message);
+        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+
+        Banner banner = null;
+
+        // logic
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            // todo: error handling
+            Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();
+            banner = Banner.builder()
+                    .id(kafkaMessage.getBody().getId())
+                    .show(show)
+                    .image(kafkaMessage.getBody().getImage())
+                    .updatedAt(kafkaMessage.getBody().getUpdatedAt())
+                    .build();
+            bannerRepository.save(banner);
+        } //
+        else if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.UPDATE) {
+            banner = bannerRepository.findById(kafkaMessage.getBody().getId()).orElseThrow();
+
+            if (banner.getUpdatedAt().isAfter(kafkaMessage.getBody().getUpdatedAt())) {
+                log.info("current banner is the latest.");
+                return;
+            }
+
+            Show show = showRepository.findById(kafkaMessage.getBody().getShowId()).orElseThrow();
+            banner.updateBanner(kafkaMessage.getBody(), show);
+        } //
+        else {
+            banner = bannerRepository.findById(kafkaMessage.getBody().getId()).orElseThrow();
+            banner.deleteBanner(kafkaMessage.getBody().getUpdatedAt());
         }
     }
 }
