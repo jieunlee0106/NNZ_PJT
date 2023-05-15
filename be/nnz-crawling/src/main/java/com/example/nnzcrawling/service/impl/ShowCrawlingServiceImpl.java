@@ -41,7 +41,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "00 00 02 1/1 * *")
+    @Scheduled(cron = "00 00 15 1/1 * *")
     @Transactional
     public void createShow() {
         LocalDateTime startTime = LocalDateTime.now();

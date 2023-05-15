@@ -25,16 +25,16 @@ public class CrawlingShows {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-//    private final String WEB_DRIVER_PATH = "/Users/jongseong/dev/ssafy/2nd/free-project/crawling_service/be/nnz-crawling/chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver";
 
-    @Value("${web-driver.chrome.driver-path}")
-    private String webDriverPath;
+//    @Value("${web-driver.chrome.driver-path}")
+//    private String webDriverPath;
 
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
         log.info("Show crawling start.");
-        System.setProperty(WEB_DRIVER_ID, webDriverPath);
+        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 
 //        //크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();

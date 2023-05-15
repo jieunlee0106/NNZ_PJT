@@ -22,16 +22,17 @@ public class CrawlingSports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-//    private final String WEB_DRIVER_PATH = "/Users/jongseong/dev/ssafy/2nd/free-project/crawling_service/be/nnz-crawling/chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver";
 
-    @Value("${web-driver.chrome.driver-path}")
-    private String webDriverPath;
+//    @Value("${web-driver.chrome.driver-path}")
+//    private String webDriverPath;
 
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
         log.info("Sports crawling start.");
-        System.setProperty(WEB_DRIVER_ID, webDriverPath);
+        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
+//        System.setProperty(WEB_DRIVER_ID, webDriverPath);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless");
@@ -138,12 +139,12 @@ public class CrawlingSports {
 
             // 왼쪽 팀
             List<WebElement> leftTeams = driver.findElements(By.cssSelector(
-                    "div.db_area._schedule_info > div.db_list.db_list_flex > table > tbody > tr > td.l_team > span > a"
+                    "div.db_area._schedule_info > div.db_list.db_list_flex > table > tbody > tr > td.l_team"
             ));
 
             // 오른쪽 팀
             List<WebElement> rightTeams = driver.findElements(By.cssSelector(
-                    "div.db_area._schedule_info > div.db_list.db_list_flex > table > tbody > tr > td.r_team > span > a"
+                    "div.db_area._schedule_info > div.db_list.db_list_flex > table > tbody > tr > td.r_team"
             ));
 
             // 장소
@@ -155,26 +156,18 @@ public class CrawlingSports {
                 // times, leftTeams, rightTeams, locations, records
                 ShowCrawling showCrawling = new ShowCrawling();
 
-                String leftTeam = leftTeams.get(j).getAttribute("title");
-                String rightTeam = rightTeams.get(j).getAttribute("title");
+                String leftTeam = leftTeams.get(j).findElement(By.cssSelector(" > span > a")).getAttribute("title");
+                String rightTeam = rightTeams.get(j).findElement(By.cssSelector(" > span > a")).getAttribute("title");
                 String lTeamImg = null;
                 String rTeamImg = null;
                 try {
                     Thread.sleep(1000);
-                    lTeamImg = driver.findElement(By.cssSelector(
-                            "table > tbody > tr:nth-child(1) > td.l_team > a > img"
-                    )).getAttribute("src");
-                    rTeamImg = driver.findElement(By.cssSelector(
-                            "table > tbody > tr:nth-child(1) > td.r_team > a > img"
-                    )).getAttribute("src");
+                    lTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
+                    rTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
                 } catch (Exception e) {
                     Thread.sleep(1000);
-                    lTeamImg = driver.findElement(By.cssSelector(
-                            "table > tbody > tr:nth-child(1) > td.l_team > a > img"
-                    )).getAttribute("src");
-                    rTeamImg = driver.findElement(By.cssSelector(
-                            "table > tbody > tr:nth-child(1) > td.r_team > a > img"
-                    )).getAttribute("src");
+                    lTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
+                    rTeamImg = driver.findElement(By.cssSelector("a > img")).getAttribute("src");
                 }
                 String title = leftTeam + " vs " + rightTeam;
 
