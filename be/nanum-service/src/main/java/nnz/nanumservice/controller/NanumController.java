@@ -77,8 +77,10 @@ public class NanumController {
     }
 
     @GetMapping("/{nanumId}/info")
-    public ResponseEntity<NanumInfoDTO> createNanumInfo(@PathVariable(name = "nanumId") Long nanumId) {
-        return new ResponseEntity<>(nanumService.readNanumInfo(nanumId), HttpStatus.OK);
+    public ResponseEntity<NanumInfoDTO> createNanumInfo(
+            @PathVariable(name = "nanumId") Long nanumId,
+            DecodedToken userToken) {
+        return new ResponseEntity<>(nanumService.readNanumInfo(nanumId, userToken.getId()), HttpStatus.OK);
     }
 
     @GetMapping("/{nanumId}")

@@ -216,10 +216,12 @@ public class NanumServiceImpl implements NanumService {
     }
 
     @Override
-    public NanumInfoDTO readNanumInfo(Long nanumId) {
+    public NanumInfoDTO readNanumInfo(Long nanumId, Long userId) {
         // todo : error handling
         Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
-        return NanumInfoDTO.of(nanum);
+        User user = userRepository.findById(userId).orElseThrow();
+        UserNanum userNanum = userNanumRepository.findByNanumAndReceiver(nanum, user).orElseThrow();
+        return NanumInfoDTO.of(nanum, userNanum.getId());
     }
 
     @Override
@@ -310,27 +312,11 @@ public class NanumServiceImpl implements NanumService {
                 .isReceived(false)
                 .build();
 
-        if (nanum.getIsCertification()) {
-            userNanum.updateIsCertificated(false);
-        } //
-        else {
-            userNanum.updateIsCertificated(true);
-        }
-
         userNanumRepository.save(userNanum);
 
         UserNanumDTO userNanumDTO = UserNanumDTO.of(userNanum);
         KafkaMessage<UserNanumDTO> userNanumDTOKafkaMessage = KafkaMessage.create().body(userNanumDTO);
         producer.sendMessage(userNanumDTOKafkaMessage, "usernanum");
-
-        List<UserNanum> userNanums = userNanumRepository.findAllByNanumAndIsCertificatedTrue(nanum);
-        if (userNanums.size() == nanum.getQuantity()) {
-            nanum.updateStatus(1);
-
-            NanumDTO nanumDTO = NanumDTO.of(nanum);
-            KafkaMessage<NanumDTO> nanumDTOKafkaMessage = KafkaMessage.update().body(nanumDTO);
-            producer.sendMessage(nanumDTOKafkaMessage, "nanum");
-        }
     }
 
     @Override

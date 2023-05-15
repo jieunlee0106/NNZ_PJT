@@ -30,13 +30,17 @@ public class NanumInfoDTO {
 
     private String outfit;
 
-    public static NanumInfoDTO of(Nanum nanum) {
+    // user nanum entity ID : QR 인증을 위해 넘겨주는 값
+    private Long receiveId;
+
+    public static NanumInfoDTO of(Nanum nanum, Long id) {
         return NanumInfoDTO.builder()
                 .nanumTime(nanum.getNanumInfo().getNanumTime())
                 .location(nanum.getNanumInfo().getLocation())
                 .lat(nanum.getNanumInfo().getLat())
                 .lng(nanum.getNanumInfo().getLng())
                 .outfit(nanum.getNanumInfo().getOutfit())
+                .receiveId(id)
                 .build();
     }
 }

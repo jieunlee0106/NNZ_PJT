@@ -23,7 +23,7 @@ public interface NanumService {
 
     void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO);
 
-    NanumInfoDTO readNanumInfo(Long nanumId);
+    NanumInfoDTO readNanumInfo(Long nanumId, Long userId);
 
     ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId);
 
