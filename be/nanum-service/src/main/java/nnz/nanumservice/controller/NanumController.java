@@ -15,6 +15,7 @@ import nnz.nanumservice.service.impl.FCMService;
 import nnz.nanumservice.service.impl.NcpPushNotificationService;
 import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
+import nnz.nanumservice.vo.NcpDeviceVO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -128,17 +129,38 @@ public class NanumController {
     }
 
     @GetMapping("/push")
-    public ResponseEntity<?> testNotifictaion(@RequestBody FCMNotificationDTO fcmNotificationDTO) throws IOException {
+    public ResponseEntity<?> testNotifictaion() throws IOException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException {
 //        fcmService.sendMessage(fcmNotificationDTO);
 //        fcmService.sendMessgeTo(fcmNotificationDTO);
 //        fcmService.chatgpt(fcmNotificationDTO);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/ncp/push/registDevice/{userId}/{token}")
-    public ResponseEntity<?> registDevice(@PathVariable("userId") Long id,
-                                          @PathVariable("token") String token) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        ncpPushNotificationService.registDevice(id, token);
+    @PostMapping("/ncp/push/sendMessage/{id}")
+    public ResponseEntity<?> sendMessage(@PathVariable("id") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        ncpPushNotificationService.sendNcpPush(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/ncp/push/registDevice")
+    public ResponseEntity<?> registDevice(@RequestBody NcpDeviceVO ncpDeviceVO) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        ncpPushNotificationService.registDevice(ncpDeviceVO);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/ncp/push/deleteDevice/{userId}")
+    public ResponseEntity<?> deleteDevice(@PathVariable("userId") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        ncpPushNotificationService.deleteDevice(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/ncp/push/getDevice/{userId}")
+    public ResponseEntity<?> getDevice(@PathVariable("userId") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        return ResponseEntity.ok(ncpPushNotificationService.getDevice(id));
+    }
+
+    @GetMapping("/ncp/push/sendMessage/{id}")
+    public ResponseEntity<?> resultMessage(@PathVariable("id") String id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        return ResponseEntity.ok(ncpPushNotificationService.resultMessage(id));
     }
 }
