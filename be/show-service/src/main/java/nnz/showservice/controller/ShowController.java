@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import nnz.showservice.dto.BannerDTO;
 import nnz.showservice.dto.CategoryDTO;
 import nnz.showservice.dto.ShowDTO;
+import nnz.showservice.dto.TagDTO;
 import nnz.showservice.dto.res.ResBannerDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.service.CategoryService;
@@ -70,5 +71,13 @@ public class ShowController {
     @GetMapping("/poster")
     public ResponseEntity<List<ResBannerDTO>> readBanners() {
         return new ResponseEntity<>(showService.readBanner(), HttpStatus.OK);
+    }
+
+    /**
+     * 공연에 등록된 태그
+     */
+    @GetMapping("/{showId}/tags")
+    public ResponseEntity<List<TagDTO>> readShowTagByShow(@PathVariable Long showId, @RequestParam("count") Integer count) {
+        return ResponseEntity.ok(showService.readShowTagByShow(showId, count));
     }
 }
