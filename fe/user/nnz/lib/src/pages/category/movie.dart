@@ -36,7 +36,7 @@ class _MoviePageState extends State<MoviePage> {
                 categoryName: '뮤지컬'),
             HotShareList(categoryName: '뮤지컬'),
             GrayLine(),
-            ShowList(categoryName: '뮤직 페스티벌'),
+            ShowList(categoryName: '뮤직페스티벌'),
           ],
         ),
       ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:geolocator/geolocator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:nnz/src/components/home_page_form/home_banner.dart';
 import 'package:nnz/src/components/home_page_form/category_form.dart';
 import 'package:nnz/src/components/home_page_form/hash_tag.dart';
@@ -39,8 +40,13 @@ class _HomeState extends State<Home> {
 
   late List<HashTagModel> Tlist;
   late List<PopularityList> Plist;
+
+  late double lng;
+  late double lat;
+
   // late List<LoctaionList> Llist;
   bool _isLoading = true;
+  bool _location = false;
 
   @override
   void initState() {
@@ -53,8 +59,25 @@ class _HomeState extends State<Home> {
     await controller.getHomeList();
     Plist = controller.popularity;
     Tlist = controller.hashTag;
+
+    // if (_location) {
+    //   Future<void> getLoc() async {
+    //     await controller.getHomeList();
+    //     Llist = controller.
+    //   }
+    // }
     setState(() {
       _isLoading = false;
+    });
+  }
+
+  Future<void> getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    lng = position.longitude;
+    lat = position.latitude;
+    setState(() {
+      _location = true;
     });
   }
 

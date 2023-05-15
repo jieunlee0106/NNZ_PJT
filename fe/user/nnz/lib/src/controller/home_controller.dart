@@ -15,6 +15,7 @@ import 'package:nnz/src/services/mypage_share_list_service.dart';
 class HomeController extends GetxController {
   late List<PopularityList> popularity;
   late List<HashTagModel> hashTag;
+  late List<HashTagModel> locationList;
 
   @override
   void onInit() {
@@ -53,18 +54,18 @@ class HomeController extends GetxController {
     }
   }
 
-  // 주변 나눔 목록 불러오기
-  // getHomeLocationList() async {
-  //   try {
-  //     final response = await HomeService().getLocationInfo();
-  //     print(response.data.runtimeType);
-  //     print(response.data);
-  //     List<dynamic> items =
-  //         response.data.map((item) => Map<String, dynamic>.from(item)).toList();
-  //     popularity = items.map((item) => PopularityList.fromJson(item)).toList();
-  //     print('홈 인기 나눔 목록 불러오기');
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  //주변 나눔 목록 불러오기
+  getHomeLocationList() async {
+    try {
+      final response = await HomeService().getLocationInfo();
+      print(response.data.runtimeType);
+      print(response.data);
+      List<dynamic> items =
+          response.data.map((item) => Map<String, dynamic>.from(item)).toList();
+      popularity = items.map((item) => PopularityList.fromJson(item)).toList();
+      print('홈 인기 나눔 목록 불러오기');
+    } catch (e) {
+      print(e);
+    }
+  }
 }

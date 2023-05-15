@@ -6,36 +6,48 @@ import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
 import 'package:nnz/src/components/category/show_card.dart';
 import 'package:nnz/src/controller/category_controller.dart';
+import 'package:nnz/src/model/sport_model.dart';
 
-class SportsList extends StatelessWidget {
+class SportsList extends StatefulWidget {
   final String sportsImg;
   final String sportName;
-  final CategoryController categoryController = Get.find<CategoryController>();
 
-  SportsList({
+  const SportsList({
+    Key? key,
     required this.sportsImg,
     required this.sportName,
-    Key? key,
   }) : super(key: key);
 
-  // void temp() {}
-  // void getItems() {
-  //   final List<dynamic> _items = categoryController.categoryList;
-  // }
+  @override
+  _SportListState createState() => _SportListState();
+}
+
+class _SportListState extends State<SportsList> {
+  final controller = Get.put(CategoryController());
+
+  late SportModel sportList;
+  late List<Content> items;
+
+  Future<void> getList() async {
+    await controller.getSportCategoryList(widget.sportName);
+    sportList = controller.sportList;
+    items = sportList.content;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CategoryController>(
-      builder: (categoryController) {
-        print(sportName);
-
-        final List<dynamic> _items = categoryController.categoryList;
-        print(_items);
-
-        if (_items.isEmpty) {
-          print('비었음');
+    return FutureBuilder(
+      future: getList(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (ConnectionState.waiting == snapshot.connectionState) {
+          return const CircularProgressIndicator();
         }
-        // print(_items);
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Column(
@@ -47,7 +59,7 @@ class SportsList extends StatelessWidget {
               Row(
                 children: [
                   Image.asset(
-                    sportsImg,
+                    widget.sportsImg,
                     width: 30,
                   ),
                   SizedBox(
@@ -63,14 +75,14 @@ class SportsList extends StatelessWidget {
                 ],
               ),
               Column(
-                children: _items
+                children: items
                     .map((item) => SportsCard(
-                          AteamLogo: item['leftTeam']!,
-                          BteamLogo: item['leftTeam']!,
-                          AteamName: item['leftTeam']!,
-                          BteamName: item['leftTeam']!,
-                          date: item['date']!,
-                          location: item['location']!,
+                          AteamLogo: item.leftTeamImage ?? '',
+                          BteamLogo: item.rightTeamImage ?? '',
+                          AteamName: item.leftTeam ?? '',
+                          BteamName: item.rightTeam ?? '',
+                          date: item.date.toString(),
+                          location: item.location ?? '',
                         ))
                     .toList(),
               ),

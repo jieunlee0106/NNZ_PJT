@@ -56,7 +56,17 @@ class _LikesPageState extends State<LikesPage> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-        actions: [Icon(Icons.more_vert)],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

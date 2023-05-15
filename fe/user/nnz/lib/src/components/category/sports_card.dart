@@ -80,44 +80,83 @@ class SportsCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(AteamLogo),
-                                Text(
-                                  AteamName,
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 12, 12, 12),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                          Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 22,
+                                    height: 22,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: const Color.fromARGB(
+                                          255, 255, 253, 253),
+                                      image: DecorationImage(
+                                        image: NetworkImage(AteamLogo),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    AteamName,
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 12, 12, 12),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700),
+// 텍스트 중앙 정렬
+                                    maxLines: 1, // 최대 2줄로 제한
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Text(
-                            'VS',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'VS',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(BteamLogo),
-                                Text(
-                                  BteamName,
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 12, 12, 12),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                          Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 22,
+                                    height: 22,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: const Color.fromARGB(
+                                          255, 255, 253, 253),
+                                      image: DecorationImage(
+                                        image: NetworkImage(BteamLogo),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    BteamName,
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 12, 12, 12),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

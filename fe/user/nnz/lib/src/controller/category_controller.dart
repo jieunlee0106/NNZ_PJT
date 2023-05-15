@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/category/show_list.dart';
+import 'package:nnz/src/model/hot_list.dart';
 import 'package:nnz/src/model/show_list_model.dart';
 import 'package:nnz/src/controller/sharing_register_controller.dart';
+import 'package:nnz/src/model/sport_model.dart';
 
 import 'package:nnz/src/services/category_service.dart';
 
 class CategoryController extends GetxController {
-  var categoryList = [];
   // final token = SharingRegisterController().getToken();
   late ShowListModel showList;
+  late SportModel sportList;
+  late HotList hotList;
 
   // 뮤지컬, 연극, 콘서트, 뮤직 페스티벌
   getShowCategoryList(String categoryName) async {
@@ -20,20 +23,20 @@ class CategoryController extends GetxController {
 
       showList = ShowListModel.fromJson(response.data);
       print('값 할당');
-      return categoryList.toList();
     } catch (e) {
       print(e);
     }
   }
 
   // sport
-  getCategoryList(String categoryName) async {
+  getSportCategoryList(String categoryName) async {
     try {
       final response =
           await CategoryService().getCategoryList(categoryName: categoryName);
       print(response);
-      // categoryList = data.data['content'];
-      return categoryList.toList();
+      print(categoryName);
+      sportList = SportModel.fromJson(response.data);
+      print('값 할당');
     } catch (e) {
       print(e);
     }
@@ -48,7 +51,6 @@ class CategoryController extends GetxController {
 
       showList = ShowListModel.fromJson(response.data);
       print('값 할당');
-      return categoryList.toList();
     } catch (e) {
       print(e);
     }

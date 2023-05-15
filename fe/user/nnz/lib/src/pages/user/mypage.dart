@@ -10,6 +10,8 @@ import 'package:nnz/src/model/mypage_model.dart';
 import 'package:nnz/src/pages/share/my_shared_list.dart';
 import 'package:nnz/src/pages/share/my_sharing_list.dart';
 import 'package:nnz/src/controller/my_page_controller.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter/services.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -38,20 +40,27 @@ class _MyPageState extends State<MyPage> {
     });
   }
 
+  void logoutAndNavigateToHome(BuildContext context) {
+    // 로그아웃 로직 수행
+
+    // 홈 화면으로 이동하여 재빌드
+    Modular.to.navigate('/home');
+  }
+
   @override
   Widget build(BuildContext context) {
     // var myInfo = controller.myInfo;
     if (_isLoading) {
-      return const Center(
+      return Center(
         child: CircularProgressIndicator(),
       );
     }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme: IconThemeData(color: Colors.black),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          actions: const [Icon(Icons.more_vert)],
+          actions: [Icon(Icons.more_vert)],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -71,7 +80,7 @@ class _MyPageState extends State<MyPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
                   GrayLine(),
@@ -104,8 +113,7 @@ class _MyPageState extends State<MyPage> {
                             child: Container(
                                 width: 135,
                                 height: 5,
-                                color:
-                                    const Color.fromARGB(255, 230, 230, 230)),
+                                color: Color.fromARGB(255, 230, 230, 230)),
                           ),
                         ],
                       ),
@@ -117,7 +125,7 @@ class _MyPageState extends State<MyPage> {
                     yet: myInfo.statistics?.nanum?.beforeCount ?? 0,
                     ing: myInfo.statistics?.nanum?.ongoingCount ?? 0,
                     end: myInfo.statistics?.nanum?.doneCount ?? 0,
-                    page: const MySharingList(),
+                    page: MySharingList(),
                   ),
                   SharingInfo(
                     share: '나눔 받은 내역',
@@ -125,8 +133,62 @@ class _MyPageState extends State<MyPage> {
                     yet: myInfo.statistics?.receive?.totalCount ?? 0,
                     ing: myInfo.statistics?.receive?.totalCount ?? 0,
                     end: myInfo.statistics?.receive?.totalCount ?? 0,
-                    page: const MySharedList(),
+                    page: MySharedList(),
                   ),
+                  GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('로그아웃'),
+                                content:
+                                    Text('로그아웃 시 앱이 종료됩니다. \n로그아웃 하시겠습니까?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // 모달 닫기
+                                        SystemChannels.platform.invokeMethod(
+                                            'SystemNavigator.pop');
+                                      },
+                                      child: Text('네')),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context); //close Dialog
+                                    },
+                                    child: Text('아니요'),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Config.yellowColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              height: 30,
+                              width: 80,
+                              child: Align(
+                                alignment: const Alignment(0.0, 0.0),
+                                child: Text(
+                                  '로그 아웃',
+                                  style: TextStyle(
+                                      color: Config.blackColor,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ))
                 ],
               ),
             ),

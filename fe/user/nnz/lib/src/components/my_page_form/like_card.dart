@@ -2,27 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
+import 'package:get/get.dart';
+import 'package:nnz/src/controller/likes_controller.dart';
 
-class LikeCard extends StatelessWidget {
+class LikeCard extends StatefulWidget {
   final String image;
   final String title;
   final String subtitle;
   final String location;
+  final int status;
+  final int nanumId;
 
   LikeCard({
     required this.image,
     required this.title,
     required this.subtitle,
     required this.location,
+    required this.status,
+    required this.nanumId,
   });
+  @override
+  _LikeCardState createState() => _LikeCardState();
+}
+
+class _LikeCardState extends State<LikeCard> {
+  final controller = Get.put(LikesController());
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          width: 160,
-          height: 220,
+          width: 110,
+          height: 160,
           margin: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
@@ -40,8 +52,8 @@ class LikeCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 160,
-                height: 130,
+                width: 110,
+                height: 90,
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 255, 253, 253),
                   borderRadius: BorderRadius.only(
@@ -49,7 +61,7 @@ class LikeCard extends StatelessWidget {
                     topRight: Radius.circular(8),
                   ),
                   image: DecorationImage(
-                    image: NetworkImage(image),
+                    image: NetworkImage(widget.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -63,35 +75,33 @@ class LikeCard extends StatelessWidget {
                     SizedBox(
                       width: 150, // set a width for the Text widget
                       child: Text(
-                        title,
+                        widget.subtitle,
                         style: TextStyle(
                           color: Color.fromARGB(255, 11, 40, 126),
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: FontWeight.w700,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(height: 5),
                     SizedBox(
                       width: 150, // set a width for the Text widget
                       child: Text(
-                        subtitle,
+                        widget.title,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w900,
                           overflow: TextOverflow.ellipsis,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(height: 5),
                     SizedBox(
                       width: 150, // set a width for the Text widget
                       child: Text(
-                        location,
+                        widget.location,
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 11,
                           fontWeight: FontWeight.w400,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -104,33 +114,74 @@ class LikeCard extends StatelessWidget {
             ],
           ),
         ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: Container(
-            width: 20,
-            height: 20,
-            margin: EdgeInsets.only(left: 140, top: 100),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.7),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: Offset(0, 2),
+        if (widget.status == 0) // 나눔 종료 3으로 수정
+          Positioned.fill(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('관심 나눔 삭제'),
+                          content: Text('관심 나눔 목록에서 삭제하시겠습니까?'),
+                          actions: <Widget>[
+                            TextButton(
+                                onPressed: () async {
+                                  await controller.deleteLikesList(
+                                      nanumId: widget.nanumId);
+                                  // 좋아요 취소 & 목록 조회 요청
+                                  Get.offNamed('/likes');
+                                },
+                                child: Text(
+                                  '네,삭제할게요',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                )),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context); //close Dialog
+                              },
+                              child: Text(
+                                '아니요, 나눔 볼러갈래요   ',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          ],
+                        );
+                      });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          '종료된 나눔 입니다',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-            child: Center(
-              child: Image.asset(
-                ImagePath.heart,
-                width: 15,
               ),
             ),
           ),
-        ),
       ],
     );
   }
