@@ -13,6 +13,7 @@ spring:
   redis:
     host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
     port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
 
   cloud:
     gateway:
@@ -20,11 +21,11 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
         - AddResponseHeader=Access-Control-Allow-Headers, *
         - AddResponseHeader=Access-Control-Allow-Methods, *
-      #        - name: JwtFilter
-      #          args:
-      #            baseMessage: Jwt Filter
-      #            preLogger: false
-      #            postLogger: false
+        - name: JwtFilter
+          args:
+            baseMessage: Jwt Filter
+            preLogger: false
+            postLogger: false
       globalcors:
         corsConfigurations:
           '[/**]':

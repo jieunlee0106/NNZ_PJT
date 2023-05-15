@@ -22,6 +22,7 @@ public class PermilAllUrlPattern {
             Pattern.compile(NANUM_SERVICE + "/nanums" + ID_PATH_VARIABLE), // 나눔 상세 조회
             Pattern.compile(NANUM_SERVICE + "/nanums"), // 나눔 조회
             Pattern.compile(NANUM_SERVICE + "/nanums/popular"), // 인기 나눔 조회
+            Pattern.compile(NANUM_SERVICE + "/nanums/location"), // 위치기반 즉시 가능 나눔 조회
 
 //                "/search", // 검색
             // Show Service
@@ -33,6 +34,7 @@ public class PermilAllUrlPattern {
 
             // Tag Service
             Pattern.compile(TAG_SERVICE + "/tags"), // 인기 해시태그 조회
+            Pattern.compile(TAG_SERVICE + "/tags/search"), // 태그 검색
     };
 
     private static final Pattern[] postPermitAllPatterns = {
