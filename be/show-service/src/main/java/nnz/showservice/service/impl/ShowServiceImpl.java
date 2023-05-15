@@ -1,10 +1,12 @@
 package nnz.showservice.service.impl;
 
 import io.github.eello.nnz.common.dto.PageDTO;
+import io.github.eello.nnz.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import nnz.showservice.dto.ShowDTO;
 import nnz.showservice.dto.ShowTagDTO;
 import nnz.showservice.dto.SportsDTO;
+import nnz.showservice.dto.TagDTO;
 import nnz.showservice.dto.res.ResBannerDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.entity.*;
@@ -13,9 +15,11 @@ import nnz.showservice.service.ShowService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -161,5 +165,16 @@ public class ShowServiceImpl implements ShowService {
         List<Banner> banners = bannerRepository.findTop3ByOrderByUpdatedAtDesc();
         List<ResBannerDTO> resBannerDTOs = banners.stream().map(ResBannerDTO::of).collect(Collectors.toList());
         return resBannerDTOs;
+    }
+
+    @Override
+    public List<TagDTO> readShowTagByShow(Long showId, Integer count) {
+//        Show show = showRepository.findById(showId)
+//                .orElseThrow(() -> new EntityNotFoundException("showId에 해당하는 공연이 존재하지 않습니다."));
+
+        PageRequest pageRequest = PageRequest.of(0, count, Sort.by("views").descending());
+//        List<Tag> showTags = showTagRepository.findTagByShow(show, pageRequest);
+        List<Tag> showTags = tagRepository.findTagByShow(showId, pageRequest);
+        return showTags.stream().map(TagDTO::of).collect(Collectors.toList());
     }
 }

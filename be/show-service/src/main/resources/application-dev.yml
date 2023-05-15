@@ -20,6 +20,19 @@ spring:
         globally_quoted_identifiers: true
         format_sql: true
 
+  kafka:
+    prefix: dev-
+    bootstrap-servers: ENC(BG51LqW1PA/R5Kv9vmE3csMCX5xor0pj+NQbZEJka6wnMr2Z9wq0Vg==)
+    consumer:
+      group-id: dev-user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      topic: ENC(CRlNcIg5nJbI5KGyLy3USMPO3/e3GmbA)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 eureka:
   client:
     register-with-eureka: true
