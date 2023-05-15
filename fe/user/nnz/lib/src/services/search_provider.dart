@@ -19,7 +19,8 @@ class SearchProvider extends GetConnect {
 
   //인기 해시 태그 조회
   Future<Response> getPopularTag() async {
-    final response = await get("https://k8b207.p.ssafy.io/api//tag-service/tags");
+    final response =
+        await get("https://k8b207.p.ssafy.io/api//tag-service/tags");
     return response;
   }
 
@@ -78,6 +79,15 @@ class SearchProvider extends GetConnect {
           'path': path,
         }),
         headers: {'Authorization': 'Bearer $token'});
+    return response;
+  }
+
+  //나눔 관련 검색 api
+  Future<Response> getRelatedSearch({required String text}) async {
+    final headers = {'Content-Type': 'application/json'};
+    final response = await get(
+        'https://k8b207.p.ssafy.io/api/tag-service/tags/search?search=$text',
+        headers: headers);
     return response;
   }
 }

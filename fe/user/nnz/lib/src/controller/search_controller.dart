@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/model/popular_tag_model.dart';
+import 'package:nnz/src/model/tag_list_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
 class ShowSearchController extends GetxController {
@@ -11,6 +12,7 @@ class ShowSearchController extends GetxController {
   RxString category = ''.obs;
   RxBool hasFocus = false.obs;
   List<PopularTagModel> tagList = [];
+  List<TagListModel> relatedTagList = [];
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -30,6 +32,29 @@ class ShowSearchController extends GetxController {
         }
         logger.i(tagList);
         return tagList;
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
+  }
+
+  //관련 검색 태그 api
+  Future<List<TagListModel>> onRelatedSearch({required String text}) async {
+    try {
+      final response = await SearchProvider().getRelatedSearch(text: text);
+      if (response.statusCode == 200) {
+        relatedTagList.clear();
+        for (var data in response.body) {
+          relatedTagList.add(TagListModel.fromJson(data));
+        }
+        logger.i("관련 해시 태그 $relatedTagList");
+        return relatedTagList;
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);
