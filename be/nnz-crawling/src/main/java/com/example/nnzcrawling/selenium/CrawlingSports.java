@@ -22,7 +22,7 @@ public class CrawlingSports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver";
+    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
 
 //    @Value("${web-driver.chrome.driver-path}")
 //    private String webDriverPath;
@@ -156,8 +156,8 @@ public class CrawlingSports {
                 // times, leftTeams, rightTeams, locations, records
                 ShowCrawling showCrawling = new ShowCrawling();
 
-                String leftTeam = leftTeams.get(j).findElement(By.cssSelector(" > span > a")).getAttribute("title");
-                String rightTeam = rightTeams.get(j).findElement(By.cssSelector(" > span > a")).getAttribute("title");
+                String leftTeam = leftTeams.get(j).findElement(By.cssSelector("span > a")).getAttribute("title");
+                String rightTeam = rightTeams.get(j).findElement(By.cssSelector("span > a")).getAttribute("title");
                 String lTeamImg = null;
                 String rTeamImg = null;
                 try {
