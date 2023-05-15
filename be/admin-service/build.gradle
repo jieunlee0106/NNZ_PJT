@@ -31,7 +31,7 @@ dependencyManagement {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.github.eello:naneozoo-common:0.4.1'
+    implementation 'com.github.eello:naneozoo-common:0.4.4'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'

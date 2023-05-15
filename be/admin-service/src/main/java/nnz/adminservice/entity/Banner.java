@@ -1,5 +1,6 @@
 package nnz.adminservice.entity;
 
+import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "banners")
 @SQLDelete(sql = "UPDATE Banner SET is_delete = 1 WHERE id = ?")
 @Where(clause = "is_delete  = 0")
-public class Banner {
+public class Banner extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
