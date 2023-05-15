@@ -22,7 +22,9 @@ import nnz.userservice.vo.LoginVO;
 import nnz.userservice.vo.UserJoinVO;
 import nnz.userservice.vo.UserUpdateProfileVO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -259,7 +261,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        Page<Nanum> receivedNanums = receiveNanumRepository.findNanumByReceiver(user, pageable);
+        PageRequest pageRequest =
+                PageRequest.of(
+                        pageable.getPageNumber(), pageable.getPageSize(), Sort.by("updatedAt").descending()
+                );
+
+        Page<Nanum> receivedNanums = receiveNanumRepository.findNanumByReceiver(user, pageRequest);
         Page<NanumDTO> receivedNanumDTO = receivedNanums.map(NanumDTO::of);
         return PageDTO.of(receivedNanumDTO);
     }
@@ -269,7 +276,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        Page<Nanum> providedNanums = nanumRepository.findByProvider(user, pageable);
+        PageRequest pageRequest =
+                PageRequest.of(
+                        pageable.getPageNumber(), pageable.getPageSize(), Sort.by("updatedAt").descending()
+                );
+
+        Page<Nanum> providedNanums = nanumRepository.findByProvider(user, pageRequest);
         Page<NanumDTO> providedNanumDTO = providedNanums.map(NanumDTO::of);
         return PageDTO.of(providedNanumDTO);
     }
