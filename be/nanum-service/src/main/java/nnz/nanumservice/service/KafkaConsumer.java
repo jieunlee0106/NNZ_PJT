@@ -24,6 +24,7 @@ public class KafkaConsumer {
     private final BookmarkRepository bookmarkRepository;
     private final NanumRepository nanumRepository;
     private final FollowerRepository followerRepository;
+    private final TagRepository tagRepository;
 
     @Transactional
     @KafkaListener(topics = {"dev-show", "dev-show-admin"}, groupId = "nanum-service-1")
@@ -48,19 +49,22 @@ public class KafkaConsumer {
         }
     }
 
-//    @Transactional
-//    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
-//    public void getTagMessage(String message) throws JsonProcessingException {
-//        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
-//        log.info("consume message: {}", message);
-//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-//
-//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-//            Tag tag = Tag.of(kafkaMessage.getBody());
-//            tagRepository.save(tag);
-//        }
-//    }
+    @Transactional
+    @KafkaListener(topics = "dev-tag-sync", groupId = "nanum-service-2")
+    public void getTagMessage(String message) throws JsonProcessingException {
+        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
+        log.info("consume message: {}", message);
+        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            Optional<Tag> findTag = tagRepository.findById(kafkaMessage.getBody().getId());
+            if (!findTag.isPresent()) {
+                Tag tag = Tag.of(kafkaMessage.getBody());
+                tagRepository.save(tag);
+            }
+        }
+    }
 
 //    @Transactional
 //    @KafkaListener(topics = "dev-nanumtag", groupId = "nanum-service-3")
