@@ -9,17 +9,20 @@ import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
+import nnz.nanumservice.dto.res.search.ResSearchDTO;
 import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 @RestController
@@ -141,5 +144,10 @@ public class NanumController {
             @RequestPart(name = "images", required = false) List<MultipartFile> images) {
         nanumService.updateNanum(id, userToken.getId(), data, images);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResSearchDTO> searchNanum(@RequestParam("q") String q, Pageable pageable) {
+        return new ResponseEntity<>(nanumService.searchNanum(q, pageable), HttpStatus.OK);
     }
 }

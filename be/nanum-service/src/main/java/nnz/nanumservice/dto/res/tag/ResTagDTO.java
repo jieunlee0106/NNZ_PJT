@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nnz.nanumservice.entity.NanumTag;
+import nnz.nanumservice.entity.Tag;
 
 @Getter
 @Builder
@@ -20,6 +21,13 @@ public class ResTagDTO {
         return ResTagDTO.builder()
                 .id(nanumTag.getId())
                 .tag(nanumTag.getTag().getTag())
+                .build();
+    }
+
+    public static ResTagDTO of(Tag tag) {
+        return ResTagDTO.builder()
+                .id(tag.getId())
+                .tag(tag.getTag())
                 .build();
     }
 }
