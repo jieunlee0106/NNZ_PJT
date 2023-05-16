@@ -1,9 +1,11 @@
 package nnz.nanumservice.service.impl;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.github.eello.nnz.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.nanumservice.dto.CertificationDTO;
+import nnz.nanumservice.dto.FcmNotificationDTO;
 import nnz.nanumservice.exception.ErrorCode;
 import nnz.nanumservice.entity.Nanum;
 import nnz.nanumservice.entity.NanumStock;
@@ -31,9 +33,10 @@ public class CertificationServiceImpl implements CertificationService {
     private final UserRepository userRepository;
     private final UserNanumRepository userNanumRepository;
     private final NanumStockRepository nanumStockRepository;
+    private final FCMService fcmService;
 
     @Override
-    public void handleNanumCertification(Long nanumId, NanumCertificationVO nanumCertificationVO) {
+    public void handleNanumCertification(Long nanumId, NanumCertificationVO nanumCertificationVO) throws FirebaseMessagingException {
         Nanum nanum = nanumRepository.findById(nanumId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
 
@@ -49,6 +52,12 @@ public class CertificationServiceImpl implements CertificationService {
         int countByIsCertificated = userNanumRepository.countByNanumAndIsCertificated(nanum, true);
         if(countByIsCertificated == nanum.getQuantity()){
             nanum.updateStatus(1);
+            // 마감되었을 때 PUSH 알림
+            fcmService.sendMessage(FcmNotificationDTO.builder()
+                            .title("내가 만든 나눔이 마감되었어요.")
+                            .body(nanum.getIsCertification() ? "인증을 검사하러 가볼까요?" : "")
+                            .userToken(nanum.getProvider().getDeviceToken())
+                            .build());
         }
     }
 
@@ -72,6 +81,7 @@ public class CertificationServiceImpl implements CertificationService {
         // 맨처음 들어온 QR인증이라면 재고 정보 저장
         NanumStock ns = optionalNanumStock.orElseGet(() -> nanumStockRepository.save(NanumStock.builder()
                 .id(nanumId)
+                .quantity(nanum.getQuantity())
                 .stock(nanum.getQuantity())
                 .build()));
 

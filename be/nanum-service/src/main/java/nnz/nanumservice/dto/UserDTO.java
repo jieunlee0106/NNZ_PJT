@@ -24,6 +24,7 @@ public class UserDTO {
     private String nickname;
 
     private String profileImage;
+    private String deviceToken;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

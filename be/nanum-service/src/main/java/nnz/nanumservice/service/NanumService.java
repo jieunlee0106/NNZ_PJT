@@ -1,5 +1,6 @@
 package nnz.nanumservice.service;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.ResNanumStockDTO;
@@ -24,7 +25,7 @@ public interface NanumService {
 
     PageDTO readNanumsByLocation(Double lat, Double lng, PageRequest pageRequest);
 
-    void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO);
+    void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO) throws FirebaseMessagingException;
 
     NanumInfoDTO readNanumInfo(Long nanumId, Long userId);
 

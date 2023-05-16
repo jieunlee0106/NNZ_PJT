@@ -1,5 +1,6 @@
 package nnz.nanumservice.service.impl;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
@@ -51,14 +52,16 @@ public class NanumServiceImpl implements NanumService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
     private final NanumImageService nanumImageService;
+    private final FCMService fcmService;
 
     @Override
     @Transactional
     public void createNanum(NanumVO data, List<MultipartFile> images) {
 
-        // todo : error handling
-        User user = userRepository.findById(data.getWriter()).orElseThrow();
-        Show show = showRepository.findById(data.getShowId()).orElseThrow();
+        User user = userRepository.findById(data.getWriter())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        Show show = showRepository.findById(data.getShowId())
+                .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
 
         Nanum nanum = Nanum.voToEntity(data, user, show);
         // 썸네일 설정은 나눔 등록을 먼저 해준 후에 한다.
@@ -66,7 +69,6 @@ public class NanumServiceImpl implements NanumService {
         nanum = nanumRepository.save(nanum);
         NanumDTO nanumDTO = NanumDTO.of(nanum);
 
-        // todo: error handling
         List<TagDTO> tagDTOs = new ArrayList<>();
         data.getTags().forEach(tag -> {
             tagDTOs.add(new TagDTO(Long.toString(nanumDTO.getId()), tag, "nanum"));
@@ -112,8 +114,8 @@ public class NanumServiceImpl implements NanumService {
     @Override
     public PageDTO readNanumsByShowId(Long showId, PageRequest pageRequest) {
 
-        // todo : error handling
-        Show show = showRepository.findById(showId).orElseThrow();
+        Show show = showRepository.findById(showId)
+                .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
         Page<Nanum> nanumPage = nanumRepository.findByShowAndIsDeleteFalse(show, pageRequest);
 
         Page<NanumDTO> nanumDTOPage = nanumPage.map(NanumDTO::of);
@@ -123,8 +125,8 @@ public class NanumServiceImpl implements NanumService {
     @Override
     public PageDTO readNanumsByNanumTag(String nanumTagName, PageRequest pageRequest) {
 
-        // todo: error handling
-        Tag tag = tagRepository.findByTag(nanumTagName).orElseThrow();
+        Tag tag = tagRepository.findByTag(nanumTagName)
+                .orElseThrow(() -> new CustomException(ErrorCode.TAG_NOT_FOUND));
         List<NanumTag> nanumTags = nanumTagRepository.findAllByTag(tag);
 
         List<Nanum> nanums = new ArrayList<>();
@@ -185,16 +187,23 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     @Transactional
-    public void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO) {
-        // todo : error handling
-        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+    public void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO) throws FirebaseMessagingException {
+        Nanum nanum = nanumRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
         nanum.setNanumInfo(nanumInfoDTO);
+
+        List<UserNanum> allByNanum = userNanumRepository.findAllByNanum(nanum);
+
+        fcmService.sendMultipleMessage(
+                "신청한 나눔에 당일 정보가 등록되었어요.",
+                "지금 확인해보세요!",
+                allByNanum.stream().map(userNanum -> userNanum.getReceiver().getDeviceToken()).collect(Collectors.toList()));
     }
 
     @Override
     public NanumInfoDTO readNanumInfo(Long nanumId, Long userId) {
-        // todo : error handling
-        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+        Nanum nanum = nanumRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
         // 작성자 본인의 경우
         if (nanum.getProvider().getId() == userId) {
             return NanumInfoDTO.of(nanum, null);
@@ -207,8 +216,8 @@ public class NanumServiceImpl implements NanumService {
     @Override
     @Transactional
     public ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId) {
-        // todo : error handling
-        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
+        Nanum nanum = nanumRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
 
         // 썸네일 목록 구하기
         List<String> thumbnails = new ArrayList<>();
@@ -219,8 +228,8 @@ public class NanumServiceImpl implements NanumService {
         // 태그 목록 구하기
         List<ResTagDTO> tags = new ArrayList<>();
         nanum.getTags().forEach(nanumTag -> {
-            // todo : error handling
-            Tag tag = tagRepository.findById(nanumTag.getTag().getId()).orElseThrow();
+            Tag tag = tagRepository.findById(nanumTag.getTag().getId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.TAG_NOT_FOUND));
             tags.add(new ResTagDTO(tag.getId(), tag.getTag()));
         });
 
@@ -231,7 +240,8 @@ public class NanumServiceImpl implements NanumService {
         // DTO 변환
         ResNanumDetailDTO resNanumDetailDTO = ResNanumDetailDTO.of(nanum, thumbnails, tags, show);
 
-        User follower = userRepository.findById(userId).orElseThrow();
+        User follower = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         Optional<Follower> follow = followerRepository.findByFollowingAndFollowerAndIsDeleteFalse(nanum.getProvider(), follower);
 
         // writer(나눠주는 사람) 정보 설정
@@ -272,9 +282,10 @@ public class NanumServiceImpl implements NanumService {
     @Override
     @Transactional
     public void createUserNanum(Long nanumId, Long userId, MultipartFile file) {
-        //todo: error handling
-        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
-        User user = userRepository.findById(userId).orElseThrow();
+        Nanum nanum = nanumRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if(userNanumRepository.findByNanumAndReceiver(nanum, user).isPresent())
             throw new CustomException(ErrorCode.DUPLICATED_USER_NANUM);
@@ -329,25 +340,18 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     public ResNanumStockDTO readNanumStock(Long nanumId) {
-
-        // todo: error handling
-        // 나눔이 있는지 먼저 유효성 검사
-        Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
-        NanumStock nanumStock = nanumStockRepository.findById(nanumId).orElseThrow();
-        ResNanumStockDTO resNanumStockDTO = ResNanumStockDTO.of(nanum.getQuantity(), nanumStock.getStock());
-        return resNanumStockDTO;
+        // todo : 레디스에서 정보 가져오기
+        return null;
     }
 
     @Override
     @Transactional
     public void updateNanum(Long id, Long writerId, NanumVO data, List<MultipartFile> images) {
+        Nanum nanum = nanumRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
 
-        // todo : error handling
-        Nanum nanum = nanumRepository.findById(id).orElseThrow();
-
-        // todo : error handling 사용자 불일치에 대한 예외처리 굳이 해야할까
         if (nanum.getProvider().getId() != writerId) {
-            // throw new CustomException();
+            throw new CustomException(ErrorCode.USER_INFORMATION_INCONSISTENCY);
         }
         // 나눔 기본 정보 업데이트
         nanum.updateNanum(data);
