@@ -2,6 +2,7 @@ package nnz.showservice.controller;
 
 import io.github.eello.nnz.common.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nnz.showservice.dto.BannerDTO;
 import nnz.showservice.dto.CategoryDTO;
 import nnz.showservice.dto.ShowDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/show-service/shows")
 @RequiredArgsConstructor
@@ -85,6 +87,7 @@ public class ShowController {
 
     @GetMapping("/search/query")
     public ResponseEntity<ResSearchDTO> searchShowByQuery(@RequestParam("q") String query, Pageable pageable) {
+        log.info("search query: {}", query);
         return new ResponseEntity<>(showService.searchShowByQuery(query, pageable), HttpStatus.OK);
     }
 }

@@ -11,7 +11,7 @@ spring:
 
   jpa:
     open-in-view: false
-    show-sql: true
+#    show-sql: true
     hibernate:
       #      ddl-auto: none
       ddl-auto: update
@@ -44,8 +44,8 @@ logging:
   level:
     org:
       hibernate:
-        SQL: DEBUG
-        type: TRACE
+        SQL: info
+        type: info
 
 jasypt:
   encryptor:
