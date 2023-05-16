@@ -46,4 +46,12 @@ public class NanumTag extends BaseEntity {
 //                .updatedAt(nanumTagDTO.getUpdatedAt())
                 .build();
     }
+
+    public void deleteNanumTag() {
+        this.isDelete = true;
+    }
+
+    public void cancelDeleteNanumTag() {
+        this.isDelete = false;
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
-    List<Bookmark> findAllByNanum(Nanum nanum);
+    List<Bookmark> findAllByNanumAndIsDeleteFalse(Nanum nanum);
 
-    Optional<Bookmark> findByNanumAndUser(Nanum nanum, User follower);
+    Optional<Bookmark> findByNanumAndUserAndIsDeleteFalse(Nanum nanum, User follower);
 }

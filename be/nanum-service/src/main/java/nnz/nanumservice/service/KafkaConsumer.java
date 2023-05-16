@@ -12,6 +12,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,8 @@ public class KafkaConsumer {
     private final UserRepository userRepository;
     private final BookmarkRepository bookmarkRepository;
     private final NanumRepository nanumRepository;
+    private final FollowerRepository followerRepository;
+    private final TagRepository tagRepository;
 
     @Transactional
     @KafkaListener(topics = {"dev-show", "dev-show-admin"}, groupId = "nanum-service-1")
@@ -45,19 +49,22 @@ public class KafkaConsumer {
         }
     }
 
-//    @Transactional
-//    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
-//    public void getTagMessage(String message) throws JsonProcessingException {
-//        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
-//        log.info("consume message: {}", message);
-//        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-//        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
-//
-//        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-//            Tag tag = Tag.of(kafkaMessage.getBody());
-//            tagRepository.save(tag);
-//        }
-//    }
+    @Transactional
+    @KafkaListener(topics = "dev-tag-sync", groupId = "nanum-service-2")
+    public void getTagMessage(String message) throws JsonProcessingException {
+        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
+        log.info("consume message: {}", message);
+        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            Optional<Tag> findTag = tagRepository.findById(kafkaMessage.getBody().getId());
+            if (!findTag.isPresent()) {
+                Tag tag = Tag.of(kafkaMessage.getBody());
+                tagRepository.save(tag);
+            }
+        }
+    }
 
 //    @Transactional
 //    @KafkaListener(topics = "dev-nanumtag", groupId = "nanum-service-3")
@@ -119,6 +126,12 @@ public class KafkaConsumer {
         } //
         else if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.UPDATE) {
             bookmark = bookmarkRepository.findById(kafkaMessage.getBody().getId()).orElseThrow();
+
+            if (bookmark.getUpdatedAt().isAfter(kafkaMessage.getBody().getUpdatedAt())) {
+                log.info("current bookmark is the latest.");
+                return;
+            }
+
             Nanum nanum = nanumRepository.findById(kafkaMessage.getBody().getNanumId()).orElseThrow();
             User user = userRepository.findById(kafkaMessage.getBody().getUserId()).orElseThrow();
             bookmark.updateBookmark(kafkaMessage.getBody(), nanum, user);
@@ -126,6 +139,67 @@ public class KafkaConsumer {
         else {
             bookmark = bookmarkRepository.findById(kafkaMessage.getBody().getId()).orElseThrow();
             bookmark.deleteBookmark();
+        }
+    }
+
+    @Transactional
+    @KafkaListener(topics = "dev-follow", groupId = "nanum-service-4")
+    public void getFollowMessage(String message) throws JsonProcessingException {
+        KafkaMessage<FollowerSyncDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, FollowerSyncDTO.class);
+        log.info("consume message: {}", message);
+        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
+
+        FollowerSyncDTO body = kafkaMessage.getBody();
+        log.info("kafkaMessage.getBody() = {}", body);
+
+        User follower = userRepository.findById(body.getFollowerId()).orElse(null);
+        if (follower == null) {
+            log.warn("follower id에 해당하는 유저 없음.");
+            return;
+        }
+
+        User following = userRepository.findById(body.getFollowingId()).orElse(null);
+        if (following == null) {
+            log.warn("following id에 해당하는 유저 없음.");
+            return;
+        }
+
+        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
+            // todo: error handling
+            Follower build = Follower.builder()
+                    .id(body.getId())
+                    .following(following)
+                    .follower(follower)
+                    .updatedAt(body.getUpdatedAt())
+                    .isDelete(body.getIsDelete())
+                    .build();
+
+            followerRepository.save(build);
+
+        } //
+        else if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.UPDATE) {
+            Optional<Follower> optFollower = followerRepository.findById(body.getId());
+            if (optFollower.isEmpty()) {
+                Follower build = Follower.builder()
+                        .id(body.getId())
+                        .following(following)
+                        .follower(follower)
+                        .updatedAt(body.getUpdatedAt())
+                        .isDelete(body.getIsDelete())
+                        .build();
+
+                followerRepository.save(build);
+            } else {
+                if (optFollower.get().getUpdatedAt().isAfter(body.getUpdatedAt())) {
+                    log.info("current follow is the latest.");
+                    return;
+                }
+
+                optFollower.get().update(body, follower, following);
+            }
+        } //
+        else {
+            followerRepository.findById(body.getId()).ifPresent(Follower::delete);
         }
     }
 }

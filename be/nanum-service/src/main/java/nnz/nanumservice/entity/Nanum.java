@@ -128,4 +128,14 @@ public class Nanum extends BaseEntity {
     public void updateStock(int stock) {
         this.stock = stock;
     }
+
+    public void updateNanum(NanumVO data) {
+        this.nanumDate = data.getNanumDate() != null ? data.getNanumDate() : this.nanumDate;
+        this.title = data.getTitle() != null ? data.getTitle() : this.title;
+        this.openTime = data.getOpenTime() != null ? data.getOpenTime() : this.openTime;
+        this.isCertification = data.getIsCertification() != null ? data.getIsCertification() : this.isCertification;
+        this.condition = data.getCondition() != null ? data.getCondition() : this.condition;
+        this.quantity = data.getQuantity() != null ? data.getQuantity() : this.quantity;
+        this.content = data.getContent() != null ? data.getContent() : this.content;
+    }
 }

@@ -19,6 +19,9 @@ public enum ErrorCode implements AbstractErrorCode {
     ALREADY_USER_NANUM("UN003", "이미 처리한 나눔 인증입니다.", CONFLICT),
     USER_NANUM_NOT_CERTIFIED("UN004", "인증되지 않은 나눔 신청입니다.", NOT_FOUND),
     ALREADY_RECEIVED_USER_NANUM("UN005", "이미 수령한 나눔입니다.", NOT_FOUND),
+    USER_NANUM_NEED_CERTIFICATION("UN006", "인증이 필요한 나눔입니다.", BAD_REQUEST),
+    DUPLICATED_USER_NANUM("UN006", "이미 신청한 나눔입니다.", BAD_REQUEST),
+
     PUSH_NOTI_FAIL("P001", "푸시 알림 전송에 실패했습니다.", INTERNAL_SERVER_ERROR),
     ;
 

@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
+import nnz.nanumservice.dto.CertificationDTO;
 import nnz.nanumservice.dto.FcmNotificationDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
+import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
+import nnz.nanumservice.dto.res.search.ResSearchDTO;
 import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
@@ -17,11 +20,13 @@ import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
 import nnz.nanumservice.vo.NcpDeviceVO;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -86,8 +91,10 @@ public class NanumController {
     }
 
     @GetMapping("/{nanumId}/info")
-    public ResponseEntity<NanumInfoDTO> createNanumInfo(@PathVariable(name = "nanumId") Long nanumId) {
-        return new ResponseEntity<>(nanumService.readNanumInfo(nanumId), HttpStatus.OK);
+    public ResponseEntity<NanumInfoDTO> createNanumInfo(
+            @PathVariable(name = "nanumId") Long nanumId,
+            DecodedToken userToken) {
+        return new ResponseEntity<>(nanumService.readNanumInfo(nanumId, userToken.getId()), HttpStatus.OK);
     }
 
     @GetMapping("/{nanumId}")
@@ -114,18 +121,45 @@ public class NanumController {
     @PostMapping("/{nanumId}")
     public ResponseEntity<Void> createUserNanum(
             @PathVariable(name = "nanumId") Long nanumId,
+            @RequestPart(value = "image", required = false) MultipartFile file,
             DecodedToken userToken) {
         if (userToken.getId() == null) {
 //            todo : error handling
 //            throw new Exception();
         }
-        nanumService.createUserNanum(nanumId, userToken.getId());
+        nanumService.createUserNanum(nanumId, userToken.getId(), file);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/popular")
     public ResponseEntity<List<ResNanumDTO>> readPopularNanums() {
         return new ResponseEntity<>(nanumService.readPopularNaums(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{nanumId}/certification")
+    public ResponseEntity<?> findCertificationList(@PathVariable("nanumId") Long nanumId){
+        List<CertificationDTO> certList = certificationService.findCertificationList(nanumId);
+        return ResponseEntity.ok(certList);
+    }
+
+    @GetMapping("/{nanumId}/quantity")
+    public ResponseEntity<ResNanumStockDTO> readNanumStock(@PathVariable(name = "nanumId") Long nanumId) {
+        return new ResponseEntity<>(nanumService.readNanumStock(nanumId), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{nanumId}")
+    public ResponseEntity<Void> updateNanum(
+            @PathVariable(name = "nanumId") Long id,
+            DecodedToken userToken,
+            @RequestPart(name = "data") NanumVO data,
+            @RequestPart(name = "images", required = false) List<MultipartFile> images) {
+        nanumService.updateNanum(id, userToken.getId(), data, images);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResSearchDTO> searchNanum(@RequestParam("q") String q, Pageable pageable) {
+        return new ResponseEntity<>(nanumService.searchNanum(q, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/push")

@@ -44,6 +44,7 @@ public class Bookmark {
                 .nanum(nanum)
                 .user(user)
                 .updatedAt(bookmarkDTO.getUpdatedAt())
+                .isDelete(bookmarkDTO.getIsDelete())
                 .build();
     }
 
@@ -52,6 +53,7 @@ public class Bookmark {
         this.nanum = nanum;
         this.user = user;
         this.updatedAt = bookmarkDTO.getUpdatedAt();
+        this.isDelete = bookmarkDTO.getIsDelete();
     }
 
     public void deleteBookmark() {

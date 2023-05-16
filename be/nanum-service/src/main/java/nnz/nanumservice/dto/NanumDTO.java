@@ -60,9 +60,9 @@ public class NanumDTO {
 
     private String location;
 
-    private Double lat;
+    private String lat;
 
-    private Double lng;
+    private String lng;
 
     private String outfit;
 
@@ -90,8 +90,8 @@ public class NanumDTO {
                 .thumbnail(nanum.getThumbnail())
                 .status(nanum.getStatus())
                 .nanumTime(nanumInfo.getNanumTime())
-                .lat(nanumInfo.getLat())
-                .lng(nanumInfo.getLng())
+                .lat(nanumInfo.getLat() == null ? null : Double.toString(nanumInfo.getLat()))
+                .lng(nanumInfo.getLng() == null ? null : Double.toString(nanumInfo.getLng()))
                 .location(nanumInfo.getLocation())
                 .outfit(nanumInfo.getOutfit())
                 .showId(nanum.getShow().getId())

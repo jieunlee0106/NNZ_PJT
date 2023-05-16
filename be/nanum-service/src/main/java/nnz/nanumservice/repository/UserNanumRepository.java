@@ -10,7 +10,9 @@ import java.util.Optional;
 
 public interface UserNanumRepository extends JpaRepository<UserNanum, Long> {
 
-    Optional<UserNanum> findByReceiver(User receiver);
+    List<UserNanum> findAllByNanum(Nanum nanum);
 
-    List<UserNanum> findAllByNanumAndIsCertificatedTrue(Nanum nanum);
+    Optional<UserNanum> findByNanumAndReceiver(Nanum nanum, User user);
+
+    int countByNanumAndIsCertificated(Nanum nanum, boolean b);
 }

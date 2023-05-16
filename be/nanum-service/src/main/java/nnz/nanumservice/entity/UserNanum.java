@@ -36,6 +36,8 @@ public class UserNanum extends BaseEntity {
     @JoinColumn(name = "nanum_id")
     private Nanum nanum;
 
+    private String certificationImage;
+
     public void updateIsCertificated(Boolean cert){
         this.isCertificated = cert;
     }
