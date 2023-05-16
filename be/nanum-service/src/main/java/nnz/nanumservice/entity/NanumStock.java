@@ -20,6 +20,7 @@ public class NanumStock implements Serializable {
     @Id
     private Long id;
 
+    private Integer quantity;
     private Integer stock;
 
     public void minusStock(){
