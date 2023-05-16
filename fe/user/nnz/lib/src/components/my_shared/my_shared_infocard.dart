@@ -20,7 +20,7 @@ class _MySharedCardState extends State<MySharedCard> {
   final token = Get.find<BottomNavController>().accessToken;
   final ShareDetailController sharedetailController =
       Get.put(ShareDetailController());
-  int nanumId = 70;
+  int nanumId = 71;
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> showData = Rx<Map<dynamic, dynamic>>({});
 

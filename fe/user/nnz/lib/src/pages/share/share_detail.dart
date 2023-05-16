@@ -9,11 +9,11 @@ import 'package:nnz/src/components/sharing_detail/sharing_card.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_tag.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
-import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/model/share_detail_model.dart';
 
 class ShareDatail extends StatefulWidget {
-  const ShareDatail({super.key});
+  const ShareDatail({super.key, required this.nanumIds});
+  final int nanumIds;
 
   @override
   State<ShareDatail> createState() => _ShareDatailState();
@@ -21,9 +21,8 @@ class ShareDatail extends StatefulWidget {
 
 class _ShareDatailState extends State<ShareDatail> {
   final token = Get.find<BottomNavController>().accessToken;
-  final ShareDetailController sharedetailController =
-      Get.put(ShareDetailController());
-  int nanumId = 11;
+
+  int nanumId = 37;
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> showData = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> nunumwriter = Rx<Map<dynamic, dynamic>>({});
@@ -49,10 +48,10 @@ class _ShareDatailState extends State<ShareDatail> {
   void fetchData() async {
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId"),
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}"),
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg',
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
           "Accept-Charset": "utf-8",
         });
 
@@ -90,13 +89,13 @@ class _ShareDatailState extends State<ShareDatail> {
   void postBookmark() async {
     var res = await http.post(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/$nanumId"),
+            "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg'
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'
         },
         body: {});
-    if (res.statusCode == 204) {
+    if (res.statusCode == 200) {
       print("북마크 성공");
     } else {
       print("북마크 실패");
@@ -109,7 +108,7 @@ class _ShareDatailState extends State<ShareDatail> {
             "https://k8b207.p.ssafy.io/api/user-service/users/follow/$writerId"),
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg'
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'
         },
         body: {});
     if (res.statusCode == 204) {
@@ -312,6 +311,7 @@ class _ShareDatailState extends State<ShareDatail> {
                 lefthour: hour,
                 leftmin: minute,
                 leftsec: second,
+                nanumIds: widget.nanumIds,
               ),
             ],
           ),

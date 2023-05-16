@@ -7,8 +7,8 @@ import 'package:nnz/src/components/sharing_detail/test_infinite.dart';
 import 'package:nnz/src/components/test_message/firebase_message.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
-import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/my_shared_info_form.dart';
+import 'package:nnz/src/pages/share/my_shared_info_page.dart';
 import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/share/my_snappingtest.dart';
 import 'package:nnz/src/pages/share/new_share_info_detail.dart';
@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/",
+      initialRoute: "/performDetail",
       getPages: [
         GetPage(
           name: "/",
@@ -127,8 +127,10 @@ class MyApp extends StatelessWidget {
           transition: Transition.native,
         ),
         GetPage(
-            name: "/sharingDetail",
-            page: () => const ShareDatail(),
+            name: "/sharingDetail/:nanumId",
+            page: () => const ShareDatail(
+                  nanumIds: 0,
+                ),
             transition: Transition.rightToLeft),
         GetPage(
           name: "/myPage",
@@ -189,7 +191,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/myShareInfo",
-          page: () => MySharedInfo(),
+          page: () => const MySharedInfos(),
           transition: Transition.rightToLeft,
         ),
         GetPage(
@@ -223,11 +225,15 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/performDetail",
-          page: () => SharePerfomDetail(),
+          page: () => const SharePerformDetail(
+            showIds: 4959,
+          ),
         ),
         GetPage(
-          name: "/testing",
-          page: () => const TestInfinite(),
+          name: "/testing/:showIds",
+          page: () => const TestInfinite(
+            showIds: 4399,
+          ),
         ),
         GetPage(
           name: "/shareComplete",

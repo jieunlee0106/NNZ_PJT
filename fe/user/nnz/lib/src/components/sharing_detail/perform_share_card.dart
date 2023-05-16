@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
 
 class ShareCard extends StatelessWidget {
-  const ShareCard({super.key, required this.title, required this.opentime});
+  const ShareCard(
+      {super.key,
+      required this.title,
+      required this.opentime,
+      required this.img});
 
   final String title;
-  final DateTime opentime;
+  final String opentime;
+  final String img;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +26,8 @@ class ShareCard extends StatelessWidget {
           ]),
       child: Column(
         children: [
-          Image.asset(
-            "assets/images/sharing_sample/sharingsource.jpg",
+          Image.network(
+            img,
             height: 110,
             width: double.infinity,
             fit: BoxFit.cover,

@@ -1,127 +1,101 @@
-import 'dart:convert';
-
-ShareListModel shareListModelFromJson(String str) =>
-    ShareListModel.fromJson(json.decode(str));
-
-String shareListModelToJson(ShareListModel data) => json.encode(data.toJson());
-
 class ShareListModel {
   bool? isFirst;
   bool? isLast;
-  bool? isEmpty;
-  int? totalElements;
-  int? totalPages;
-  List<Content> content;
+  bool? empty;
+  int? totalElement;
+  int? totalPage;
+  List<Content>? content;
 
-  ShareListModel({
-    required this.isFirst,
-    required this.isLast,
-    required this.isEmpty,
-    required this.totalElements,
-    required this.totalPages,
-    required this.content,
-  });
+  ShareListModel(
+      {this.isFirst,
+      this.isLast,
+      this.empty,
+      this.totalElement,
+      this.totalPage,
+      this.content});
 
-  factory ShareListModel.fromJson(Map<String, dynamic> json) => ShareListModel(
-        isFirst: json["isFirst"],
-        isLast: json["isLast"],
-        isEmpty: json["isEmpty"],
-        totalElements: json["totalElements"],
-        totalPages: json["totalPages"],
-        content:
-            List<Content>.from(json["content"].map((x) => Content.fromJson(x))),
-      );
+  ShareListModel.fromJson(Map<String, dynamic> json) {
+    isFirst = json['isFirst'];
+    isLast = json['isLast'];
+    empty = json['empty'];
+    totalElement = json['totalElement'];
+    totalPage = json['totalPage'];
+    if (json['content'] != null) {
+      content = <Content>[];
+      json['content'].forEach((v) {
+        content!.add(Content.fromJson(v));
+      });
+    }
+  }
 
-  Map<String, dynamic> toJson() => {
-        "isFirst": isFirst,
-        "isLast": isLast,
-        "isEmpty": isEmpty,
-        "totalElements": totalElements,
-        "totalPages": totalPages,
-        "content": List<dynamic>.from(content.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isFirst'] = isFirst;
+    data['isLast'] = isLast;
+    data['empty'] = empty;
+    data['totalElement'] = totalElement;
+    data['totalPage'] = totalPage;
+    if (content != null) {
+      data['content'] = content!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
 class Content {
-  int id;
-  dynamic providerId;
-  dynamic title;
-  dynamic nanumDate;
-  DateTime openTime;
-  bool isCertification;
-  String condition;
-  int quantity;
-  int stock;
-  String content;
-  int status;
-  String thumbnail;
-  dynamic nanumTime;
-  dynamic location;
-  dynamic lat;
-  dynamic lng;
-  dynamic outfit;
-  int showId;
+  int? id;
+  String? title;
+  String? thumbnail;
+  String? date;
+  List<Tags>? tags;
+  int? status;
 
-  Content({
-    required this.id,
-    this.providerId,
-    this.title,
-    this.nanumDate,
-    required this.openTime,
-    required this.isCertification,
-    required this.condition,
-    required this.quantity,
-    required this.stock,
-    required this.content,
-    required this.status,
-    required this.thumbnail,
-    this.nanumTime,
-    this.location,
-    this.lat,
-    this.lng,
-    this.outfit,
-    required this.showId,
-  });
+  Content(
+      {this.id, this.title, this.thumbnail, this.date, this.tags, this.status});
 
-  factory Content.fromJson(Map<String, dynamic> json) => Content(
-        id: json["id"],
-        providerId: json["providerId"],
-        title: json["title"],
-        nanumDate: json["nanumDate"],
-        openTime: DateTime.parse(json["openTime"]),
-        isCertification: json["isCertification"],
-        condition: json["condition"],
-        quantity: json["quantity"],
-        stock: json["stock"],
-        content: json["content"],
-        status: json["status"],
-        thumbnail: json["thumbnail"],
-        nanumTime: json["nanumTime"],
-        location: json["location"],
-        lat: json["lat"],
-        lng: json["lng"],
-        outfit: json["outfit"],
-        showId: json["showId"],
-      );
+  Content.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    thumbnail = json['thumbnail'];
+    date = json['date'];
+    if (json['tags'] != null) {
+      tags = <Tags>[];
+      json['tags'].forEach((v) {
+        tags!.add(Tags.fromJson(v));
+      });
+    }
+    status = json['status'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "providerId": providerId,
-        "title": title,
-        "nanumDate": nanumDate,
-        "openTime": openTime.toIso8601String(),
-        "isCertification": isCertification,
-        "condition": condition,
-        "quantity": quantity,
-        "stock": stock,
-        "content": content,
-        "status": status,
-        "thumbnail": thumbnail,
-        "nanumTime": nanumTime,
-        "location": location,
-        "lat": lat,
-        "lng": lng,
-        "outfit": outfit,
-        "showId": showId,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['thumbnail'] = thumbnail;
+    data['date'] = date;
+    if (tags != null) {
+      data['tags'] = tags!.map((v) => v.toJson()).toList();
+    }
+    data['status'] = status;
+    return data;
+  }
+}
+
+class Tags {
+  int? id;
+  String? tag;
+
+  Tags({this.id, this.tag});
+
+  Tags.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    tag = json['tag'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['tag'] = tag;
+    return data;
+  }
 }

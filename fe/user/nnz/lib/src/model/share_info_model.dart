@@ -4,9 +4,15 @@ class ShareInfoModel {
   String? lat;
   String? lng;
   String? outfit;
+  int? receiveId;
 
   ShareInfoModel(
-      {this.nanumTime, this.location, this.lat, this.lng, this.outfit});
+      {this.nanumTime,
+      this.location,
+      this.lat,
+      this.lng,
+      this.outfit,
+      this.receiveId});
 
   ShareInfoModel.fromJson(Map<String, dynamic> json) {
     nanumTime = json['nanumTime'];
@@ -14,6 +20,7 @@ class ShareInfoModel {
     lat = json['lat'];
     lng = json['lng'];
     outfit = json['outfit'];
+    receiveId = json['receiveId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +30,7 @@ class ShareInfoModel {
     data['lat'] = lat;
     data['lng'] = lng;
     data['outfit'] = outfit;
+    data['receiveId'] = receiveId;
     return data;
   }
 }

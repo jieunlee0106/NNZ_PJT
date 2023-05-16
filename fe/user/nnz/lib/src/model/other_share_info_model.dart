@@ -1,8 +1,8 @@
 class OtherShareInfoModel {
   String? nanumTime;
   String? location;
-  String? lat;
-  String? lng;
+  double? lat;
+  double? lng;
   String? outfit;
 
   OtherShareInfoModel(
@@ -17,12 +17,12 @@ class OtherShareInfoModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nanumTime'] = this.nanumTime;
-    data['location'] = this.location;
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
-    data['outfit'] = this.outfit;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nanumTime'] = nanumTime;
+    data['location'] = location;
+    data['lat'] = lat;
+    data['lng'] = lng;
+    data['outfit'] = outfit;
     return data;
   }
 }

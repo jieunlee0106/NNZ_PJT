@@ -5,7 +5,7 @@ class PerformProvider extends GetConnect {
   void onInit() async {}
 
   Future<Response> getPerformDetail() async {
-    final res =
+    var res =
         await get("https://k8b207.p.ssafy.io/api/show-service/shows/4399");
     return res;
   }

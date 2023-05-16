@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/pages/home/home.dart';
-import 'package:nnz/src/pages/share/share_detail.dart';
 
 class SharingComplete extends StatelessWidget {
   const SharingComplete({super.key});
@@ -33,7 +32,7 @@ class SharingComplete extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GestureDetector(
-                onTap: () => Get.to(() => const ShareDatail()),
+                onTap: () => Get.to(() => Home()),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Config.yellowColor,

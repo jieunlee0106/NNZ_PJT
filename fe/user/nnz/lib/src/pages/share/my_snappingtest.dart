@@ -1,10 +1,48 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:nnz/src/components/my_shared/my_shared_qrmake.dart';
-import 'package:nnz/src/pages/share/sharing_info.dart';
+import 'package:nnz/src/model/other_share_info_model.dart';
+import 'package:nnz/src/pages/share/my_shared_info_page.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
-class SheetBelowTest extends StatelessWidget {
+class SheetBelowTest extends StatefulWidget {
   const SheetBelowTest({super.key});
+
+  @override
+  State<SheetBelowTest> createState() => _SheetBelowTestState();
+}
+
+class _SheetBelowTestState extends State<SheetBelowTest> {
+  Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  int nanumId = 104;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    var res = await http.get(
+        Uri.parse(
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/info"),
+        headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMiIsImlzcyI6Im5ueiIsImlhdCI6MTY4NDEzNjE0MywiYXV0aFByb3ZpZGVyIjoiTk5aIiwicm9sZSI6IlVTRVIiLCJpZCI6MTIsImVtYWlsIjoiamlqaUBnbWFpbC5jb20iLCJleHAiOjE2ODU0MzIxNDN9.Ce84oeRLQu87ucLYye039mNTsnH6Dn7XhrhLf9LAW1iVWRhhNkz3kiLFGV-QsqHgpxLfDIGVW-uuXZPe2mJHYg',
+          "Accept-Charset": "utf-8",
+        });
+    OtherShareInfoModel infoModelClass =
+        OtherShareInfoModel.fromJson(jsonDecode(res.body));
+    result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    print(result.value);
+
+    setState(() {
+      result.value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +62,7 @@ class SheetBelowTest extends StatelessWidget {
             child: const MyShareQr(),
           ),
         ),
-        child: SharingDetailInfo(),
+        child: const MySharedInfos(),
       ),
     );
   }

@@ -44,13 +44,22 @@ class ShareDetailController extends GetxController {
     }
   }
 
-  Future<void> sendAuthImage() async {
+  Future<void> sendAuthImage({required int nanumIds}) async {
     try {
-      final res = await ShareAuthProvider()
-          .postShareAuth(authImage: authImageController.images[0]);
+      final res = await ShareAuthProvider().postShareAuth(
+          authImage: authImageController.images[0], nanumIds: nanumIds);
     } catch (err) {
       print("사진 에러에용");
       print(authImageController.images);
+      print(err);
+    }
+  }
+
+  Future<void> sendingAuth({required int nanumIds}) async {
+    try {
+      final res =
+          await ShareAuthProvider().sendingShareAuth(nanumIds: nanumIds);
+    } catch (err) {
       print(err);
     }
   }
