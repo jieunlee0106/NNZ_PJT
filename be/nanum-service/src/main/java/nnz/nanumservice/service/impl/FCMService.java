@@ -4,6 +4,7 @@ import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.nanumservice.dto.FcmNotificationDTO;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FCMService {
 
+    @Async
     public void sendMessage(FcmNotificationDTO fcmNotificationDTO) throws FirebaseMessagingException {
         Notification notification = Notification.builder()
                 .setTitle(fcmNotificationDTO.getTitle())
@@ -28,9 +30,10 @@ public class FCMService {
                 .setNotification(notification)
                 .build();
 
-        FirebaseMessaging.getInstance().send(message);
+        FirebaseMessaging.getInstance().sendAsync(message);
     }
 
+    @Async
     public void sendMessage(String title, String body, String token) throws FirebaseMessagingException {
         Notification notification = Notification.builder()
                 .setTitle(title)
@@ -45,9 +48,10 @@ public class FCMService {
                 .setNotification(notification)
                 .build();
 
-        FirebaseMessaging.getInstance().send(message);
+        FirebaseMessaging.getInstance().sendAsync(message);
     }
 
+    @Async
     public void sendMultipleMessage(String title, String body, List<String> tokens) throws FirebaseMessagingException {
         Notification notification = Notification.builder()
                 .setTitle(title)
@@ -63,6 +67,6 @@ public class FCMService {
                 .setNotification(notification)
                 .build());
 
-        FirebaseMessaging.getInstance().sendAll(messages);
+        FirebaseMessaging.getInstance().sendAllAsync(messages);
     }
 }
