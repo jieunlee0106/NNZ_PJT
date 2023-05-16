@@ -5,9 +5,9 @@ spring:
     name: DEV-NANUM-SERVICE
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/nnz_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ssafy
-    password: ssafy
+    url: jdbc:mysql://127.0.0.1:3306/nanum_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: yyhj7424
 #    url: ENC(pm106qt2vjFydIzvmJS4YmelevAWXH4AnNvOkb6pIO8VJi5Yz7SvqMJO493lNQhgITEVS2Vp79i9Lz/+SbQMNNgIEdUb1gH80KtJ3QTUWZQeGfTT9WDNnraNbJdz9C7ikELacKm6OLA0uxhj90PEUA==)
 #    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
 #    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)

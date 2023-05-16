@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.vo.NanumVO;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
+@Where(clause = "is_delete = 0")
 public class Nanum extends BaseEntity {
 
     @Id
