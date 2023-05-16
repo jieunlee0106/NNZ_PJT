@@ -27,6 +27,7 @@ class UserProvider extends GetConnect {
   Future<Response> postLogin({
     required String email,
     required String password,
+    required String deviceToken,
   }) async {
     final headers = {
       'Content-Type': 'application/json',
@@ -34,6 +35,7 @@ class UserProvider extends GetConnect {
     final body = {
       'email': email,
       'pwd': password,
+      'deviceToken': deviceToken,
     };
     final response = await post(
       "https://k8b207.p.ssafy.io/api/user-service/users/login",
@@ -208,7 +210,7 @@ class UserProvider extends GetConnect {
   //토근 재발급 코드
   Future<Response> refreshToken(
       {required String accessToken, required String refreshToken}) async {
-    final body = null;
+    const body = null;
     final response = await post(
         "https://k8b207.p.ssafy.io/api/user-service/users/reissue", body,
         headers: {

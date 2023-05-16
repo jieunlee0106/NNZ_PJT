@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/icon_data.dart';
 
-import '../../components/search_form/no_result_search.dart';
 import '../../components/search_form/popular_hash_tag.dart';
 import '../../components/search_form/related_hash_tag.dart';
+import '../../components/search_form/search_show.dart';
 import '../../components/search_form/show_search_bar.dart';
 import '../../controller/search_controller.dart';
 
@@ -45,21 +45,21 @@ class Search extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  controller.searchText.value.isEmpty
-                      ? const PopularHashTag()
-                      : Column(
-                          children: [
-                            RelatedHashTag(),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            // SearchShow(),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            NoResultSearch(),
-                          ],
-                        ),
+                  Column(
+                    children: [
+                      controller.searchText.value.isEmpty
+                          ? const PopularHashTag()
+                          : RelatedHashTag(),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      SearchShow(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      // NoResultSearch(),
+                    ],
+                  ),
                 ],
               ),
             ),

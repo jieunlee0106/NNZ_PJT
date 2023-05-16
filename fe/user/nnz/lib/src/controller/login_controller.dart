@@ -18,12 +18,14 @@ class LoginController extends GetxController {
   var loginKey = GlobalKey<FormState>();
   late final emailController;
   late final passwordController;
-
+  String? deviceToken;
   @override
   void onInit() {
     super.onInit();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    deviceToken = Get.find<BottomNavController>().token;
+    logger.i("하이 $deviceToken");
   }
 
   //각 TextEditingController에서의 text를 바꾸기 위한 메서드
@@ -68,7 +70,9 @@ class LoginController extends GetxController {
 
       try {
         final response = await UserProvider().postLogin(
-            email: emailController.text, password: passwordController.text);
+            email: emailController.text,
+            password: passwordController.text,
+            deviceToken: deviceToken!);
         logger.i(response.statusCode);
         if (response.statusCode == 200) {
           if (response.body["code"] != null) {
@@ -87,7 +91,7 @@ class LoginController extends GetxController {
             // final userId = response.body["userId"];
             Token.saveAccessToken(accessToken);
             Token.saveRefreshToken(refreshToken);
-            
+
             Get.find<BottomNavController>().setUserId(userId: userId);
             final token = Get.find<BottomNavController>().getToken();
             Get.offAllNamed("/app");

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/model/popular_tag_model.dart';
+import 'package:nnz/src/model/searh_nanum_list_model.dart';
 import 'package:nnz/src/model/tag_list_model.dart';
 import 'package:nnz/src/services/search_provider.dart';
 
@@ -13,6 +14,8 @@ class ShowSearchController extends GetxController {
   RxBool hasFocus = false.obs;
   List<PopularTagModel> tagList = [];
   List<TagListModel> relatedTagList = [];
+  List<Content> nanumList = [];
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -92,5 +95,29 @@ class ShowSearchController extends GetxController {
     //   logger.e(errorMessage);
     //   throw Exception(errorMessage);
     // }
+  }
+
+  //나눔 검색 api
+  Future<List<Content>> getNanumList({required String q}) async {
+    try {
+      final response = await SearchProvider().getNanumsSearch(q: q);
+      if (response.statusCode == 200) {
+        nanumList.clear();
+        for (var data in response.body["nanums"]["content"]) {
+          nanumList.add(Content.fromJson(data));
+        }
+        logger.i("나눔리스트에 들어왔어염>>>>> $nanumList}");
+        logger.i("해당 태그들  ${response.body["nanums"]["content"]}");
+        return nanumList;
+      } else {
+        final errorMessage = "(${response.statusCode}): ${response.body}";
+        logger.e(errorMessage);
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      final errorMessage = "$e";
+      logger.e(errorMessage);
+      throw Exception(errorMessage);
+    }
   }
 }

@@ -90,4 +90,12 @@ class SearchProvider extends GetConnect {
         headers: headers);
     return response;
   }
+
+  //나눔 검색 api
+  Future<Response> getNanumsSearch({required String q}) async {
+    final headers = {'Content-Type': 'application/json'};
+    final response = await get(
+        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/search?q=$q");
+    return response;
+  }
 }

@@ -1,163 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/search_controller.dart';
+import 'package:nnz/src/model/searh_nanum_list_model.dart';
+
+import '../../config/config.dart';
+import '../icon_data.dart';
 
 class SearchShow extends StatelessWidget {
-  const SearchShow({super.key});
-
+  SearchShow({super.key});
+  final controller = Get.put(ShowSearchController());
   @override
   Widget build(BuildContext context) {
-    final postIndex = [
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-    ];
-    final showTitle = [
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-    ];
-    final tag = [
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-    ];
-    final showStartTime = [
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-    ];
-    final showEndTime = [
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-    ];
-    final venue = [
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-    ];
-    return SizedBox(
-      height: Get.width * 0.8,
-      child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: venue.length,
-        itemBuilder: ((context, index) {
+    return FutureBuilder<List<Content>>(
+      future: controller.getNanumList(q: controller.searchController.text),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text("Error : ${snapshot.hasError}");
+        } else if (controller.nanumList.isEmpty) {
           return Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, 4),
-                      blurRadius: 4,
-                      color: Colors.black.withOpacity(0.25),
-                    )
-                  ]),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 200,
-                    child: Image.network(
-                      postIndex[index],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    iconData(
+                      icon: ImagePath.sad,
+                      size: 240,
                     ),
-                  ),
-                  const SizedBox(
-                    width: 18,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                    const SizedBox(
+                      height: 24,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          showTitle[index],
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Config.blackColor,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "<${tag[index]}>",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Config.blackColor,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        const Text("공연기간"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: [
-                            Text(showStartTime[index]),
-                            const Text("~"),
-                            Text(showEndTime[index]),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        const Text("공연장소"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(venue[index]),
-                      ],
+                    Text(
+                      "검색 결과가 없습니다.",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Config.blackColor,
+                      ),
                     ),
-                  )
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           );
-        }),
-      ),
+        } else {
+          return SizedBox(
+            height: Get.width * 0.8,
+            child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: controller.nanumList.length,
+              itemBuilder: ((context, index) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 4),
+                            blurRadius: 4,
+                            color: Colors.black.withOpacity(0.25),
+                          )
+                        ]),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          child: Image.network(
+                            controller.nanumList[index].thumbnail!,
+                            width: 200,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 18,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            ),
+          );
+        }
+      },
     );
   }
 }

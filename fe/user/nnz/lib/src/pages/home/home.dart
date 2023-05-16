@@ -11,10 +11,7 @@ import 'package:nnz/src/components/home_page_form/home_share_list.dart';
 
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/controller/category_controller.dart';
 import 'package:nnz/src/controller/home_controller.dart';
-import 'package:nnz/src/controller/my_page_controller.dart';
-import 'package:nnz/src/controller/sharing_register_controller.dart';
 import 'package:nnz/src/model/hash_tag_model.dart';
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/movie.dart';
@@ -27,6 +24,8 @@ import 'package:nnz/src/pages/user/alarm.dart';
 import 'package:nnz/src/model/popularity.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   // const Home({Key? key}) : super(key: key);
 
   @override
@@ -61,16 +60,17 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         leading: IconButton(
-          icon: Icon(Icons.account_circle),
+          icon: const Icon(Icons.account_circle),
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MyPage(),
+                builder: (context) => const MyPage(),
               ),
             );
           },
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
         title: Center(child: Image.asset(ImagePath.logo, width: 80)),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               Navigator.push(
                 context,
@@ -131,7 +131,7 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     HomeCategory(
-                      page: ConcertPage(),
+                      page: const ConcertPage(),
                       image: ImagePath.concert,
                       categoryName: '콘서트',
                       categoryListName: '콘서트',
@@ -148,13 +148,13 @@ class _HomeState extends State<Home> {
                       categoryListName: '연극',
                     ),
                     HomeCategory(
-                      page: MoviePage(),
+                      page: const MoviePage(),
                       image: ImagePath.movie,
                       categoryName: '페스티벌',
                       categoryListName: '뮤직 페스티벌',
                     ),
                     HomeCategory(
-                        page: SportsPage(),
+                        page: const SportsPage(),
                         image: ImagePath.sports,
                         categoryName: '스포츠',
                         categoryListName: '야구'),

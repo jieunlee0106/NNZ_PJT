@@ -10,7 +10,7 @@
     <application
         android:label="nnz"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_launcher"
          android:usesCleartextTraffic="true"
         >
         

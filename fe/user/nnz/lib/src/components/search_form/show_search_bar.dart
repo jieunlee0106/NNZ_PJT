@@ -57,7 +57,13 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                 child: TextField(
                   controller: controller.searchController,
                   onChanged: (text) {
-                    logger.i(_selectItem);
+                    if (_selectItem == '공연') {
+                      logger.i("서버야 공연 불러와줘");
+                    } else if (_selectItem == '나눔') {
+                      logger.i("서버야 나눔 불러와줘");
+                      controller.getNanumList(
+                          q: controller.searchController.text);
+                    }
                     controller.onChangeCategory(text: text, type: _selectItem);
                   },
                   decoration: const InputDecoration(
