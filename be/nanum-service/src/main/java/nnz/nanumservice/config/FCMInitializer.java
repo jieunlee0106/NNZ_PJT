@@ -22,15 +22,11 @@ import java.util.List;
 @Component
 public class FCMInitializer {
 
-    @Value("${fcm.json.path}")
-    private FileSystemResource jsonFile;
-
     @PostConstruct
     public void initialize(){
-//        ClassPathResource resource = new ClassPathResource("nnz-firebase.json");
-//        FileSystemResource file = new FileSystemResource("/home/fcm/nnz-firebase.json");
+        ClassPathResource resource = new ClassPathResource("nnz-firebase.json");
 
-        try(InputStream stream = jsonFile.getInputStream()){
+        try(InputStream stream = resource.getInputStream()){
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(stream))
                     .build();
