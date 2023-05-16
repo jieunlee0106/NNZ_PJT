@@ -7,10 +7,12 @@ import nnz.showservice.dto.CategoryDTO;
 import nnz.showservice.dto.ShowDTO;
 import nnz.showservice.dto.TagDTO;
 import nnz.showservice.dto.res.ResBannerDTO;
+import nnz.showservice.dto.res.ResSearchDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.service.CategoryService;
 import nnz.showservice.service.ShowService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,5 +81,10 @@ public class ShowController {
     @GetMapping("/{showId}/tags")
     public ResponseEntity<List<TagDTO>> readShowTagByShow(@PathVariable Long showId, @RequestParam("count") Integer count) {
         return ResponseEntity.ok(showService.readShowTagByShow(showId, count));
+    }
+
+    @GetMapping("/search/query")
+    public ResponseEntity<ResSearchDTO> searchShowByQuery(@RequestParam("q") String query, Pageable pageable) {
+        return new ResponseEntity<>(showService.searchShowByQuery(query, pageable), HttpStatus.OK);
     }
 }
