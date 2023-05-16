@@ -10,15 +10,15 @@ import nnz.showservice.dto.ShowTagDTO;
 import nnz.showservice.dto.SportsDTO;
 import nnz.showservice.dto.TagDTO;
 import nnz.showservice.dto.res.ResBannerDTO;
+import nnz.showservice.dto.res.ResSearchDTO;
 import nnz.showservice.dto.res.ResShowDTO;
+import nnz.showservice.dto.res.ResTagDTO;
 import nnz.showservice.entity.*;
 import nnz.showservice.repository.*;
 import nnz.showservice.service.KafkaProducer;
+import nnz.showservice.service.NanumFeignClient;
 import nnz.showservice.service.ShowService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +41,7 @@ public class ShowServiceImpl implements ShowService {
     private final ShowTagRepository showTagRepository;
     private final BannerRepository bannerRepository;
     private final KafkaProducer producer;
+    private final NanumFeignClient nanumFeignClient;
 
     @Override
     public ShowDTO readShowInfo(Long showId) {
@@ -198,5 +199,47 @@ public class ShowServiceImpl implements ShowService {
 //        List<Tag> showTags = showTagRepository.findTagByShow(show, pageRequest);
         List<Tag> showTags = tagRepository.findTagByShow(showId, pageRequest);
         return showTags.stream().map(TagDTO::of).collect(Collectors.toList());
+    }
+
+    @Override
+    public ResSearchDTO searchShowByQuery(String query, Pageable pageable) {
+        // 최대 태그 개수
+        int maxTagCount = 10;
+
+        // 검색어로 공연 검색 -> 시작일 오름차순
+        PageRequest pageRequest =
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("startDate"));
+        Page<Show> shows = showRepository.findByQuery(query, pageRequest);
+
+        // 검색된 공연들의 ids
+        List<Long> showIds = shows.getContent().stream().map(Show::getId).collect(Collectors.toList());
+
+        // 검색된 공연들의 태그 -> 조회순으로
+        List<Tag> showTags = tagRepository.findTagByShowIds(
+                showIds,
+                PageRequest.of(0, maxTagCount, Sort.by("views").descending())
+        );
+
+        // 관련 태그에 공연 태그 3개 추가
+        List<ResTagDTO> relatedTags = showTags.subList(0, 3).stream().map(ResTagDTO::of).collect(Collectors.toList());
+
+        // 공연 태그 개수에 따른 나눔 태그 조회 개수
+        int nanumTagCount = maxTagCount - Math.min(3, showTags.size());
+
+        // 검색된 공연으로 조회한 나눔 태그를 관련 태그에 추가
+        if (showIds.size() > 0) { // 조회된 공연이 존재하면 나눔 태그를 조회해 관련 태그에 추가
+            relatedTags.addAll(nanumFeignClient.getRelatedNanumTagByShow(showIds, nanumTagCount));
+        }
+
+        // 관련 태그의 남은 자리에 관련 공연 태그를 추가
+        if (relatedTags.size() < 10 && showTags.size() >= 3) { // 관련 태그의 수가 10개가 안되고 조회된 공연의 태그가 3개 이상이면
+            relatedTags.addAll(
+                    showTags.subList(3, Math.min(maxTagCount, showTags.size())).stream()
+                            .map(ResTagDTO::of)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        return ResSearchDTO.of(shows, relatedTags);
     }
 }
