@@ -2,12 +2,14 @@ package nnz.tagservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.tagservice.dto.TagDTO;
 import nnz.tagservice.dto.res.ResTagDTO;
 import nnz.tagservice.entity.*;
+import nnz.tagservice.exception.ErrorCode;
 import nnz.tagservice.repository.*;
 import nnz.tagservice.service.KafkaProducer;
 import nnz.tagservice.service.TagService;
@@ -82,7 +84,7 @@ public class TagServiceImpl implements TagService {
         try {
             jsonStr = mapper.writeValueAsString(resTagDTOs);
         } catch (JsonProcessingException e) {
-            //todo: error handling
+            throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION);
         }
 
         return jsonStr;
