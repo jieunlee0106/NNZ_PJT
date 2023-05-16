@@ -86,7 +86,7 @@ public class NanumController {
     @PostMapping("/{nanumId}/info")
     public ResponseEntity<Void> createNanumInfo(
             @PathVariable(name = "nanumId") Long nanumId,
-            @RequestBody NanumInfoDTO nanumInfoDTO) {
+            @RequestBody NanumInfoDTO nanumInfoDTO) throws FirebaseMessagingException {
         nanumService.createNanumInfo(nanumId, nanumInfoDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
