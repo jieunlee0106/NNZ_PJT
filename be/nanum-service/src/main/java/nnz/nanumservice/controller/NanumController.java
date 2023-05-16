@@ -124,10 +124,6 @@ public class NanumController {
             @PathVariable(name = "nanumId") Long nanumId,
             @RequestPart(value = "image", required = false) MultipartFile file,
             DecodedToken userToken) {
-        if (userToken.getId() == null) {
-//            todo : error handling
-//            throw new Exception();
-        }
         nanumService.createUserNanum(nanumId, userToken.getId(), file);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
