@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
-//@Component
+@Component
 public class FCMInitializer {
 
     @PostConstruct
@@ -35,15 +35,5 @@ public class FCMInitializer {
         }catch (Exception e){
             throw new RuntimeException(HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
-    }
-
-    private String getAccessToken() throws IOException {
-        ClassPathResource resource = new ClassPathResource("naneozoo-firebase-adminsdk-5cna1-e73447ff78.json");
-
-        GoogleCredentials googleCredentials = GoogleCredentials.fromStream(resource.getInputStream())
-                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
-
-        googleCredentials.refreshIfExpired();
-        return googleCredentials.getAccessToken().getTokenValue();
     }
 }

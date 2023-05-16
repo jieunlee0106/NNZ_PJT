@@ -3,11 +3,9 @@ package nnz.nanumservice.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
-public class FCMNotificationDTO {
+public class FcmNotificationDTO {
     private String userToken;
     private String title;
     private String body;
