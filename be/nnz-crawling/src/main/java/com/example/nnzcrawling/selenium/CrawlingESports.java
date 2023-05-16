@@ -23,17 +23,17 @@ public class CrawlingESports {
 
     private final String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //    private final String WEB_DRIVER_PATH = "/usr/bin/chromedriver";
-    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
-//
-//    @Value("${web-driver.chrome.driver-path}")
-//    private String webDriverPath;
+//    private final String WEB_DRIVER_PATH = "C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nnz-crawling\\chromedriver.exe";
+
+    @Value("${web-driver.chrome.driver-path}")
+    private String webDriverPath;
 
 
     private List<TagCrawling> tags = new ArrayList<>();
 
     public List<ShowCrawling> getCrawlingData() throws InterruptedException {
         log.info("ESports crawling start.");
-        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
+        System.setProperty(WEB_DRIVER_ID, webDriverPath);
 
         // 크롬 설정을 담은 객체 생성
         ChromeOptions options = new ChromeOptions();
