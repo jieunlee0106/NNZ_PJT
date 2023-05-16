@@ -52,11 +52,14 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                     setState(() {
                       _selectItem = value!;
                     });
+                    controller.type(value);
+                    logger.i("타입 바뀌어줘 ${controller.type.value}");
                   }),
               Expanded(
                 child: TextField(
                   controller: controller.searchController,
                   onChanged: (text) {
+                    controller.searchText.value = text;
                     if (_selectItem == '공연') {
                       logger.i("서버야 공연 불러와줘");
                     } else if (_selectItem == '나눔') {
@@ -64,12 +67,13 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                       controller.getNanumList(
                           q: controller.searchController.text);
                     }
-                    controller.onChangeCategory(text: text, type: _selectItem);
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "찾고 있는 공연이 있으신가요?",
-                    suffixIcon: Icon(
+                    hintText: _selectItem == '공연'
+                        ? "찾고 있는 공연이 있으신가요?"
+                        : "찾고 있는 나눔이 있으신가요?",
+                    suffixIcon: const Icon(
                       Icons.search_rounded,
                       color: Color(0xff898787),
                     ),

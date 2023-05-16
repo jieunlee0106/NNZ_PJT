@@ -98,4 +98,12 @@ class SearchProvider extends GetConnect {
         "https://k8b207.p.ssafy.io/api/nanum-service/nanums/search?q=$q");
     return response;
   }
+
+  //공연 검색 api
+  Future<Response> getShowsSearch({required String q}) async {
+    final headers = {'Content-Type': 'application/json'};
+    final response = await get(
+        "https://k8b207.p.ssafy.io/api/show-service/shows/search/query?q=$q");
+    return response;
+  }
 }
