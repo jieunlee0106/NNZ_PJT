@@ -19,7 +19,7 @@ import java.nio.file.FileSystem;
 import java.util.List;
 
 @Slf4j
-@Component
+//@Component
 public class FCMInitializer {
 
     @PostConstruct
