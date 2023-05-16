@@ -48,7 +48,6 @@ public class NanumController {
     private final NanumService nanumService;
     private final CertificationService certificationService;
     private final TagService tagService;
-    private final FCMService fcmService;
 //    private final FCMService fcmService;
     private final NcpPushNotificationService ncpPushNotificationService;
 
