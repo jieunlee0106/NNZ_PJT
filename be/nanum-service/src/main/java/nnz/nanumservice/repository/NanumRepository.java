@@ -29,4 +29,6 @@ public interface NanumRepository extends JpaRepository<Nanum, Long> {
     Page<Nanum> findByQuery(@Param("query") String query, Pageable pageable);
 
     List<Nanum> findAllByOpenTimeBetween(LocalDateTime start, LocalDateTime end);
+
+    List<Nanum> findAllByNanumDate(LocalDate today);
 }

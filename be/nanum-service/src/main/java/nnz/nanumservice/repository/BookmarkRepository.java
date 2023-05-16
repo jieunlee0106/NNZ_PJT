@@ -13,4 +13,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     List<Bookmark> findAllByNanumAndIsDeleteFalse(Nanum nanum);
 
     Optional<Bookmark> findByNanumAndUserAndIsDeleteFalse(Nanum nanum, User follower);
+
+    List<Bookmark> findAllByNanumIn(List<Nanum> allByOpenTime);
 }
