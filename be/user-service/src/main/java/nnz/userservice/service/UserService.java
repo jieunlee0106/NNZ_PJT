@@ -20,7 +20,7 @@ public interface UserService {
     boolean isExistByEmail(String email);
     boolean isExistByNickname(String nickname);
     boolean isExistsByPhoneNumber(String phoneNumber);
-    TokenDTO login(LoginVO vo);
+    TokenDTO login(LoginVO vo) throws JsonProcessingException;
     void logout(String accessToken, DecodedToken token);
     void findPwd(FindPwdVO vo);
     List<BookmarkedNanumDTO> findBookmarkedNanum(Long userId);

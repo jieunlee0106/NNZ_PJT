@@ -38,6 +38,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber; // '-'을 뺀 형식 ex)01012345678
     private String profileImage; // 프로필 이미지 경로
+    private String deviceToken; // 기기 식별 토큰
 
     @Enumerated(value = EnumType.STRING)
     private AuthProvider authProvider;
@@ -50,6 +51,10 @@ public class User extends BaseEntity {
     public void login(PasswordEncoder passwordEncoder, String rawPassword) {
         matchPwd(passwordEncoder, rawPassword);
         this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public void setDeviceToken(String deviceToken){
+        this.deviceToken = deviceToken;
     }
 
     public void matchPwd(PasswordEncoder passwordEncoder, String rawPassword) {

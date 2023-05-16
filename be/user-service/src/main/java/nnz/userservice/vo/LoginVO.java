@@ -9,4 +9,5 @@ public class LoginVO {
 
     private String email;
     private String pwd;
+    private String deviceToken;
 }

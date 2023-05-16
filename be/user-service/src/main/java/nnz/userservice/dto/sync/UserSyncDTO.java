@@ -22,6 +22,7 @@ public class UserSyncDTO {
     private String phone;
     private String profileImage;
     private String authProvider;
+    private String deviceToken;
     private String role;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -38,6 +39,7 @@ public class UserSyncDTO {
                 .phone(user.getPhoneNumber())
                 .profileImage(user.getProfileImage())
                 .authProvider(user.getAuthProvider().name())
+                .deviceToken(user.getDeviceToken())
                 .role(user.getRole().name())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

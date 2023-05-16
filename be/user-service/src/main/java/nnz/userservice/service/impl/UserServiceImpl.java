@@ -142,12 +142,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenDTO login(LoginVO vo) {
+    @Transactional
+    public TokenDTO login(LoginVO vo) throws JsonProcessingException {
         User user = userRepository.findByEmail(vo.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.LOGIN_FAILURE));
 
         // 로그인 실패시 ErrorCode.LOGIN_FAILURE throw
         user.login(passwordEncoder, vo.getPwd());
+        // 기기 정보 저장
+        user.setDeviceToken(vo.getDeviceToken());
 
         String accessToken = jwtProvider.generateAccessToken(user);
         String refreshToken = jwtProvider.generateRefreshToken(user);
@@ -158,6 +161,10 @@ public class UserServiceImpl implements UserService {
                 .refreshToken(refreshToken)
                 .build();
         refreshTokenRepository.save(rt);
+
+        // 변경된 유저 데이터 동기화 미시지 전송
+        KafkaMessage kafkaMessage = KafkaMessage.update().body(UserSyncDTO.of(user));
+        kafkaProducer.sendMessage(TOPIC, kafkaMessage);
 
         return TokenDTO.builder()
                 .userId(user.getId())
