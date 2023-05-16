@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nnz/src/components/category/categort_null.dart';
 import 'package:nnz/src/components/category/sports_card.dart';
 import 'package:nnz/src/components/icon_data.dart';
+import 'package:nnz/src/components/nullPage.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
 import 'package:nnz/src/components/category/show_card.dart';
@@ -74,18 +76,23 @@ class _SportListState extends State<SportsList> {
                   ),
                 ],
               ),
-              Column(
-                children: items
-                    .map((item) => SportsCard(
-                          AteamLogo: item.leftTeamImage ?? '',
-                          BteamLogo: item.rightTeamImage ?? '',
-                          AteamName: item.leftTeam ?? '',
-                          BteamName: item.rightTeam ?? '',
-                          date: item.date.toString(),
-                          location: item.location ?? '',
-                        ))
-                    .toList(),
-              ),
+              if (items.isEmpty)
+                Center(
+                  child: NullPage2(message: '공연 목록이 존재하지 않습니다'),
+                )
+              else
+                Column(
+                  children: items
+                      .map((item) => SportsCard(
+                            AteamLogo: item.leftTeamImage ?? '',
+                            BteamLogo: item.rightTeamImage ?? '',
+                            AteamName: item.leftTeam ?? '',
+                            BteamName: item.rightTeam ?? '',
+                            date: item.date.toString(),
+                            location: item.location ?? '',
+                          ))
+                      .toList(),
+                ),
               SizedBox(
                 height: 10,
               ),

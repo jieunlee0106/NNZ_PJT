@@ -17,6 +17,28 @@ class LikesList extends StatefulWidget {
 }
 
 class _LikesListState extends State<LikesList> {
+  final controller = Get.put(LikesController());
+
+  late List<Likes> likes;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getList();
+  }
+
+  Future<void> getList() async {
+    await controller.getLikesList();
+    likes = controller.likesList;
+    print(likes.runtimeType);
+
+    // print(likes.id);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(

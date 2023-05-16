@@ -45,7 +45,7 @@ class LikesController extends GetxController {
   deleteLikesList({required int nanumId}) async {
     try {
       await dio.post(
-        'https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/69',
+        'https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/$nanumId',
         options: Options(
           headers: {
             "authorization": "Bearer $token",

@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nnz/src/controller/tag_controller.dart';
+import 'package:nnz/src/model/nanum_tag.dart';
+import 'package:nnz/src/model/show_tag.dart';
 
-class TagShow extends StatelessWidget {
+class TagShow extends StatefulWidget {
   final String tagName;
-  TagShow({
+
+  const TagShow({
     Key? key,
     required this.tagName,
   }) : super(key: key);
 
-  final List<Map<String, String>> items = [
-    {
-      'image':
-          'http://ticketimage.interpark.com/rz/image/play/goods/poster/23/23003443_p_s.jpg',
-    },
-    {
-      'image':
-          'http://ticketimage.interpark.com/rz/image/play/goods/poster/23/23005708_p_s.jpg',
-    },
-    {
-      'image':
-          'http://ticketimage.interpark.com/rz/image/play/goods/poster/23/23003272_p_s.jpg',
-    },
-    {
-      'image':
-          'https://blog.jandi.com/ko/wp-content/uploads/sites/4/2022/01/%EC%9E%94%EB%94%94%EA%B5%BF%EC%A6%88_%EC%A2%85%ED%95%A9%EB%AA%A9%EC%97%85-1.jpg',
-    },
-    {
-      'image':
-          'http://ticketimage.interpark.com/Play/image/large/23/23003197_p.gif',
-    },
-    {
-      'image': 'https://via.placeholder.com/150',
-    },
-  ];
+  @override
+  _TagShowState createState() => _TagShowState();
+}
+
+class _TagShowState extends State<TagShow> {
+  final controller = Get.put(TagController());
+
+  late ShowTag showTag;
+  late List<Content> items;
+
+  Future<void> getSList() async {
+    await controller.getShowTag(widget.tagName);
+    showTag = controller.showTag;
+    items = showTag.content;
+    print(items);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getSList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class TagShow extends StatelessWidget {
                         color: const Color.fromARGB(255, 255, 253, 253),
                         borderRadius: BorderRadius.circular(4.0),
                         image: DecorationImage(
-                          image: NetworkImage(item['image']!),
+                          image: NetworkImage(item.thumbnail),
                           fit: BoxFit.cover,
                         ),
                       ),

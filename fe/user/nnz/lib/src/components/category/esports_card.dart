@@ -78,25 +78,26 @@ class EsportsCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Expanded(
-                            flex: 3, 
+                            flex: 3,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Container(
-                                    width: 22,
-                                    height: 22,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: const Color.fromARGB(
-                                          255, 255, 253, 253),
-                                      image: DecorationImage(
-                                        image: NetworkImage(AteamLogo),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
+                                  // Container(
+                                  //   width: 22,
+                                  //   height: 22,
+                                  //   decoration: BoxDecoration(
+                                  //     borderRadius: BorderRadius.circular(5),
+                                  //     color: const Color.fromARGB(
+                                  //         255, 255, 253, 253),
+                                  //     image: DecorationImage(
+                                  //       image: NetworkImage(AteamLogo),
+                                  //       fit: BoxFit.cover,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   Text(
                                     AteamName,
                                     style: TextStyle(
@@ -109,7 +110,7 @@ class EsportsCard extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            flex:1, 
+                            flex: 1,
                             child: Text(
                               'VS',
                               style: TextStyle(
@@ -118,25 +119,26 @@ class EsportsCard extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            flex:3,
+                            flex: 3,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Container(
-                                    width: 22,
-                                    height: 22,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: const Color.fromARGB(
-                                          255, 255, 253, 253),
-                                      image: DecorationImage(
-                                        image: NetworkImage(AteamLogo),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
+                                  // Container(
+                                  //   width: 22,
+                                  //   height: 22,
+                                  //   decoration: BoxDecoration(
+                                  //     borderRadius: BorderRadius.circular(5),
+                                  //     color: const Color.fromARGB(
+                                  //         255, 255, 253, 253),
+                                  //     image: DecorationImage(
+                                  //       image: NetworkImage(AteamLogo),
+                                  //       fit: BoxFit.cover,
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   Text(
                                     BteamName,
                                     style: TextStyle(

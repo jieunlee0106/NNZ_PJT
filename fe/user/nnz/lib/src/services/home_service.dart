@@ -40,10 +40,13 @@ class HomeService extends GetConnect {
     }
   }
 
-  Future<dynamic> getLocationInfo() async {
+  Future<dynamic> getLocationInfo(
+      {required double lat, required double lng}) async {
     try {
+      print(lat);
+      print(lng);
       final response = await dio.get(
-        'https://k8b207.p.ssafy.io/api/nanum-service/nanums/location?',
+        'https://k8b207.p.ssafy.io/api/nanum-service/nanums/location?lat=$lat&lng=$lng',
       );
       return response;
     } catch (e) {

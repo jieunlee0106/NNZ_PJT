@@ -28,7 +28,10 @@ class HashTag extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TagPage()),
+                        MaterialPageRoute(
+                            builder: (context) => TagPage(
+                                  tagName: items[index].tag,
+                                )),
                       );
                     },
                     child: Container(

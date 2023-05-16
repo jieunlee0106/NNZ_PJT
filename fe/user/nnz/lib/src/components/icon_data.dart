@@ -87,4 +87,5 @@ class ImagePath {
   static String get declare => 'assets/images/declare.png';
   static String get twitterProfile => 'assets/images/twitter_profile.png';
   static String get profile => 'assets/images/login/profile.jpg';
+  static String get event => 'assets/images/event.JPG';
 }

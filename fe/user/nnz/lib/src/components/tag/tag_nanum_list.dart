@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/components/my_page_form/like_card.dart';
-import 'package:nnz/src/controller/likes_controller.dart';
-import 'package:nnz/src/model/likes_model.dart';
+import 'package:nnz/src/components/tag/tag_card.dart';
+import 'package:nnz/src/controller/tag_controller.dart';
+import 'package:nnz/src/model/nanum_tag.dart';
+import 'package:nnz/src/model/show_tag.dart';
 
 class TagNanumList extends StatefulWidget {
-  final List<Likes> items;
+  final String tagName;
 
   const TagNanumList({
     Key? key,
-    required this.items,
+    required this.tagName,
   }) : super(key: key);
 
   @override
@@ -17,6 +18,24 @@ class TagNanumList extends StatefulWidget {
 }
 
 class _TagNanumListState extends State<TagNanumList> {
+  final controller = Get.put(TagController());
+
+  late NanumTag nanumTag;
+  late List<Content1> items1; // 나눔
+
+  Future<void> getNList() async {
+    await controller.getNanumTag(widget.tagName);
+    nanumTag = controller.nanumTag;
+    items1 = nanumTag.content;
+    print(items1);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getNList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -25,16 +44,15 @@ class _TagNanumListState extends State<TagNanumList> {
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
       childAspectRatio: 0.75,
-      // children: widget.items
-      //     .map(
-      //       (item) => LikeCard(
-      //         image: item.thumbnail ?? '',
-      //         title: item.title ?? '',
-      //         subtitle: item.show?.title ?? '',
-      //         location: item.show?.location ?? '장소 미정',
-      //       ),
-      //     )
-      //     .toList(),
+      children: items1
+          .map(
+            (item) => TagCard(
+              thumbnail: item.thumbnail ?? '',
+              title: item.title ?? '',
+              location: item.location ?? '장소 미정',
+            ),
+          )
+          .toList(),
     );
   }
 }

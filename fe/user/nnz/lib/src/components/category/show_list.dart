@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nnz/src/components/category/show_null_page.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/nullPage.dart';
 import 'package:nnz/src/config/config.dart';
@@ -81,7 +82,7 @@ class _ShowListState extends State<ShowList> {
                 ),
                 if (items.length == 0)
                   Center(
-                    child: NullPage(message: '공연 목록이 존재하지 않습니다'),
+                    child: NullPage3(message: '공연 목록이 존재하지 않습니다'),
                   )
                 else
                   Column(

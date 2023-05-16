@@ -34,7 +34,7 @@ class _ConcertPageState extends State<ConcertPage> {
                 image: ImagePath.fire,
                 smallText: '나눔 활동이 활발한 콘서트에요',
                 categoryName: '콘서트'),
-            HotShareList(categoryName: '뮤지컬'),
+            HotShareList(categoryName: '콘서트'),
             GrayLine(),
             ShowList(categoryName: '콘서트'),
           ],

@@ -17,19 +17,37 @@ class TagService extends GetConnect {
     super.onInit();
   }
 
-  // 태그 API 작성하기
+  // 태그 나눔
+  Future<dynamic> getNanumTagList({required String tagName}) async {
+    print('$tagName 통신 한다');
+    try {
+      final response = await dio.get(
+        'https://k8b207.p.ssafy.io/api/nanum-service/nanumss/tag',
+        queryParameters: {'tag': tagName},
+      );
+      print('통신 성공');
+      print(response);
+      return response;
+    } catch (e) {
+      print('!!!!!Error occurred: $e');
+      throw e;
+    }
+  }
 
-  // Future<dynamic> getLikesList() async {
-  //   try {
-  //     print('찜 리스트 통신한다');
-  //     final response = await dio.get(
-  //       'https://k8b207.p.ssafy.io/api/user-service/users/bookmarks?userId=12',
-  //     );
-  //     print('찜 리스트 통신 성공');
-  //     return response;
-  //   } catch (e) {
-  //     print('!!!!!Error occurred: $e');
-  //     throw e;
-  //   }
-  // }
+  // 태그 공연
+  Future<dynamic> getShowTagList({required String tagName}) async {
+    print('$tagName 통신 한다');
+    try {
+      final response = await dio.get(
+        'https://k8b207.p.ssafy.io/api/show-service/shows/tag',
+        queryParameters: {'tag': tagName},
+      );
+      print('통신 성공');
+      print(response);
+      return response;
+    } catch (e) {
+      print('!!!!!Error occurred: $e');
+      throw e;
+    }
+  }
 }

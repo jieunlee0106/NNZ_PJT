@@ -14,7 +14,7 @@ class CategoryController extends GetxController {
   late ShowListModel showList;
   late SportModel sportList;
   late EsportModel esportList;
-  late HotList hotList;
+  late List<HotList> hotList;
 
   // 뮤지컬, 연극, 콘서트, 뮤직 페스티벌
   getShowCategoryList(String categoryName) async {
@@ -44,7 +44,7 @@ class CategoryController extends GetxController {
     }
   }
 
-    // e-sport
+  // e-sport
   getESportCategoryList(String categoryName) async {
     try {
       final response =
@@ -63,9 +63,11 @@ class CategoryController extends GetxController {
     try {
       final response =
           await CategoryService().getHotList(categoryName: categoryName);
-      print('API 통신 중~~~$categoryName');
+      print('API 통신 중~~~인기 공연 $categoryName');
 
-      showList = ShowListModel.fromJson(response.data);
+      List<dynamic> items =
+          response.data.map((item) => Map<String, dynamic>.from(item)).toList();
+      hotList = items.map((item) => HotList.fromJson(item)).toList();
       print('값 할당');
     } catch (e) {
       print(e);

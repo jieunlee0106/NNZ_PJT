@@ -13,7 +13,6 @@ import 'package:nnz/src/controller/likes_controller.dart';
 import 'package:nnz/src/model/likes_model.dart';
 import 'package:nnz/src/model/mypage_model.dart';
 import 'package:nnz/src/pages/home/home.dart';
-import 'package:nnz/src/pages/user/mypage.dart';
 
 class LikesPage extends StatefulWidget {
   const LikesPage({Key? key}) : super(key: key);
@@ -57,17 +56,7 @@ class _LikesPageState extends State<LikesPage> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyPage()),
-              );
-            },
-          ),
-        ],
+        actions: [Icon(Icons.more_vert)],
       ),
       body: SingleChildScrollView(
         child: Padding(
