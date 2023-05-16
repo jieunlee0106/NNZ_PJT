@@ -33,7 +33,7 @@ public class CertificationServiceImpl implements CertificationService {
     private final UserRepository userRepository;
     private final UserNanumRepository userNanumRepository;
     private final NanumStockRepository nanumStockRepository;
-    private final FCMService fcmService;
+//    private final FCMService fcmService;
 
     @Override
     public void handleNanumCertification(Long nanumId, NanumCertificationVO nanumCertificationVO) throws FirebaseMessagingException {
@@ -53,11 +53,11 @@ public class CertificationServiceImpl implements CertificationService {
         if(countByIsCertificated == nanum.getQuantity()){
             nanum.updateStatus(1);
             // 마감되었을 때 PUSH 알림
-            fcmService.sendMessage(FcmNotificationDTO.builder()
-                            .title("내가 만든 나눔이 마감되었어요.")
-                            .body(nanum.getIsCertification() ? "인증을 검사하러 가볼까요?" : "")
-                            .userToken(nanum.getProvider().getDeviceToken())
-                            .build());
+//            fcmService.sendMessage(FcmNotificationDTO.builder()
+//                            .title("내가 만든 나눔이 마감되었어요.")
+//                            .body(nanum.getIsCertification() ? "인증을 검사하러 가볼까요?" : "")
+//                            .userToken(nanum.getProvider().getDeviceToken())
+//                            .build());
         }
     }
 

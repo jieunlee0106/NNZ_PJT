@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+//@Service
 @Slf4j
 @RequiredArgsConstructor
 public class FCMService {

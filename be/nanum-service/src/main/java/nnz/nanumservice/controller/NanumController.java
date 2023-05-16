@@ -49,6 +49,7 @@ public class NanumController {
     private final CertificationService certificationService;
     private final TagService tagService;
     private final FCMService fcmService;
+//    private final FCMService fcmService;
     private final NcpPushNotificationService ncpPushNotificationService;
 
     @PostMapping
@@ -172,11 +173,11 @@ public class NanumController {
         return new ResponseEntity<>(tagService.readPopularRelatedNanumTagByShow(showIds, count), HttpStatus.OK);
     }
 
-    @GetMapping("/push/open")
-    public ResponseEntity<?> sendBookmarkNanumOpenPush() throws IOException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException {
-        fcmService.sendBookmarkNanumOpenPush();
-        return ResponseEntity.ok().build();
-    }
+//    @GetMapping("/push/open")
+//    public ResponseEntity<?> sendBookmarkNanumOpenPush() throws IOException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException {
+//        fcmService.sendBookmarkNanumOpenPush();
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/push")
     public ResponseEntity<?> testNotifictaion() throws IOException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException {
