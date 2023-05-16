@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka' // 추가
 
     // feat.김종성
-    implementation 'com.github.eello:naneozoo-common:0.4.1'
+    implementation 'com.github.eello:naneozoo-common:0.4.5'
 
     // Firebase SDK
 //    implementation 'com.google.firebase:firebase-admin:6.8.1'

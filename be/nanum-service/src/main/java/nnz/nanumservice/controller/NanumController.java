@@ -2,9 +2,11 @@ package nnz.nanumservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.firebase.messaging.FirebaseMessagingException;
+
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nnz.nanumservice.dto.CertificationDTO;
 import nnz.nanumservice.dto.FcmNotificationDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
@@ -12,9 +14,11 @@ import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDetailDTO;
 import nnz.nanumservice.dto.res.search.ResSearchDTO;
+import nnz.nanumservice.dto.res.tag.ResTagDTO;
 import nnz.nanumservice.entity.NanumStock;
 import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
+import nnz.nanumservice.service.TagService;
 import nnz.nanumservice.service.impl.FCMService;
 import nnz.nanumservice.service.impl.NcpPushNotificationService;
 import nnz.nanumservice.vo.NanumCertificationVO;
@@ -35,6 +39,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/nanum-service/nanums")
 @RequiredArgsConstructor
@@ -42,6 +47,8 @@ public class NanumController {
 
     private final NanumService nanumService;
     private final CertificationService certificationService;
+    private final TagService tagService;
+    private final FCMService fcmService;
 //    private final FCMService fcmService;
     private final NcpPushNotificationService ncpPushNotificationService;
 
@@ -157,6 +164,13 @@ public class NanumController {
     @GetMapping("/search")
     public ResponseEntity<ResSearchDTO> searchNanum(@RequestParam("q") String q, Pageable pageable) {
         return new ResponseEntity<>(nanumService.searchNanum(q, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/tag/related")
+    public ResponseEntity<List<ResTagDTO>> readNanumTagByNanum(
+            @RequestParam("showIds") List<Long> showIds,
+            @RequestParam("count") Integer count) {
+        return new ResponseEntity<>(tagService.readPopularRelatedNanumTagByShow(showIds, count), HttpStatus.OK);
     }
 
 //    @GetMapping("/push/open")
