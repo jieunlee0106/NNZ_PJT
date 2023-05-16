@@ -63,7 +63,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<ResTagDTO> readPopularTags() {
-        List<Tag> tags = tagRepository.findTop14ByOrderByViewsDesc();
+        List<Tag> tags = tagRepository.findTop12ByOrderByViewsDesc();
         List<ResTagDTO> resTagDTOs = tags.stream().map(ResTagDTO::of).collect(Collectors.toList());
         return resTagDTOs;
     }

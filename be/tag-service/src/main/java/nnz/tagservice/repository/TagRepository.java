@@ -10,7 +10,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Optional<Tag> findByTag(String tagName);
 
-    List<Tag> findTop14ByOrderByViewsDesc();
+    List<Tag> findTop12ByOrderByViewsDesc();
 
     List<Tag> findAllByTagContaining(String search);
 }
