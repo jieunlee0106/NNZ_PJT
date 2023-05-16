@@ -12,6 +12,7 @@ import nnz.showservice.dto.TagDTO;
 import nnz.showservice.dto.res.ResBannerDTO;
 import nnz.showservice.dto.res.ResShowDTO;
 import nnz.showservice.entity.*;
+import nnz.showservice.exception.ErrorCode;
 import nnz.showservice.repository.*;
 import nnz.showservice.service.KafkaProducer;
 import nnz.showservice.service.ShowService;
@@ -44,18 +45,16 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public ShowDTO readShowInfo(Long showId) {
-
-        // todo : Error Handling
         // 공연 정보 조회 시 해당 공연의 공연 태그 목록까지 가져온다.
-        Show show = showRepository.findById(showId).orElseThrow();
+        Show show = showRepository.findById(showId)
+                .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
         return ShowDTO.entityToDTO(show);
     }
 
     @Override
     public PageDTO readShowsByCategory(String categoryName, PageRequest pageRequest) {
-
-        // todo : Error Handling
-        Category category = categoryRepository.findByName(categoryName).orElseThrow();
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
         Page<Show> showPage = showRepository.findByCategoryAndIsDeleteFalse(category, pageRequest);
 
         if (category.getParentCode() != null && (category.getParentCode().equals("SPO") || category.getParentCode().equals("ESP"))) {
@@ -68,7 +67,6 @@ public class ShowServiceImpl implements ShowService {
                 String leftTeam = team[0].trim();
                 String rightTeam = team[1].trim();
 
-                // todo: 스포츠의 경우 이미지 있지만 E스포츠의 경우 이미지가 없다
                 TeamImage leftTeamImage = teamImageRepository.findById(leftTeam).orElse(null);
                 TeamImage rightTeamImage = teamImageRepository.findById(rightTeam).orElse(null);
 
@@ -105,9 +103,8 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public PageDTO searchShowsByCategoryAndTitle(String categoryName, String title, PageRequest pageRequest) {
-
-        // todo : Error Handling
-        Category category = categoryRepository.findByName(categoryName).orElseThrow();
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         Page<Show> showPage = null;
         if (title != null) {
@@ -124,9 +121,8 @@ public class ShowServiceImpl implements ShowService {
     @Override
     @Transactional
     public PageDTO readShowsByShowTag(String showTagName, PageRequest pageRequest) {
-
-        // todo : error handling
-        Tag tag = tagRepository.findByTag(showTagName).orElseThrow();
+        Tag tag = tagRepository.findByTag(showTagName)
+                .orElseThrow(() -> new CustomException(ErrorCode.TAG_NOT_FOUND));
         // 태그로 검색하는 경우는 공연, 나눔 API 둘다 호출하기 때문에
         // 공연 정보가 없더라도 해당 태그의 카운트만 하나 증가시켜 주면 된다.
         tag.updatePlusViews();
@@ -134,7 +130,7 @@ public class ShowServiceImpl implements ShowService {
         try {
             producer.sendMessage(message);
         } catch (JsonProcessingException e) {
-            // todo: error handling
+            throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION);
         }
 
         List<ShowTag> showTags = showTagRepository.findAllByTag(tag);
@@ -154,9 +150,8 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public List<ResShowDTO> readPopularShowsByCategory(String categoryName) {
-
-        // todo : error handling
-        Category category = categoryRepository.findByName(categoryName).orElseThrow();
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
         List<Show> shows = showRepository.findAllByCategory(category);
 
         Map<Show, Integer> popularMap = new HashMap<>();
