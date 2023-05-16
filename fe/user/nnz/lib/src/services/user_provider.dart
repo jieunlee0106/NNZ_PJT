@@ -195,6 +195,19 @@ class UserProvider extends GetConnect {
     return response;
   }
 
+  //팔로우 및 언팔로우
+  Future<Response> followService({required int userId}) async {
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImlzcyI6Im5ueiIsImlhdCI6MTY4NDI1MDQ0MSwiYXV0aFByb3ZpZGVyIjoiTk5aIiwicm9sZSI6IkFETUlOIiwiaWQiOjExLCJlbWFpbCI6IndsZ2hrczk2MEBuYXZlci5jb20iLCJleHAiOjE2ODU1NDY0NDF9.BmGS9PsahfLry18hx_HfEI6KFPsZyfBIKD-UsL2UAodD2ejZD3P8ARkAC-cQqb5S2Lad50poAPaSi3xhjK3-fA'
+    };
+    final response = await post(
+        "https://k8b207.p.ssafy.io/api/user-service/users/follow/$userId", null,
+        headers: headers);
+    return response;
+  }
+
   //유저 탈퇴
   Future<Response> deleteUserService() async {
     final token = await storage.read(key: 'accessToken');
