@@ -81,6 +81,7 @@ public class CertificationServiceImpl implements CertificationService {
         // 맨처음 들어온 QR인증이라면 재고 정보 저장
         NanumStock ns = optionalNanumStock.orElseGet(() -> nanumStockRepository.save(NanumStock.builder()
                 .id(nanumId)
+                .quantity(nanum.getQuantity())
                 .stock(nanum.getQuantity())
                 .build()));
 
