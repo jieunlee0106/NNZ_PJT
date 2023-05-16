@@ -2,6 +2,7 @@ package com.example.nnzcrawling.entity;
 
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Where(clause = "is_delete = 0")
 public class TeamImage extends BaseEntity {
 
     @Id
