@@ -17,6 +17,8 @@ class ShowSearchController extends GetxController {
   List<TagListModel> relatedTagList = [];
   List<searchNanum.Content> nanumList = [];
   List<searchShow.Content> showList = [];
+  List<searchNanum.Tag> nanumTagList = [];
+  List<String> showTagList = [];
   List<String> rTagList = [];
   RxString type = RxString("");
   @override
@@ -80,6 +82,7 @@ class ShowSearchController extends GetxController {
       if (response.statusCode == 200) {
         rTagList.clear();
         nanumList.clear();
+        nanumTagList.clear();
         for (var tag in response.body["relatedTags"]) {
           rTagList.add(tag["tag"]);
         }
@@ -87,6 +90,7 @@ class ShowSearchController extends GetxController {
         for (var data in response.body["nanums"]["content"]) {
           nanumList.add(searchNanum.Content.fromJson(data));
         }
+
         return nanumList;
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";

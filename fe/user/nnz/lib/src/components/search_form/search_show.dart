@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nnz/src/components/search_form/no_result_search.dart';
 import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/search_show_list_model.dart';
 
 import '../../config/config.dart';
-import '../icon_data.dart';
 
 class SearchShow extends StatelessWidget {
   SearchShow({super.key});
@@ -19,31 +19,7 @@ class SearchShow extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Text("Error : ${snapshot.hasError}");
         } else if (controller.showList.isEmpty) {
-          return Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    iconData(
-                      icon: ImagePath.sad,
-                      size: 240,
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    Text(
-                      "검색 결과가 없습니다.",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Config.blackColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
+          return NoResultSearch();
         } else {
           return Column(
             children: [
@@ -70,33 +46,34 @@ class SearchShow extends StatelessWidget {
                         spacing: 10,
                         runSpacing: 10,
                         children: List.generate(
-                          controller.relatedTagList.length,
+                          controller.rTagList.length,
                           (index) => SizedBox(
                             height: 32,
                             child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 4),
-                                      color: const Color(0xff000000)
-                                          .withOpacity(0.25),
-                                    )
-                                  ],
-                                  color: Config.rigthYellowColor,
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(controller.rTagList[index]),
-                                  ],
-                                )),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 4),
+                                    color: const Color(0xff000000)
+                                        .withOpacity(0.25),
+                                  )
+                                ],
+                                color: Config.rigthYellowColor,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(controller.rTagList[index]),
+                                ],
+                              ),
+                            ),
                           ),
                         ))
                   ],
@@ -115,33 +92,34 @@ class SearchShow extends StatelessWidget {
                         vertical: 10,
                       ),
                       child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 4,
-                                  color: Colors.black.withOpacity(0.25),
-                                )
-                              ]),
-                          child: controller.showList[index].poster != null
-                              ? Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 200,
-                                      child: Image.network(
-                                        controller.showList[index].poster!,
-                                        width: 200,
-                                      ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, 4),
+                                blurRadius: 4,
+                                color: Colors.black.withOpacity(0.25),
+                              )
+                            ]),
+                        child: controller.showList[index].poster != null
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 200,
+                                    child: Image.network(
+                                      controller.showList[index].poster!,
+                                      width: 200,
                                     ),
-                                    const SizedBox(
-                                      width: 18,
-                                    ),
-                                  ],
-                                )
-                              : Column(children: [
+                                  ),
+                                  const SizedBox(
+                                    width: 18,
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
                                   GestureDetector(
                                     onTap: () {},
                                     child: Container(
@@ -183,11 +161,56 @@ class SearchShow extends StatelessWidget {
                                                     fontSize: 14,
                                                   ),
                                                 ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Wrap(
+                                            spacing: 8,
+                                            runSpacing: 8,
+                                            children: List.generate(
+                                              controller
+                                                  .showList[index].tags!.length,
+                                              (i) => Container(
+                                                height: 32,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  color: Config.yellowColor,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 4,
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      "#${controller.showList[index].tags![i].tag}",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color:
+                                                            Config.blackColor,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
                                   ),
-                                ])),
+                                ],
+                              ),
+                      ),
                     );
                   }),
                 ),

@@ -70,7 +70,7 @@ class SearchNanum extends StatelessWidget {
                         spacing: 10,
                         runSpacing: 10,
                         children: List.generate(
-                          controller.relatedTagList.length,
+                          controller.rTagList.length,
                           (index) => SizedBox(
                             height: 32,
                             child: Container(
@@ -209,8 +209,45 @@ class SearchNanum extends StatelessWidget {
                                         color: Config.blackColor,
                                       ),
                                     ),
-                                    for (var tag in controller.nanumList[index]
-                                        .tags!) ...[Text(tag.tag)]
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Wrap(
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: List.generate(
+                                        controller
+                                            .nanumList[index].tags!.length,
+                                        (i) => Container(
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            color: Config.yellowColor,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                "#${controller.nanumList[index].tags![i].tag}",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Config.blackColor,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
