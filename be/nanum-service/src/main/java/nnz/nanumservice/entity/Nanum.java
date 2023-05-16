@@ -138,4 +138,8 @@ public class Nanum extends BaseEntity {
         this.quantity = data.getQuantity() != null ? data.getQuantity() : this.quantity;
         this.content = data.getContent() != null ? data.getContent() : this.content;
     }
+
+    public void deleteNanum() {
+        this.isDelete = true;
+    }
 }

@@ -340,8 +340,9 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     public ResNanumStockDTO readNanumStock(Long nanumId) {
-        // todo : 레디스에서 정보 가져오기
-        return null;
+        NanumStock nanumStock = nanumStockRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NANUM_NOT_FOUND));
+        return ResNanumStockDTO.of(nanumStock.getQuantity(), nanumStock.getStock());
     }
 
     @Override
@@ -450,5 +451,17 @@ public class NanumServiceImpl implements NanumService {
         );
 
         return ResSearchDTO.of(nanums, relatedTags);
+    }
+
+    @Override
+    public void deleteNanum(Long id, Long userId) {
+        Nanum nanum = nanumRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
+
+        if (nanum.getProvider().getId() != userId) {
+            throw new CustomException(ErrorCode.USER_INFORMATION_INCONSISTENCY);
+        }
+
+        nanum.deleteNanum();
     }
 }

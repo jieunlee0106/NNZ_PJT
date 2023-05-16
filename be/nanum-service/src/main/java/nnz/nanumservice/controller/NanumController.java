@@ -213,4 +213,10 @@ public class NanumController {
     public ResponseEntity<?> resultMessage(@PathVariable("id") String id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         return ResponseEntity.ok(ncpPushNotificationService.resultMessage(id));
     }
+
+    @DeleteMapping("/{nanumId}")
+    public ResponseEntity<Void> deleteNanum(@PathVariable(name = "nanumId") Long id, DecodedToken userToken){
+        nanumService.deleteNanum(id, userToken.getId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
