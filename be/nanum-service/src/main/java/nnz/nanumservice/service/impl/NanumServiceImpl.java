@@ -52,7 +52,7 @@ public class NanumServiceImpl implements NanumService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
     private final NanumImageService nanumImageService;
-    private final FCMService fcmService;
+//    private final FCMService fcmService;
 
     @Override
     @Transactional
@@ -194,10 +194,10 @@ public class NanumServiceImpl implements NanumService {
 
         List<UserNanum> allByNanum = userNanumRepository.findAllByNanum(nanum);
 
-        fcmService.sendMultipleMessage(
-                "신청한 나눔에 당일 정보가 등록되었어요.",
-                "지금 확인해보세요!",
-                allByNanum.stream().map(userNanum -> userNanum.getReceiver().getDeviceToken()).collect(Collectors.toList()));
+//        fcmService.sendMultipleMessage(
+//                "신청한 나눔에 당일 정보가 등록되었어요.",
+//                "지금 확인해보세요!",
+//                allByNanum.stream().map(userNanum -> userNanum.getReceiver().getDeviceToken()).collect(Collectors.toList()));
     }
 
     @Override
