@@ -216,7 +216,8 @@ public class ShowServiceImpl implements ShowService {
         );
 
         // 관련 태그에 공연 태그 3개 추가
-        List<ResTagDTO> relatedTags = showTags.subList(0, 3).stream().map(ResTagDTO::of).collect(Collectors.toList());
+        List<ResTagDTO> relatedTags = showTags.subList(0, Math.min(3, showTags.size())).stream()
+                .map(ResTagDTO::of).collect(Collectors.toList());
 
         // 공연 태그 개수에 따른 나눔 태그 조회 개수
         int nanumTagCount = maxTagCount - Math.min(3, showTags.size());
