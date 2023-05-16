@@ -20,6 +20,7 @@ class _EsportsBannerState extends State<EsportsBanner> {
   String esportsNameR = 'OWL';
   String esportsNameL = 'KDL';
   String img = ImagePath.esports;
+  String name = '리그 오브 레전드';
 
   final List<String> _sports = ['LCK', 'OWL', 'KDL'];
 
@@ -56,16 +57,19 @@ class _EsportsBannerState extends State<EsportsBanner> {
                         String esportsNameL;
                         if (esportEventB == ImagePath.lolB) {
                           esportsName = _sports[0];
+                          name = '리그 오브 레전드';
                           esportsNameR = _sports[1];
                           esportsNameL = _sports[2];
                         } else if (esportEventB == ImagePath.oveB) {
                           esportsName = _sports[1];
                           esportsNameR = _sports[2];
                           esportsNameL = _sports[0];
+                          name = '오버워치';
                         } else {
                           esportsName = _sports[2];
                           esportsNameR = _sports[0];
                           esportsNameL = _sports[1];
+                          name = '카트라이더: 드리프트';
                         }
                         return Container(
                           child: Padding(
@@ -150,10 +154,13 @@ class _EsportsBannerState extends State<EsportsBanner> {
                             String carouselImage;
                             if (index == 0) {
                               carouselImage = ImagePath.lol;
+                              name = '리그 오브 레전드';
                             } else if (index == 1) {
                               carouselImage = ImagePath.ove;
+                              name = '오버워치';
                             } else {
                               carouselImage = ImagePath.kar;
+                              name = '카트라이더: 드리프트';
                             }
                             return Container(
                               width: MediaQuery.of(context).size.width,
@@ -171,7 +178,10 @@ class _EsportsBannerState extends State<EsportsBanner> {
                       }).toList(),
                     ),
                   ),
-                  EsportsList(sportsImg: img)
+                  ESportsList(
+                    sportsImg: img,
+                    sportName: name,
+                  )
                 ],
               ),
             ],

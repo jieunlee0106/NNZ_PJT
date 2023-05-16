@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/model/hash_tag_model.dart';
+import 'package:nnz/src/pages/search/tag_page.dart';
 
 class HashTag extends StatelessWidget {
   final List<HashTagModel> items;
@@ -15,7 +16,6 @@ class HashTag extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.all(10),
-              // padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -24,26 +24,37 @@ class HashTag extends StatelessWidget {
                 runSpacing: 8,
                 children: List.generate(
                   items.length,
-                  (index) => Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.7),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: Offset(0, 5),
+                  (index) => InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TagPage(
+                                  tagName: items[index].tag,
+                                )),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.7),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                        color: Config.rigthYellowColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        items[index].tag,
+                        style: TextStyle(
+                          color: Config.blackColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                      color: Config.rigthYellowColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      items[index].tag,
-                      style: TextStyle(
-                        color: Config.blackColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -52,6 +63,22 @@ class HashTag extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class OtherScreen extends StatelessWidget {
+  const OtherScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Other Screen'),
+      ),
+      body: Center(
+        child: Text('This is the Other Screen'),
       ),
     );
   }

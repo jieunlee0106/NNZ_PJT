@@ -17,13 +17,35 @@ class LikesList extends StatefulWidget {
 }
 
 class _LikesListState extends State<LikesList> {
+  final controller = Get.put(LikesController());
+
+  late List<Likes> likes;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getList();
+  }
+
+  Future<void> getList() async {
+    await controller.getLikesList();
+    likes = controller.likesList;
+    print(likes.runtimeType);
+
+    // print(likes.id);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(
       shrinkWrap: true,
-      crossAxisCount: 2,
-      mainAxisSpacing: 16,
-      crossAxisSpacing: 16,
+      crossAxisCount: 3,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 1,
       childAspectRatio: 0.75,
       children: widget.items
           .map(
@@ -32,6 +54,8 @@ class _LikesListState extends State<LikesList> {
               title: item.title!,
               subtitle: item.show?.title ?? '',
               location: item.show?.location ?? '장소 미정',
+              status: item.status ?? 0,
+              nanumId: item.id ?? 0,
             ),
           )
           .toList(),

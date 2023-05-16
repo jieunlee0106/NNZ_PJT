@@ -1,74 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:nnz/src/controller/category_controller.dart';
+import 'package:get/get.dart';
+import 'package:nnz/src/model/hot_list.dart';
 
-//**
-// 이미지, text3, number API 데이터로 수정
-// **
-class HotShareList extends StatelessWidget {
+class HotShareList extends StatefulWidget {
   final String categoryName;
-  HotShareList({
+
+  const HotShareList({
     Key? key,
     required this.categoryName,
   }) : super(key: key);
 
-  final List<Map<String, String>> items = [
-    // 콘서트 상세로 이동하는 변수 값 추가
-    {
-      'image':
-          'http://ticketimage.interpark.com/rz/image/play/goods/poster/23/23003443_p_s.jpg',
-    },
-    {
-      'image':
-          'http://ticketimage.interpark.com/rz/image/play/goods/poster/23/23005708_p_s.jpg',
-    },
-    {
-      'image':
-          'http://ticketimage.interpark.com/rz/image/play/goods/poster/23/23003272_p_s.jpg',
-    },
-    {
-      'image':
-          'https://blog.jandi.com/ko/wp-content/uploads/sites/4/2022/01/%EC%9E%94%EB%94%94%EA%B5%BF%EC%A6%88_%EC%A2%85%ED%95%A9%EB%AA%A9%EC%97%85-1.jpg',
-    },
-    {
-      'image':
-          'http://ticketimage.interpark.com/Play/image/large/23/23003197_p.gif',
-    },
-    {
-      'image': 'https://via.placeholder.com/150',
-    },
-  ];
+  @override
+  _HotListState createState() => _HotListState();
+}
+
+class _HotListState extends State<HotShareList> {
+  final controller = Get.put(CategoryController());
+
+  late List<HotList> hotList;
+
+  Future<void> getList() async {
+    await controller.getHotList(widget.categoryName);
+    hotList = controller.hotList;
+    print(hotList);
+    print(hotList.runtimeType);
+    // items = showList.content;
+    // print();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: items
-            .map(
-              (item) => Container(
-                width: 110,
-                height: 145,
-                margin: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
+    return FutureBuilder(
+        future: getList(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (ConnectionState.waiting == snapshot.connectionState) {
+            return const CircularProgressIndicator();
+          }
+
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: hotList
+                  .map(
+                    (item) => Container(
                       width: 110,
-                      height: 145,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 253, 253),
-                        borderRadius: BorderRadius.circular(4.0),
-                        image: DecorationImage(
-                          image: NetworkImage(item['image']!),
-                          fit: BoxFit.cover,
-                        ),
+                      height: 150,
+                      margin: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 110,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 253, 253),
+                              borderRadius: BorderRadius.circular(4.0),
+                              image: DecorationImage(
+                                image: NetworkImage(item.poster),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
-    );
+                  )
+                  .toList(),
+            ),
+          );
+        });
   }
 }

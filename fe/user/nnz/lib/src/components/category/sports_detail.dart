@@ -31,7 +31,7 @@ class _SportsBannerState extends State<SportsBanner> {
     '농구',
   ];
 
-  final CategoryController categoryController = Get.find<CategoryController>();
+  final CategoryController categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +56,7 @@ class _SportsBannerState extends State<SportsBanner> {
                     height: 100,
                     enableInfiniteScroll: false,
                     enlargeCenterPage: false,
+                    reverse: true,
                     viewportFraction: 1,
                   ),
                   items: _sports.map((text) {

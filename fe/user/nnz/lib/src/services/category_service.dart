@@ -32,6 +32,7 @@ class CategoryService extends GetConnect {
 
   // 스포츠
   Future<dynamic> getCategoryList({required String categoryName}) async {
+    print(categoryName);
     final response = await Dio().get(
       'https://k8b207.p.ssafy.io/api/show-service/shows',
       queryParameters: {'category': categoryName},
@@ -42,10 +43,10 @@ class CategoryService extends GetConnect {
 
   // Hot 한 공연
   Future<dynamic> getHotList({required String categoryName}) async {
-    print('$categoryName 통신 한다');
+    print('$categoryName 인기 공연통신 한다');
     try {
       final response = await dio.get(
-        'https://k8b207.p.ssafy.io/api/show-service/shows',
+        'https://k8b207.p.ssafy.io/api/show-service/shows/popular',
         queryParameters: {'category': categoryName},
       );
       print('통신 성공');
