@@ -30,6 +30,7 @@ public class User {
     private String nickname;
 
     private String profileImage;
+    private String deviceToken; // 기기 식별 토큰
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -43,6 +44,7 @@ public class User {
                 .email(userDTO.getEmail())
                 .nickname(userDTO.getNickname())
                 .profileImage(userDTO.getProfileImage())
+                .deviceToken(userDTO.getDeviceToken())
                 .updatedAt(userDTO.getUpdatedAt())
                 .isDelete(false)
                 .build();
@@ -58,4 +60,9 @@ public class User {
     public void deleteUser() {
         this.isDelete = true;
     }
+
+    public void setDeviceToken(String deviceToken){
+        this.deviceToken = deviceToken;
+    }
+
 }

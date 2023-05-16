@@ -22,6 +22,7 @@ public enum ErrorCode implements AbstractErrorCode {
     USER_NANUM_NEED_CERTIFICATION("UN006", "인증이 필요한 나눔입니다.", BAD_REQUEST),
     DUPLICATED_USER_NANUM("UN006", "이미 신청한 나눔입니다.", BAD_REQUEST),
 
+    PUSH_NOTI_FAIL("P001", "푸시 알림 전송에 실패했습니다.", INTERNAL_SERVER_ERROR),
     ;
 
     private final String code;
