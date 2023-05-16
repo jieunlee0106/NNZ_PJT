@@ -19,11 +19,11 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("select distinct t  from Tag t " +
             "join NanumTag nt on t.id = nt.tag.id " +
             "where nt.nanum in :nanums")
-    List<Tag> findByNanum(List<Nanum> nanums, Pageable pageable);
+    List<Tag> findByNanum(@Param("nanums") List<Nanum> nanums, Pageable pageable);
 
     @Query("select distinct t from Tag t " +
             "join NanumTag nt on t.id = nt.tag.id " +
             "join nt.nanum.show s " +
             "where s.id in :showIds")
-    List<Tag> findByShowId(@Param("showId") List<Long> showIds, Pageable pageable);
+    List<Tag> findByShowId(@Param("showIds") List<Long> showIds, Pageable pageable);
 }
