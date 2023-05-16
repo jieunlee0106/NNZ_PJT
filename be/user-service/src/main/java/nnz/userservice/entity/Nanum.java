@@ -44,6 +44,7 @@ public class Nanum {
     @JoinColumn(name = "show_id")
     private Show show;
 
+    @Builder.Default
     @OneToMany(mappedBy = "nanum")
     private List<NanumTag> tags = new ArrayList<>();
 

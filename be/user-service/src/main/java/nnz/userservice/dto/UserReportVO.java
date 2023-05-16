@@ -17,6 +17,7 @@ public class UserReportVO {
     private Long targetId;
     private String reason;
 
+    @Builder.Default
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime reportedAt = LocalDateTime.now();
 

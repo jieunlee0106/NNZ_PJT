@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody LoginVO vo, HttpServletResponse response) {
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginVO vo, HttpServletResponse response) throws JsonProcessingException {
         TokenDTO token = userService.login(vo);
 
 //        ResponseCookie cookie = ResponseCookie.from("refresh", token.getRefreshToken())
