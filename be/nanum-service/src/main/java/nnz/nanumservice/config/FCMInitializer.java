@@ -7,6 +7,7 @@ import io.github.eello.nnz.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +22,10 @@ public class FCMInitializer {
 
     @PostConstruct
     public void initialize(){
-        ClassPathResource resource = new ClassPathResource("naneozoo-firebase-adminsdk-5cna1-e73447ff78.json");
+//        ClassPathResource resource = new ClassPathResource("nnz-firebase.json");
+        FileSystemResource file = new FileSystemResource("/home/fcm/nnz-firebase.json");
 
-        try(InputStream stream = resource.getInputStream()){
+        try(InputStream stream = file.getInputStream()){
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(stream))
                     .build();
