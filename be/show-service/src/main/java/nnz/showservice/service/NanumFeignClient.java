@@ -12,7 +12,7 @@ public interface NanumFeignClient {
 
     @GetMapping("/nanum-service/nanums/tag/related")
     List<ResTagDTO> getRelatedNanumTagByShow(
-            @RequestParam("showId") List<Long> showId,
+            @RequestParam("showIds") List<Long> showIds,
             @RequestParam("count") Integer count
     );
 }
