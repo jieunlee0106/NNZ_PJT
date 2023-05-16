@@ -15,4 +15,6 @@ public interface ShowRepository extends JpaRepository<Show, Long> {
     Optional<Show> findByTitleAndStartDateAndIsDeleteFalse(String title, String startDate);
 
     List<Show> findAllByCreatedAtAfter(LocalDateTime startTime);
+
+    List<Show> findAllByIsDeleteFalse();
 }

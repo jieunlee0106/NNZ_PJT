@@ -19,7 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,7 +45,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "0 15 00 1/1 * *")
+    @Scheduled(cron = "30 30 15 1/1 * *")
     @Transactional
     public void createShow() {
         LocalDateTime startTime = LocalDateTime.now();
@@ -116,6 +119,67 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         } catch (InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Scheduled(cron = "30 37 17 1/1 * *")
+    @Transactional
+    public void deleteShow() {
+
+        List<Show> shows = showRepository.findAllByIsDeleteFalse();
+
+        shows.forEach(show -> {
+
+            DateTimeFormatter format = null;
+
+            LocalDate startDate = null;
+            LocalDate endDate = null;
+
+            if (!show.getCategory().getParentCode().equals("ESP") && !show.getCategory().getParentCode().equals("SPO")) {
+                String startDateStr = show.getStartDate().replaceAll("\\(.*", "").trim();
+                String endDateStr = show.getEndDate().replaceAll("\\(.*", "").trim();
+                format = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
+
+                try {
+                    // E스포츠나 스포츠가 아니면서 start, end 둘 다 데이터가 있는 경우
+                    startDate = LocalDate.parse(startDateStr, format);
+                    endDate = LocalDate.parse(endDateStr, format);
+                } catch (Exception e) {
+                    // E스포츠나 스포츠가 아니면서 end 데이터가 없거나 ""인 경우
+                    startDate = LocalDate.parse(startDateStr, format);
+                    endDate = null;
+                }
+            } //
+            else {
+                // E스포츠나 스포츠의 경우 yyyy.MM.ddTHH:mm 이나 yyyy.MM.dTHH:mm,
+                // yyyy.m.ddTHH:mm, yyyy.m.dTHH:mm 으로 되어있음
+                // EndDate 없음
+                try {
+                    format = DateTimeFormatter.ofPattern("yyyy.MM.dd'T'HH:mm");
+                    startDate = LocalDate.parse(show.getStartDate(), format);
+                } catch (Exception e) {
+                    try {
+                        format = DateTimeFormatter.ofPattern("yyyy.M.dd'T'HH:mm");
+                        startDate = LocalDate.parse(show.getStartDate(), format);
+                    } catch (Exception e2) {
+                        format = DateTimeFormatter.ofPattern("yyyy.M.d'T'HH:mm");
+                        startDate = LocalDate.parse(show.getStartDate(), format);
+                    }
+                }
+                endDate = null;
+            }
+
+            // StartDate만 있으면 StartDate로 비교해서 삭제 처리
+            if (endDate == null) {
+                if (LocalDate.now().isAfter(startDate)) {
+                    show.deleteShow();
+                }
+            } //
+            else {
+                if (LocalDate.now().isAfter(endDate)) {
+                    show.deleteShow();
+                }
+            }
+        });
     }
 
     @Override

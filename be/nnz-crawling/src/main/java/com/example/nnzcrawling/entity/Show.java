@@ -3,6 +3,7 @@ package com.example.nnzcrawling.entity;
 import com.example.nnzcrawling.dto.ShowDTO;
 import io.github.eello.nnz.common.entity.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@Where(clause = "is_delete = 0")
 public class Show extends BaseEntity {
 
     @Id
@@ -80,5 +81,9 @@ public class Show extends BaseEntity {
                 .posterImage(showDTO.getPosterImage())
                 .category(category)
                 .build();
+    }
+
+    public void deleteShow() {
+        this.isDelete = true;
     }
 }

@@ -13,7 +13,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class TeamImage extends BaseEntity {
 
     @Id
