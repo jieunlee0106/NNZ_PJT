@@ -1,5 +1,6 @@
 package nnz.nanumservice.service.impl;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
@@ -51,6 +52,7 @@ public class NanumServiceImpl implements NanumService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
     private final NanumImageService nanumImageService;
+    private final FCMService fcmService;
 
     @Override
     @Transactional
@@ -185,10 +187,17 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     @Transactional
-    public void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO) {
+    public void createNanumInfo(Long nanumId, NanumInfoDTO nanumInfoDTO) throws FirebaseMessagingException {
         // todo : error handling
         Nanum nanum = nanumRepository.findById(nanumId).orElseThrow();
         nanum.setNanumInfo(nanumInfoDTO);
+
+        List<UserNanum> allByNanum = userNanumRepository.findAllByNanum(nanum);
+
+        fcmService.sendMultipleMessage(
+                "신청한 나눔에 당일 정보가 등록되었어요.",
+                "지금 확인해보세요!",
+                allByNanum.stream().map(userNanum -> userNanum.getReceiver().getDeviceToken()).collect(Collectors.toList()));
     }
 
     @Override

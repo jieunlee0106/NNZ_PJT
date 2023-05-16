@@ -56,6 +56,7 @@ public class CertificationServiceImpl implements CertificationService {
             fcmService.sendMessage(FcmNotificationDTO.builder()
                             .title("내가 만든 나눔이 마감되었어요.")
                             .body(nanum.getIsCertification() ? "인증을 검사하러 가볼까요?" : "")
+                            .userToken(nanum.getProvider().getDeviceToken())
                             .build());
         }
     }
