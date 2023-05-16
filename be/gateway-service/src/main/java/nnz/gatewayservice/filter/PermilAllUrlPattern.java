@@ -36,6 +36,7 @@ public class PermilAllUrlPattern {
             Pattern.compile(SHOW_SERVICE + "/shows/popular"), // 인기 공연 조회
             Pattern.compile(SHOW_SERVICE + "/shows/search"), // 나눔 등록 시 공연 조회
             Pattern.compile(SHOW_SERVICE + "/shows/tag"), // 해시태그로 공연 목록 조회
+            Pattern.compile(SHOW_SERVICE + "/shows/search/query"), // 공연 검색
 
             // Tag Service
             Pattern.compile(TAG_SERVICE + "/tags"), // 인기 해시태그 조회
