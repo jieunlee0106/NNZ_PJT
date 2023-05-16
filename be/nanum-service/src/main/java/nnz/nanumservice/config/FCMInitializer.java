@@ -21,7 +21,7 @@ public class FCMInitializer {
 
     @PostConstruct
     public void initialize(){
-        ClassPathResource resource = new ClassPathResource("naneozoo-firebase-adminsdk-5cna1-e73447ff78.json");
+        ClassPathResource resource = new ClassPathResource("nnz-firebase.json");
 
         try(InputStream stream = resource.getInputStream()){
             FirebaseOptions options = FirebaseOptions.builder()
