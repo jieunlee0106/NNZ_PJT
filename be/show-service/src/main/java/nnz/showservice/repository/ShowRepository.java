@@ -19,7 +19,7 @@ public interface ShowRepository extends JpaRepository<Show, Long> {
     List<Show> findAllByCategory(Category category);
 
     @Query("select distinct s from Show s " +
-            "join s.showTags st " +
+            "left outer join s.showTags st " +
             "where s.title like %:query% or " +
             "st.tag.tag like %:query%")
     Page<Show> findByQuery(String query, Pageable pageable);
