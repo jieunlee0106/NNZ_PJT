@@ -1,6 +1,7 @@
 package nnz.nanumservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.github.eello.nnz.common.dto.PageDTO;
 import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
@@ -106,7 +107,7 @@ public class NanumController {
 
     @PostMapping("/{nanumId}/certification")
     public ResponseEntity<?> handleNanumCertification(@PathVariable("nanumId") Long nanumId,
-                                                 @RequestBody NanumCertificationVO nanumCertificationVO){
+                                                 @RequestBody NanumCertificationVO nanumCertificationVO) throws FirebaseMessagingException {
         certificationService.handleNanumCertification(nanumId, nanumCertificationVO);
         return ResponseEntity.noContent().build();
     }
