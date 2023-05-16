@@ -7,8 +7,7 @@ import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
 class SharingDetailInfo extends StatelessWidget {
-  final controller = Get.put(ShareDetailController());
-  SharingDetailInfo({super.key});
+  const SharingDetailInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,11 @@ class SharingDetailInfo extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const MyMapWidget(),
+          const MyMapWidget(
+            userLat: 36.355062,
+            userLong: 127.298088,
+            isUser: "현재 위치",
+          ),
           const SizedBox(
             height: 20,
           ),

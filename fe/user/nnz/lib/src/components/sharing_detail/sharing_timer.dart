@@ -7,12 +7,13 @@ import 'package:http/http.dart' as http;
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import "../../controller/shareingdetail_controller.dart";
-import 'package:nnz/src/model/share_detail_model.dart';
 
 class SharingDateTimer extends StatefulWidget {
   final VoidCallback onTimerFinished;
+  final int nanumIds;
 
-  const SharingDateTimer({Key? key, required this.onTimerFinished})
+  const SharingDateTimer(
+      {Key? key, required this.onTimerFinished, required this.nanumIds})
       : super(key: key);
 
   @override
@@ -21,6 +22,7 @@ class SharingDateTimer extends StatefulWidget {
 
 class _SharingDateTimerState extends State<SharingDateTimer> {
   final token = Get.find<BottomNavController>().accessToken;
+  late int nanumId = widget.nanumIds;
   final ShareDetailController sharedetailController =
       Get.put(ShareDetailController());
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
@@ -28,7 +30,6 @@ class _SharingDateTimerState extends State<SharingDateTimer> {
   bool isCondition = false;
   final controller = Get.put(ShareDetailController());
   List<String> timeParts = [];
-  int nanumId = 11;
   String durationTime = "";
   int day = 0;
   int hour = 0;
@@ -53,14 +54,13 @@ class _SharingDateTimerState extends State<SharingDateTimer> {
   void fetchData() async {
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId"),
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}"),
         headers: {
           'Authorization':
               'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg',
           "Accept-Charset": "utf-8",
         });
-    ShareDetailModel shareDetailModelclass =
-        ShareDetailModel.fromJson(jsonDecode(res.body));
+
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
     print(result.value);
     durationTime = result.value["leftTime"];

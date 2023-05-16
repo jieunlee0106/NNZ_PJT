@@ -12,6 +12,7 @@ class PurchaseButton extends StatelessWidget {
   final int lefthour;
   final int leftmin;
   final int leftsec;
+  final int nanumIds;
 
   PurchaseButton({
     super.key,
@@ -21,6 +22,7 @@ class PurchaseButton extends StatelessWidget {
     required this.lefthour,
     required this.leftmin,
     required this.leftsec,
+    required this.nanumIds,
   });
   // 0이면 조건 없음 1이면 조건 있음
 
@@ -101,32 +103,61 @@ class PurchaseButton extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              width: 370,
+                              height: 40,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Config.yellowColor),
+                                onPressed: () {
+                                  Get.find<ShareDetailController>()
+                                      .sendAuthImage(nanumIds: nanumIds);
+                                },
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(color: Config.yellowColor),
+                                  child: Text(
+                                    '나눔 받기',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Config.blackColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       Visibility(
-                          visible: !condition,
-                          child: const Text("나눔을 받으시겠습니까?")),
-                      SizedBox(
-                        width: 370,
-                        height: 40,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Config.yellowColor),
-                          onPressed: () {
-                            Get.find<ShareDetailController>().sendAuthImage();
-                          },
-                          child: Container(
-                            decoration:
-                                BoxDecoration(color: Config.yellowColor),
-                            child: Text(
-                              '나눔 받기',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Config.blackColor,
+                        visible: !condition,
+                        child: Column(
+                          children: [
+                            const Text("나눔을 받으시겠습니까?"),
+                            SizedBox(
+                              width: 370,
+                              height: 40,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Config.yellowColor),
+                                onPressed: () {
+                                  Get.find<ShareDetailController>()
+                                      .sendingAuth(nanumIds: nanumIds);
+                                },
+                                child: Container(
+                                  decoration:
+                                      BoxDecoration(color: Config.yellowColor),
+                                  child: Text(
+                                    '나눔 받기',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Config.blackColor,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ],
@@ -140,6 +171,7 @@ class PurchaseButton extends StatelessWidget {
             decoration: BoxDecoration(color: Config.yellowColor),
             child: SharingDateTimer(
               onTimerFinished: () => {isOpen = true},
+              nanumIds: nanumIds,
             )),
       ),
     );

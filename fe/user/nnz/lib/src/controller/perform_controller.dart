@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:nnz/src/model/perform_detail_model.dart';
 
 import 'package:nnz/src/services/perform_provider.dart';
 
@@ -17,6 +20,9 @@ class PerformController extends GetxController {
   Future<void> getPerformData() async {
     final res = await _performProvider.getPerformDetail();
     if (res.statusCode == 200) {
+      PerformDetailModel performDatailModelclass =
+          PerformDetailModel.fromJson(jsonDecode(res.body));
+
       performData.value = res.body;
       print('title: ${performData.value['title']}');
       print('body: ${performData.value['body']}');

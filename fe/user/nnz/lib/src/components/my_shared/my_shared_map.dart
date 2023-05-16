@@ -6,18 +6,26 @@ import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/myshared_info_controller.dart';
 
 class MyMapWidget extends StatefulWidget {
-  const MyMapWidget({super.key});
+  const MyMapWidget(
+      {super.key, this.userLat, this.userLong, required this.isUser});
+  final double? userLong;
+  final double? userLat;
+  final String isUser;
 
   @override
   State<MyMapWidget> createState() => _MyMapWidgetState();
 }
 
+@override
+void onReady() {}
+
 class _MyMapWidgetState extends State<MyMapWidget> {
   late GoogleMapController googleMapController;
   var infoFormController = Get.put(MysharedInfoController());
 
-  static const CameraPosition initialCameraPosition =
-      CameraPosition(target: LatLng(36.355291, 127.298157), zoom: 16);
+  static CameraPosition initialCameraPosition(double userLat, double userLong) {
+    return CameraPosition(target: LatLng(userLat, userLong), zoom: 16);
+  }
 
   Set<Marker> markers = {};
   bool isMove = false;
@@ -30,7 +38,9 @@ class _MyMapWidgetState extends State<MyMapWidget> {
           width: double.infinity,
           height: 250,
           child: GoogleMap(
-            initialCameraPosition: initialCameraPosition,
+            initialCameraPosition: initialCameraPosition(
+                (widget.userLat == null ? (widget.userLat!) : (36.1)),
+                widget.userLong == null ? (widget.userLong!) : (127.1)),
             markers: markers,
             mapType: MapType.normal,
             onMapCreated: (GoogleMapController controller) {
@@ -38,39 +48,77 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             },
           ),
         ),
-        FloatingActionButton.extended(
-          backgroundColor: Config.yellowColor,
-          onPressed: () async {
-            Position position = await _determinedPosition();
-            infoFormController.userlatController.text =
-                position.latitude.toString();
-            infoFormController.userlongController.text =
-                position.longitude.toString();
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            FloatingActionButton.extended(
+              backgroundColor: Config.yellowColor,
+              onPressed: () async {
+                Position position = await _determinedPosition();
+                infoFormController.userlatController.text =
+                    position.latitude.toString();
+                infoFormController.userlongController.text =
+                    position.longitude.toString();
 
-            googleMapController.animateCamera(
-              CameraUpdate.newCameraPosition(
-                CameraPosition(
-                    target: LatLng(position.latitude, position.longitude),
-                    zoom: 16),
+                googleMapController.animateCamera(
+                  CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                        target: LatLng(position.latitude, position.longitude),
+                        zoom: 16),
+                  ),
+                );
+                markers.clear();
+
+                markers.add(Marker(
+                    markerId: const MarkerId('CurrentLocation'),
+                    position: LatLng(position.latitude, position.longitude)));
+
+                setState(() {});
+              },
+              label: Text(
+                widget.isUser,
+                style: TextStyle(color: Config.blackColor),
               ),
-            );
-            markers.clear();
+              icon: Icon(
+                Icons.room,
+                color: Config.blackColor,
+              ),
+            ),
+            FloatingActionButton.extended(
+              backgroundColor: Config.yellowColor,
+              onPressed: () async {
+                Position position = await _determinedPosition();
+                infoFormController.userlatController.text =
+                    position.latitude.toString();
+                infoFormController.userlongController.text =
+                    position.longitude.toString();
 
-            markers.add(Marker(
-                markerId: const MarkerId('CurrentLocation'),
-                position: LatLng(position.latitude, position.longitude)));
+                googleMapController.animateCamera(
+                  CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                        target: LatLng(position.latitude, position.longitude),
+                        zoom: 16),
+                  ),
+                );
+                markers.clear();
 
-            setState(() {});
-          },
-          label: Text(
-            "현재 위치 설정",
-            style: TextStyle(color: Config.blackColor),
-          ),
-          icon: Icon(
-            Icons.room,
-            color: Config.blackColor,
-          ),
-        ),
+                markers.add(Marker(
+                    markerId: const MarkerId('CurrentLocation'),
+                    position: LatLng(widget.userLat!, widget.userLong!)));
+
+                setState(() {});
+              },
+              label: Text(
+                "나눔 위치 확인",
+                style: TextStyle(color: Config.blackColor),
+              ),
+              icon: Icon(
+                Icons.room,
+                color: Config.blackColor,
+              ),
+            ),
+          ],
+        )
       ],
     );
   }

@@ -6,6 +6,7 @@ class MyShareQr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int receiveId = 17;
     return Column(
       children: [
         const SizedBox(
@@ -13,7 +14,7 @@ class MyShareQr extends StatelessWidget {
         ),
         const Text("QR코드를 찍어주세요"),
         QrImage(
-          data: "사용자 아이디값을 보내는데 이거 보안은?",
+          data: "$receiveId",
           version: QrVersions.auto,
           size: 150,
           errorStateBuilder: (context, error) {

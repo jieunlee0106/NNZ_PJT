@@ -1,11 +1,102 @@
-import 'package:flutter/material.dart';
-import 'package:nnz/src/components/icon_data.dart';
-import 'package:nnz/src/components/my_shared/my_shared_qrleader.dart';
-import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/pages/user/mypage.dart';
+import 'dart:convert';
 
-class ShareQrLeader extends StatelessWidget {
-  const ShareQrLeader({super.key, required});
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nnz/src/components/icon_data.dart';
+import 'package:nnz/src/config/config.dart';
+import 'package:http/http.dart' as http;
+import 'package:nnz/src/model/share_stock_model.dart';
+import 'package:nnz/src/pages/user/mypage.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+class ShareQrLeader extends StatefulWidget {
+  const ShareQrLeader({super.key});
+
+  @override
+  State<ShareQrLeader> createState() => _ShareQrLeaderState();
+}
+
+class _ShareQrLeaderState extends State<ShareQrLeader> {
+  Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  int nanumId = 104;
+  final GlobalKey qrKey = GlobalKey();
+  QRViewController? controller;
+  Barcode? resultt;
+  int receiveId = 17;
+  bool isCameraActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void qr(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((event) async {
+      var res = await http.post(
+        Uri.parse(
+          "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/qr/${event.code}",
+        ),
+        headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
+        },
+      );
+      setState(() {
+        resultt = event;
+      });
+
+      // QR 코드를 한 번 읽으면 카메라를 일시 정지
+      controller.pauseCamera();
+      _refreshData();
+      setState(() {
+        isCameraActive = false;
+      });
+    });
+  }
+
+  void fetchData() async {
+    var res = await http.get(
+        Uri.parse(
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/quantity"),
+        headers: {
+          'Authorization': 'Bearer ',
+          "Accept-Charset": "utf-8",
+        });
+
+    ShareStockModel shareStockModelclass =
+        ShareStockModel.fromJson(jsonDecode(res.body));
+    result.value = jsonDecode(utf8.decode(res.bodyBytes));
+
+    print(result.value);
+
+    setState(() {
+      result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    });
+  }
+
+  void _refreshData() {
+    fetchData();
+  }
+
+  void toggleCamera() {
+    setState(() {
+      isCameraActive = !isCameraActive;
+    });
+
+    if (isCameraActive) {
+      controller?.resumeCamera();
+    } else {
+      controller?.pauseCamera();
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +121,30 @@ class ShareQrLeader extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
             height: 400,
-            child: QRLeader(),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: 300,
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: qr,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: toggleCamera,
+                  child: Text(isCameraActive ? '카메라 정지' : '카메라 시작'),
+                ),
+                Center(
+                  child: (resultt != null)
+                      ? Text('${resultt!.code}')
+                      : const Text("다음 스캔을 진행해주세요"),
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -49,21 +160,21 @@ class ShareQrLeader extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Column(
+                    Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
+                        const Text(
                           "전체 수량",
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
-                          "40",
-                          style: TextStyle(fontSize: 30),
+                          "${result.value["quantity"]}",
+                          style: const TextStyle(fontSize: 30),
                         )
                       ],
                     ),
@@ -75,21 +186,21 @@ class ShareQrLeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Column(
+                    Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
+                        const Text(
                           "남은 수량",
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
-                          "35",
-                          style: TextStyle(fontSize: 30),
+                          "${result.value["stock"]}",
+                          style: const TextStyle(fontSize: 30),
                         )
                       ],
                     ),

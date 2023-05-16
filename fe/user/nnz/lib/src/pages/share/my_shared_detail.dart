@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/components/my_shared/my_shared_infocard.dart';
+import 'package:nnz/src/components/my_shared/my_shared_requestlist.dart';
 import 'package:nnz/src/components/sharing_detail/divide_line.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
 import 'package:nnz/src/controller/list_scroll_controller.dart';
 import 'package:nnz/src/pages/share/my_shared_auth.dart';
-import 'package:nnz/src/pages/share/my_shared_info.dart';
-import 'package:nnz/src/pages/share/my_shared_list.dart';
+import 'package:nnz/src/pages/share/my_shared_info_form.dart';
 import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
@@ -55,7 +55,7 @@ class MySharedDetail extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => Get.to(() => MySharedInfo()),
+                  onTap: () => Get.to(() => MySharedInfoForm()),
                   child: const SharingButton(
                       btnheight: 10, btnwidth: 53, btntext: "당일 정보 입력"),
                 ),
@@ -90,7 +90,7 @@ class MySharedDetail extends StatelessWidget {
                 ),
               ],
             ),
-            const MySharedList()
+            const MySharedRequestList()
           ],
         ),
       ),

@@ -6,9 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:nnz/src/components/sharing_detail/perform_share_card.dart';
 import 'package:nnz/src/controller/perform_controller.dart';
 import 'package:nnz/src/model/perform_share_list_model.dart';
+import 'package:nnz/src/pages/share/share_detail.dart';
 
 class TestInfinite extends StatefulWidget {
-  const TestInfinite({super.key});
+  const TestInfinite({super.key, required this.showIds});
+  final int showIds;
 
   @override
   State<TestInfinite> createState() => _TestInfiniteState();
@@ -17,7 +19,8 @@ class TestInfinite extends StatefulWidget {
 class _TestInfiniteState extends State<TestInfinite> {
   final PerformController performController = Get.put(PerformController());
   ScrollController listscrollcontroller = ScrollController();
-  List<Content> result = [];
+  Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  List<dynamic> shareList = [];
   bool isLoading = true;
   bool isFirst = true;
   int page = 0;
@@ -33,20 +36,22 @@ class _TestInfiniteState extends State<TestInfinite> {
   void fetchData(paraPage) async {
     var res = await http.get(
       Uri.parse(
-          "https://k8b207.p.ssafy.io/api/nanum-service/nanums?showId=4953&page=$paraPage&size=$size"),
+          "https://k8b207.p.ssafy.io/api/nanum-service/nanums?showId=${widget.showIds}&page=$paraPage&size=$size"),
       headers: {
         "Accept-Charset": "utf-8",
       },
     );
-    print(res.body);
+    result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    shareList = shareList + result.value["content"];
     ShareListModel listModelClass =
         ShareListModel.fromJson(jsonDecode(utf8.decode(res.bodyBytes)));
-    result = result + listModelClass.content;
+
     isFirst = listModelClass.isFirst as bool;
     int localPage = page + 1;
-
+    print(shareList);
     setState(() {
-      result;
+      result.value;
+      shareList;
       isLoading = false;
       page = localPage;
     });
@@ -69,14 +74,29 @@ class _TestInfiniteState extends State<TestInfinite> {
         childAspectRatio: 1,
       ),
       controller: listscrollcontroller,
-      itemCount: result.length,
+      itemCount: shareList.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Column(
           children: [
-            ShareCard(
-              opentime: result[index].openTime,
-              title: result[index].title,
+            Visibility(
+              visible: shareList.isNotEmpty,
+              child: GestureDetector(
+                onTap: () {
+                  Get.to(() => ShareDatail(nanumIds: shareList[index]["id"]));
+                },
+                child: ShareCard(
+                  title: shareList[index]["title"],
+                  opentime: shareList[index]["openTime"],
+                  img: (shareList[index]["thumbnail"] == null
+                      ? "https://dummyimage.com/600x400/000/fff"
+                      : "${shareList[index]["thumbnail"]}"),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: shareList.isEmpty,
+              child: const Text("데이터가 없습니다"),
             )
           ],
         ),

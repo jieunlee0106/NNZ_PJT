@@ -6,7 +6,9 @@ import 'package:nnz/src/pages/share/sharing_complete.dart';
 
 class ShareAuthProvider extends GetConnect {
   final logger = Logger();
+  // final int nanumIds;
 
+  // ShareAuthProvider(this.nanumIds);
   @override
   void onInit() async {
     await dotenv.load();
@@ -18,9 +20,8 @@ class ShareAuthProvider extends GetConnect {
     super.onInit();
   }
 
-  Future<Response> postShareAuth({
-    required var authImage,
-  }) async {
+  Future<Response> postShareAuth(
+      {required var authImage, required int nanumIds}) async {
     final formData = FormData({});
     print("이게 이미지임");
     print(authImage);
@@ -29,11 +30,27 @@ class ShareAuthProvider extends GetConnect {
     final token = Get.find<BottomNavController>().accessToken;
     final boundary = formData.boundary;
     final res = await post(
-        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/21", formData,
+        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumIds",
+        formData,
         headers: {
           'Content-Type': 'multipart/form-data; boundary=$boundary',
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg',
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
+        });
+    if (res.statusCode == 204) {
+      Get.to(() => const SharingComplete());
+    } else {
+      Get.snackbar("실패", "알수없는 오류로 실패하였습니다");
+    }
+    return res;
+  }
+
+  Future<Response> sendingShareAuth({required int nanumIds}) async {
+    final res = await post(
+        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumIds", {},
+        headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
         });
     if (res.statusCode == 204) {
       Get.to(() => const SharingComplete());

@@ -6,11 +6,9 @@ import 'package:nnz/src/components/my_shared/my_shared_timepicker.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/controller/myshared_info_controller.dart';
-import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 
 class MySharedInfoForm extends StatelessWidget {
-  final controller = Get.put(ShareDetailController());
   var infoFormController = Get.put(MysharedInfoController());
   MySharedInfoForm({
     super.key,
@@ -50,7 +48,11 @@ class MySharedInfoForm extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const MyMapWidget(),
+          const MyMapWidget(
+            userLat: 36.355062,
+            userLong: 127.298088,
+            isUser: "현재 위치 설정",
+          ),
           const SizedBox(
             height: 20,
           ),

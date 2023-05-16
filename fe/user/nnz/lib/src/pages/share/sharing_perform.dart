@@ -1,18 +1,48 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:nnz/src/components/sharing_detail/perform_detail.dart';
 import 'package:nnz/src/components/sharing_detail/test_infinite.dart';
 import 'package:nnz/src/controller/list_scroll_controller.dart';
 
 import 'package:nnz/src/components/sharing_detail/sharing_tag.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/controller/perform_controller.dart';
 
-class SharePerfomDetail extends StatelessWidget {
-  SharePerfomDetail({super.key});
+class SharePerformDetail extends StatefulWidget {
+  const SharePerformDetail({super.key, required this.showIds});
+  final int showIds;
 
+  @override
+  State<SharePerformDetail> createState() => _SharePerformDetailState();
+}
+
+class _SharePerformDetailState extends State<SharePerformDetail> {
   final scrollControlloer = Get.put(InfiniteScrollController());
-  final PerformController performController = Get.put(PerformController());
+  Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    var res = await http.get(
+      Uri.parse("https://k8b207.p.ssafy.io/api/show-service/shows/4399"),
+      headers: {
+        "Accept-Charset": "utf-8",
+      },
+    );
+
+    result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    print(result.value);
+
+    setState(() {
+      result.value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +69,7 @@ class SharePerfomDetail extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      "${performController.performData.value['title']}",
+                      "${result.value['title']}",
                       style: TextStyle(fontSize: 24, color: Config.blackColor),
                     ),
                     const SizedBox(
@@ -50,8 +80,8 @@ class SharePerfomDetail extends StatelessWidget {
                         const SizedBox(
                           width: 20,
                         ),
-                        Image.asset(
-                          "assets/images/sharing_sample/peakfestival.gif",
+                        Image.network(
+                          "${result.value["poster"]}",
                           height: 150,
                           width: 120,
                           fit: BoxFit.cover,
@@ -68,18 +98,16 @@ class SharePerfomDetail extends StatelessWidget {
                                   height: 10,
                                 ),
                                 PerformDetail(
-                                    performTitle:
-                                        "${performController.performData.value['location']}",
+                                    performTitle: "${result.value['location']}",
                                     iconName: Icons.room,
                                     textSize: 16),
                                 PerformDetail(
                                     performTitle:
-                                        "${performController.performData.value['startDate']}",
+                                        "${result.value['startDate']}",
                                     iconName: Icons.calendar_month,
                                     textSize: 16),
                                 PerformDetail(
-                                    performTitle:
-                                        "${performController.performData.value['ageLimit']}",
+                                    performTitle: "${result.value['ageLimit']}",
                                     iconName: Icons.person,
                                     textSize: 16),
                                 Container(
@@ -131,7 +159,9 @@ class SharePerfomDetail extends StatelessWidget {
             height: 300,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: TestInfinite(),
+              child: TestInfinite(
+                showIds: 4399,
+              ),
             ),
           ),
         ]),

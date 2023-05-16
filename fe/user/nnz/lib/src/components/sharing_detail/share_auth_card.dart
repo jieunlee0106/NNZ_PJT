@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nnz/src/components/sharing_detail/share_example_data.dart';
 
 class StackAuthCard extends StatelessWidget {
-  final ExampleCandidateModel candidate;
+  final dynamic candidate;
 
   const StackAuthCard({super.key, required this.candidate});
 
@@ -30,12 +29,10 @@ class StackAuthCard extends StatelessWidget {
           Flexible(
             child: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: candidate.color,
-                ),
-              ),
+                  image: DecorationImage(
+                      image: NetworkImage((candidate["image"] == null
+                          ? "https://dummyimage.com/600x400/000/fff"
+                          : "${candidate["image"]}")))),
             ),
           ),
           Padding(
@@ -44,7 +41,7 @@ class StackAuthCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  candidate.name,
+                  "${candidate["email"]}",
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -52,18 +49,6 @@ class StackAuthCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text(
-                  candidate.job,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  candidate.city,
-                  style: const TextStyle(color: Colors.grey),
-                )
               ],
             ),
           ),

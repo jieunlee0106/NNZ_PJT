@@ -1,66 +1,68 @@
 class PerformDetailModel {
-  String? id;
   String? title;
   String? location;
   String? date;
-  String? ageLimit;
-  List<TagModel>? tags;
-  String? poster;
+  List<Participants>? participants;
 
-  PerformDetailModel(
-      {this.id,
-      this.title,
-      this.location,
-      this.date,
-      this.ageLimit,
-      this.tags,
-      this.poster});
+  PerformDetailModel({this.title, this.location, this.date, this.participants});
 
   PerformDetailModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     title = json['title'];
     location = json['location'];
     date = json['date'];
-    ageLimit = json['ageLimit'];
-    if (json['tags'] != null) {
-      tags = <TagModel>[];
-      json['tags'].forEach((v) {
-        tags!.add(TagModel.fromJson(v));
+    if (json['participants'] != null) {
+      participants = <Participants>[];
+      json['participants'].forEach((v) {
+        participants!.add(Participants.fromJson(v));
       });
     }
-    poster = json['poster'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     data['title'] = title;
     data['location'] = location;
     data['date'] = date;
-    data['ageLimit'] = ageLimit;
-    if (tags != null) {
-      data['tags'] = tags!.map((v) => v.toJson()).toList();
+    if (participants != null) {
+      data['participants'] = participants!.map((v) => v.toJson()).toList();
     }
-    data['poster'] = poster;
     return data;
   }
 }
 
-class TagModel {
-  String? id;
-  String? tag;
+class Participants {
+  int? id;
+  String? profileImage;
+  String? nickname;
+  bool? isFollower;
+  bool? isReceived;
+  bool? isCertificated;
 
-  TagModel({this.id, this.tag});
+  Participants(
+      {this.id,
+      this.profileImage,
+      this.nickname,
+      this.isFollower,
+      this.isReceived,
+      this.isCertificated});
 
-  TagModel.fromJson(Map<String, dynamic> json) {
+  Participants.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    tag = json['tag'];
+    profileImage = json['profileImage'];
+    nickname = json['nickname'];
+    isFollower = json['isFollower'];
+    isReceived = json['isReceived'];
+    isCertificated = json['isCertificated'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['tag'] = tag;
+    data['profileImage'] = profileImage;
+    data['nickname'] = nickname;
+    data['isFollower'] = isFollower;
+    data['isReceived'] = isReceived;
+    data['isCertificated'] = isCertificated;
     return data;
   }
 }
