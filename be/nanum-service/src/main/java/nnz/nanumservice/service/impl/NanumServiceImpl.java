@@ -300,6 +300,7 @@ public class NanumServiceImpl implements NanumService {
                 .nanum(nanum)
                 .receiver(user)
                 .certificationImage(image)
+                .isCertificated(nanum.getIsCertification() ? null : true)
                 .isReceived(false)
                 .build();
 
