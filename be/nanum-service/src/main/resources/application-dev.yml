@@ -93,4 +93,4 @@ ncp:
 
 fcm:
   json:
-    path: \home\fcm\nnz-firebase.json
+    path: file:///home/fcm/nnz-firebase.json
