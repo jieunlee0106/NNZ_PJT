@@ -24,7 +24,7 @@ public class PermilAllUrlPattern {
             Pattern.compile(NANUM_SERVICE + "/nanums/popular"), // 인기 나눔 조회
             Pattern.compile(NANUM_SERVICE + "/nanums/location"), // 위치기반 즉시 가능 나눔 조회
             Pattern.compile(NANUM_SERVICE + "/nanums/tag"), // 해시태그로 나눔 목록 조회.
-
+            Pattern.compile(NANUM_SERVICE + "/nanums/search"), // 나눔 검색
 
 
 //                "/search", // 검색
