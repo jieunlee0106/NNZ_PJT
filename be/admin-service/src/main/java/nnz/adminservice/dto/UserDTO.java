@@ -23,6 +23,7 @@ public class UserDTO {
     private String profileImage;
     private String authProvider;
     private String role;
+    private String deviceToken;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createdAt;
@@ -39,6 +40,7 @@ public class UserDTO {
                 .profileImage(user.getProfileImage())
                 .authProvider(user.getAuthProvider().name())
                 .role(user.getRole().name())
+                .deviceToken(user.getDeviceToken())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
