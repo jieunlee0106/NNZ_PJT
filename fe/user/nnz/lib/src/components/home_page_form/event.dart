@@ -10,9 +10,9 @@ class CarouselWithIndicator extends StatefulWidget {
 class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   int _currentIndex = 0;
   final List<String> _imageList = [
+    'assets/images/event3.JPG',
     'assets/images/event1.JPG',
     'assets/images/event2.JPG',
-    'assets/images/event3.JPG',
   ];
 
   @override

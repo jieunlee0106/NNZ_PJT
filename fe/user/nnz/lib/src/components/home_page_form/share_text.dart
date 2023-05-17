@@ -6,12 +6,16 @@ class HomeShareText extends StatelessWidget {
   final String text;
   final String image;
   final String smallText;
+  final String plus;
+  final Widget page;
 
   const HomeShareText({
     super.key,
     required this.text,
     required this.image,
     required this.smallText,
+    required this.plus,
+    required this.page,
   });
 
   @override
@@ -24,36 +28,54 @@ class HomeShareText extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image(
-                    image: AssetImage(image),
-                    width: 35,
-                    height: 35,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    text,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Config.blackColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image(
+                          image: AssetImage(image),
+                          width: 35,
+                          height: 35,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          text,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Config.blackColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(smallText)
-            ],
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => page),
+                        );
+                      },
+                      child: Text(
+                        plus,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(smallText)
+              ],
+            ),
           ),
         ],
       ),
