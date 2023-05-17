@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/pages/home/likes_page.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
-import 'package:nnz/src/pages/user/register.dart';
 
 import '../components/message_popup.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 enum PageName {
   HOME,
@@ -28,7 +28,8 @@ class BottomNavController extends GetxController {
   String? accessToken;
   String? refreshToken;
   String? userId;
-
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  late final token;
   void changeBottomNav(int value, {bool hasGesture = true}) async {
     var page = PageName.values[value];
     print(page);
@@ -61,7 +62,7 @@ class BottomNavController extends GetxController {
           print(accessToken);
           Get.offNamed("/register");
         } else {
-          Get.to(() => MyPage());
+          Get.to(() => const MyPage());
         }
         break;
       case PageName.ACTIVITY:
@@ -72,7 +73,7 @@ class BottomNavController extends GetxController {
           print(accessToken);
           Get.offNamed("/register");
         } else {
-          Get.to(() => LikesPage());
+          Get.to(() => const LikesPage());
         }
         break;
     }
@@ -82,9 +83,42 @@ class BottomNavController extends GetxController {
   void onInit() async {
     super.onInit();
     storage.deleteAll();
+    _initNotification();
+    token = await _getToken();
     // storage.write(key: "accessToken", value: "12131312313");
     // accessToken = await storage.read(key: "accessToken");
     print("들어와 $accessToken");
+  }
+
+  Future<String?> _getToken() async {
+    try {
+      final token = await firebaseMessaging.getToken();
+      print("토큰 $token");
+      return token;
+    } catch (e) {}
+    return null;
+  }
+
+  void _initNotification() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // 앱이 foreground에서 실행 중일 때 푸시 알림 수신
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // 앱이 background에서 실행 중이거나 종료된 상태에서 푸시 알림 수신 후 앱을 열 때
+      print('A new onMessageOpenedApp event was published!');
+      print('Message data: ${message.notification!.title}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
   }
 
   Future<String?> getToken() async {

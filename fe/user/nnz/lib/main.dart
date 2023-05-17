@@ -183,7 +183,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/myShareDetail",
-          page: () => const MyShareDetail(),
+          page: () => const MyShareDetail(
+            nanumIds: 0,
+          ),
         ),
         GetPage(
           name: "/proposeShow",

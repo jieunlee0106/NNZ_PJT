@@ -30,7 +30,7 @@ class SharingRegisterProvider extends GetConnect {
     final body = shareModel.toJson();
     final formData = FormData({
       "data": jsonEncode({
-        "showId": 4399,
+        "showId": shareModel.showId,
         "writer": shareModel.writer,
         "nanumDate": shareModel.nanumDate,
         "title": shareModel.title,

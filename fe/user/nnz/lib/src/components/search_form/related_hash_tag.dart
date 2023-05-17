@@ -19,8 +19,8 @@ class RelatedHashTag extends StatelessWidget {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text("Error : ${snapshot.hasError}");
-          } else if (!snapshot.hasData) {
-            return const Text("없어");
+          } else if (snapshot.data!.isEmpty) {
+            return Container();
           } else {
             List<String> tagList = [];
             for (var data in snapshot.data!) {

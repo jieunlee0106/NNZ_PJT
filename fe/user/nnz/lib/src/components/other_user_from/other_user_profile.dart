@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:nnz/src/controller/other_user_profie_controller.dart';
 
 import '../../config/config.dart';
+import '../../model/other_profile_model.dart';
 
 class OtherUserProfile extends StatelessWidget {
   OtherUserProfile({super.key});
@@ -14,15 +15,17 @@ class OtherUserProfile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           vertical: 18,
         ),
-        child: FutureBuilder(
+        child: FutureBuilder<OtherUserProfileModel>(
             future: controller.onOtherProfile(),
             builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
-              }
-              if (snapshot.hasError) {
+              } else if (snapshot.hasError) {
                 return Text('Error : ${snapshot.error}');
-              }
+              } else if (snapshot.hasData == null) {
+                return Text("해당 유저 정보가 없습니다.");
+              }else{
+
               return Column(
                 children: [
                   const SizedBox(
@@ -30,8 +33,9 @@ class OtherUserProfile extends StatelessWidget {
                   ),
                   CircleAvatar(
                       radius: 56,
-                      backgroundImage:
-                          NetworkImage(controller.otherUser.profileImage!)),
+                      backgroundImage: controller.otherUser.profileImage == null
+                          ? null
+                          : NetworkImage(controller.otherUser.profileImage!)),
                   const SizedBox(
                     height: 8,
                   ),
@@ -57,21 +61,34 @@ class OtherUserProfile extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: Config.yellowColor,
-                    ),
-                    child: const Text(
-                      "팔로우",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                  GestureDetector(
+                    onTap: () {
+                      controller.onFollow(userId: 13);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 8,
                       ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Config.yellowColor,
+                      ),
+                      child: controller.otherUser.isFollow == true
+                          ? const Text(
+                              "언팔로우",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          : const Text(
+                              "팔로우",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(
@@ -129,6 +146,7 @@ class OtherUserProfile extends StatelessWidget {
                   ),
                 ],
               );
+              }
             }));
   }
 }

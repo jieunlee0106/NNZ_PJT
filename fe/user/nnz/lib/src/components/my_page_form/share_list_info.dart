@@ -114,8 +114,9 @@ class _ShareListState extends State<ShareList> {
                                   ),
                                   Center(
                                     child: GestureDetector(
-                                      onTap: () =>
-                                          Get.to(() => const MyShareDetail()),
+                                      onTap: () => Get.to(() => MyShareDetail(
+                                            nanumIds: item.id ?? 0,
+                                          )),
                                       child: Text(
                                         item.title ?? '',
                                         style: TextStyle(
