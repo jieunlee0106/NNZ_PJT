@@ -46,6 +46,7 @@ public class User extends BaseEntity {
     private Role role;
 
     private LocalDateTime lastLoginAt;
+    private String deviceToken;
 
     public enum Role {
         USER, ADMIN,
@@ -66,6 +67,7 @@ public class User extends BaseEntity {
         user.profileImage = userDTO.getProfileImage();
         user.authProvider = AuthProvider.valueOf(userDTO.getAuthProvider());
         user.role = Role.valueOf(userDTO.getRole());
+        user.deviceToken = user.getDeviceToken();
         return user;
     }
 }
