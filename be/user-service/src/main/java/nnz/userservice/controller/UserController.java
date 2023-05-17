@@ -85,10 +85,13 @@ public class UserController {
     }
 
     @PostMapping("/users/follow/{followingId}")
-    public ResponseEntity<Void> follow(@PathVariable Long followingId, DecodedToken token) throws JsonProcessingException {
+    public ResponseEntity<Map<String, Boolean>> follow(@PathVariable Long followingId, DecodedToken token) throws JsonProcessingException {
         // 팔로우가 되어 있으면 언팔로우, 언팔로우면 팔로우
-        followService.toggleFollow(token.getId(), followingId);
-        return ResponseEntity.noContent().build();
+        boolean follow = followService.toggleFollow(token.getId(), followingId);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("follow", follow);
+
+        return ResponseEntity.ok(response);
     }
 
 //    @PostMapping("/users/follow/{followingId}")

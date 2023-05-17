@@ -84,7 +84,7 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     @Transactional
-    public void toggleFollow(Long meId, Long followingId) throws JsonProcessingException {
+    public boolean toggleFollow(Long meId, Long followingId) throws JsonProcessingException {
         User me = userRepository.findById(meId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -94,9 +94,11 @@ public class FollowServiceImpl implements FollowService {
 
         KafkaMessage kafkaMessage;
         Follow follow = followRepository.findByFollowerAndFollowing(me, following).orElse(null);
+        boolean isFollow = false;
         if (follow != null) { // 팔로우 한 이력이 있다면
             if (follow.getIsDelete()) { // 언팔로우 상태
                 follow.reFollow(); // 재팔로우
+                isFollow = true;
                 log.info("{}님이 {}님을 팔로우", me.getEmail(), following.getEmail());
             } else { // 팔로우 상태
                 follow.unfollow(); // 언팔로우
@@ -110,11 +112,14 @@ public class FollowServiceImpl implements FollowService {
                     .build();
 
             followRepository.save(follow);
+
+            isFollow = true;
             log.info("{}님이 {}님을 팔로우", me.getEmail(), following.getEmail());
 
             kafkaMessage = KafkaMessage.create().body(FollowSyncDTO.of(follow));
         }
 
         kafkaProducer.sendMessage("follow", kafkaMessage);
+        return isFollow;
     }
 }
