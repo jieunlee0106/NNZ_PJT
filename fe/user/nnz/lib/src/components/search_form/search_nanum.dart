@@ -4,6 +4,7 @@ import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/searh_nanum_list_model.dart';
 
 import '../../config/config.dart';
+import '../../pages/search/tag_page.dart';
 import '../icon_data.dart';
 
 class SearchNanum extends StatelessWidget {
@@ -94,7 +95,15 @@ class SearchNanum extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(controller.rTagList[index]),
+                                    GestureDetector(
+                                        onTap: () {
+                                          Get.to(() => TagPage(
+                                                tagName:
+                                                    controller.rTagList[index],
+                                              ));
+                                        },
+                                        child:
+                                            Text(controller.rTagList[index])),
                                   ],
                                 )),
                           ),

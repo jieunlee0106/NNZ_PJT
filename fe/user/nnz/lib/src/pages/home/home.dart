@@ -266,15 +266,17 @@ class _HomeState extends State<Home> {
                     smallText: '현재 가장 인기있는 나눔이에요'),
                 HomeShareList(items: Plist),
                 GrayLine(),
-                // 페스티벌 인기 나눔
-                GrayLine(),
-                //
-                GrayLine(),
                 HomeShareText(
                     text: '즉시 줄서기 가능한 나눔',
                     image: ImagePath.pin,
                     smallText: '근처에서 진행중인 나눔에 줄서기를 해보세요'),
                 HomeShareList2(items: locationList.content),
+                GrayLine(),
+                // 페스티벌 인기 나눔
+
+                GrayLine(),
+                // 뮤지컬 인기 나눔
+
                 HomeInfo()
               ],
             ),
