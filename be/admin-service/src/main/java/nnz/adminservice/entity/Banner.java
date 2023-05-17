@@ -18,7 +18,6 @@ import javax.persistence.*;
 public class Banner extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String image;

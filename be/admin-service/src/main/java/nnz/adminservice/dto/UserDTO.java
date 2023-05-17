@@ -1,19 +1,19 @@
 package nnz.adminservice.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import nnz.adminservice.entity.User;
 
 import java.time.LocalDateTime;
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@Getter
 public class UserDTO {
 
     private Long id;
@@ -21,26 +21,26 @@ public class UserDTO {
     private String nickname;
     private String phone;
     private String profileImage;
-    private User.AuthProvider authProvider;
+    private String authProvider;
+    private String role;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime lastLoginAt;
+    private LocalDateTime createdAt;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
 
     public static UserDTO of(User user) {
-        UserDTO dto = new UserDTO();
-        dto.id = user.getId();
-        dto.email = user.getEmail();
-        dto.nickname = user.getNickname();
-        dto.phone = user.getPhoneNumber();
-        dto.profileImage = user.getProfileImage();
-        dto.authProvider = user.getAuthProvider();
-        dto.lastLoginAt = user.getLastLoginAt();
-        dto.updatedAt = user.getUpdatedAt();
-        return dto;
+        return UserDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .phone(user.getPhoneNumber())
+                .profileImage(user.getProfileImage())
+                .authProvider(user.getAuthProvider().name())
+                .role(user.getRole().name())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
     }
 }

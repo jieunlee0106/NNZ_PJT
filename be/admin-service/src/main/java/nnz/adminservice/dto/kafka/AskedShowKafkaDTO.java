@@ -1,4 +1,4 @@
-package nnz.adminservice.dto;
+package nnz.adminservice.dto.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
