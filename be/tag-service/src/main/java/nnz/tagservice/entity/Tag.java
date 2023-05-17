@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tags")
 @NoArgsConstructor
+@DynamicUpdate
 @AllArgsConstructor
 @Builder
 @Getter
@@ -23,4 +25,8 @@ public class Tag extends BaseEntity {
     private String tag;
 
     private Integer views;
+
+    public void updateViews(int views) {
+        this.views = views;
+    }
 }
