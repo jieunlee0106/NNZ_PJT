@@ -22,9 +22,12 @@ import java.util.List;
 @Component
 public class FCMInitializer {
 
+    @Value("${fcm.json.path}")
+    private String path;
+
     @PostConstruct
     public void initialize(){
-        ClassPathResource resource = new ClassPathResource("nnz-firebase.json");
+        FileSystemResource resource = new FileSystemResource(path);
 
         try(InputStream stream = resource.getInputStream()){
             FirebaseOptions options = FirebaseOptions.builder()
