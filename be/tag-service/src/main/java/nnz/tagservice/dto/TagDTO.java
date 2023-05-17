@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import nnz.tagservice.entity.Tag;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class TagDTO {
 
     private String tag;
 
-    private Integer viwes;
+    private Integer views;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -37,7 +36,7 @@ public class TagDTO {
         return TagDTO.builder()
                 .id(tag.getId())
                 .tag(tag.getTag())
-                .viwes(tag.getViews())
+                .views(tag.getViews())
                 .updatedAt(tag.getUpdatedAt())
                 .isDelete(tag.getIsDelete())
                 .build();

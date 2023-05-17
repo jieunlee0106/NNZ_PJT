@@ -23,7 +23,7 @@ public class KafkaConsumer {
 
     private final TagRepository tagRepository;
 
-    @KafkaListener(topics = "dev-tag", groupId = "tag-service-1")
+    @KafkaListener(topics = "dev-tag", groupId = "tag-service-2")
     public void consumeTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagDTO> data = KafkaMessageUtils.deserialize(message, TagDTO.class);
         KafkaMessageType type = data.getType();
@@ -38,9 +38,9 @@ public class KafkaConsumer {
             }
 
             Tag tag = optTag.get();
-            if (tag.getViews() < body.getViwes()) {
-                log.info("태그 id: {}의 조회수 업데이트 before: {} -> after {}", tag.getId(), tag.getViews(), body.getViwes());
-                tag.updateViews(body.getViwes());
+            if (tag.getViews() < body.getViews()) {
+                log.info("태그 id: {}의 조회수 업데이트 before: {} -> after {}", tag.getId(), tag.getViews(), body.getViews());
+                tag.updateViews(body.getViews());
             }
         }
 

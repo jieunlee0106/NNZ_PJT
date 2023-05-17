@@ -24,7 +24,8 @@ public class Tag extends BaseEntity {
 
     private String tag;
 
-    private Integer views;
+    @Builder.Default
+    private Integer views = 0;
 
     public void updateViews(int views) {
         this.views = views;
