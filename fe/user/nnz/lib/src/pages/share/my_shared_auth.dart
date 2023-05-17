@@ -75,10 +75,10 @@ class _ExamplePageState extends State<SharedAuthCheck> {
             Flexible(
               child: CardSwiper(
                 controller: controller,
-                cardsCount: (dataLength + 1),
+                cardsCount: (dataLength),
                 onSwipe: _onSwipe,
                 onUndo: _onUndo,
-                numberOfCardsDisplayed: dataLength,
+                numberOfCardsDisplayed: (dataLength),
                 backCardOffset: const Offset(40, 40),
                 padding: const EdgeInsets.all(55.0),
                 cardBuilder: (context, index) => cards[index],
@@ -170,7 +170,8 @@ class _ExamplePageState extends State<SharedAuthCheck> {
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
         headers: {
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
         },
         body: {
           "id": id.toString(),
@@ -186,15 +187,18 @@ class _ExamplePageState extends State<SharedAuthCheck> {
   void allowAuth(int id) async {
     print("수락");
     token = await Token.getAccessToken();
-    var res = http.post(
+    print(id.runtimeType);
+    var res = await http.post(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
         headers: {
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
         },
-        body: {
-          "id": id.toString(),
-          "certification": "true",
-        });
+        body: json.encode({
+          "id": id,
+          "certification": true,
+        }));
+    print(res.statusCode);
   }
 }

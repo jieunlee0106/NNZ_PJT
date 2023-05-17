@@ -4,6 +4,7 @@ import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/model/receive_type_list_model.dart';
+import 'package:nnz/src/pages/share/new_share_info_detail.dart';
 
 class ShareList2 extends StatefulWidget {
   final List<Content2> items;
@@ -112,9 +113,8 @@ class _ShareListState extends State<ShareList2> {
                                   ),
                                   Center(
                                     child: GestureDetector(
-                                      onTap: () => Get.to(() => MyShareDetail(
-                                            nanumIds: item.id ?? 0,
-                                          )),
+                                      onTap: () =>
+                                          Get.to(() => const ShareInfoPage()),
                                       child: Text(
                                         item.title!,
                                         style: TextStyle(

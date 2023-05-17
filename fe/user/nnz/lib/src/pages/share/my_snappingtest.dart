@@ -10,7 +10,8 @@ import 'package:nnz/src/pages/share/my_shared_info_page.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 class SheetBelowTest extends StatefulWidget {
-  const SheetBelowTest({super.key});
+  const SheetBelowTest({super.key, required this.nanumIds});
+  final int nanumIds;
 
   @override
   State<SheetBelowTest> createState() => _SheetBelowTestState();
@@ -18,7 +19,6 @@ class SheetBelowTest extends StatefulWidget {
 
 class _SheetBelowTestState extends State<SheetBelowTest> {
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
-  int nanumId = 104;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _SheetBelowTestState extends State<SheetBelowTest> {
     token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/info"),
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/info"),
         headers: {
           'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
@@ -39,6 +39,8 @@ class _SheetBelowTestState extends State<SheetBelowTest> {
     OtherShareInfoModel infoModelClass =
         OtherShareInfoModel.fromJson(jsonDecode(res.body));
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
+
+    print("너야?");
     print(result.value);
 
     setState(() {
@@ -61,10 +63,14 @@ class _SheetBelowTestState extends State<SheetBelowTest> {
             decoration: const BoxDecoration(
               color: Colors.white,
             ),
-            child: const MyShareQr(),
+            child: MyShareQr(
+              receiveId: result.value["receiveId"],
+            ),
           ),
         ),
-        child: const MySharedInfos(),
+        child: MySharedInfos(
+          nanumIds: widget.nanumIds,
+        ),
       ),
     );
   }

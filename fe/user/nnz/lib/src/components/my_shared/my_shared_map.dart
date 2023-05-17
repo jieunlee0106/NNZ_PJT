@@ -7,9 +7,12 @@ import 'package:nnz/src/controller/myshared_info_controller.dart';
 
 class MyMapWidget extends StatefulWidget {
   const MyMapWidget(
-      {super.key, this.userLat, this.userLong, required this.isUser});
-  final double? userLong;
-  final double? userLat;
+      {super.key,
+      required this.userLat,
+      required this.userLong,
+      required this.isUser});
+  final double userLong;
+  final double userLat;
   final String isUser;
 
   @override
@@ -39,8 +42,8 @@ class _MyMapWidgetState extends State<MyMapWidget> {
           height: 250,
           child: GoogleMap(
             initialCameraPosition: initialCameraPosition(
-                (widget.userLat == null ? (widget.userLat!) : (36.1)),
-                widget.userLong == null ? (widget.userLong!) : (127.1)),
+                (widget.userLat == null ? (widget.userLat) : (36.1)),
+                widget.userLong == null ? (widget.userLong) : (127.1)),
             markers: markers,
             mapType: MapType.normal,
             onMapCreated: (GoogleMapController controller) {
@@ -87,24 +90,20 @@ class _MyMapWidgetState extends State<MyMapWidget> {
             FloatingActionButton.extended(
               backgroundColor: Config.yellowColor,
               onPressed: () async {
-                Position position = await _determinedPosition();
-                infoFormController.userlatController.text =
-                    position.latitude.toString();
-                infoFormController.userlongController.text =
-                    position.longitude.toString();
-
                 googleMapController.animateCamera(
                   CameraUpdate.newCameraPosition(
                     CameraPosition(
-                        target: LatLng(position.latitude, position.longitude),
-                        zoom: 16),
+                      target: LatLng(widget.userLat, widget.userLong),
+                      zoom: 16,
+                    ),
                   ),
                 );
                 markers.clear();
 
                 markers.add(Marker(
-                    markerId: const MarkerId('CurrentLocation'),
-                    position: LatLng(widget.userLat!, widget.userLong!)));
+                  markerId: const MarkerId('NanumLocation'),
+                  position: LatLng(widget.userLat, widget.userLong),
+                ));
 
                 setState(() {});
               },

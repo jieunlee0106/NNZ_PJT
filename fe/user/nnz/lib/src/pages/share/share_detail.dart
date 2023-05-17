@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nnz/src/components/sharing_detail/divide_line.dart';
-import 'package:nnz/src/components/sharing_detail/share_float_button.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_card.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_tag.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/share_detail_model.dart';
+import 'package:nnz/src/pages/share/my_snappingtest.dart';
 
 class ShareDatail extends StatefulWidget {
   const ShareDatail({super.key, required this.nanumIds});
@@ -29,6 +29,7 @@ class _ShareDatailState extends State<ShareDatail> {
   bool isCondition = false;
   bool timerFinish = false;
   bool isFollow = false;
+  bool isBooking = false;
   int writerId = 0;
   String durationTime = "";
   int day = 0;
@@ -64,6 +65,7 @@ class _ShareDatailState extends State<ShareDatail> {
     nunumwriter.value = result.value["writer"];
     writerId = nunumwriter.value["id"];
     durationTime = result.value["leftTime"];
+    isBooking = result.value["booking"];
     timeParts = durationTime.split(", ");
     day = int.parse(timeParts[0].split(" : ")[1]);
     hour = int.parse(timeParts[1].split(" : ")[1]);
@@ -318,15 +320,26 @@ class _ShareDatailState extends State<ShareDatail> {
               const SizedBox(
                 width: 20,
               ),
-              PurchaseButton(
-                condition: isCondition,
-                isOpen: timerFinish,
-                leftday: day,
-                lefthour: hour,
-                leftmin: minute,
-                leftsec: second,
-                nanumIds: widget.nanumIds,
+              Visibility(
+                visible: isBooking,
+                child: GestureDetector(
+                    onTap: () => Get.to(() => SheetBelowTest(
+                          nanumIds: widget.nanumIds,
+                        )),
+                    child: const Text("나눔 확인하기")),
               ),
+              // Visibility(
+              //   visible: !isBooking,
+              //   child: PurchaseButton(
+              //     condition: isCondition,
+              //     isOpen: timerFinish,
+              //     leftday: day,
+              //     lefthour: hour,
+              //     leftmin: minute,
+              //     leftsec: second,
+              //     nanumIds: widget.nanumIds,
+              //   ),
+              // )
             ],
           ),
         ),
