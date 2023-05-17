@@ -10,9 +10,8 @@ import 'package:nnz/src/pages/user/mypage.dart';
 
 class MySharedInfoForm extends StatelessWidget {
   var infoFormController = Get.put(MysharedInfoController());
-  MySharedInfoForm({
-    super.key,
-  });
+  final int nanumIds;
+  MySharedInfoForm({super.key, required this.nanumIds});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +119,7 @@ class MySharedInfoForm extends StatelessWidget {
           Center(
               child: GestureDetector(
             onTap: () {
-              infoFormController.onregistInfo();
+              infoFormController.onregistInfo(nanumIds: nanumIds);
             },
             child: const SharingButton(
               btnheight: 10,

@@ -9,9 +9,8 @@ import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 
 class SharedAuthCheck extends StatefulWidget {
-  const SharedAuthCheck({
-    Key? key,
-  }) : super(key: key);
+  final int nanumIds;
+  const SharedAuthCheck({super.key, required this.nanumIds});
 
   @override
   State<SharedAuthCheck> createState() => _ExamplePageState();
@@ -22,7 +21,6 @@ class _ExamplePageState extends State<SharedAuthCheck> {
 
   List<dynamic> result = [];
 
-  int nanumId = 71;
   int dataLength = 0;
 
   var cards = [];
@@ -43,7 +41,7 @@ class _ExamplePageState extends State<SharedAuthCheck> {
     try {
       var res = await http.get(
           Uri.parse(
-              "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/certification"),
+              "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
           headers: {
             'Authorization':
                 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDYzNDM3LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNTk0Mzd9.XXv5ZRiwYhD1u5SEcr0tgnO9bqhcxHjgC3jxaMr9L4z1rGJwPm6AyrRuc0Dzo4zWie0SlWKflljBeHu7XblTLg',
@@ -117,7 +115,7 @@ class _ExamplePageState extends State<SharedAuthCheck> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () => Get.to(() => MySharedDetail()),
+              onTap: () => Get.to(() => const MyShareDetail()),
               child: const SharingButton(
                   btnheight: 12, btnwidth: 130, btntext: "완료"),
             ),
@@ -138,7 +136,7 @@ class _ExamplePageState extends State<SharedAuthCheck> {
     if (direction.name == 'left') {
       var res = http.post(
           Uri.parse(
-              "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/certification"),
+              "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
           headers: {
             'Authorization':
                 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/share_info_model.dart';
+import 'package:nnz/src/pages/share/my_shared_detail.dart';
 
 class MyShareInfoProvider extends GetConnect {
   String? token;
@@ -23,18 +24,22 @@ class MyShareInfoProvider extends GetConnect {
   }
 
   Future<Response> postShareInfo(
-      {required ShareInfoModel shareInfoModel}) async {
+      {required ShareInfoModel shareInfoModel, required int nanumIds}) async {
     final body = shareInfoModel.toJson();
-    int nanumId = 36;
     token = Get.find<BottomNavController>().accessToken;
     logger.i("토큰 값 : $token");
     final res = await post(
-        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/info",
+        "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumIds/info",
         body,
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMiIsImlzcyI6Im5ueiIsImlhdCI6MTY4NDEzNjE0MywiYXV0aFByb3ZpZGVyIjoiTk5aIiwicm9sZSI6IlVTRVIiLCJpZCI6MTIsImVtYWlsIjoiamlqaUBnbWFpbC5jb20iLCJleHAiOjE2ODU0MzIxNDN9.Ce84oeRLQu87ucLYye039mNTsnH6Dn7XhrhLf9LAW1iVWRhhNkz3kiLFGV-QsqHgpxLfDIGVW-uuXZPe2mJHYg'
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MjE5NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODU1MTU2MzV9.5g02Ld3JjCLhLlrAQAgSi8u9idMX0FiT_wRDsvAqz3b2I31udCuAWbTw8DAaFz2Gpw5sT6o3Q3065GeSIE5_Jw'
         });
+    if (res.statusCode == 201) {
+      Get.to(() => const MyShareDetail());
+    } else {
+      Get.snackbar("실패", "정보 등록이 실패되었습니다");
+    }
     return res;
   }
 }

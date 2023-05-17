@@ -8,8 +8,8 @@ import 'package:nnz/src/components/test_message/firebase_message.dart';
 import 'package:nnz/src/pages/home/likes_page.dart';
 import 'package:nnz/src/pages/search/propose_show.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
+import 'package:nnz/src/pages/share/my_shared_info.dart';
 import 'package:nnz/src/pages/share/my_shared_info_form.dart';
-import 'package:nnz/src/pages/share/my_shared_info_page.dart';
 import 'package:nnz/src/pages/share/my_shared_qrleader.dart';
 import 'package:nnz/src/pages/share/my_snappingtest.dart';
 import 'package:nnz/src/pages/share/new_share_info_detail.dart';
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/performDetail",
+      initialRoute: "/myShareDetail",
       getPages: [
         GetPage(
           name: "/",
@@ -128,7 +128,7 @@ class MyApp extends StatelessWidget {
           transition: Transition.native,
         ),
         GetPage(
-            name: "/sharingDetail/:nanumId",
+            name: "/sharingDetail",
             page: () => const ShareDatail(
                   nanumIds: 0,
                 ),
@@ -183,7 +183,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/myShareDetail",
-          page: () => MySharedDetail(),
+          page: () => const MyShareDetail(),
         ),
         GetPage(
           name: "/proposeShow",
@@ -192,12 +192,14 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/myShareInfo",
-          page: () => const MySharedInfos(),
+          page: () => const MySharedInfo(),
           transition: Transition.rightToLeft,
         ),
         GetPage(
-          name: "/myShareInfoForm",
-          page: () => MySharedInfoForm(),
+          name: "/myShareInfoForm/:nanumIds",
+          page: () => MySharedInfoForm(
+            nanumIds: 0,
+          ),
           transition: Transition.rightToLeft,
         ),
         GetPage(
@@ -207,7 +209,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/ShareQrLeader",
-          page: () => const ShareQrLeader(),
+          page: () => const ShareQrLeader(
+            nanumIds: 0,
+          ),
           transition: Transition.rightToLeft,
         ),
         GetPage(
@@ -227,13 +231,13 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/performDetail",
           page: () => const SharePerformDetail(
-            showIds: 4959,
+            showIds: 4399,
           ),
         ),
         GetPage(
-          name: "/testing/:showIds",
+          name: "/testing",
           page: () => const TestInfinite(
-            showIds: 4399,
+            showIds: 2,
           ),
         ),
         GetPage(

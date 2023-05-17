@@ -17,7 +17,7 @@ class MysharedInfoController extends GetxController {
     return accessToken!;
   }
 
-  void onregistInfo() async {
+  void onregistInfo({required int nanumIds}) async {
     ShareInfoModel shareInfoModel = ShareInfoModel(
       nanumTime: "2023-05-11T${openTimeController.text}",
       location: "나눔 장소",
@@ -27,7 +27,7 @@ class MysharedInfoController extends GetxController {
     );
     try {
       final res = await MyShareInfoProvider()
-          .postShareInfo(shareInfoModel: shareInfoModel);
+          .postShareInfo(shareInfoModel: shareInfoModel, nanumIds: nanumIds);
       print("성공이야");
       print(shareInfoModel.nanumTime);
       print(res);

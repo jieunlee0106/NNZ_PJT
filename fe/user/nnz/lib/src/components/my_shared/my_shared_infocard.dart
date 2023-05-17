@@ -10,7 +10,8 @@ import 'package:nnz/src/controller/shareingdetail_controller.dart';
 import 'package:nnz/src/model/share_detail_model.dart';
 
 class MySharedCard extends StatefulWidget {
-  const MySharedCard({super.key});
+  const MySharedCard({super.key, required this.nanumIds});
+  final int nanumIds;
 
   @override
   State<MySharedCard> createState() => _MySharedCardState();
@@ -20,7 +21,7 @@ class _MySharedCardState extends State<MySharedCard> {
   final token = Get.find<BottomNavController>().accessToken;
   final ShareDetailController sharedetailController =
       Get.put(ShareDetailController());
-  int nanumId = 71;
+
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> showData = Rx<Map<dynamic, dynamic>>({});
 
@@ -33,10 +34,10 @@ class _MySharedCardState extends State<MySharedCard> {
   void fetchData() async {
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId"),
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}"),
         headers: {
           'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDYzNDM3LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNTk0Mzd9.XXv5ZRiwYhD1u5SEcr0tgnO9bqhcxHjgC3jxaMr9L4z1rGJwPm6AyrRuc0Dzo4zWie0SlWKflljBeHu7XblTLg',
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
           "Accept-Charset": "utf-8",
         });
 
