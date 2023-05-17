@@ -52,11 +52,11 @@ public class NanumServiceImpl implements NanumService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
     private final NanumImageService nanumImageService;
-//    private final FCMService fcmService;
+    private final FCMService fcmService;
 
     @Override
     @Transactional
-    public void createNanum(NanumVO data, List<MultipartFile> images) {
+    public void createNanum(NanumVO data, List<MultipartFile> images) throws FirebaseMessagingException {
 
         User user = userRepository.findById(data.getWriter())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -106,6 +106,14 @@ public class NanumServiceImpl implements NanumService {
         nanumDTO.setNanumImages(nanumImageDTOs);
 
         em.flush();
+
+        List<Follower> allByFollowing = followerRepository.findAllByFollowing(user);
+        List<String> collect = allByFollowing.stream().map(follower -> follower.getFollower().getDeviceToken()).collect(Collectors.toList());
+
+        if(collect.size() > 0)
+            fcmService.sendMultipleMessage("내 팔로잉이 새로운 나눔을 올렸어요",
+                    "나눔에 참여하러 가볼까요?",
+                    collect);
 
         KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.create().body(nanumDTO);
         producer.sendMessage(kafkaMessage, "nanum");
@@ -300,6 +308,7 @@ public class NanumServiceImpl implements NanumService {
                 .nanum(nanum)
                 .receiver(user)
                 .certificationImage(image)
+                .isCertificated(nanum.getIsCertification() ? null : true)
                 .isReceived(false)
                 .build();
 
@@ -340,8 +349,9 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     public ResNanumStockDTO readNanumStock(Long nanumId) {
-        // todo : 레디스에서 정보 가져오기
-        return null;
+        NanumStock nanumStock = nanumStockRepository.findById(nanumId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NANUM_NOT_FOUND));
+        return ResNanumStockDTO.of(nanumStock.getQuantity(), nanumStock.getStock());
     }
 
     @Override
@@ -450,5 +460,20 @@ public class NanumServiceImpl implements NanumService {
         );
 
         return ResSearchDTO.of(nanums, relatedTags);
+    }
+
+    @Override
+    public void deleteNanum(Long id, Long userId) {
+        Nanum nanum = nanumRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
+
+        if (nanum.getProvider().getId() != userId) {
+            throw new CustomException(ErrorCode.USER_INFORMATION_INCONSISTENCY);
+        }
+
+        nanum.deleteNanum();
+
+        KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.delete().body(NanumDTO.of(nanum));
+        producer.sendMessage(kafkaMessage, "nanum");
     }
 }
