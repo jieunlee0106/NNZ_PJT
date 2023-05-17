@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/model/popular_tag_model.dart';
+import 'package:nnz/src/pages/search/tag_page.dart';
 
 import '../../config/config.dart';
 import '../../controller/search_controller.dart';
@@ -88,7 +89,11 @@ class PopularHashTag extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(itemList[index]),
+                                    GestureDetector(
+                                        onTap: () {
+                                          TagPage(tagName: itemList[index]);
+                                        },
+                                        child: Text(itemList[index])),
                                   ],
                                 )),
                           ),
