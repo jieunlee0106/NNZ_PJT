@@ -48,7 +48,7 @@ public class NanumController {
     public ResponseEntity<Void> createNanum(
             @RequestPart(name = "data") NanumVO data,
             @RequestPart(name = "images") List<MultipartFile> images
-    ) {
+    ) throws FirebaseMessagingException {
         data.decode();
         nanumService.createNanum(data, images);
         return new ResponseEntity<>(HttpStatus.CREATED);
