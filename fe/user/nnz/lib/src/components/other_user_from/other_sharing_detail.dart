@@ -129,22 +129,7 @@ class OtherSharingDetail extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      iconData(
-                        icon: ImagePath.declare,
-                        size: 80,
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      const Text("현재 경고가 2회 누적된 사용자입니다."),
-                    ],
-                  )
+                
                 ],
               ),
             );

@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/register_model.dart';
 
@@ -190,7 +191,8 @@ class UserProvider extends GetConnect {
 
   //타 프로필 정보 조회
   Future<Response> getOtherProfile({required int userId}) async {
-    final headers = {'Content-Type': 'application/json'};
+    final token = await Token.getAccessToken();
+    final headers = {'Content-Type': 'application/json',  'Authorization': 'Bearer $token',};
     final response = await get(
         "https://k8b207.p.ssafy.io/api/user-service/users/$userId",
         headers: headers);
@@ -199,10 +201,11 @@ class UserProvider extends GetConnect {
 
   //팔로우 및 언팔로우
   Future<Response> followService({required int userId}) async {
+    final token = await Token.getAccessToken();
+    logger.i("토큰 들어왔어? $token");
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImlzcyI6Im5ueiIsImlhdCI6MTY4NDI1MDQ0MSwiYXV0aFByb3ZpZGVyIjoiTk5aIiwicm9sZSI6IkFETUlOIiwiaWQiOjExLCJlbWFpbCI6IndsZ2hrczk2MEBuYXZlci5jb20iLCJleHAiOjE2ODU1NDY0NDF9.BmGS9PsahfLry18hx_HfEI6KFPsZyfBIKD-UsL2UAodD2ejZD3P8ARkAC-cQqb5S2Lad50poAPaSi3xhjK3-fA'
+      'Authorization': 'Bearer $token'
     };
     final response = await post(
         "https://k8b207.p.ssafy.io/api/user-service/users/follow/$userId", null,
