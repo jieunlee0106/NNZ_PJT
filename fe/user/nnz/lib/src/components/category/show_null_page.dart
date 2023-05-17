@@ -46,7 +46,7 @@ class NullPage3 extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  '공연 목록이 존재하지 않습니다',
+                  message,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ],

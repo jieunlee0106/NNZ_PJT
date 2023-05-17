@@ -44,7 +44,7 @@ class _TagPageState extends State<TagPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TagShowText(
-              text: '$tagName 포함된 공연 이에요',
+              text: '# $tagName 포함된 공연 이에요',
             ),
             TagShow(tagName: tagName),
             GrayLine(),

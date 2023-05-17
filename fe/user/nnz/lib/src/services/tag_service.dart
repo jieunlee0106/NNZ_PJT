@@ -22,7 +22,7 @@ class TagService extends GetConnect {
     print('$tagName 통신 한다');
     try {
       final response = await dio.get(
-        'https://k8b207.p.ssafy.io/api/nanum-service/nanumss/tag',
+        'https://k8b207.p.ssafy.io/api/nanum-service/nanums/tag',
         queryParameters: {'tag': tagName},
       );
       print('통신 성공');

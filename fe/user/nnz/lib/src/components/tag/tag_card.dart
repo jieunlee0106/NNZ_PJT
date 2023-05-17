@@ -6,12 +6,12 @@ import 'package:marquee/marquee.dart';
 class TagCard extends StatelessWidget {
   final String thumbnail;
   final String title;
-  final String location;
+  final int id;
 
   TagCard({
     required this.thumbnail,
     required this.title,
-    required this.location,
+    required this.id,
   });
 
   @override
@@ -64,15 +64,6 @@ class TagCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 3),
-                Text(
-                  location,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nnz/src/components/category/show_null_page.dart';
 import 'package:nnz/src/controller/tag_controller.dart';
 import 'package:nnz/src/model/nanum_tag.dart';
 import 'package:nnz/src/model/show_tag.dart';
@@ -21,12 +22,17 @@ class _TagShowState extends State<TagShow> {
 
   late ShowTag showTag;
   late List<Content> items;
+  bool _isLoading = true;
 
   Future<void> getSList() async {
     await controller.getShowTag(widget.tagName);
     showTag = controller.showTag;
+    print('태그 쇼 리스트 받아와짐');
     items = showTag.content;
     print(items);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -38,6 +44,16 @@ class _TagShowState extends State<TagShow> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (items.length == 0)
+      return Center(
+        child: NullPage3(message: '공연 목록이 존재하지 않습니다'),
+      );
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -57,7 +73,7 @@ class _TagShowState extends State<TagShow> {
                         color: const Color.fromARGB(255, 255, 253, 253),
                         borderRadius: BorderRadius.circular(4.0),
                         image: DecorationImage(
-                          image: NetworkImage(item.thumbnail),
+                          image: NetworkImage(item.poster),
                           fit: BoxFit.cover,
                         ),
                       ),
