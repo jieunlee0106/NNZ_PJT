@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface NanumService {
 
-    void createNanum(NanumVO data, List<MultipartFile> images);
+    void createNanum(NanumVO data, List<MultipartFile> images) throws FirebaseMessagingException;
 
     PageDTO readNanumsByShowId(Long showId, PageRequest pageRequest);
 
