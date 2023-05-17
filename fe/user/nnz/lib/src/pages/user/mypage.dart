@@ -130,9 +130,9 @@ class _MyPageState extends State<MyPage> {
                   SharingInfo(
                     share: '나눔 받은 내역',
                     total: myInfo.statistics?.receive?.totalCount ?? 0,
-                    yet: myInfo.statistics?.receive?.totalCount ?? 0,
-                    ing: myInfo.statistics?.receive?.totalCount ?? 0,
-                    end: myInfo.statistics?.receive?.totalCount ?? 0,
+                    yet: myInfo.statistics?.receive?.beforeCount ?? 0,
+                    ing: myInfo.statistics?.receive?.ongoingCount ?? 0,
+                    end: myInfo.statistics?.receive?.doneCount ?? 0,
                     page: MySharedList(),
                   ),
                   GestureDetector(

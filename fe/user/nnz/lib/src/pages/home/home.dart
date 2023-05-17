@@ -14,6 +14,7 @@ import 'package:nnz/src/components/home_page_form/home_musical.dart';
 import 'package:nnz/src/components/home_page_form/location_list.dart';
 import 'package:nnz/src/components/home_page_form/share_text.dart';
 import 'package:nnz/src/components/home_page_form/home_share_list.dart';
+import 'package:nnz/src/components/home_page_form/baseball.dart';
 
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
@@ -263,6 +264,7 @@ class _HomeState extends State<Home> {
                 // 발표 이벤트 베너
                 CarouselWithIndicator(),
                 GrayLine(),
+                // 해시 태그
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -288,6 +290,7 @@ class _HomeState extends State<Home> {
                 ),
                 const SizedBox(height: 10),
                 GrayLine(),
+                // 나눔
                 HomeShareText(
                     text: '인기 나눔',
                     image: ImagePath.fire,
@@ -300,21 +303,22 @@ class _HomeState extends State<Home> {
                     smallText: '근처에서 진행중인 나눔에 줄서기를 해보세요'),
                 HomeShareList2(items: locationList.content),
                 GrayLine(),
-                // 페스티벌 인기 나눔
+                // 야구 배너
+                CarouselWithIndicator2(),
+                GrayLine(),
+                // 카테고리 인기공연
                 HomeShareText(
                     text: '페스티벌',
                     image: ImagePath.movie,
                     smallText: '현재 공연 중인 페스티벌에 대한 나눔을 이용해보세요'),
                 HoemCategoryList(categoryName: '뮤직페스티벌'),
                 GrayLine(),
-                // 뮤지컬 인기 나눔
                 HomeShareText(
                     text: '뮤지컬',
                     image: ImagePath.musical,
                     smallText: '현재 공연 중인 뮤지컬에 대한 나눔을 이용해보세요'),
                 HoemCategoryList(categoryName: '뮤지컬'),
                 GrayLine(),
-                // 연극 인기 나눔
                 HomeShareText(
                     text: '연극',
                     image: ImagePath.stage,
