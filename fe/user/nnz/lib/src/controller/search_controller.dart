@@ -106,9 +106,11 @@ class ShowSearchController extends GetxController {
 
   //공연 검색 api
   Future<List<searchShow.Content>> getShowList({required String q}) async {
+    logger.i("공연 들어왔어 $q");
     try {
       final response = await SearchProvider().getShowsSearch(q: q);
       if (response.statusCode == 200) {
+        logger.i(response.body);
         rTagList.clear();
         showList.clear();
         for (var tag in response.body["relatedTags"]) {
@@ -117,6 +119,7 @@ class ShowSearchController extends GetxController {
         for (var data in response.body["shows"]["content"]) {
           showList.add(searchShow.Content.fromJson(data));
         }
+        logger.i("다 들어왔니? $showList");
         return showList;
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";

@@ -16,6 +16,13 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
   final logger = Logger();
   final List<String> _selectList = ['공연', '나눔'];
   String _selectItem = '공연';
+
+  @override
+  void initState() {
+    super.initState();
+    controller.type.value = '공연';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,6 +69,8 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                     controller.searchText.value = text;
                     if (_selectItem == '공연') {
                       logger.i("서버야 공연 불러와줘");
+                      controller.getShowList(
+                          q: controller.searchController.text);
                     } else if (_selectItem == '나눔') {
                       logger.i("서버야 나눔 불러와줘");
                       controller.getNanumList(
