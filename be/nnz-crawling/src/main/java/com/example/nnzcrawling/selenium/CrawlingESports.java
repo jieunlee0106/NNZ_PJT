@@ -120,10 +120,7 @@ public class CrawlingESports {
                                     "dl > dt > a"
                             )).getText();
 
-                    startDate += "." + day;
-
-                    // 일정에 붙을 시간 구하기
-                    List<WebElement> times = td.findElements(By.cssSelector("span.time"));
+                    startDate += "." + day + ".";
 
                     // title 구하기
                     List<WebElement> titles = td.findElements(By.cssSelector("span.team"));
@@ -142,13 +139,8 @@ public class CrawlingESports {
                         tags.add(new TagCrawling(titles.get(i).getText(), categoryName));
                         while (st.hasMoreTokens()) {
                             tags.add(new TagCrawling(titles.get(i).getText(), st.nextToken()));
-//                            tags.add(new TagCrawling(st.nextToken(), title));
                         }
-
-                        // 날짜 설정. 시작날짜 = 경기 당일 날짜. 종료날짜는 없음
-                        String date = startDate + "T" + times.get(i).getText();
-                        showCrawling.setStartDate(date);
-
+                        showCrawling.setStartDate(startDate);
                         eSports.add(showCrawling);
                     }
                 }

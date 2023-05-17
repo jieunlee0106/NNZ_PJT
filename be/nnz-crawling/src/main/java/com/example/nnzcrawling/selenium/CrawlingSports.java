@@ -135,12 +135,6 @@ public class CrawlingSports {
             StringTokenizer st = new StringTokenizer(date, "(");
             // 요일 정보 삭제
             date = st.nextToken();
-            date = date.replace(". ", "T");
-
-            // 시간
-            List<WebElement> times = driver.findElements(By.cssSelector(
-                    "div.db_area._schedule_info > div.db_list.db_list_flex > table > tbody > tr > td.time > div > span"
-            ));
 
             // 왼쪽 팀
             List<WebElement> leftTeams = driver.findElements(By.cssSelector(
@@ -157,7 +151,7 @@ public class CrawlingSports {
                     "div.api_cs_wrap > div.db_area._schedule_info > div.db_list.db_list_flex > table > tbody > tr > td.place"
             ));
 
-            for (int j = 0; j < times.size(); j++) {
+            for (int j = 0; j < leftTeams.size(); j++) {
                 // times, leftTeams, rightTeams, locations, records
                 ShowCrawling showCrawling = new ShowCrawling();
 
@@ -176,7 +170,7 @@ public class CrawlingSports {
                 }
                 String title = leftTeam + " vs " + rightTeam;
 
-                showCrawling.setStartDate(date + times.get(j).getText());
+                showCrawling.setStartDate(date);
                 showCrawling.setCategory(category);
                 showCrawling.setTitle(title);
                 showCrawling.setPosterImage(lTeamImg + " vs " + rTeamImg);

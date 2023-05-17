@@ -154,18 +154,18 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                 }
             } //
             else {
-                // E스포츠나 스포츠의 경우 yyyy.MM.ddTHH:mm 이나 yyyy.MM.dTHH:mm,
-                // yyyy.m.ddTHH:mm, yyyy.m.dTHH:mm 으로 되어있음
+                // E스포츠나 스포츠의 경우 yyyy.MM.dd 이나 yyyy.MM.d,
+                // yyyy.m.dd, yyyy.m.d 으로 되어있음
                 // EndDate 없음
                 try {
-                    format = DateTimeFormatter.ofPattern("yyyy.MM.dd'T'HH:mm");
+                    format = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
                     startDate = LocalDate.parse(show.getStartDate(), format);
                 } catch (Exception e) {
                     try {
-                        format = DateTimeFormatter.ofPattern("yyyy.M.dd'T'HH:mm");
+                        format = DateTimeFormatter.ofPattern("yyyy.M.dd.");
                         startDate = LocalDate.parse(show.getStartDate(), format);
                     } catch (Exception e2) {
-                        format = DateTimeFormatter.ofPattern("yyyy.M.d'T'HH:mm");
+                        format = DateTimeFormatter.ofPattern("yyyy.M.d.");
                         startDate = LocalDate.parse(show.getStartDate(), format);
                     }
                 }
