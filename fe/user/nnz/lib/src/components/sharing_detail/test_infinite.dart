@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:nnz/src/components/sharing_detail/perform_share_card.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/perform_controller.dart';
 import 'package:nnz/src/model/perform_share_list_model.dart';
 import 'package:nnz/src/pages/share/share_detail.dart';
@@ -82,8 +84,14 @@ class _TestInfiniteState extends State<TestInfinite> {
             Visibility(
               visible: shareList.isNotEmpty,
               child: GestureDetector(
-                onTap: () {
-                  Get.to(() => ShareDatail(nanumIds: shareList[index]["id"]));
+                onTap: () async {
+                  final token = await Token.getAccessToken();
+                  Logger().i("토큰있어? $token");
+                  if (token == null) {
+                    Get.offNamed("/register");
+                  } else {
+                    Get.to(() => ShareDatail(nanumIds: shareList[index]["id"]));
+                  }
                 },
                 child: ShareCard(
                   title: shareList[index]["title"],

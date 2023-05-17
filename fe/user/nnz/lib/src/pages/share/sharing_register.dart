@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../components/sharing_register_form/authenticaion.dart';
 import '../../components/sharing_register_form/condition_container.dart';
@@ -39,6 +40,8 @@ class _SharingRegisterState extends State<SharingRegister> {
         userId = value;
       });
       controller.writer.value = int.parse(userId!);
+      Logger().i(userId);
+      Logger().i("바뀌어라 ${controller.writer.value}");
     });
   }
 

@@ -26,7 +26,7 @@ class SharingRegisterProvider extends GetConnect {
   //나눔등록
   Future<Response> testShare(
       {required ShareModel shareModel, required var images}) async {
-    logger.i(shareModel);
+    logger.i(shareModel.writer);
     final body = shareModel.toJson();
     final formData = FormData({
       "data": jsonEncode({

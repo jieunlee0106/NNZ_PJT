@@ -91,7 +91,10 @@ class PopularHashTag extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                         onTap: () {
-                                          TagPage(tagName: itemList[index]);
+                                          print(itemList[index]);
+                                          Get.to(() => TagPage(
+                                                tagName: itemList[index],
+                                              ));
                                         },
                                         child: Text(itemList[index])),
                                   ],
