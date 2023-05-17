@@ -36,7 +36,7 @@ class TagController extends GetxController {
       final response = await TagService().getShowTagList(tagName: TagName);
       print('t태그 공연 목록 불러오기');
       showTag = ShowTag.fromJson(response.data);
-      print('t태그 공연 목록 불러오기');
+      print('t태그 공연 목록 불러왔어');
     } catch (e) {
       print(e);
     }

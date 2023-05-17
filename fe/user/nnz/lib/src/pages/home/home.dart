@@ -140,20 +140,20 @@ class _HomeState extends State<Home> {
           //   },
           // ),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        NotificationPage(), // NotificationPage로 이동
-                  ),
-                );
-              },
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: const Icon(Icons.notifications),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) =>
+          //               NotificationPage(), // NotificationPage로 이동
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -264,6 +264,10 @@ class _HomeState extends State<Home> {
                     image: ImagePath.fire,
                     smallText: '현재 가장 인기있는 나눔이에요'),
                 HomeShareList(items: Plist),
+                GrayLine(),
+                // 페스티벌 인기 나눔
+                GrayLine(),
+                //
                 GrayLine(),
                 HomeShareText(
                     text: '즉시 줄서기 가능한 나눔',
