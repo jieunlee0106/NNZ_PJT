@@ -52,10 +52,11 @@ public class NanumServiceImpl implements NanumService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
     private final NanumImageService nanumImageService;
+    private final FCMService fcmService;
 
     @Override
     @Transactional
-    public void createNanum(NanumVO data, List<MultipartFile> images) {
+    public void createNanum(NanumVO data, List<MultipartFile> images) throws FirebaseMessagingException {
 
         User user = userRepository.findById(data.getWriter())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -105,6 +106,14 @@ public class NanumServiceImpl implements NanumService {
         nanumDTO.setNanumImages(nanumImageDTOs);
 
         em.flush();
+
+        List<Follower> allByFollowing = followerRepository.findAllByFollowing(user);
+        List<String> collect = allByFollowing.stream().map(follower -> follower.getFollower().getDeviceToken()).collect(Collectors.toList());
+
+        if(collect.size() > 0)
+            fcmService.sendMultipleMessage("내 팔로잉이 새로운 나눔을 올렸어요",
+                    "나눔에 참여하러 가볼까요?",
+                    collect);
 
         KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.create().body(nanumDTO);
         producer.sendMessage(kafkaMessage, "nanum");
