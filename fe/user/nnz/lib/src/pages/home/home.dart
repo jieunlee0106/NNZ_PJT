@@ -143,20 +143,6 @@ class _HomeState extends State<Home> {
             },
           ),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          // actions: [
-          //   IconButton(
-          //     icon: const Icon(Icons.notifications),
-          //     onPressed: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) =>
-          //               NotificationPage(), // NotificationPage로 이동
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -235,6 +221,46 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 GrayLine(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24),
+                      child: Image(
+                        image: AssetImage('assets/images/party.png'),
+                        width: 35,
+                        height: 35,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15,
+                      ),
+                      child: Text(
+                        '  SSAFY 최종 발표 나눔 이벤트',
+                        textAlign: TextAlign.left, // 수정된 부분
+                        style: TextStyle(
+                          color: Config.blackColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Image(
+                        image: AssetImage('assets/images/party1.png'),
+                        width: 35,
+                        height: 35,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                // 발표 이벤트 베너
                 CarouselWithIndicator(),
                 GrayLine(),
                 Row(
@@ -276,28 +302,28 @@ class _HomeState extends State<Home> {
                 GrayLine(),
                 // 페스티벌 인기 나눔
                 HomeShareText(
-                    text: '페스티벌 공연',
+                    text: '페스티벌',
                     image: ImagePath.movie,
                     smallText: '현재 공연 중인 페스티벌에 대한 나눔을 이용해보세요'),
                 HoemCategoryList(categoryName: '뮤직페스티벌'),
                 GrayLine(),
                 // 뮤지컬 인기 나눔
                 HomeShareText(
-                    text: '뮤지컬 공연',
+                    text: '뮤지컬',
                     image: ImagePath.musical,
                     smallText: '현재 공연 중인 뮤지컬에 대한 나눔을 이용해보세요'),
                 HoemCategoryList(categoryName: '뮤지컬'),
                 GrayLine(),
                 // 연극 인기 나눔
                 HomeShareText(
-                    text: '연극 공연',
-                    image: ImagePath.musical,
+                    text: '연극',
+                    image: ImagePath.stage,
                     smallText: '현재 공연 중인 연극에 대한 나눔을 이용해보세요'),
                 HoemCategoryList(categoryName: '연극'),
                 HomeShareText(
-                    text: '연극 공연',
-                    image: ImagePath.musical,
-                    smallText: '현재 공연 중인 연극에 대한 나눔을 이용해보세요'),
+                    text: '콘서트',
+                    image: ImagePath.concert,
+                    smallText: '현재 공연 중인 콘서트에 대한 나눔을 이용해보세요'),
                 HoemCategoryList(categoryName: '연극'),
                 HomeInfo()
               ],
