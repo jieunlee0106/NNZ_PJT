@@ -68,11 +68,14 @@ class SharingDetailCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    performTitle,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFF0d0d0d),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      performTitle,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF0d0d0d),
+                      ),
                     ),
                   ),
                   const SizedBox(

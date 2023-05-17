@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nnz/src/components/sharing_detail/divide_line.dart';
+import 'package:nnz/src/components/sharing_detail/share_float_button.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_card.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_tag.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/share_detail_model.dart';
-import 'package:nnz/src/pages/share/my_snappingtest.dart';
 
 class ShareDatail extends StatefulWidget {
   const ShareDatail({super.key, required this.nanumIds});
@@ -37,6 +37,7 @@ class _ShareDatailState extends State<ShareDatail> {
   int minute = 0;
   int second = 0;
   String? token;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -78,6 +79,8 @@ class _ShareDatailState extends State<ShareDatail> {
       isCondition = true;
     }
 
+    _isLoading = false;
+
     setState(() {
       result.value;
       showData.value;
@@ -85,6 +88,7 @@ class _ShareDatailState extends State<ShareDatail> {
       thumbnailData;
       bookmark;
       durationTime;
+      _isLoading = false;
     });
   }
 
@@ -136,214 +140,224 @@ class _ShareDatailState extends State<ShareDatail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
-        leading: const Icon(Icons.account_circle),
-        actions: const [Icon(Icons.notifications)],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 5,
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.black),
+          leading: const Icon(Icons.account_circle),
+          actions: const [Icon(Icons.notifications)],
         ),
-        child: Column(
-          children: [
-            Center(
-              child: Image.network(
-                (thumbnailData.isNotEmpty
-                    ? "${thumbnailData[0]}"
-                    : "https://dummyimage.com/600x400/000/fff"),
-                height: 230,
-                width: double.maxFinite,
-                fit: BoxFit.cover,
-              ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "${result.value["title"]}",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500),
+                Center(
+                  child: Image.network(
+                    (thumbnailData.isNotEmpty
+                        ? "${thumbnailData[0]}"
+                        : "https://dummyimage.com/600x400/000/fff"),
+                    height: 230,
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const DevideLine(
-              bgColor: Color(0xFFF3C906),
-              pad: 10,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SharingDetailCard(
-                performTitle: "${showData.value["title"]}",
-                openDate: "${result.value["nanumDate"]}",
-                condition: ({result.value["condition"]}.isEmpty
-                    ? "없음"
-                    : "${result.value["condition"]}"),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(
-                          "/otherUserProfile/${nunumwriter.value["id"]}");
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              (nunumwriter.value["profileImage"] != null
-                                  ? "${nunumwriter.value["profileImage"]}"
-                                  : "https://dummyimage.com/600x400/000/fff")),
-                          fit: BoxFit.cover,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ),
-                Text("${nunumwriter.value["nickname"]}"),
                 const SizedBox(
-                  width: 15,
+                  height: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    postFollow();
-                    setState(() {
-                      isFollow = !isFollow;
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: (isFollow
-                            ? const Color.fromARGB(255, 203, 202, 202)
-                            : Config.yellowColor),
-                        borderRadius: BorderRadius.circular(5)),
-                    width: 80,
-                    height: 35,
-                    child: Center(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        (isFollow ? "Unfollow" : "Follow"),
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        "${result.value["title"]}",
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: SizedBox(
-                width: double.maxFinite,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "상세 정보",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text("${result.value["content"]}"),
                   ],
                 ),
-              ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const DevideLine(
+                  bgColor: Color(0xFFF3C906),
+                  pad: 10,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SharingDetailCard(
+                    performTitle: "${showData.value["title"]}",
+                    openDate: "${result.value["nanumDate"]}",
+                    condition: ({result.value["condition"]}.isEmpty
+                        ? "없음"
+                        : "${result.value["condition"]}"),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                              "/otherUserProfile/${nunumwriter.value["id"]}");
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage((nunumwriter
+                                          .value["profileImage"] !=
+                                      null
+                                  ? "${nunumwriter.value["profileImage"]}"
+                                  : "https://dummyimage.com/600x400/000/fff")),
+                              fit: BoxFit.cover,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text("${nunumwriter.value["nickname"]}"),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        postFollow();
+                        setState(() {
+                          isFollow = !isFollow;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: (isFollow
+                                ? const Color.fromARGB(255, 203, 202, 202)
+                                : Config.yellowColor),
+                            borderRadius: BorderRadius.circular(5)),
+                        width: 80,
+                        height: 35,
+                        child: Center(
+                          child: Text(
+                            (isFollow ? "Unfollow" : "Follow"),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "상세 정보",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text("${result.value["content"]}"),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: HashTagBadge(
+                    tags: [],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: HashTagBadge(
-                tags: [],
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomSheet: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(width: 0.3, color: Colors.black),
-            left: BorderSide(width: 0.3, color: Colors.black),
-            right: BorderSide(width: 0.3, color: Colors.black),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      bookmark = !bookmark;
-                      postBookmark();
-                    });
-                  },
-                  icon: bookmark
-                      ? Icon(
-                          Icons.favorite,
-                          color: Config.yellowColor,
-                          size: 32,
-                        )
-                      : const Icon(
-                          Icons.favorite_border,
-                          size: 32,
-                        )),
-              const SizedBox(
-                width: 20,
-              ),
-              Visibility(
-                visible: isBooking,
-                child: GestureDetector(
-                    onTap: () => Get.to(() => SheetBelowTest(
-                          nanumIds: widget.nanumIds,
-                        )),
-                    child: const Text("나눔 확인하기")),
-              ),
-              // Visibility(
-              //   visible: !isBooking,
-              //   child: PurchaseButton(
-              //     condition: isCondition,
-              //     isOpen: timerFinish,
-              //     leftday: day,
-              //     lefthour: hour,
-              //     leftmin: minute,
-              //     leftsec: second,
-              //     nanumIds: widget.nanumIds,
-              //   ),
-              // )
-            ],
+        bottomSheet: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(width: 0.3, color: Colors.black),
+              left: BorderSide(width: 0.3, color: Colors.black),
+              right: BorderSide(width: 0.3, color: Colors.black),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        bookmark = !bookmark;
+                        postBookmark();
+                      });
+                    },
+                    icon: bookmark
+                        ? Icon(
+                            Icons.favorite,
+                            color: Config.yellowColor,
+                            size: 32,
+                          )
+                        : const Icon(
+                            Icons.favorite_border,
+                            size: 32,
+                          )),
+                const SizedBox(
+                  width: 20,
+                ),
+                // Visibility(
+                //   visible: isBooking,
+                //   child: GestureDetector(
+                //       onTap: () => Get.to(() => SheetBelowTest(
+                //             nanumIds: widget.nanumIds,
+                //           )),
+                //       child: const Text("나눔 확인하기")),
+                // ),
+                Visibility(
+                  visible: !isBooking,
+                  child: PurchaseButton(
+                    condition: isCondition,
+                    isOpen: timerFinish,
+                    leftday: day,
+                    lefthour: hour,
+                    leftmin: minute,
+                    leftsec: second,
+                    nanumIds: widget.nanumIds,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

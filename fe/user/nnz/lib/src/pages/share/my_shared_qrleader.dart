@@ -24,7 +24,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
   final GlobalKey qrKey = GlobalKey();
   QRViewController? controller;
   Barcode? resultt;
-  int receiveId = 17;
+
   bool isCameraActive = false;
 
   @override
@@ -77,7 +77,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
     print(result.value);
 
     setState(() {
-      result.value = jsonDecode(utf8.decode(res.bodyBytes));
+      result.value;
     });
   }
 
@@ -92,6 +92,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
 
     if (isCameraActive) {
       controller?.resumeCamera();
+      fetchData();
     } else {
       controller?.pauseCamera();
     }
