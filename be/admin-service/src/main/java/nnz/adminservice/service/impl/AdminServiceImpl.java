@@ -8,6 +8,7 @@ import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.adminservice.dto.*;
+import nnz.adminservice.dto.kafka.BannerKafkaDTO;
 import nnz.adminservice.dto.kafka.ShowKafkaDTO;
 import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
