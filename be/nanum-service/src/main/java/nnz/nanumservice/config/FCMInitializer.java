@@ -19,12 +19,15 @@ import java.nio.file.FileSystem;
 import java.util.List;
 
 @Slf4j
-//@Component
+@Component
 public class FCMInitializer {
+
+    @Value("${fcm.json.path}")
+    private String path;
 
     @PostConstruct
     public void initialize(){
-        ClassPathResource resource = new ClassPathResource("nnz-firebase.json");
+        FileSystemResource resource = new FileSystemResource(path);
 
         try(InputStream stream = resource.getInputStream()){
             FirebaseOptions options = FirebaseOptions.builder()

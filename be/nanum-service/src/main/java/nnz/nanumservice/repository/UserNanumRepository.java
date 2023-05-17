@@ -15,4 +15,6 @@ public interface UserNanumRepository extends JpaRepository<UserNanum, Long> {
     Optional<UserNanum> findByNanumAndReceiver(Nanum nanum, User user);
 
     int countByNanumAndIsCertificated(Nanum nanum, boolean b);
+
+    List<UserNanum> findAllByIsCertificatedAndIsReceivedAndNanumIn(boolean b, boolean b1, List<Nanum> allByNanumDate);
 }
