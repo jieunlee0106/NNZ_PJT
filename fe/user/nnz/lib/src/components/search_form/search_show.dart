@@ -6,6 +6,7 @@ import 'package:nnz/src/model/search_show_list_model.dart';
 
 import '../../config/config.dart';
 import '../../pages/search/tag_page.dart';
+import '../../pages/share/sharing_perform.dart';
 
 class SearchShow extends StatelessWidget {
   SearchShow({super.key});
@@ -112,7 +113,10 @@ class SearchShow extends StatelessWidget {
                             ]),
                         child: controller.showList[index].poster != null
                             ? GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.to(() => SharePerformDetail(
+                                      showIds: controller.showList[index].id!));
+                                },
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(
                                     vertical: 8,

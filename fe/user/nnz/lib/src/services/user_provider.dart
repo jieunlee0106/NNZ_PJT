@@ -159,6 +159,7 @@ class UserProvider extends GetConnect {
     required String confirmNewPwd,
     required String nickname,
   }) async {
+    logger.i("이미지 null이야? $image");
     final formData = FormData({
       "data": jsonEncode({
         "nickname": base64Encode(utf8.encode(nickname)),

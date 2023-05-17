@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:nnz/src/components/register_form/share_popup.dart';
 import 'package:nnz/src/services/user_provider.dart';
 
+import '../config/config.dart';
 import 'my_page_controller.dart';
 
 class UserEditController extends GetxController {
@@ -89,32 +91,55 @@ class UserEditController extends GetxController {
     try {
       var userProvider = UserProvider();
       userProvider.httpClient.timeout = const Duration(seconds: 40);
+      showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SizedBox(
+              height: 100, // 원하는 높이로 설정
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // 세로 방향 가운데 정렬
+                children: [
+                  Text(
+                    "계정 수정중입니다.",
+                    style: TextStyle(
+                      color: Config.blackColor,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  SpinKitCircle(
+                    color: Config.yellowColor, // 애니메이션의 색상
+                    size: 56, // 애니메이션의 크기
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
       final response = await userProvider.patchUser(
           image: imageFile!,
           oldPwd: curPwdController.text,
           newPwd: newPwdController.text,
           confirmNewPwd: newPwdConfirmController.text,
           nickname: nickController.text);
+      Navigator.of(Get.context!).pop(); // Close the dialog
+
       if (response.statusCode == 204) {
         logger.i("되었어요");
         Get.find<MyPageController>().getMyInfo();
-        await showDialog(
-            context: Get.context!,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: const Text("계정 수정 완료하였습니다."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("확인"),
-                  ),
-                ],
-              );
-            });
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          const SnackBar(
+            content: Text('계정 수정완료하였습니다.'),
+          ),
+        );
 
-        Get.offNamed("/app");
+        Get.until((route) => route.isFirst);
+        Get.toNamed("/myPage");
       } else if (response.statusCode == 401) {
         logger.e("${response.statusCode} ${response.statusText}");
       } else {

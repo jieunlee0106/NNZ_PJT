@@ -13,6 +13,7 @@ import 'package:nnz/src/services/search_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/sharing_register.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 enum Condition { INIT, YES, NO }
 
@@ -452,6 +453,36 @@ class SharingRegisterController extends GetxController {
               const Duration(seconds: 60);
           logger.i(sharingRegisterProvider.httpClient.timeout);
 
+          showDialog(
+            context: Get.context!,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: SizedBox(
+                  height: 100, // 원하는 높이로 설정
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center, // 세로 방향 가운데 정렬
+                    children: [
+                      Text(
+                        "나눔 등록중입니다.",
+                        style: TextStyle(
+                          color: Config.blackColor,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      SpinKitCircle(
+                        color: Config.yellowColor, // 애니메이션의 색상
+                        size: 56, // 애니메이션의 크기
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
           final response = await sharingRegisterProvider
               .testShare(shareModel: shareModel, images: imageController.images)
               .catchError((error) async {
@@ -460,6 +491,8 @@ class SharingRegisterController extends GetxController {
           });
           logger.i(response.statusCode);
           logger.i(response.statusText);
+          Navigator.of(Get.context!).pop(); // Close the dialog
+
           if (response.statusCode == 201) {
             ScaffoldMessenger.of(Get.context!).showSnackBar(
               const SnackBar(content: Text('등록 완료하였습니다.')),
@@ -485,7 +518,7 @@ class SharingRegisterController extends GetxController {
                     ],
                   );
                 });
-          }
+          } else {}
         } catch (e) {
           logger.i("$e");
         }
@@ -530,17 +563,50 @@ class SharingRegisterController extends GetxController {
             const Duration(seconds: 60);
         logger.i(sharingRegisterProvider.httpClient.timeout);
 
+        showDialog(
+          context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: SizedBox(
+                height: 100, // 원하는 높이로 설정
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center, // 세로 방향 가운데 정렬
+                  children: [
+                    Text(
+                      "나눔 등록중입니다.",
+                      style: TextStyle(
+                        color: Config.blackColor,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SpinKitCircle(
+                      color: Config.yellowColor, // 애니메이션의 색상
+                      size: 56, // 애니메이션의 크기
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
         final response = await sharingRegisterProvider.testShare(
             shareModel: shareModel, images: imageController.images);
 
         logger.i(response.statusCode);
         logger.i(response.statusText);
+        Navigator.of(Get.context!).pop(); // Close the dialog
+
         if (response.statusCode == 201) {
           ScaffoldMessenger.of(Get.context!).showSnackBar(
             const SnackBar(
               content: Text('등록 완료하였습니다.'),
             ),
           );
+
           await showDialog(
               context: Get.context!,
               builder: (BuildContext context) {
