@@ -165,8 +165,13 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                         format = DateTimeFormatter.ofPattern("yyyy.M.dd.");
                         startDate = LocalDate.parse(show.getStartDate(), format);
                     } catch (Exception e2) {
-                        format = DateTimeFormatter.ofPattern("yyyy.M.d.");
-                        startDate = LocalDate.parse(show.getStartDate(), format);
+                        try {
+                            format = DateTimeFormatter.ofPattern("yyyy.M.d.");
+                            startDate = LocalDate.parse(show.getStartDate(), format);
+                        } catch (Exception e3) {
+                            format = DateTimeFormatter.ofPattern("yyyy.MM.d.");
+                            startDate = LocalDate.parse(show.getStartDate(), format);
+                        }
                     }
                 }
                 endDate = null;
