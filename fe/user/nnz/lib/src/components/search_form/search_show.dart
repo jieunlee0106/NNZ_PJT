@@ -1,163 +1,224 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/components/search_form/no_result_search.dart';
+import 'package:nnz/src/controller/search_controller.dart';
+import 'package:nnz/src/model/search_show_list_model.dart';
+
+import '../../config/config.dart';
 
 class SearchShow extends StatelessWidget {
-  const SearchShow({super.key});
-
+  SearchShow({super.key});
+  final controller = Get.put(ShowSearchController());
   @override
   Widget build(BuildContext context) {
-    final postIndex = [
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-      'https://img.khan.co.kr/news/2022/11/13/news-p.v1.20221113.d7705974a42f4bbda8eea85b38d28a7f_P1.jpg',
-    ];
-    final showTitle = [
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-      '2023 백예린 단독 공연',
-    ];
-    final tag = [
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-      'Square',
-    ];
-    final showStartTime = [
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-      '2023.05.19',
-    ];
-    final showEndTime = [
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-      '2023.05.21',
-    ];
-    final venue = [
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-      '올림픽공원 SK핸드볼 경기장',
-    ];
-    return SizedBox(
-      height: Get.width * 0.8,
-      child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: venue.length,
-        itemBuilder: ((context, index) {
-          return Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, 4),
-                      blurRadius: 4,
-                      color: Colors.black.withOpacity(0.25),
-                    )
-                  ]),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 200,
-                    child: Image.network(
-                      postIndex[index],
+    return FutureBuilder<List<Content>>(
+      future: controller.getShowList(q: controller.searchController.text),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text("Error : ${snapshot.hasError}");
+        } else if (controller.showList.isEmpty) {
+          return NoResultSearch();
+        } else {
+          return Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      "이런 검색은 어떠세요?",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Config.blackColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 18,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                    const SizedBox(
+                      height: 10,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          showTitle[index],
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Config.blackColor,
+                    Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: List.generate(
+                          controller.rTagList.length,
+                          (index) => SizedBox(
+                            height: 32,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 4),
+                                    color: const Color(0xff000000)
+                                        .withOpacity(0.25),
+                                  )
+                                ],
+                                color: Config.rigthYellowColor,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(controller.rTagList[index]),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "<${tag[index]}>",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Config.blackColor,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        const Text("공연기간"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: [
-                            Text(showStartTime[index]),
-                            const Text("~"),
-                            Text(showEndTime[index]),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        const Text("공연장소"),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(venue[index]),
-                      ],
-                    ),
-                  )
-                ],
+                        ))
+                  ],
+                ),
               ),
-            ),
+              SizedBox(
+                height: Get.width * 0.8,
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: controller.showList.length,
+                  itemBuilder: ((context, index) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, 4),
+                                blurRadius: 4,
+                                color: Colors.black.withOpacity(0.25),
+                              )
+                            ]),
+                        child: controller.showList[index].poster != null
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 200,
+                                    child: Image.network(
+                                      controller.showList[index].poster!,
+                                      width: 200,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 18,
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        horizontal: 16,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            controller.showList[index].title!,
+                                            style: TextStyle(
+                                              color: Config.blackColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            controller
+                                                .showList[index].startDate!,
+                                            style: TextStyle(
+                                              color: Config.blackColor,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          controller.showList[index].location ==
+                                                  null
+                                              ? Container()
+                                              : Text(
+                                                  controller
+                                                      .showList[index].location,
+                                                  style: TextStyle(
+                                                    color: Config.blackColor,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Wrap(
+                                            spacing: 8,
+                                            runSpacing: 8,
+                                            children: List.generate(
+                                              controller
+                                                  .showList[index].tags!.length,
+                                              (i) => Container(
+                                                height: 32,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  color: Config.yellowColor,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 4,
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      "#${controller.showList[index].tags![i].tag}",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color:
+                                                            Config.blackColor,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ],
           );
-        }),
-      ),
+        }
+      },
     );
   }
 }

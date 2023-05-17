@@ -16,6 +16,13 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
   final logger = Logger();
   final List<String> _selectList = ['공연', '나눔'];
   String _selectItem = '공연';
+
+  @override
+  void initState() {
+    super.initState();
+    controller.type.value = '공연';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,18 +59,30 @@ class _ShowSearchBarState extends State<ShowSearchBar> {
                     setState(() {
                       _selectItem = value!;
                     });
+                    controller.type(value);
+                    logger.i("타입 바뀌어줘 ${controller.type.value}");
                   }),
               Expanded(
                 child: TextField(
                   controller: controller.searchController,
                   onChanged: (text) {
-                    logger.i(_selectItem);
-                    controller.onChangeCategory(text: text, type: _selectItem);
+                    controller.searchText.value = text;
+                    if (_selectItem == '공연') {
+                      logger.i("서버야 공연 불러와줘");
+                      controller.getShowList(
+                          q: controller.searchController.text);
+                    } else if (_selectItem == '나눔') {
+                      logger.i("서버야 나눔 불러와줘");
+                      controller.getNanumList(
+                          q: controller.searchController.text);
+                    }
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "찾고 있는 공연이 있으신가요?",
-                    suffixIcon: Icon(
+                    hintText: _selectItem == '공연'
+                        ? "찾고 있는 공연이 있으신가요?"
+                        : "찾고 있는 나눔이 있으신가요?",
+                    suffixIcon: const Icon(
                       Icons.search_rounded,
                       color: Color(0xff898787),
                     ),

@@ -527,7 +527,9 @@ class SharingRegisterController extends GetxController {
         logger.i(response.statusText);
         if (response.statusCode == 201) {
           ScaffoldMessenger.of(Get.context!).showSnackBar(
-            const SnackBar(content: Text('등록 완료하였습니다.')),
+            const SnackBar(
+              content: Text('등록 완료하였습니다.'),
+            ),
           );
           await showDialog(
               context: Get.context!,

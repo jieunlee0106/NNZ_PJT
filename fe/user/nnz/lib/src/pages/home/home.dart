@@ -15,10 +15,7 @@ import 'package:nnz/src/components/home_page_form/home_share_list.dart';
 
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/controller/category_controller.dart';
 import 'package:nnz/src/controller/home_controller.dart';
-import 'package:nnz/src/controller/my_page_controller.dart';
-import 'package:nnz/src/controller/sharing_register_controller.dart';
 import 'package:nnz/src/model/hash_tag_model.dart';
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/movie.dart';
@@ -33,6 +30,8 @@ import 'package:nnz/src/model/location_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   // const Home({Key? key}) : super(key: key);
 
   @override
@@ -118,162 +117,154 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          // leading: IconButton(
-          //   icon: Icon(Icons.account_circle),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => MyPage(),
-          //       ),
-          //     );
-          //   },
-          // ),
-          title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        NotificationPage(), // NotificationPage로 이동
-                  ),
-                );
-              },
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.account_circle),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyPage(),
+              ),
+            );
+          },
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200.0,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    aspectRatio: 16 / 9,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enableInfiniteScroll: true,
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
-                    viewportFraction: 0.8,
+        title: Center(child: Image.asset(ImagePath.logo, width: 80)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationPage(), // NotificationPage로 이동
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 200.0,
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 9,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enableInfiniteScroll: true,
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  viewportFraction: 0.8,
+                ),
+                items: [
+                  HomeBanner(
+                    image: ImagePath.banner1,
+                    num: 1,
                   ),
-                  items: [
-                    HomeBanner(
-                      image: ImagePath.banner1,
-                      num: 1,
-                    ),
-                    HomeBanner(
-                      image: ImagePath.banner2,
-                      num: 1,
-                    ),
-                    HomeBanner(
-                      image: ImagePath.banner3,
-                      num: 1,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      HomeCategory(
-                        page: ConcertPage(),
-                        image: ImagePath.concert,
-                        categoryName: '콘서트',
-                        categoryListName: '콘서트',
-                      ),
-                      HomeCategory(
-                          page: const MusicalPage(),
-                          image: ImagePath.musical,
-                          categoryName: '뮤지컬',
-                          categoryListName: '뮤지컬'),
-                      HomeCategory(
-                        page: const StagePage(),
-                        image: ImagePath.stage,
-                        categoryName: '연극',
-                        categoryListName: '연극',
-                      ),
-                      HomeCategory(
-                        page: MoviePage(),
-                        image: ImagePath.movie,
-                        categoryName: '페스티벌',
-                        categoryListName: '뮤직 페스티벌',
-                      ),
-                      HomeCategory(
-                          page: SportsPage(),
-                          image: ImagePath.sports,
-                          categoryName: '스포츠',
-                          categoryListName: '야구'),
-                      HomeCategory(
-                          page: const ESportsPage(),
-                          image: ImagePath.esports,
-                          categoryName: 'e스포츠',
-                          categoryListName: '리그 오브 레전드'),
-                    ],
+                  HomeBanner(
+                    image: ImagePath.banner2,
+                    num: 1,
                   ),
-                ),
-                GrayLine(),
-                Event(image: 'image', num: 0),
-                GrayLine(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  HomeBanner(
+                    image: ImagePath.banner3,
+                    num: 1,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 15,
-                      ),
-                      child: Text(
-                        '# 현재 가장 인기있는 해시태그',
-                        textAlign: TextAlign.left, // 수정된 부분
-                        style: TextStyle(
-                          color: Config.blackColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
+                    HomeCategory(
+                      page: const ConcertPage(),
+                      image: ImagePath.concert,
+                      categoryName: '콘서트',
+                      categoryListName: '콘서트',
                     ),
+                    HomeCategory(
+                        page: const MusicalPage(),
+                        image: ImagePath.musical,
+                        categoryName: '뮤지컬',
+                        categoryListName: '뮤지컬'),
+                    HomeCategory(
+                      page: const StagePage(),
+                      image: ImagePath.stage,
+                      categoryName: '연극',
+                      categoryListName: '연극',
+                    ),
+                    HomeCategory(
+                      page: const MoviePage(),
+                      image: ImagePath.movie,
+                      categoryName: '페스티벌',
+                      categoryListName: '뮤직 페스티벌',
+                    ),
+                    HomeCategory(
+                        page: const SportsPage(),
+                        image: ImagePath.sports,
+                        categoryName: '스포츠',
+                        categoryListName: '야구'),
+                    HomeCategory(
+                        page: const ESportsPage(),
+                        image: ImagePath.esports,
+                        categoryName: 'e스포츠',
+                        categoryListName: '리그 오브 레전드'),
                   ],
                 ),
-                HashTag(
-                  items: Tlist,
-                ),
-                const SizedBox(height: 10),
-                GrayLine(),
-                HomeShareText(
-                    text: '인기 나눔',
-                    image: ImagePath.fire,
-                    smallText: '현재 가장 인기있는 나눔이에요'),
-                HomeShareList(items: Plist),
-                GrayLine(),
-                HomeShareText(
-                    text: '즉시 줄서기 가능한 나눔',
-                    image: ImagePath.pin,
-                    smallText: '근처에서 진행중인 나눔에 줄서기를 해보세요'),
-                HomeShareList2(items: locationList.content),
-                HomeInfo()
-              ],
-            ),
+              ),
+              GrayLine(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                    child: Text(
+                      '# 현재 가장 인기있는 해시태그',
+                      textAlign: TextAlign.left, // 수정된 부분
+                      style: TextStyle(
+                        color: Config.blackColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              HashTag(
+                items: Tlist,
+              ),
+              const SizedBox(height: 10),
+              GrayLine(),
+              HomeShareText(
+                  text: '즉시 줄서기 가능한 나눔',
+                  image: ImagePath.pin,
+                  smallText: '근처에서 진행중인 나눔에 줄서기를 해보세요'),
+              HomeShareList(items: Plist),
+              GrayLine(),
+              HomeShareText(
+                  text: '인기 나눔',
+                  image: ImagePath.fire,
+                  smallText: '현재 가장 인기있는 나눔이에요'),
+              HomeShareList(items: Plist),
+              // Add other widgets here...
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
