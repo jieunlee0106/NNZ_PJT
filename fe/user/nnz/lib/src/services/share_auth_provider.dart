@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/pages/share/sharing_complete.dart';
 
@@ -46,11 +47,12 @@ class ShareAuthProvider extends GetConnect {
   }
 
   Future<Response> sendingShareAuth({required int nanumIds}) async {
+    String? token;
+    token = await Token.getAccessToken();
     final res = await post(
         "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumIds", {},
         headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
+          'Authorization': 'Bearer $token',
         });
     if (res.statusCode == 204) {
       Get.to(() => const SharingComplete());

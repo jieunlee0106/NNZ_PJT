@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nnz/src/components/my_shared/my_shared_map.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/other_share_info_model.dart';
 
@@ -27,12 +28,13 @@ class _MySharedInfosState extends State<MySharedInfos> {
   }
 
   void fetchData() async {
+    String? token;
+    token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/info"),
         headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMiIsImlzcyI6Im5ueiIsImlhdCI6MTY4NDEzNjE0MywiYXV0aFByb3ZpZGVyIjoiTk5aIiwicm9sZSI6IlVTRVIiLCJpZCI6MTIsImVtYWlsIjoiamlqaUBnbWFpbC5jb20iLCJleHAiOjE2ODU0MzIxNDN9.Ce84oeRLQu87ucLYye039mNTsnH6Dn7XhrhLf9LAW1iVWRhhNkz3kiLFGV-QsqHgpxLfDIGVW-uuXZPe2mJHYg',
+          'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
         });
     OtherShareInfoModel infoModelClass =

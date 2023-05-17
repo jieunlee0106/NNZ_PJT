@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:nnz/src/components/sharing_detail/share_auth_card.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_button.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 
 class SharedAuthCheck extends StatefulWidget {
@@ -24,6 +25,7 @@ class _ExamplePageState extends State<SharedAuthCheck> {
   int dataLength = 0;
 
   var cards = [];
+  String? token;
 
   @override
   void initState() {
@@ -136,32 +138,15 @@ class _ExamplePageState extends State<SharedAuthCheck> {
     CardSwiperDirection direction,
   ) {
     if (direction.name == 'left') {
-      var res = http.post(
-          Uri.parse(
-              "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
-          headers: {
-            'Authorization':
-                'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'
-          },
-          body: {
-            "id": {result[previousIndex]["id"]},
-            "certification": false,
-          });
-      debugPrint("$previousIndex 거절 다음 $currentIndex");
+      rejectAuth(result[previousIndex]["id"]);
+      // debugPrint("$previousIndex 거절 다음 $currentIndex");
     }
     if (direction.name == 'right') {
-      var res = http.post(
-          Uri.parse(
-              "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${result[previousIndex]["id"]}/certification"),
-          headers: {
-            'Authorization':
-                'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'
-          },
-          body: {
-            "id": {result[previousIndex]["id"]},
-            "certification": true,
-          });
-      debugPrint("$previousIndex 수락 다음 $currentIndex");
+      allowAuth(result[previousIndex]["id"]);
+      // debugPrint("$previousIndex 수락 다음 $currentIndex");
+    }
+    if (currentIndex == dataLength) {
+      const SnackBar(content: Text("인증이 완료되었습니다"));
     }
     return true;
   }
@@ -175,5 +160,41 @@ class _ExamplePageState extends State<SharedAuthCheck> {
       'The card $currentIndex was undod from the ${direction.name}',
     );
     return true;
+  }
+
+  void rejectAuth(int id) async {
+    print("거절");
+    token = await Token.getAccessToken();
+    print("$id 거절 시작");
+    var res = await http.post(
+        Uri.parse(
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
+        headers: {
+          'Authorization': 'Bearer $token'
+        },
+        body: {
+          "id": id.toString(),
+          "certification": "false",
+        });
+    if (res.statusCode == 204) {
+      print("거절 완료");
+    } else {
+      print(res.statusCode);
+    }
+  }
+
+  void allowAuth(int id) async {
+    print("수락");
+    token = await Token.getAccessToken();
+    var res = http.post(
+        Uri.parse(
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/certification"),
+        headers: {
+          'Authorization': 'Bearer $token'
+        },
+        body: {
+          "id": id.toString(),
+          "certification": "true",
+        });
   }
 }

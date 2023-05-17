@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:nnz/src/components/sharing_detail/perform_share_card.dart';
 import 'package:nnz/src/config/token.dart';
-import 'package:nnz/src/controller/perform_controller.dart';
 import 'package:nnz/src/model/perform_share_list_model.dart';
 import 'package:nnz/src/pages/share/share_detail.dart';
 
@@ -19,7 +18,6 @@ class TestInfinite extends StatefulWidget {
 }
 
 class _TestInfiniteState extends State<TestInfinite> {
-  final PerformController performController = Get.put(PerformController());
   ScrollController listscrollcontroller = ScrollController();
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   List<dynamic> shareList = [];

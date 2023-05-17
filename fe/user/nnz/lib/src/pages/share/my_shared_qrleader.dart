@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:http/http.dart' as http;
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/share_stock_model.dart';
 import 'package:nnz/src/pages/user/mypage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -32,7 +33,9 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
     fetchData();
   }
 
-  void qr(QRViewController controller) {
+  void qr(QRViewController controller) async {
+    String? token;
+    token = await Token.getAccessToken();
     this.controller = controller;
     controller.scannedDataStream.listen((event) async {
       var res = await http.post(
@@ -40,8 +43,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
           "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/qr/${event.code}",
         ),
         headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
+          'Authorization': 'Bearer $token',
         },
       );
       setState(() {
@@ -58,11 +60,13 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
   }
 
   void fetchData() async {
+    String? token;
+    token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/quantity"),
         headers: {
-          'Authorization': 'Bearer ',
+          'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
         });
 
