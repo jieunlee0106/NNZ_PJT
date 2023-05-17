@@ -36,7 +36,9 @@ class MyShareInfoProvider extends GetConnect {
               'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MjE5NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODU1MTU2MzV9.5g02Ld3JjCLhLlrAQAgSi8u9idMX0FiT_wRDsvAqz3b2I31udCuAWbTw8DAaFz2Gpw5sT6o3Q3065GeSIE5_Jw'
         });
     if (res.statusCode == 201) {
-      Get.to(() => const MyShareDetail());
+      Get.to(() => MyShareDetail(
+            nanumIds: nanumIds,
+          ));
     } else {
       Get.snackbar("실패", "정보 등록이 실패되었습니다");
     }

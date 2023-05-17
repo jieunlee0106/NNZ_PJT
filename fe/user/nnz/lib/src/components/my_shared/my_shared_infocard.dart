@@ -45,6 +45,7 @@ class _MySharedCardState extends State<MySharedCard> {
         ShareDetailModel.fromJson(jsonDecode(res.body));
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
     showData.value = result.value["show"];
+    print("쇼 정보 어디감");
     print(result.value);
 
     setState(() {

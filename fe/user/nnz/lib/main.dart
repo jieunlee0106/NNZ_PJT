@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/myShareDetail",
+      initialRoute: "/",
       getPages: [
         GetPage(
           name: "/",
@@ -183,7 +183,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/myShareDetail",
-          page: () => const MyShareDetail(),
+          page: () => const MyShareDetail(
+            nanumIds: 0,
+          ),
         ),
         GetPage(
           name: "/proposeShow",

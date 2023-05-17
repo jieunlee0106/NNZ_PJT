@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/components/nullPage.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/model/nanum_type_list_model.dart';
 import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/model/receive_type_list_model.dart';
 
@@ -113,8 +112,9 @@ class _ShareListState extends State<ShareList2> {
                                   ),
                                   Center(
                                     child: GestureDetector(
-                                      onTap: () =>
-                                          Get.to(() => const MyShareDetail()),
+                                      onTap: () => Get.to(() => MyShareDetail(
+                                            nanumIds: item.id ?? 0,
+                                          )),
                                       child: Text(
                                         item.title!,
                                         style: TextStyle(
