@@ -115,7 +115,9 @@ class _ExamplePageState extends State<SharedAuthCheck> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () => Get.to(() => const MyShareDetail()),
+              onTap: () => Get.to(() => MyShareDetail(
+                    nanumIds: widget.nanumIds,
+                  )),
               child: const SharingButton(
                   btnheight: 12, btnwidth: 130, btntext: "완료"),
             ),

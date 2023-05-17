@@ -20,16 +20,16 @@ import 'package:nnz/src/pages/user/mypage.dart';
 final scrollControlloer = Get.put(InfiniteScrollController());
 
 class MyShareDetail extends StatefulWidget {
-  const MyShareDetail({
-    super.key,
-  });
+  const MyShareDetail({super.key, required this.nanumIds});
+
+  final int nanumIds;
 
   @override
   State<MyShareDetail> createState() => _MyShareDetailState();
 }
 
 class _MyShareDetailState extends State<MyShareDetail> {
-  int nanumIds = 104;
+  // int nanumIds = 104;
   final token = Token.getAccessToken();
   final scrollControlloer = Get.put(InfiniteScrollController());
 
@@ -44,7 +44,7 @@ class _MyShareDetailState extends State<MyShareDetail> {
   void fetchData() async {
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/user-service/users/nanums/$nanumIds"),
+            "https://k8b207.p.ssafy.io/api/user-service/users/nanums/${widget.nanumIds}"),
         headers: {
           'Authorization':
               'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
@@ -52,9 +52,9 @@ class _MyShareDetailState extends State<MyShareDetail> {
         });
     MyShareInfoDetailModel myshareinfoModelcalss =
         MyShareInfoDetailModel.fromJson(jsonDecode(res.body));
-    print("상세정보줘");
+    // print("상세정보줘");
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
-    print(result.value);
+    // print(result.value);
   }
 
   @override
@@ -83,7 +83,7 @@ class _MyShareDetailState extends State<MyShareDetail> {
               height: 20,
             ),
             MySharedCard(
-              nanumIds: nanumIds,
+              nanumIds: widget.nanumIds,
             ),
             const SizedBox(
               height: 5,
@@ -101,7 +101,7 @@ class _MyShareDetailState extends State<MyShareDetail> {
                   visible: (result.value["data"] == null),
                   child: GestureDetector(
                     onTap: () => Get.to(() => MySharedInfoForm(
-                          nanumIds: nanumIds,
+                          nanumIds: widget.nanumIds,
                         )),
                     child: const SharingButton(
                         btnheight: 10, btnwidth: 53, btntext: "당일 정보 입력"),
@@ -120,7 +120,7 @@ class _MyShareDetailState extends State<MyShareDetail> {
                 ),
                 GestureDetector(
                   onTap: () => Get.to(() => ShareQrLeader(
-                        nanumIds: nanumIds,
+                        nanumIds: widget.nanumIds,
                       )),
                   child: const SharingButton(
                       btnheight: 11, btnwidth: 82, btntext: "QR"),
@@ -139,7 +139,7 @@ class _MyShareDetailState extends State<MyShareDetail> {
                 ),
                 GestureDetector(
                   onTap: () => Get.to(() => SharedAuthCheck(
-                        nanumIds: nanumIds,
+                        nanumIds: widget.nanumIds,
                       )),
                   child: const Row(
                     children: [
@@ -151,7 +151,7 @@ class _MyShareDetailState extends State<MyShareDetail> {
               ],
             ),
             MySharedRequestList(
-              nanumIds: nanumIds,
+              nanumIds: widget.nanumIds,
             )
           ],
         ),
