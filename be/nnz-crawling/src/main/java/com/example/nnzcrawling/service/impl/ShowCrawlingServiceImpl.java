@@ -48,7 +48,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "30 50 0/5 * * *")
+    @Scheduled(cron = "30 0 14/5 * * *")
     @Transactional
     public void createShow() {
         LocalDateTime startTime = LocalDateTime.now();
@@ -172,6 +172,15 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                 endDate = null;
             }
 
+            if (startDate == null && endDate == null) {
+                show.deleteShow();
+                KafkaMessage<ShowDTO> message = KafkaMessage.delete().body(ShowSyncDTO.of(show));
+                try {
+                    producer.sendMessage(message);
+                } catch (JsonProcessingException e) {
+                    throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION);
+                }
+            }
             // StartDate만 있으면 StartDate로 비교해서 삭제 처리
             if (endDate == null) {
                 if (LocalDate.now().isAfter(startDate)) {
