@@ -14,10 +14,10 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     boolean existsByFollowerAndFollowing(User me, User following);
     Optional<Follow> findByFollowerAndFollowing(User me, User following);
     boolean existsByFollowerIdAndFollowingIdAndIsDeleteFalse(Long followerId, Long followingId);
-    Integer countByFollower(User follower); // 팔로잉 수 리턴
-    Integer countByFollowing(User following); // 팔로워 수 리턴
+    Integer countByFollowerAndIsDeleteFalse(User follower); // 팔로잉 수 리턴
+    Integer countByFollowingAndIsDeleteFalse(User following); // 팔로워 수 리턴
 
     @Query("select f.follower from Follow f " +
             "where f.following = :user")
-    Set<User> findFollower(@Param("user") User user); // user의 팔로워 조회
+    Set<User> findFollowerAndIsDeleteFalse(@Param("user") User user); // user의 팔로워 조회
 }

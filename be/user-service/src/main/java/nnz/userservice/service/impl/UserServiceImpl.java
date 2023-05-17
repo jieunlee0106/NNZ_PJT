@@ -246,8 +246,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        Integer followingCount = followRepository.countByFollower(user);
-        Integer followerCount = followRepository.countByFollowing(user);
+        Integer followingCount = followRepository.countByFollowerAndIsDeleteFalse(user);
+        Integer followerCount = followRepository.countByFollowingAndIsDeleteFalse(user);
 
         List<Nanum> provideNanum = nanumRepository.findByProvider(user);
         StatisticsDTO provideStatistics = StatisticsDTO.of(provideNanum);
@@ -306,7 +306,7 @@ public class UserServiceImpl implements UserService {
         }
 
         List<ReceiveNanum> receiveNanums = receiveNanumRepository.findByNanum(nanum); // 나눔에 참가한 유저 조회
-        Set<User> follower = followRepository.findFollower(user); // 나눔자의 팔로워 조회
+        Set<User> follower = followRepository.findFollowerAndIsDeleteFalse(user); // 나눔자의 팔로워 조회
 
         List<NanumParticipantsDTO.ParticipantDTO> participants = new ArrayList<>();
         for (ReceiveNanum receiveNanum : receiveNanums) {
@@ -401,8 +401,8 @@ public class UserServiceImpl implements UserService {
         User otherUser = userRepository.findById(otherUserId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        Integer followingCount = followRepository.countByFollower(otherUser);
-        Integer followerCount = followRepository.countByFollowing(otherUser);
+        Integer followingCount = followRepository.countByFollowerAndIsDeleteFalse(otherUser);
+        Integer followerCount = followRepository.countByFollowingAndIsDeleteFalse(otherUser);
 
         boolean isFollower = meId != null &&
                 followRepository.existsByFollowerIdAndFollowingIdAndIsDeleteFalse(meId, otherUserId);
