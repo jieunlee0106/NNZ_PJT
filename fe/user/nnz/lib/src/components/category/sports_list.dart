@@ -90,6 +90,7 @@ class _SportListState extends State<SportsList> {
                             BteamName: item.rightTeam ?? '',
                             date: item.date.toString(),
                             location: item.location ?? '',
+                            id: item.id ?? 0,
                           ))
                       .toList(),
                 ),

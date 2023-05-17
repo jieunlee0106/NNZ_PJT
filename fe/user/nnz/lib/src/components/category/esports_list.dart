@@ -98,12 +98,11 @@ class _EsportsListState extends State<ESportsList> {
                 Column(
                   children: items
                       .map((item) => EsportsCard(
-                            AteamLogo: item.leftTeamImage ?? '',
-                            BteamLogo: item.rightTeamImage ?? '',
                             AteamName: item.leftTeam ?? '',
                             BteamName: item.rightTeam ?? '',
                             date: item.date.toString(),
                             location: item.location ?? '서울 종로구',
+                            id: item.id ?? 0,
                           ))
                       .toList(),
                 ),

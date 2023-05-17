@@ -29,6 +29,7 @@ import 'package:nnz/src/pages/category/stage.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
 import 'package:nnz/src/model/popularity.dart';
 import 'package:nnz/src/model/location_model.dart';
+import 'package:nnz/src/pages/user/register.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Home extends StatefulWidget {
@@ -128,17 +129,17 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
-          // leading: IconButton(
-          //   icon: Icon(Icons.account_circle),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => MyPage(),
-          //       ),
-          //     );
-          //   },
-          // ),
+          leading: IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Register(),
+                ),
+              );
+            },
+          ),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
           // actions: [
           //   IconButton(
