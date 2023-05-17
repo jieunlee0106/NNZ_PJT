@@ -1,6 +1,5 @@
 package nnz.nanumservice.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.firebase.messaging.FirebaseMessagingException;
 
 import io.github.eello.nnz.common.dto.PageDTO;
@@ -8,7 +7,6 @@ import io.github.eello.nnz.common.jwt.DecodedToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.nanumservice.dto.CertificationDTO;
-import nnz.nanumservice.dto.FcmNotificationDTO;
 import nnz.nanumservice.dto.NanumInfoDTO;
 import nnz.nanumservice.dto.res.ResNanumStockDTO;
 import nnz.nanumservice.dto.res.nanum.ResNanumDTO;
@@ -20,10 +18,8 @@ import nnz.nanumservice.service.CertificationService;
 import nnz.nanumservice.service.NanumService;
 import nnz.nanumservice.service.TagService;
 import nnz.nanumservice.service.impl.FCMService;
-import nnz.nanumservice.service.impl.NcpPushNotificationService;
 import nnz.nanumservice.vo.NanumCertificationVO;
 import nnz.nanumservice.vo.NanumVO;
-import nnz.nanumservice.vo.NcpDeviceVO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,9 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.ws.rs.QueryParam;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -49,7 +43,6 @@ public class NanumController {
     private final CertificationService certificationService;
     private final TagService tagService;
     private final FCMService fcmService;
-    private final NcpPushNotificationService ncpPushNotificationService;
 
     @PostMapping
     public ResponseEntity<Void> createNanum(
@@ -182,42 +175,6 @@ public class NanumController {
     public ResponseEntity<?> sendReceiveNanumPush() throws IOException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, FirebaseMessagingException {
         fcmService.sendReceiveNanumPush();
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/push")
-    public ResponseEntity<?> testNotifictaion() throws IOException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException {
-//        fcmService.sendMessage(fcmNotificationDTO);
-//        fcmService.sendMessgeTo(fcmNotificationDTO);
-//        fcmService.chatgpt(fcmNotificationDTO);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/ncp/push/sendMessage/{id}")
-    public ResponseEntity<?> sendMessage(@PathVariable("id") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        ncpPushNotificationService.sendNcpPush(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/ncp/push/registDevice")
-    public ResponseEntity<?> registDevice(@RequestBody NcpDeviceVO ncpDeviceVO) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        ncpPushNotificationService.registDevice(ncpDeviceVO);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/ncp/push/deleteDevice/{userId}")
-    public ResponseEntity<?> deleteDevice(@PathVariable("userId") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        ncpPushNotificationService.deleteDevice(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/ncp/push/getDevice/{userId}")
-    public ResponseEntity<?> getDevice(@PathVariable("userId") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        return ResponseEntity.ok(ncpPushNotificationService.getDevice(id));
-    }
-
-    @GetMapping("/ncp/push/sendMessage/{id}")
-    public ResponseEntity<?> resultMessage(@PathVariable("id") String id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        return ResponseEntity.ok(ncpPushNotificationService.resultMessage(id));
     }
 
     @DeleteMapping("/{nanumId}")
