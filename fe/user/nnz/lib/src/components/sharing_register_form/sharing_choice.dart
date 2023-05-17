@@ -89,8 +89,9 @@ class _SharingChoiceState extends State<SharingChoice> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Config.yellowColor,
-                        borderRadius: BorderRadius.circular(16)),
+                      color: Config.yellowColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 24,
