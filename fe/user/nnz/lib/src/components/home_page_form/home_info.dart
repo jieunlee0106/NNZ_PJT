@@ -15,7 +15,7 @@ class HomeInfo extends StatelessWidget {
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 40,
+            top: 30,
             bottom: 20,
           ),
           child: Column(
@@ -34,7 +34,7 @@ class HomeInfo extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                Text('개발: 김종성, 김지환, 염유리, 유영훈, 이지은,  하세진'),
+                Text('개발: 김종성, 김지환, 염유리, 유영훈, 이지은, 하세진'),
                 Text('위치: 대전광역시 유성구'),
               ]),
         ),
