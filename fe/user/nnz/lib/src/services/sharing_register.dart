@@ -19,6 +19,7 @@ class SharingRegisterProvider extends GetConnect {
   void onInit() async {
     await dotenv.load();
     httpClient.baseUrl = dotenv.env['BASE_URL'];
+
     token = await storage.read(key: 'accessToken');
     super.onInit();
   }

@@ -19,7 +19,8 @@ class UserProvider extends GetConnect {
     //Set baseUrl from .env file
     httpClient.baseUrl = dotenv.env['BASE_URL'];
     httpClient.defaultContentType = '';
-    httpClient.timeout = const Duration(microseconds: 5000);
+    httpClient.timeout = const Duration(seconds: 30); // 10초로 timeout 설정
+
     super.onInit();
   }
 

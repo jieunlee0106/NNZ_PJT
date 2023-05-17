@@ -447,7 +447,12 @@ class SharingRegisterController extends GetxController {
         //트위터 계정인지 파악을 해서 트윗 등록할 수 있게 함....
         // register();
         try {
-          final response = await SharingRegisterProvider()
+          var sharingRegisterProvider = SharingRegisterProvider();
+          sharingRegisterProvider.httpClient.timeout =
+              const Duration(seconds: 60);
+          logger.i(sharingRegisterProvider.httpClient.timeout);
+
+          final response = await sharingRegisterProvider
               .testShare(shareModel: shareModel, images: imageController.images)
               .catchError((error) async {
             logger.e("들어와 ${error.response?.statusCode}");
@@ -520,8 +525,13 @@ class SharingRegisterController extends GetxController {
       });
 
       try {
-        final response = await SharingRegisterProvider()
-            .testShare(shareModel: shareModel, images: imageController.images);
+        var sharingRegisterProvider = SharingRegisterProvider();
+        sharingRegisterProvider.httpClient.timeout =
+            const Duration(seconds: 60);
+        logger.i(sharingRegisterProvider.httpClient.timeout);
+
+        final response = await sharingRegisterProvider.testShare(
+            shareModel: shareModel, images: imageController.images);
 
         logger.i(response.statusCode);
         logger.i(response.statusText);

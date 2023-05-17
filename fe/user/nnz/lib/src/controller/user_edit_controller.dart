@@ -87,13 +87,16 @@ class UserEditController extends GetxController {
   //유저 정보 수정
   Future<void> onUpdateUser() async {
     try {
-      final response = await UserProvider().patchUser(
+      var userProvider = UserProvider();
+      userProvider.httpClient.timeout = const Duration(seconds: 40);
+      final response = await userProvider.patchUser(
           image: imageFile!,
           oldPwd: curPwdController.text,
           newPwd: newPwdController.text,
           confirmNewPwd: newPwdConfirmController.text,
           nickname: nickController.text);
       if (response.statusCode == 204) {
+        logger.i("되었어요");
         Get.find<MyPageController>().getMyInfo();
         await showDialog(
             context: Get.context!,
@@ -115,6 +118,7 @@ class UserEditController extends GetxController {
       } else if (response.statusCode == 401) {
         logger.e("${response.statusCode} ${response.statusText}");
       } else {
+        logger.e("${response.statusCode} : ${response.statusText}");
         await showDialog(
             context: Get.context!,
             builder: (BuildContext context) {
