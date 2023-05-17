@@ -1,32 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/components/icon_data.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class Event extends StatelessWidget {
-  final String image;
-  final int num;
+class CarouselWithIndicator extends StatefulWidget {
+  @override
+  _CarouselWithIndicatorState createState() => _CarouselWithIndicatorState();
+}
 
-  Event({
-    Key? key,
-    required this.image,
-    required this.num,
-  }) : super(key: key);
+class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
+  int _currentIndex = 0;
+  final List<String> _imageList = [
+    'assets/images/event1.JPG',
+    'assets/images/event2.JPG',
+    'assets/images/event3.JPG',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: 340,
-          height: 90,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7.0),
-            image: DecorationImage(
-              image: AssetImage(ImagePath.event),
-              fit: BoxFit
-                  .cover, // Set the fit property to cover the container size
-              alignment: Alignment.topCenter,
-            ),
+        CarouselSlider(
+          items: _imageList.map((image) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: 340,
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: AssetImage(image),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            );
+          }).toList(),
+          options: CarouselOptions(
+            viewportFraction: 1,
+            height: 80.0,
+            initialPage: _currentIndex,
+            enlargeCenterPage: true,
+            onPageChanged: (index, _) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
           ),
+        ),
+        SizedBox(height: 8.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: _imageList.asMap().entries.map((entry) {
+            int index = entry.key;
+            return Container(
+              width: 5.0,
+              height: 5.0,
+              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _currentIndex == index ? Colors.blue : Colors.grey,
+              ),
+            );
+          }).toList(),
         ),
       ],
     );

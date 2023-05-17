@@ -8,7 +8,9 @@ import 'package:nnz/src/components/home_page_form/home_banner.dart';
 import 'package:nnz/src/components/home_page_form/category_form.dart';
 import 'package:nnz/src/components/home_page_form/hash_tag.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
+import 'package:nnz/src/components/home_page_form/home_festival.dart';
 import 'package:nnz/src/components/home_page_form/home_info.dart';
+import 'package:nnz/src/components/home_page_form/home_musical.dart';
 import 'package:nnz/src/components/home_page_form/location_list.dart';
 import 'package:nnz/src/components/home_page_form/share_text.dart';
 import 'package:nnz/src/components/home_page_form/home_share_list.dart';
@@ -233,7 +235,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 GrayLine(),
-                Event(image: 'image', num: 0),
+                CarouselWithIndicator(),
                 GrayLine(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -273,10 +275,30 @@ class _HomeState extends State<Home> {
                 HomeShareList2(items: locationList.content),
                 GrayLine(),
                 // 페스티벌 인기 나눔
-
+                HomeShareText(
+                    text: '페스티벌 공연',
+                    image: ImagePath.movie,
+                    smallText: '현재 공연 중인 페스티벌에 대한 나눔을 이용해보세요'),
+                HoemCategoryList(categoryName: '뮤직페스티벌'),
                 GrayLine(),
                 // 뮤지컬 인기 나눔
-
+                HomeShareText(
+                    text: '뮤지컬 공연',
+                    image: ImagePath.musical,
+                    smallText: '현재 공연 중인 뮤지컬에 대한 나눔을 이용해보세요'),
+                HoemCategoryList(categoryName: '뮤지컬'),
+                GrayLine(),
+                // 연극 인기 나눔
+                HomeShareText(
+                    text: '연극 공연',
+                    image: ImagePath.musical,
+                    smallText: '현재 공연 중인 연극에 대한 나눔을 이용해보세요'),
+                HoemCategoryList(categoryName: '연극'),
+                HomeShareText(
+                    text: '연극 공연',
+                    image: ImagePath.musical,
+                    smallText: '현재 공연 중인 연극에 대한 나눔을 이용해보세요'),
+                HoemCategoryList(categoryName: '연극'),
                 HomeInfo()
               ],
             ),
