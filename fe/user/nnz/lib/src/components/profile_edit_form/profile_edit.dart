@@ -118,7 +118,9 @@ class _ProfileEditUserState extends State<ProfileEditUser> {
                 )
               : CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(Get.arguments),
+                  backgroundImage: Get.arguments == null
+                      ? null
+                      : NetworkImage(Get.arguments),
                 ),
           const SizedBox(
             height: 16,
