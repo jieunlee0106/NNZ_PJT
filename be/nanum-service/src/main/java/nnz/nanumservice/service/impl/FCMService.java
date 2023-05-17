@@ -76,16 +76,15 @@ public class FCMService {
                 .setBody(body)
                 .build();
 
-        List<Message> messages = new ArrayList<>();
-        tokens.stream().map(t-> Message.builder()
+        List<Message> collect = tokens.stream().map(t -> Message.builder()
                 .setAndroidConfig(AndroidConfig.builder()
                         .setPriority(AndroidConfig.Priority.HIGH)
                         .build())
                 .setToken(t)
                 .setNotification(notification)
-                .build());
+                .build()).collect(Collectors.toList());
 
-        FirebaseMessaging.getInstance().sendAllAsync(messages);
+        FirebaseMessaging.getInstance().sendAllAsync(collect);
     }
 
     @Async
@@ -107,9 +106,10 @@ public class FCMService {
         // 그 사람들의 토큰으로 알림을 보낸다.
         List<String> collect = in.stream().map(bookmark -> bookmark.getUser().getDeviceToken()).collect(Collectors.toList());
 
-        sendMultipleMessage("오늘 찜한 나눔이 오픈해요!",
-                "잊지말고 나너주를 찾아주세요",
-                collect);
+        if(collect.size() > 0)
+            sendMultipleMessage("오늘 찜한 나눔이 오픈해요!",
+                    "잊지말고 나너주를 찾아주세요",
+                    collect);
     }
 
     @Async
@@ -128,8 +128,9 @@ public class FCMService {
         // 그 사람들의 토큰으로 알림을 보낸다.
         List<String> collect = allByIsCertificatedAndIsReceivedAndNanumIn.stream().map(userNanum -> userNanum.getReceiver().getDeviceToken()).collect(Collectors.toList());
 
-        sendMultipleMessage("신청한 나눔을 받는 날이에요!",
-                "나눔 당일 정보를 확인해주세요",
-                collect);
+        if(collect.size() > 0)
+            sendMultipleMessage("신청한 나눔을 받는 날이에요!",
+                    "나눔 당일 정보를 확인해주세요",
+                    collect);
     }
 }
