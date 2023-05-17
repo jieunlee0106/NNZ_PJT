@@ -343,22 +343,27 @@ class RegisterController extends GetxController {
       final response = await UserProvider().postRegister(user: user);
       logger.i(response.statusCode);
       if (response.statusCode == 204) {
-        showDialog(
-            context: Get.context!,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: const Text("회원가입되었습니다."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Get.offAllNamed("/register");
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: const Text("확인"),
-                  ),
-                ],
-              );
-            });
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          const SnackBar(
+            content: Text('회원가입 되었습니다.'),
+          ),
+        );
+        Get.offAllNamed("/register");
+        // showDialog(
+        //     context: Get.context!,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         content: const Text("회원가입되었습니다."),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               FocusScope.of(context).unfocus();
+        //             },
+        //             child: const Text("확인"),
+        //           ),
+        //         ],
+        //       );
+        //     });
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);

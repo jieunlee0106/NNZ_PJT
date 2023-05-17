@@ -91,9 +91,10 @@ class LoginController extends GetxController {
             // final userId = response.body["userId"];
             Token.saveAccessToken(accessToken);
             Token.saveRefreshToken(refreshToken);
+            ScaffoldMessenger.of(Get.context!).showSnackBar(
+              const SnackBar(content: Text('성공적으로 로그인하였습니다.')),
+            );
 
-            Get.find<BottomNavController>().setUserId(userId: userId);
-            final token = Get.find<BottomNavController>().getToken();
             Get.offAllNamed("/app");
             Get.find<BottomNavController>().changeBottomNav(
                 Get.find<BottomNavController>().curIndex.value);

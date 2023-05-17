@@ -163,25 +163,30 @@ class FindPasswordController extends GetxController {
           confirmPwd: passwordConfirmController.text);
       logger.i(response.statusCode);
       if (response.statusCode == 204) {
-        showDialog(
-            context: Get.context!,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: const Text("비밀번호 변경되었습니다."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Get.until((route) =>
-                          route.isFirst || Get.currentRoute == '/login');
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          const SnackBar(content: Text('비밀번호 변경 완료되었습니다.')),
+        );
+        Get.until((route) => route.isFirst || Get.currentRoute == '/login');
 
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: const Text("확인"),
-                  ),
-                ],
-              );
-            });
+        // showDialog(
+        //     context: Get.context!,
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         content: const Text("비밀번호 변경되었습니다."),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               Navigator.of(context).pop();
+        //               Get.until((route) =>
+        //                   route.isFirst || Get.currentRoute == '/login');
+
+        //               FocusScope.of(context).unfocus();
+        //             },
+        //             child: const Text("확인"),
+        //           ),
+        //         ],
+        //       );
+        //     });
       } else {
         final errorMessage = "(${response.statusCode}): ${response.body}";
         logger.e(errorMessage);
