@@ -1,8 +1,10 @@
 package com.example.nnzcrawling.service.impl;
 
+import com.example.nnzcrawling.dto.ShowDTO;
 import com.example.nnzcrawling.dto.ShowSyncDTO;
 import com.example.nnzcrawling.dto.TagDTO;
 import com.example.nnzcrawling.entity.*;
+import com.example.nnzcrawling.exception.ErrorCode;
 import com.example.nnzcrawling.repository.*;
 import com.example.nnzcrawling.selenium.CrawlingESports;
 import com.example.nnzcrawling.selenium.CrawlingShows;
@@ -11,6 +13,7 @@ import com.example.nnzcrawling.service.KafkaProducer;
 import com.example.nnzcrawling.service.ShowCrawlingService;
 import com.example.nnzcrawling.service.TagFeignClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.eello.nnz.common.exception.CustomException;
 import io.github.eello.nnz.common.kafka.KafkaMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +48,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
     private final EntityManager em;
 
     @Override
-    @Scheduled(cron = "30 30 21 1/1 * *")
+    @Scheduled(cron = "30 50 0/5 * * *")
     @Transactional
     public void createShow() {
         LocalDateTime startTime = LocalDateTime.now();
@@ -139,14 +142,16 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
                 String endDateStr = show.getEndDate().replaceAll("\\(.*", "").trim();
                 format = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
-                try {
-                    // E스포츠나 스포츠가 아니면서 start, end 둘 다 데이터가 있는 경우
-                    startDate = LocalDate.parse(startDateStr, format);
-                    endDate = LocalDate.parse(endDateStr, format);
-                } catch (Exception e) {
-                    // E스포츠나 스포츠가 아니면서 end 데이터가 없거나 ""인 경우
-                    startDate = LocalDate.parse(startDateStr, format);
-                    endDate = null;
+                if (!endDate.equals("오픈런")) {
+                    try {
+                        // E스포츠나 스포츠가 아니면서 start, end 둘 다 데이터가 있는 경우
+                        startDate = LocalDate.parse(startDateStr, format);
+                        endDate = LocalDate.parse(endDateStr, format);
+                    } catch (Exception e) {
+                        // E스포츠나 스포츠가 아니면서 end 데이터가 없거나 ""인 경우
+                        startDate = LocalDate.parse(startDateStr, format);
+                        endDate = null;
+                    }
                 }
             } //
             else {
@@ -172,6 +177,12 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             if (endDate == null) {
                 if (LocalDate.now().isAfter(startDate)) {
                     show.deleteShow();
+                    KafkaMessage<ShowDTO> message = KafkaMessage.delete().body(ShowSyncDTO.of(show));
+                    try {
+                        producer.sendMessage(message);
+                    } catch (JsonProcessingException e) {
+                        throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION);
+                    }
                 }
             } //
             else {
