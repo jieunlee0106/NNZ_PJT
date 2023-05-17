@@ -124,7 +124,7 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 1/1 * *")
+    @Scheduled(cron = "20 36 12 1/1 * *")
     @Transactional
     public void deleteShow() {
 
@@ -137,21 +137,20 @@ public class ShowCrawlingServiceImpl implements ShowCrawlingService {
             LocalDate startDate = null;
             LocalDate endDate = null;
 
-            if (!show.getCategory().getParentCode().equals("ESP") && !show.getCategory().getParentCode().equals("SPO")) {
+            if (show.getCategory().getParentCode() == null) {
                 String startDateStr = show.getStartDate().replaceAll("\\(.*", "").trim();
                 String endDateStr = show.getEndDate().replaceAll("\\(.*", "").trim();
                 format = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
 
-                if (!endDate.equals("오픈런")) {
-                    try {
-                        // E스포츠나 스포츠가 아니면서 start, end 둘 다 데이터가 있는 경우
-                        startDate = LocalDate.parse(startDateStr, format);
-                        endDate = LocalDate.parse(endDateStr, format);
-                    } catch (Exception e) {
-                        // E스포츠나 스포츠가 아니면서 end 데이터가 없거나 ""인 경우
-                        startDate = LocalDate.parse(startDateStr, format);
-                        endDate = null;
-                    }
+                try {
+                    log.info("startDate = {}, endDate = {}", startDateStr, endDateStr);
+                    // E스포츠나 스포츠가 아니면서 start, end 둘 다 데이터가 있는 경우
+                    startDate = LocalDate.parse(startDateStr, format);
+                    endDate = LocalDate.parse(endDateStr, format);
+                } catch (Exception e) {
+                    // E스포츠나 스포츠가 아니면서 end 데이터가 없거나 ""인 경우
+                    startDate = LocalDate.parse(startDateStr, format);
+                    endDate = null;
                 }
             } //
             else {
