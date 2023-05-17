@@ -92,12 +92,6 @@ cloud:
     stack:
       auto: false
 
-ncp:
-  push:
-    access-key: ENC(OOA6O9pvIX/v3K+QfGLRRPSWxNUPFJ4OjVpEqfUD8V4=)
-    secret-key: ENC(Pmq5gBLQM6qodHSAE3sOw1q5QFySV4+z0w0vG4ztf19YHKdUwAkFDYgvKN0/5LlUwAjQ1XjewHA=)
-    service-id: ENC(YwgnJDT/KzuiiBcIsTP4v+VbexJcGh9Apk0vmtrHuRL49gbxM1jSgCsE59XiKOKh)
-
 fcm:
   json:
     path: C:\\Users\\yyh77\\nnz\\S08P31B207\\be\\nanum-service\\src\\main\\resources\\naneozoo-firebase-adminsdk-5cna1-e73447ff78.json

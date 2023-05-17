@@ -52,7 +52,6 @@ public class NanumServiceImpl implements NanumService {
     private final BookmarkRepository bookmarkRepository;
     private final NanumStockRepository nanumStockRepository;
     private final NanumImageService nanumImageService;
-//    private final FCMService fcmService;
 
     @Override
     @Transactional
