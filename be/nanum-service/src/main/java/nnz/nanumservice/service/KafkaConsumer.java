@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import nnz.nanumservice.dto.*;
 import nnz.nanumservice.entity.*;
 import nnz.nanumservice.repository.*;
+import nnz.nanumservice.vo.TagSyncVO;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,20 +51,29 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-tag-sync", groupId = "nanum-service-2")
+    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
     public void getTagMessage(String message) throws JsonProcessingException {
-        KafkaMessage<TagDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, TagDTO.class);
-        log.info("consume message: {}", message);
-        log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
-        log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
+        KafkaMessage<TagSyncVO> data = KafkaMessageUtils.deserialize(message, TagSyncVO.class);
+        KafkaMessage.KafkaMessageType type = data.getType();
+        TagSyncVO body = data.getBody();
 
-        if (kafkaMessage.getType() == KafkaMessage.KafkaMessageType.CREATE) {
-            Optional<Tag> findTag = tagRepository.findById(kafkaMessage.getBody().getId());
-            if (!findTag.isPresent()) {
-                Tag tag = Tag.of(kafkaMessage.getBody());
-                tagRepository.save(tag);
+        // 조회수 동기화
+        if (type == KafkaMessage.KafkaMessageType.UPDATE) {
+            Optional<Tag> optTag = tagRepository.findById(body.getId());
+
+            if (optTag.isEmpty()) {
+                log.warn("태그 id: {}에 해당하는 태그가 존재하지 않습니다.", body.getId());
+                return;
+            }
+
+            Tag tag = optTag.get();
+            if (tag.getViews() < body.getViews()) {
+                log.info("태그 id: {}의 조회수 업데이트 before: {} -> after {}", tag.getId(), tag.getViews(), body.getViews());
+                tag.updateViews(body.getViews());
             }
         }
+
+        log.info("Tag Update Success!");
     }
 
     @Transactional

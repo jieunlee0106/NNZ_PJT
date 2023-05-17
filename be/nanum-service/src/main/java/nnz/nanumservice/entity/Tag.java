@@ -40,4 +40,8 @@ public class Tag {
                 .updatedAt(tagDTO.getUpdatedAt())
                 .build();
     }
+
+    public void updateViews(Integer views) {
+        this.views = views;
+    }
 }
