@@ -15,7 +15,10 @@ import 'package:nnz/src/components/home_page_form/home_share_list.dart';
 
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:nnz/src/config/config.dart';
+import 'package:nnz/src/controller/category_controller.dart';
 import 'package:nnz/src/controller/home_controller.dart';
+import 'package:nnz/src/controller/my_page_controller.dart';
+import 'package:nnz/src/controller/sharing_register_controller.dart';
 import 'package:nnz/src/model/hash_tag_model.dart';
 import 'package:nnz/src/pages/category/concert.dart';
 import 'package:nnz/src/pages/category/movie.dart';

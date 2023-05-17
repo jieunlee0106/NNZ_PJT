@@ -70,8 +70,6 @@ class MyApp extends StatelessWidget {
             color: Config.blackColor,
           ),
         ),
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
       ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
