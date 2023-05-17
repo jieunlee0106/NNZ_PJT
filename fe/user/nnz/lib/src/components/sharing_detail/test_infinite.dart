@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:nnz/src/components/sharing_detail/perform_share_card.dart';
+import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/perform_share_list_model.dart';
 import 'package:nnz/src/pages/share/share_detail.dart';
@@ -102,7 +103,11 @@ class _TestInfiniteState extends State<TestInfinite> {
             ),
             Visibility(
               visible: shareList.isEmpty,
-              child: const Text("데이터가 없습니다"),
+              child: Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(color: Config.yellowColor),
+                  child: const Text("아직 나눔이 없습니다")),
             )
           ],
         ),

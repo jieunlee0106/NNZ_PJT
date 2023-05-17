@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/components/nullPage.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/pages/share/my_shared_detail.dart';
 import 'package:nnz/src/model/receive_type_list_model.dart';
+import 'package:nnz/src/pages/share/my_snappingtest.dart';
 
 class ShareList2 extends StatefulWidget {
   final List<Content2> items;
@@ -27,7 +27,7 @@ class _ShareListState extends State<ShareList2> {
         children: widget.items
                 .map(
                   (item) => GestureDetector(
-                    onTap: () => Get.to(() => MyShareDetail(
+                    onTap: () => Get.to(() => SheetBelowTest(
                           nanumIds: item.id ?? 0,
                         )),
                     child: Container(
