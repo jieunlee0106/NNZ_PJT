@@ -40,6 +40,7 @@ class ShareAuthProvider extends GetConnect {
     if (res.statusCode == 204) {
       Get.to(() => const SharingComplete());
     } else {
+      print(token);
       Get.snackbar("실패", "알수없는 오류로 실패하였습니다");
     }
     return res;

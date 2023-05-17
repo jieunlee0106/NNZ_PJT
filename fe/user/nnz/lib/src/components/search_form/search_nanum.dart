@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/searh_nanum_list_model.dart';
 
 import '../../config/config.dart';
 import '../../pages/search/tag_page.dart';
+import '../../pages/share/share_detail.dart';
 import '../icon_data.dart';
 
 class SearchNanum extends StatelessWidget {
@@ -120,7 +122,12 @@ class SearchNanum extends StatelessWidget {
                   itemCount: controller.nanumList.length,
                   itemBuilder: ((context, index) {
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Logger().i(controller.nanumList[index].id);
+                        Get.to(() => ShareDatail(
+                              nanumIds: controller.nanumList[index].id!,
+                            ));
+                      },
                       child: Container(
                         margin: const EdgeInsets.symmetric(
                           vertical: 8,
