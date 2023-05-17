@@ -17,13 +17,13 @@ class _ESportsPageState extends State<ESportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CategoryDropdown(
+        title: const CategoryDropdown(
           items: <String>['콘서트', '뮤지컬', '연극', '페스티벌', '스포츠', 'e스포츠'],
           cartegory: 'e스포츠',
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: EsportsBanner(),
       ),
     );

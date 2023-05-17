@@ -30,7 +30,8 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
 
   void fetchData() async {
     var res = await http.get(
-      Uri.parse("https://k8b207.p.ssafy.io/api/show-service/shows/4399"),
+      Uri.parse(
+          "https://k8b207.p.ssafy.io/api/show-service/shows/${widget.showIds}"),
       headers: {
         "Accept-Charset": "utf-8",
       },
@@ -155,12 +156,12 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
           const SizedBox(
             height: 30,
           ),
-          const SizedBox(
+          SizedBox(
             height: 300,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TestInfinite(
-                showIds: 4399,
+                showIds: widget.showIds,
               ),
             ),
           ),
