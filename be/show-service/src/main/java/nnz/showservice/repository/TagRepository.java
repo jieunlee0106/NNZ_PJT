@@ -18,7 +18,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findTagByShow(Long showId, Pageable pageable);
 
     @Query("select distinct t from Tag t " +
-            "join ShowTag st on t.id = st.tag.id " +
+            "left outer join ShowTag st on t.id = st.tag.id " +
             "where st.show.id in :showIds")
     List<Tag> findTagByShowIds(List<Long> showIds, Pageable pageable);
 }
