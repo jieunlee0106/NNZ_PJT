@@ -21,6 +21,7 @@ class SharePerformDetail extends StatefulWidget {
 class _SharePerformDetailState extends State<SharePerformDetail> {
   final scrollControlloer = Get.put(InfiniteScrollController());
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  List<dynamic> TagsList = [];
 
   @override
   void initState() {
@@ -38,7 +39,8 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
     );
 
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
-    print(result.value);
+    TagsList = result.value["showTags"];
+    print(TagsList);
 
     setState(() {
       result.value;
@@ -140,17 +142,10 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
           const SizedBox(
             height: 15,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: HashTagBadge(
-              tags: {
-                '#Peak': Color(0xFFF3C906),
-                '#페스티벌': Color(0xFFF3C906),
-                '#2023': Color(0xFFF3C906),
-                '#전정국': Color(0xFFF3C906),
-                '#BTS': Color(0xFFF3C906),
-                '#포카나눔': Color(0xFFF3C906),
-              },
+              tags: TagsList,
             ),
           ),
           const SizedBox(
