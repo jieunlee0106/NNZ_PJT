@@ -70,8 +70,6 @@ class MyApp extends StatelessWidget {
             color: Config.blackColor,
           ),
         ),
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
       ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -84,7 +82,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       initialBinding: InitBindings(),
-      initialRoute: "/myShareDetail",
+      initialRoute: "/",
       getPages: [
         GetPage(
           name: "/",

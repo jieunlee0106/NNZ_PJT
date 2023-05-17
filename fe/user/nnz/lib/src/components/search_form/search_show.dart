@@ -103,20 +103,137 @@ class SearchShow extends StatelessWidget {
                               )
                             ]),
                         child: controller.showList[index].poster != null
-                            ? Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 200,
-                                    child: Image.network(
-                                      controller.showList[index].poster!,
-                                      width: 200,
-                                    ),
+                            ? GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 8,
                                   ),
-                                  const SizedBox(
-                                    width: 18,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 20,
                                   ),
-                                ],
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Image.network(
+                                          "${controller.showList[index].poster}",
+                                          width: 120,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            // horizontal: 14,
+                                            vertical: 8,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                controller
+                                                    .showList[index].title!,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                "공연 일시",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Config.blackColor,
+                                                ),
+                                              ),
+                                              Text(
+                                                controller
+                                                    .showList[index].startDate
+                                                    .toString()
+                                                    .substring(0, 10),
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Config.blackColor),
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                "공연장소",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Config.blackColor,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${controller.showList[index].location}",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Config.blackColor,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Wrap(
+                                                spacing: 8,
+                                                runSpacing: 8,
+                                                children: List.generate(
+                                                  controller.showList[index]
+                                                      .tags!.length,
+                                                  (i) => Container(
+                                                    height: 32,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                      color: Config.yellowColor,
+                                                    ),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 4,
+                                                    ),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          "#${controller.showList[index].tags![i].tag}",
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Config
+                                                                .blackColor,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 4),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               )
                             : Column(
                                 children: [

@@ -16,26 +16,26 @@ class SharingBtn extends StatelessWidget {
         vertical: 24,
       ),
       color: Colors.white,
-      child: GestureDetector(
-        onTap: () {
+      child: ElevatedButton(
+        onPressed: () {
           controller.onShareRegister();
         },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Config.yellowColor,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: Config.yellowColor,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 12,
-            ),
-            child: Center(
-              child: Text(
-                "등록하기",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+          ),
+          child: Text(
+            "등록하기",
+            style: TextStyle(
+              fontSize: 16,
+              color: Config.blackColor,
             ),
           ),
         ),
