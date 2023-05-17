@@ -44,12 +44,16 @@ class HomeCategory extends StatelessWidget {
                         width: 35,
                         height: 35,
                       ),
+                      SizedBox(
+                        height: 1,
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(2),
                         child: Text(
                           categoryName,
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

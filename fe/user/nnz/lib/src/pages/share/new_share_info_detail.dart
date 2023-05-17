@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/share_info_model.dart';
 
 class ShareInfoPage extends StatefulWidget {
@@ -23,13 +24,14 @@ class _ShareInfoPageState extends State<ShareInfoPage> {
   }
 
   void fetchData() async {
+    String? token;
+    token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
           "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/info",
         ),
         headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjgzODY0NjM1LCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUxNjA2MzV9.pd0j7IpJvhVwUFP-2RIxiinohoOk18ectzV1Qfu3eyhijyvEC1I66_793yQjX2aoyrkKgTTA3ERkZjKgmEIhtg',
+          'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
         });
 

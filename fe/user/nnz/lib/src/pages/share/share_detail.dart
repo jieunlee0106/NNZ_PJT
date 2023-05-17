@@ -279,13 +279,7 @@ class _ShareDatailState extends State<ShareDatail> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: HashTagBadge(
-                tags: {
-                  '#페스티벌': Color(0xFFF3C906),
-                  '#전정국': Color(0xFFF3C906),
-                  '#BTS': Color(0xFFF3C906),
-                  '#Peak': Color(0xFFF3C906),
-                  '#포카나눔': Color(0xFFF3C906),
-                },
+                tags: [],
               ),
             ),
           ],
