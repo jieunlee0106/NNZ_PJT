@@ -5,6 +5,7 @@ import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/search_show_list_model.dart';
 
 import '../../config/config.dart';
+import '../../pages/search/tag_page.dart';
 
 class SearchShow extends StatelessWidget {
   SearchShow({super.key});
@@ -70,7 +71,14 @@ class SearchShow extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(controller.rTagList[index]),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => TagPage(
+                                              tagName:
+                                                  controller.rTagList[index],
+                                            ));
+                                      },
+                                      child: Text(controller.rTagList[index])),
                                 ],
                               ),
                             ),

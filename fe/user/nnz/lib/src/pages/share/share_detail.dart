@@ -200,18 +200,24 @@ class _ShareDatailState extends State<ShareDatail> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            (nunumwriter.value["profileImage"] != null
-                                ? "${nunumwriter.value["profileImage"]}"
-                                : "https://dummyimage.com/600x400/000/fff")),
-                        fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(
+                          "/otherUserProfile/${nunumwriter.value["id"]}");
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              (nunumwriter.value["profileImage"] != null
+                                  ? "${nunumwriter.value["profileImage"]}"
+                                  : "https://dummyimage.com/600x400/000/fff")),
+                          fit: BoxFit.cover,
+                        ),
+                        shape: BoxShape.circle,
                       ),
-                      shape: BoxShape.circle,
                     ),
                   ),
                 ),

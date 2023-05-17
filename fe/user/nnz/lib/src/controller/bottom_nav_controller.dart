@@ -49,18 +49,18 @@ class BottomNavController extends GetxController {
         print(accessToken);
         if (accessToken == null) {
           print("$accessToken $refreshToken");
-          Get.offNamed("/register");
+          Get.toNamed("/register");
         } else {
           Get.toNamed("/sharingRegister");
         }
         break;
-        break;
+
       case PageName.MYPAGE:
         curIndex(page.index);
         accessToken = await getToken();
         if (accessToken == null) {
           print(accessToken);
-          Get.offNamed("/register");
+          Get.toNamed("/register");
         } else {
           Get.to(() => const MyPage());
         }
@@ -71,7 +71,7 @@ class BottomNavController extends GetxController {
 
         if (accessToken == null) {
           print(accessToken);
-          Get.offNamed("/register");
+          Get.toNamed("/register");
         } else {
           Get.to(() => const LikesPage());
         }
