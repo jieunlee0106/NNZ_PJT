@@ -46,7 +46,12 @@ class HomeCategory extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(2),
-                        child: Text(categoryName),
+                        child: Text(
+                          categoryName,
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
                       ),
                     ],
                   ),

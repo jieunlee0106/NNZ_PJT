@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     } else

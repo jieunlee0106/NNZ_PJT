@@ -16,7 +16,7 @@ class Event extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 330,
+          width: 340,
           height: 90,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7.0),
