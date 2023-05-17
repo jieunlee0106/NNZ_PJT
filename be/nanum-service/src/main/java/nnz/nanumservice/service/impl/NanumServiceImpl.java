@@ -107,6 +107,12 @@ public class NanumServiceImpl implements NanumService {
 
         em.flush();
 
+        nanumStockRepository.save(NanumStock.builder()
+                .id(nanumDTO.getId())
+                .quantity(nanumDTO.getQuantity())
+                .stock(nanumDTO.getQuantity())
+                .build());
+
         List<Follower> allByFollowing = followerRepository.findAllByFollowing(user);
         List<String> collect = allByFollowing.stream().map(follower -> follower.getFollower().getDeviceToken()).collect(Collectors.toList());
 
