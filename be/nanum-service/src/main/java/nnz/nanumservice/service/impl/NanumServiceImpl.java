@@ -463,5 +463,8 @@ public class NanumServiceImpl implements NanumService {
         }
 
         nanum.deleteNanum();
+
+        KafkaMessage<NanumDTO> kafkaMessage = KafkaMessage.delete().body(NanumDTO.of(nanum));
+        producer.sendMessage(kafkaMessage, "nanum");
     }
 }
