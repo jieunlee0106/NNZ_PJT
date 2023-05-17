@@ -20,7 +20,7 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CategoryDropdown(
+        title: const CategoryDropdown(
           items: <String>['콘서트', '뮤지컬', '연극', '페스티벌', '스포츠', 'e스포츠'],
           cartegory: '페스티벌',
         ),
@@ -34,9 +34,9 @@ class _MoviePageState extends State<MoviePage> {
                 image: ImagePath.fire,
                 smallText: '나눔 활동이 활발한 페스티벌이에요',
                 categoryName: '뮤직페스티벌'),
-            HotShareList(categoryName: '뮤직페스티벌'),
+            const HotShareList(categoryName: '뮤직페스티벌'),
             GrayLine(),
-            ShowList(categoryName: '뮤직페스티벌'),
+            const ShowList(categoryName: '뮤직페스티벌'),
           ],
         ),
       ),
