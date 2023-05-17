@@ -12,6 +12,12 @@ spring:
 #    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
 #    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
 #    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 
   jpa:
     open-in-view: false
