@@ -10,7 +10,8 @@ import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/other_share_info_model.dart';
 
 class MySharedInfos extends StatefulWidget {
-  const MySharedInfos({super.key});
+  const MySharedInfos({super.key, required this.nanumIds});
+  final int nanumIds;
 
   @override
   State<MySharedInfos> createState() => _MySharedInfosState();
@@ -19,8 +20,8 @@ class MySharedInfos extends StatefulWidget {
 class _MySharedInfosState extends State<MySharedInfos> {
   final token = Get.find<BottomNavController>().accessToken;
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
-  int nanumId = 104;
-
+  double userLat = 0;
+  double userLong = 0;
   @override
   void initState() {
     super.initState();
@@ -32,7 +33,7 @@ class _MySharedInfosState extends State<MySharedInfos> {
     token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/info"),
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/info"),
         headers: {
           'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
@@ -40,10 +41,15 @@ class _MySharedInfosState extends State<MySharedInfos> {
     OtherShareInfoModel infoModelClass =
         OtherShareInfoModel.fromJson(jsonDecode(res.body));
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    userLat = result.value["lat"];
+    userLong = result.value["lng"];
+
     print(result.value);
 
     setState(() {
       result.value;
+      userLat;
+      userLong;
     });
   }
 
@@ -66,8 +72,8 @@ class _MySharedInfosState extends State<MySharedInfos> {
           height: 20,
         ),
         MyMapWidget(
-          userLat: result.value["lat"],
-          userLong: result.value["lng"],
+          userLat: (double.parse(userLat.toString())),
+          userLong: (double.parse(userLong.toString())),
           isUser: "현재 위치",
         ),
         const SizedBox(

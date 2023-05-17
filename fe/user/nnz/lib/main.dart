@@ -204,7 +204,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/sharingInfo",
-          page: () => const SheetBelowTest(),
+          page: () => const SheetBelowTest(
+            nanumIds: 0,
+          ),
           transition: Transition.rightToLeft,
         ),
         GetPage(
