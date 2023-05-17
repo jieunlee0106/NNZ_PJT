@@ -30,10 +30,11 @@ class MyShareDetail extends StatefulWidget {
 
 class _MyShareDetailState extends State<MyShareDetail> {
   // int nanumIds = 104;
-  final token = Token.getAccessToken();
+
   final scrollControlloer = Get.put(InfiniteScrollController());
 
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  String? token;
 
   @override
   void initState() {
@@ -42,14 +43,11 @@ class _MyShareDetailState extends State<MyShareDetail> {
   }
 
   void fetchData() async {
+    token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/user-service/users/nanums/${widget.nanumIds}"),
-        headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
-          "Accept-Charset": "utf-8"
-        });
+        headers: {'Authorization': 'Bearer $token', "Accept-Charset": "utf-8"});
     MyShareInfoDetailModel myshareinfoModelcalss =
         MyShareInfoDetailModel.fromJson(jsonDecode(res.body));
     // print("상세정보줘");

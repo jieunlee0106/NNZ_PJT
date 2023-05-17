@@ -20,8 +20,6 @@ class ShareDatail extends StatefulWidget {
 }
 
 class _ShareDatailState extends State<ShareDatail> {
-  final token = Token.getAccessToken();
-
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> showData = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> nunumwriter = Rx<Map<dynamic, dynamic>>({});
@@ -37,6 +35,7 @@ class _ShareDatailState extends State<ShareDatail> {
   int hour = 0;
   int minute = 0;
   int second = 0;
+  String? token;
 
   @override
   void initState() {
@@ -45,6 +44,7 @@ class _ShareDatailState extends State<ShareDatail> {
   }
 
   void fetchData() async {
+    token = await Token.getAccessToken();
     var res = await http.get(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}"),
@@ -56,6 +56,8 @@ class _ShareDatailState extends State<ShareDatail> {
     ShareDetailModel shareDetailModelclass =
         ShareDetailModel.fromJson(jsonDecode(res.body));
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
+    print("에러코드 찍기");
+    print(res.statusCode);
     showData.value = result.value["show"];
     thumbnailData = result.value["thumbnails"];
     bookmark = result.value["bookmark"];
@@ -85,6 +87,7 @@ class _ShareDatailState extends State<ShareDatail> {
   }
 
   void postBookmark() async {
+    token = await Token.getAccessToken();
     var res = await http.post(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
@@ -107,6 +110,7 @@ class _ShareDatailState extends State<ShareDatail> {
   }
 
   void postFollow() async {
+    token = await Token.getAccessToken();
     var res = await http.post(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/user-service/users/follow/$writerId"),
