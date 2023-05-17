@@ -4,6 +4,8 @@ FROM openjdk:11-jdk-slim
 # JAR_FILE 변수에 jar 파일을 등록
 ARG JAR_FILE=/build/libs/admin-service-0.0.1-SNAPSHOT.jar
 
+RUN sudo ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
 # build 된 jar 파일을 container 내부에 복사
 # 젠킨스 도커 -> 스프링 도커
 COPY ${JAR_FILE} ./app.jar
