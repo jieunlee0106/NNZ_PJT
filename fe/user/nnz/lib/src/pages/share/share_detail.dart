@@ -8,7 +8,7 @@ import 'package:nnz/src/components/sharing_detail/share_float_button.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_card.dart';
 import 'package:nnz/src/components/sharing_detail/sharing_tag.dart';
 import 'package:nnz/src/config/config.dart';
-import 'package:nnz/src/controller/bottom_nav_controller.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/share_detail_model.dart';
 
 class ShareDatail extends StatefulWidget {
@@ -20,9 +20,8 @@ class ShareDatail extends StatefulWidget {
 }
 
 class _ShareDatailState extends State<ShareDatail> {
-  final token = Get.find<BottomNavController>().accessToken;
+  final token = Token.getAccessToken();
 
-  int nanumId = 37;
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> showData = Rx<Map<dynamic, dynamic>>({});
   Rx<Map<dynamic, dynamic>> nunumwriter = Rx<Map<dynamic, dynamic>>({});
@@ -50,8 +49,7 @@ class _ShareDatailState extends State<ShareDatail> {
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}"),
         headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA',
+          'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
         });
 
@@ -90,13 +88,19 @@ class _ShareDatailState extends State<ShareDatail> {
     var res = await http.post(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
-        headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'
-        },
+        headers: {'Authorization': 'Bearer $token'},
         body: {});
     if (res.statusCode == 200) {
       print("북마크 성공");
+    } else if (res.statusCode == 401) {
+      await Token.refreshAccessToken();
+      final newToken = await Token.getAccessToken();
+
+      var newRes = await http.post(
+          Uri.parse(
+              "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
+          headers: {'Authorization': 'Bearer $newToken'},
+          body: {});
     } else {
       print("북마크 실패");
     }
@@ -106,13 +110,19 @@ class _ShareDatailState extends State<ShareDatail> {
     var res = await http.post(
         Uri.parse(
             "https://k8b207.p.ssafy.io/api/user-service/users/follow/$writerId"),
-        headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaXNzIjoibm56IiwiaWF0IjoxNjg0MDY5NjYzLCJhdXRoUHJvdmlkZXIiOiJOTloiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiZW1haWwiOiJzc2FmeTAwMUBzc2FmeS5jb20iLCJleHAiOjE2ODUzNjU2NjN9.tPkq_vcxjmyYlXg8ovvCD4JTBtkIA975OtBQcKmqZZrTHExCEvTsYL9V8iJ6dL64FDyHPde4C1U-cWh-l69ksA'
-        },
+        headers: {'Authorization': 'Bearer $token'},
         body: {});
     if (res.statusCode == 204) {
       print("팔로우버튼 활성화");
+    } else if (res.statusCode == 401) {
+      await Token.refreshAccessToken();
+      final newToken = await Token.getAccessToken();
+
+      var newRes = await http.post(
+          Uri.parse(
+              "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
+          headers: {'Authorization': 'Bearer $newToken'},
+          body: {});
     } else {
       print("팔로우 실패");
     }

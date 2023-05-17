@@ -10,7 +10,8 @@ import 'package:nnz/src/pages/user/mypage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ShareQrLeader extends StatefulWidget {
-  const ShareQrLeader({super.key});
+  const ShareQrLeader({super.key, required this.nanumIds});
+  final int nanumIds;
 
   @override
   State<ShareQrLeader> createState() => _ShareQrLeaderState();
@@ -18,7 +19,7 @@ class ShareQrLeader extends StatefulWidget {
 
 class _ShareQrLeaderState extends State<ShareQrLeader> {
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
-  int nanumId = 104;
+
   final GlobalKey qrKey = GlobalKey();
   QRViewController? controller;
   Barcode? resultt;
@@ -36,7 +37,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
     controller.scannedDataStream.listen((event) async {
       var res = await http.post(
         Uri.parse(
-          "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/qr/${event.code}",
+          "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/qr/${event.code}",
         ),
         headers: {
           'Authorization':
@@ -59,7 +60,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
   void fetchData() async {
     var res = await http.get(
         Uri.parse(
-            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/$nanumId/quantity"),
+            "https://k8b207.p.ssafy.io/api/nanum-service/nanums/${widget.nanumIds}/quantity"),
         headers: {
           'Authorization': 'Bearer ',
           "Accept-Charset": "utf-8",
@@ -68,7 +69,7 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
     ShareStockModel shareStockModelclass =
         ShareStockModel.fromJson(jsonDecode(res.body));
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
-
+    print("재고체크");
     print(result.value);
 
     setState(() {

@@ -20,8 +20,8 @@ class ShareList extends StatefulWidget {
 class _ShareListState extends State<ShareList> {
   @override
   Widget build(BuildContext context) {
-    if (widget.items.length == 0) {
-      return Center(child: NullPage(message: '나눔 목록이 존재하지 않습니다'));
+    if (widget.items.isEmpty) {
+      return const Center(child: NullPage(message: '나눔 목록이 존재하지 않습니다'));
     }
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -115,7 +115,7 @@ class _ShareListState extends State<ShareList> {
                                   Center(
                                     child: GestureDetector(
                                       onTap: () =>
-                                          Get.to(() => MySharedDetail()),
+                                          Get.to(() => const MyShareDetail()),
                                       child: Text(
                                         item.title ?? '',
                                         style: TextStyle(
