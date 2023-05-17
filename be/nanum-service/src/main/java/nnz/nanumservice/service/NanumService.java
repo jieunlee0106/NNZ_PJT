@@ -39,4 +39,6 @@ public interface NanumService {
 
     void updateNanum(Long id, Long writerId, NanumVO data, List<MultipartFile> images);
     ResSearchDTO searchNanum(String query, Pageable pageable);
+
+    void deleteNanum(Long id, Long userId);
 }

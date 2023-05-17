@@ -1,6 +1,10 @@
 # openjdk11을 베이스로 이미지를 만든다.
 FROM openjdk:11-jdk-slim
 
+WORKDIR /home
+RUN touch nnz-firebase.json
+WORKDIR /
+
 # JAR_FILE 변수에 jar 파일을 등록
 ARG JAR_FILE=/build/libs/nanum-service-0.0.1-SNAPSHOT.jar
 

@@ -21,6 +21,7 @@ public class NanumStock implements Serializable {
     private Long id;
 
     private Integer quantity;
+
     private Integer stock;
 
     public void minusStock(){
