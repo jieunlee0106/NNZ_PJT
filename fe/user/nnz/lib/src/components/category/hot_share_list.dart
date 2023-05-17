@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nnz/src/controller/category_controller.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/model/hot_list.dart';
+import 'package:nnz/src/pages/share/sharing_perform.dart';
 
 class HotShareList extends StatefulWidget {
   final String categoryName;
@@ -56,15 +57,19 @@ class _HotListState extends State<HotShareList> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 110,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 255, 253, 253),
-                              borderRadius: BorderRadius.circular(4.0),
-                              image: DecorationImage(
-                                image: NetworkImage(item.poster),
-                                fit: BoxFit.cover,
+                          GestureDetector(
+                            onTap: () => Get.to(
+                                () => SharePerformDetail(showIds: item.id)),
+                            child: Container(
+                              width: 110,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 255, 253, 253),
+                                borderRadius: BorderRadius.circular(4.0),
+                                image: DecorationImage(
+                                  image: NetworkImage(item.poster),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),

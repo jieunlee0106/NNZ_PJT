@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/category/show_null_page.dart';
 import 'package:nnz/src/components/icon_data.dart';
-import 'package:nnz/src/components/nullPage.dart';
-import 'package:nnz/src/config/config.dart';
-import 'package:marquee/marquee.dart';
 import 'package:nnz/src/components/category/show_card.dart';
 import 'package:nnz/src/controller/category_controller.dart';
 import 'package:nnz/src/model/show_list_model.dart';
+import 'package:nnz/src/pages/share/sharing_perform.dart';
 
 class ShowList extends StatefulWidget {
   final String categoryName;
@@ -61,10 +59,10 @@ class _ShowListState extends State<ShowList> {
                         ImagePath.gift,
                         width: 35,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 6,
                       ),
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -80,20 +78,24 @@ class _ShowListState extends State<ShowList> {
                     ],
                   ),
                 ),
-                if (items.length == 0)
-                  Center(
+                if (items.isEmpty)
+                  const Center(
                     child: NullPage3(message: '공연 목록이 존재하지 않습니다'),
                   )
                 else
                   Column(
                     children: items
                         .map(
-                          (item) => ShowCard(
-                            image: item.poster,
-                            title: item.title,
-                            startDate: item.startDate,
-                            endDate: item.endDate,
-                            location: item.location,
+                          (item) => GestureDetector(
+                            onTap: () => Get.to(
+                                () => SharePerformDetail(showIds: item.id)),
+                            child: ShowCard(
+                              image: item.poster,
+                              title: item.title,
+                              startDate: item.startDate,
+                              endDate: item.endDate,
+                              location: item.location,
+                            ),
                           ),
                         )
                         .toList(),

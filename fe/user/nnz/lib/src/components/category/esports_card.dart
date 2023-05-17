@@ -10,7 +10,8 @@ class EsportsCard extends StatelessWidget {
   final String date;
   final String location;
 
-  EsportsCard({
+  const EsportsCard({
+    super.key,
     required this.AteamLogo,
     required this.BteamLogo,
     required this.AteamName,
@@ -26,7 +27,7 @@ class EsportsCard extends StatelessWidget {
         children: [
           Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Container(
@@ -50,17 +51,17 @@ class EsportsCard extends StatelessWidget {
                         children: [
                           Text(
                             date,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Text(
                             location,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600),
@@ -100,7 +101,7 @@ class EsportsCard extends StatelessWidget {
                                   // ),
                                   Text(
                                     AteamName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color.fromARGB(255, 12, 12, 12),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),
@@ -109,7 +110,7 @@ class EsportsCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             flex: 1,
                             child: Text(
                               'VS',
@@ -141,7 +142,7 @@ class EsportsCard extends StatelessWidget {
                                   // ),
                                   Text(
                                     BteamName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color.fromARGB(255, 12, 12, 12),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700),
