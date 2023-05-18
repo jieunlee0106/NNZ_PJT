@@ -38,7 +38,9 @@ class ShareAuthProvider extends GetConnect {
           'Authorization': 'Bearer $token',
         });
     if (res.statusCode == 204) {
-      Get.to(() => const SharingComplete());
+      Get.to(() => SharingComplete(
+            nanumIds: nanumIds,
+          ));
     } else {
       print(token);
       Get.snackbar("실패", "알수없는 오류로 실패하였습니다");
@@ -55,7 +57,9 @@ class ShareAuthProvider extends GetConnect {
           'Authorization': 'Bearer $token',
         });
     if (res.statusCode == 204) {
-      Get.to(() => const SharingComplete());
+      Get.to(() => SharingComplete(
+            nanumIds: nanumIds,
+          ));
     } else {
       Get.snackbar("실패", "알수없는 오류로 실패하였습니다");
     }

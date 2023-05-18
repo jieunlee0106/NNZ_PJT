@@ -146,8 +146,8 @@ class _ShareQrLeaderState extends State<ShareQrLeader> {
                 ),
                 Center(
                   child: (resultt != null)
-                      ? Text('${resultt!.code}')
-                      : const Text("다음 스캔을 진행해주세요"),
+                      ? const Text("인증된 사용자입니다")
+                      : const Text("인증된 사용자가 아닙니다"),
                 ),
               ],
             ),
