@@ -41,4 +41,8 @@ public class Tag {
     public void updateViews(Integer views) {
         this.views = views;
     }
+
+    public void updateUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

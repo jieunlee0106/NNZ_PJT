@@ -113,7 +113,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-tag-sync", groupId = "show-service-3")
+    @KafkaListener(topics = "pd-tag", groupId = "show-service")
     public void getTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagDTO> data = KafkaMessageUtils.deserialize(message, TagDTO.class);
         KafkaMessage.KafkaMessageType type = data.getType();
@@ -121,28 +121,28 @@ public class KafkaConsumer {
 
         if (type == KafkaMessage.KafkaMessageType.CREATE) {
             Optional<Tag> optTag = tagRepository.findById(body.getId());
-
-            Tag tag;
-            // id에 해당하는 값이 존재하지만 태그 이름이 다른 경우
+            Tag tag = null;
             if (optTag.isPresent()) {
                 tag = optTag.get();
 
-                // 입력으로 들어온 메시지가 최신이면 업데이트
                 if (body.getUpdatedAt().isAfter(tag.getUpdatedAt())) {
                     tag.updateTag(body.getTag());
                     tag.updateViews(body.getViews());
+                    tag.updateUpdatedAt(body.getUpdatedAt());
                 }
 
-                log.info("Tag Update Success: Tag: {}", tag);
+                log.info("Tag Update Success!!");
+
             } else {
                 tag = Tag.builder()
                         .id(body.getId())
                         .tag(body.getTag())
-                        .views(body.getViews() == null ? 0 : body.getViews())
+                        .views(body.getViews())
+                        .updatedAt(body.getUpdatedAt())
                         .build();
 
                 tagRepository.save(tag);
-                log.info("Tag Create Success: Tag: {}", tag);
+                log.info("Tag Create Success!!");
             }
         }
     }
