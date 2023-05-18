@@ -38,22 +38,22 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
         "Accept-Charset": "utf-8",
       },
     );
-
+    _isLoading = false;
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
+
     TagsList = result.value["showTags"];
     print(result.value);
-    _isLoading = false;
     String posterUrl = result.value["poster"];
-    if (posterUrl != null) {
-      var response = await http.head(Uri.parse(posterUrl));
-      if (response.statusCode != 200) {
-        // 대체 이미지 URL 설정
-        posterUrl = "https://dummyimage.com/600x400/000/fff";
-      }
-    } else {
-      // 대체 이미지 URL 설정
-      posterUrl = "https://dummyimage.com/600x400/000/fff";
-    }
+    // if (posterUrl != null) {
+    //   var response = await http.head(Uri.parse(posterUrl));
+    //   if (response.statusCode != 200) {
+    //     // 대체 이미지 URL 설정
+    //     posterUrl = "https://dummyimage.com/600x400/000/fff";
+    //   }
+    // } else {
+    //   // 대체 이미지 URL 설정
+    //   posterUrl = "https://dummyimage.com/600x400/000/fff";
+    // }
 
     setState(() {
       result.value;
