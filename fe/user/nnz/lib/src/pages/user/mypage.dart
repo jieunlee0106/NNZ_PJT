@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/components/gray_line_form/gray_line.dart';
 import 'package:nnz/src/components/icon_data.dart';
@@ -22,7 +23,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   final controller = Get.put(MyPageController());
-
+  final storage = const FlutterSecureStorage();
   late MyPageModel myInfo;
   bool _isLoading = true;
 
@@ -51,16 +52,16 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     // var myInfo = controller.myInfo;
     if (_isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          actions: [Icon(Icons.more_vert)],
+          actions: const [Icon(Icons.more_vert)],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -80,7 +81,7 @@ class _MyPageState extends State<MyPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GrayLine(),
@@ -113,7 +114,8 @@ class _MyPageState extends State<MyPage> {
                             child: Container(
                                 width: 135,
                                 height: 5,
-                                color: Color.fromARGB(255, 230, 230, 230)),
+                                color:
+                                    const Color.fromARGB(255, 230, 230, 230)),
                           ),
                         ],
                       ),
@@ -125,7 +127,7 @@ class _MyPageState extends State<MyPage> {
                     yet: myInfo.statistics?.nanum?.beforeCount ?? 0,
                     ing: myInfo.statistics?.nanum?.ongoingCount ?? 0,
                     end: myInfo.statistics?.nanum?.doneCount ?? 0,
-                    page: MySharingList(),
+                    page: const MySharingList(),
                   ),
                   SharingInfo(
                     share: '나눔 받은 내역',
@@ -133,7 +135,7 @@ class _MyPageState extends State<MyPage> {
                     yet: myInfo.statistics?.receive?.beforeCount ?? 0,
                     ing: myInfo.statistics?.receive?.ongoingCount ?? 0,
                     end: myInfo.statistics?.receive?.doneCount ?? 0,
-                    page: MySharedList(),
+                    page: const MySharedList(),
                   ),
                   GestureDetector(
                       onTap: () {
@@ -141,22 +143,23 @@ class _MyPageState extends State<MyPage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('로그아웃'),
-                                content:
-                                    Text('로그아웃 시 앱이 종료됩니다. \n로그아웃 하시겠습니까?'),
+                                title: const Text('로그아웃'),
+                                content: const Text(
+                                    '로그아웃 시 앱이 종료됩니다. \n로그아웃 하시겠습니까?'),
                                 actions: <Widget>[
                                   TextButton(
                                       onPressed: () {
                                         Navigator.pop(context); // 모달 닫기
+                                        storage.deleteAll();
                                         SystemChannels.platform.invokeMethod(
                                             'SystemNavigator.pop');
                                       },
-                                      child: Text('네')),
+                                      child: const Text('네')),
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context); //close Dialog
                                     },
-                                    child: Text('아니요'),
+                                    child: const Text('아니요'),
                                   )
                                 ],
                               );

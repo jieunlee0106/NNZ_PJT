@@ -82,7 +82,6 @@ class BottomNavController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    storage.deleteAll();
     _initNotification();
     token = await _getToken();
     // storage.write(key: "accessToken", value: "12131312313");
