@@ -115,29 +115,6 @@ class _ShareDatailState extends State<ShareDatail> {
     }
   }
 
-  // void postFollow() async {
-  //   token = await Token.getAccessToken();
-  //   var res = await http.post(
-  //       Uri.parse(
-  //           "https://k8b207.p.ssafy.io/api/user-service/users/follow/$writerId"),
-  //       headers: {'Authorization': 'Bearer $token'},
-  //       body: {});
-  //   if (res.statusCode == 204) {
-  //     print("팔로우버튼 활성화");
-  //   } else if (res.statusCode == 401) {
-  //     await Token.refreshAccessToken();
-  //     final newToken = await Token.getAccessToken();
-
-  //     var newRes = await http.post(
-  //         Uri.parse(
-  //             "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
-  //         headers: {'Authorization': 'Bearer $newToken'},
-  //         body: {});
-  //   } else {
-  //     print("팔로우 실패");
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -339,7 +316,7 @@ class _ShareDatailState extends State<ShareDatail> {
                             EdgeInsets.symmetric(horizontal: 80, vertical: 8),
                         child: Text("이미 받은 나눔입니다"),
                       )),
-                )
+                ),
               ],
             ),
           ),

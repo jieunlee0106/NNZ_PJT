@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nnz/src/app.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:get/get.dart';
-import 'package:nnz/src/pages/home/home.dart';
+import 'package:nnz/src/pages/share/share_detail.dart';
 
 class SharingComplete extends StatelessWidget {
-  const SharingComplete({super.key});
+  const SharingComplete({super.key, required this.nanumIds});
+  final int nanumIds;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,9 @@ class SharingComplete extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GestureDetector(
-                onTap: () => Get.to(() => Home()),
+                onTap: () => Get.to(() => ShareDatail(
+                      nanumIds: nanumIds,
+                    )),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Config.yellowColor,
@@ -57,7 +61,7 @@ class SharingComplete extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GestureDetector(
-                onTap: () => Get.to(() => Home()),
+                onTap: () => Get.to(() => const App()),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Config.yellowColor,
