@@ -115,28 +115,28 @@ class _ShareDatailState extends State<ShareDatail> {
     }
   }
 
-  void postFollow() async {
-    token = await Token.getAccessToken();
-    var res = await http.post(
-        Uri.parse(
-            "https://k8b207.p.ssafy.io/api/user-service/users/follow/$writerId"),
-        headers: {'Authorization': 'Bearer $token'},
-        body: {});
-    if (res.statusCode == 204) {
-      print("팔로우버튼 활성화");
-    } else if (res.statusCode == 401) {
-      await Token.refreshAccessToken();
-      final newToken = await Token.getAccessToken();
+  // void postFollow() async {
+  //   token = await Token.getAccessToken();
+  //   var res = await http.post(
+  //       Uri.parse(
+  //           "https://k8b207.p.ssafy.io/api/user-service/users/follow/$writerId"),
+  //       headers: {'Authorization': 'Bearer $token'},
+  //       body: {});
+  //   if (res.statusCode == 204) {
+  //     print("팔로우버튼 활성화");
+  //   } else if (res.statusCode == 401) {
+  //     await Token.refreshAccessToken();
+  //     final newToken = await Token.getAccessToken();
 
-      var newRes = await http.post(
-          Uri.parse(
-              "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
-          headers: {'Authorization': 'Bearer $newToken'},
-          body: {});
-    } else {
-      print("팔로우 실패");
-    }
-  }
+  //     var newRes = await http.post(
+  //         Uri.parse(
+  //             "https://k8b207.p.ssafy.io/api/user-service/users/bookmarks/${widget.nanumIds}"),
+  //         headers: {'Authorization': 'Bearer $newToken'},
+  //         body: {});
+  //   } else {
+  //     print("팔로우 실패");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ class _ShareDatailState extends State<ShareDatail> {
               children: [
                 Center(
                   child: Image.network(
-                    (thumbnailData.isNotEmpty
+                    (thumbnailData != null
                         ? "${thumbnailData[0]}"
                         : "https://dummyimage.com/600x400/000/fff"),
                     height: 230,
@@ -238,29 +238,6 @@ class _ShareDatailState extends State<ShareDatail> {
                     Text("${nunumwriter.value["nickname"]}"),
                     const SizedBox(
                       width: 15,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        postFollow();
-                        setState(() {
-                          isFollow = !isFollow;
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: (isFollow
-                                ? const Color.fromARGB(255, 203, 202, 202)
-                                : Config.yellowColor),
-                            borderRadius: BorderRadius.circular(5)),
-                        width: 80,
-                        height: 35,
-                        child: Center(
-                          child: Text(
-                            (isFollow ? "Unfollow" : "Follow"),
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -352,6 +329,16 @@ class _ShareDatailState extends State<ShareDatail> {
                     leftsec: second,
                     nanumIds: widget.nanumIds,
                   ),
+                ),
+                Visibility(
+                  visible: isBooking,
+                  child: Container(
+                      decoration: BoxDecoration(color: Config.greyColor),
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 80, vertical: 8),
+                        child: Text("이미 받은 나눔입니다"),
+                      )),
                 )
               ],
             ),
