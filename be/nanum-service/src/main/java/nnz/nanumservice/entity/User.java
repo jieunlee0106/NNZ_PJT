@@ -56,6 +56,7 @@ public class User {
         this.id = userDTO.getId();
         this.nickname = userDTO.getNickname();
         this.profileImage = userDTO.getProfileImage();
+        this.deviceToken = userDTO.getDeviceToken();
         this.updatedAt = userDTO.getUpdatedAt();
     }
 
