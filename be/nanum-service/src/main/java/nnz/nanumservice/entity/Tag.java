@@ -27,7 +27,8 @@ public class Tag {
 
     private String tag;
 
-    private Integer views;
+    @Builder.Default
+    private Integer views = 0;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
