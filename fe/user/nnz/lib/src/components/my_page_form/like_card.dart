@@ -4,6 +4,7 @@ import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/controller/likes_controller.dart';
+import 'package:nnz/src/pages/share/my_shared_detail.dart';
 
 class LikeCard extends StatefulWidget {
   final String image;
@@ -32,89 +33,94 @@ class _LikeCardState extends State<LikeCard> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: 110,
-          height: 160,
-          margin: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.7),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset(0, 5),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 110,
-                height: 90,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 253, 253),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
-                  ),
-                  image: DecorationImage(
-                    image: NetworkImage(widget.image),
-                    fit: BoxFit.cover,
+        GestureDetector(
+          onTap: () => Get.to(() => MyShareDetail(
+                nanumIds: widget.nanumId ?? 0,
+              )),
+          child: Container(
+            width: 110,
+            height: 160,
+            margin: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.7),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 110,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 253, 253),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    image: DecorationImage(
+                      image: NetworkImage(widget.image),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 150, // set a width for the Text widget
-                      child: Text(
-                        widget.subtitle,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 11, 40, 126),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 150, // set a width for the Text widget
-                      child: Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w900,
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 150, // set a width for the Text widget
+                        child: Text(
+                          widget.subtitle,
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 11, 40, 126),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    SizedBox(
-                      width: 150, // set a width for the Text widget
-                      child: Text(
-                        widget.location,
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
+                      SizedBox(
+                        width: 150, // set a width for the Text widget
+                        child: Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w900,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: 150, // set a width for the Text widget
+                        child: Text(
+                          widget.location,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w400,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        if (widget.status == 0) // 나눔 종료 3으로 수정
+        if (widget.status == 3) // 나눔 종료 3으로 수정
           Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -140,7 +146,9 @@ class _LikeCardState extends State<LikeCard> {
                                 )),
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context); //close Dialog
+                                Get.to(() => MyShareDetail(
+                                      nanumIds: widget.nanumId ?? 0,
+                                    ));
                               },
                               child: Text(
                                 '아니요, 나눔 볼러갈래요   ',

@@ -102,8 +102,8 @@ class SportsCard extends StatelessWidget {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
-                                      width: 22,
-                                      height: 22,
+                                      width: 32,
+                                      height: 32,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: const Color.fromARGB(
@@ -148,8 +148,8 @@ class SportsCard extends StatelessWidget {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
-                                      width: 22,
-                                      height: 22,
+                                      width: 32,
+                                      height: 32,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: const Color.fromARGB(
