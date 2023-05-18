@@ -16,6 +16,7 @@ function PerformHome() {
     title: string;
     status: number;
   }
+  const token = sessionStorage.getItem("accsesstoken");
 
   const listDataHandler = useCallback(async () => {
     try {
@@ -28,6 +29,7 @@ function PerformHome() {
   }, []);
 
   useEffect(() => {
+    console.log(token);
     listDataHandler();
   }, [listDataHandler]);
 

@@ -3,9 +3,12 @@ import logo from "../../assets/nnzlogo.png";
 import axiosApi from "../../services/axiosApi";
 import useInput from "../../services/useInput";
 import axiosLogin from "../../services/axiosLogin";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../modules/userSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userId = useInput("");
   const userPassword = useInput("");
 
@@ -18,6 +21,7 @@ function Login() {
       });
       console.log(res);
       sessionStorage.setItem("accsesstoken", res.data.accessToken);
+      console.log(res.data.accessToken);
       navigate("/perform");
     } catch (err) {
       console.log(err);
