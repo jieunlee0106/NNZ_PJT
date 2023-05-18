@@ -20,7 +20,7 @@ spring:
         globally_quoted_identifiers: true
         format_sql: true
   kafka:
-    prefix: dev-
+    prefix: pd-
     bootstrap-servers: http://k8b207.p.ssafy.io:29092
     consumer:
       auto-offset-reset: earliest
@@ -44,12 +44,12 @@ eureka:
     service-url:
       defaultZone: ENC(aNWlQEmNM4GnFa8SLISQ2XffFZfsIGzQ0WuQqiPWYUHzkb6zSn3HEkDFpnry2XtlwrJx22vcfYM=)
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type: TRACE
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type: TRACE
 
 jasypt:
   encryptor:
@@ -62,7 +62,7 @@ notification:
     enabled: false
     webhook-url: ENC(L3DJfaOz0UEVz7FUMA5KHhLRhpQn+ehd/fCjXZWie7VdNDRNe/w/Z4pc10tfPuylwx0geLtilsCFpPbpANICJS/D7U+6QFSN)
     channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
-    pretext: occur error # attachments? ??? ??? ?? ?? ??? ??
+    pretext: Dev Tag Service # attachments? ??? ??? ?? ?? ??? ??
     #    color: # attachment? ?? ??? ??. default=red
     author-name: mmSender # attachment? ??? ??? ??
     author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??

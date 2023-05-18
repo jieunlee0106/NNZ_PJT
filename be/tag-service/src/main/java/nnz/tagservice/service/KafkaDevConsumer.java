@@ -22,7 +22,7 @@ public class KafkaDevConsumer implements KafkaConsumer {
 
     private final TagRepository tagRepository;
 
-    @KafkaListener(topics = "dev-tag", groupId = "tag-service-2")
+    @KafkaListener(topics = "pd-tag", groupId = "tag-service")
     public void consumeTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagDTO> data = KafkaMessageUtils.deserialize(message, TagDTO.class);
         KafkaMessageType type = data.getType();
