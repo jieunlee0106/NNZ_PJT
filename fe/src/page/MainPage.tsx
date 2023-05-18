@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import baimage from "../assets/nnzBackground.png";
 import logo from "../assets/nnzlogo.png";
 import google from "../assets/google_play_logo 1.png";
@@ -7,6 +7,9 @@ import mock2 from "../assets/nnzmockup_5.png";
 import mock3 from "../assets/nnzmockup_6.png";
 
 function MainPage() {
+  useEffect(() => {
+    sessionStorage.setItem("console", "12345");
+  });
   const navigateToGoogle = () => {
     window.open(
       "https://play.google.com/store/apps/details?id=com.nnz.nnz&hl=ko"

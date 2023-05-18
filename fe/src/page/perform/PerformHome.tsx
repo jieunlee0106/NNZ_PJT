@@ -20,7 +20,10 @@ function PerformHome() {
 
   const listDataHandler = useCallback(async () => {
     try {
-      const res = await axiosApi.get("admin-service/admin/ask/shows");
+      const token = await sessionStorage.getItem("accsesstoken");
+      const res = await axiosApi.get("admin-service/admin/ask/shows", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log(res);
       setRequestData(res.data);
     } catch (err) {
@@ -29,7 +32,6 @@ function PerformHome() {
   }, []);
 
   useEffect(() => {
-    console.log(token);
     listDataHandler();
   }, [listDataHandler]);
 
