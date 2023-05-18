@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/nnzlogo.png";
 import axiosApi from "../../services/axiosApi";
 import useInput from "../../services/useInput";
+import axiosLogin from "../../services/axiosLogin";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ function Login() {
   const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const res = await axiosApi.post("user-service/users/login", {
+      const res = await axiosLogin.post("user-service/users/login", {
         email: userId.value,
         pwd: userPassword.value,
       });
