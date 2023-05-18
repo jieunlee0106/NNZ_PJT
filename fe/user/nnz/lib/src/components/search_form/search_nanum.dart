@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/search_controller.dart';
 import 'package:nnz/src/model/searh_nanum_list_model.dart';
 
@@ -122,11 +123,17 @@ class SearchNanum extends StatelessWidget {
                   itemCount: controller.nanumList.length,
                   itemBuilder: ((context, index) {
                     return GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         Logger().i(controller.nanumList[index].id);
-                        Get.to(() => ShareDatail(
-                              nanumIds: controller.nanumList[index].id!,
-                            ));
+                        final token = await Token.getAccessToken();
+                        Logger().i(token);
+                        if (token == null) {
+                          Get.toNamed("/register");
+                        } else {
+                          Get.to(() => ShareDatail(
+                                nanumIds: controller.nanumList[index].id!,
+                              ));
+                        }
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(
