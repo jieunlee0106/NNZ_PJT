@@ -132,6 +132,7 @@ public class KafkaConsumer {
                 }
 
                 log.info("Tag Update Success!!");
+
             } else {
                 tag = Tag.builder()
                         .id(body.getId())
