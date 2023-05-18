@@ -17,7 +17,10 @@ function ReportHome() {
 
   const reportDataHandler = useCallback(async () => {
     try {
-      const res = await axiosApi.get("admin-service/admin/ask/reports");
+      const token = await sessionStorage.getItem("accsesstoken");
+      const res = await axiosApi.get("admin-service/admin/ask/reports", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       console.log(res);
       setReportData(res.data);
     } catch (err) {

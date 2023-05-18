@@ -8,10 +8,15 @@ function PerformDetail() {
 
   const rejectRequestHandler = async () => {
     try {
-      const res = await axiosApi.patch("admin-service/admin/ask/shows", {
-        id: location.state.id.toString(),
-        status: "2",
-      });
+      const token = await sessionStorage.getItem("accsesstoken");
+      const res = await axiosApi.patch(
+        "admin-service/admin/ask/shows",
+        {
+          id: location.state.id.toString(),
+          status: 2,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       console.log(res);
       navigate(-1);
     } catch (err) {
@@ -21,10 +26,15 @@ function PerformDetail() {
 
   const allowRequestHandler = async () => {
     try {
-      const res = await axiosApi.patch("admin-service/admin/ask/shows", {
-        id: location.state.id,
-        status: 1,
-      });
+      const token = await sessionStorage.getItem("accsesstoken");
+      const res = await axiosApi.patch(
+        "admin-service/admin/ask/shows",
+        {
+          id: location.state.id,
+          status: 1,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       console.log(res);
       navigate(-1);
     } catch (err) {

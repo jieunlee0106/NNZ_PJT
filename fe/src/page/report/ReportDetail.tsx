@@ -8,10 +8,15 @@ function ReportDetail() {
 
   const rejectReportHandler = async () => {
     try {
-      const res = await axiosApi.patch("admin-service/admin/ask/reports", {
-        id: location.state.id,
-        status: 2,
-      });
+      const token = await sessionStorage.getItem("accsesstoken");
+      const res = await axiosApi.patch(
+        "admin-service/admin/ask/reports",
+        {
+          id: location.state.id,
+          status: 2,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       console.log(res);
     } catch (err) {
       console.log(err);
@@ -20,10 +25,15 @@ function ReportDetail() {
 
   const allowReportHandler = async () => {
     try {
-      const res = await axiosApi.patch("admin-service/admin/ask/reports", {
-        id: location.state.id,
-        status: 1,
-      });
+      const token = await sessionStorage.getItem("accsesstoken");
+      const res = await axiosApi.patch(
+        "admin-service/admin/ask/reports",
+        {
+          id: location.state.id,
+          status: 1,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       console.log(res);
     } catch (err) {
       console.log(err);

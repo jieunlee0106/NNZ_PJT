@@ -9,10 +9,9 @@ import { useEffect } from "react";
 
 function Login() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const userId = useInput("");
   const userPassword = useInput("");
-  const check = sessionStorage.getItem("console");
 
   const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,10 +28,6 @@ function Login() {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    console.log(check);
-  });
 
   return (
     <div className="flex flex-col items-center pt-20">
