@@ -79,4 +79,4 @@ eureka:
 
 kafka:
   topic:
-    prefix: dev-
+    prefix: pd-

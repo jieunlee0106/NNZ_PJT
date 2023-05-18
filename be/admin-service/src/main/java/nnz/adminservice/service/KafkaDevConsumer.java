@@ -30,7 +30,7 @@ public class KafkaDevConsumer {
     private final AskedShowRepository askedShowRepository;
     private final CategoryRepository categoryRepository;
     // User
-    @KafkaListener(topics = "dev-user", groupId = "dev-admin-service")
+    @KafkaListener(topics = "pd-user", groupId = "dev-admin-service")
     public void userMessage(String message) throws JsonProcessingException {
         KafkaMessage<UserDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, UserDTO.class);
         log.info("consume userMessage: {}", message);
@@ -45,7 +45,7 @@ public class KafkaDevConsumer {
     }
 
     // Show
-    @KafkaListener(topics = "dev-show", groupId = "dev-admin-service")
+    @KafkaListener(topics = "pd-show", groupId = "dev-admin-service")
     public void showMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume showMessage: {}", message);
@@ -75,7 +75,7 @@ public class KafkaDevConsumer {
     }
 
     // Report
-    @KafkaListener(topics = "dev-report", groupId = "dev-admin-service")
+    @KafkaListener(topics = "pd-report", groupId = "dev-admin-service")
     public void reportMessage(String message) throws JsonProcessingException {
         KafkaMessage<ReportDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ReportDTO.class);
         log.info("consume reportMessage: {}", message);
@@ -105,7 +105,7 @@ public class KafkaDevConsumer {
     }
 
     // AskedShow
-    @KafkaListener(topics = "dev-askedshow", groupId = "dev-admin-service")
+    @KafkaListener(topics = "pd-askedshow", groupId = "dev-admin-service")
     public void askedShowMessage(String message) throws JsonProcessingException {
         KafkaMessage<AskedShowKafkaDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, AskedShowKafkaDTO.class);
         log.info("consume askedShowMessage: {}", message);
