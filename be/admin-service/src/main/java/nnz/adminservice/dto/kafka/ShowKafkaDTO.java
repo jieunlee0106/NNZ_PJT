@@ -1,69 +1,109 @@
 package nnz.adminservice.dto.kafka;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nnz.adminservice.entity.Show;
+import nnz.adminservice.entity.ShowTag;
+import nnz.adminservice.entity.Tag;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Getter
 public class ShowKafkaDTO {
+
     private Long id;
-
     private String title;
-
     private String location;
-
     private String startDate;
-
     private String endDate;
-
     private String ageLimit;
     private String region;
-
     private String posterImage;
     private String categoryCode;
-
-    private Long createdBy;
-
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime createdAt;
-
-    private Long updatedBy;
+    private List<ShowTagSyncDTO> tags;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updatedAt;
+    private Boolean isDelete;
 
-    protected boolean isDelete;
-
-
-    public static ShowKafkaDTO entityToDTO(Show show) {
+    public static ShowKafkaDTO of(Show show) {
+        List<ShowTagSyncDTO> syncTags = show.getTags().stream()
+                .map(ShowTagSyncDTO::of)
+                .collect(Collectors.toList());
 
         return ShowKafkaDTO.builder()
-                .categoryCode(show.getCategory().getCode())
-                .ageLimit(show.getAgeLimit())
+                .id(show.getId())
+                .title(show.getTitle())
                 .location(show.getLocation())
-                .region(show.getRegion())
-                .posterImage(show.getPosterImage())
                 .startDate(show.getStartDate())
                 .endDate(show.getEndDate())
-                .title(show.getTitle())
-                .createdBy(show.getCreatedBy())
-                .createdAt(show.getCreatedAt())
-                .updatedBy(show.getUpdatedBy())
+                .ageLimit(show.getAgeLimit())
+                .region(show.getRegion())
+                .posterImage(show.getPosterImage())
+                .categoryCode(show.getCategory().getCode())
+                .tags(syncTags)
                 .updatedAt(show.getUpdatedAt())
                 .isDelete(show.getIsDelete())
                 .build();
+
+    }
+
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @Getter
+    private static class ShowTagSyncDTO {
+        private Long id;
+        private TagSyncDTO tag;
+
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        private LocalDateTime updatedAt;
+        private Boolean isDelete;
+
+        public static ShowTagSyncDTO of(ShowTag showTag) {
+            TagSyncDTO tag = TagSyncDTO.of(showTag.getTag());
+            return ShowTagSyncDTO.builder()
+                    .id(showTag.getId())
+                    .tag(tag)
+                    .updatedAt(showTag.getUpdatedAt())
+                    .isDelete(showTag.getIsDelete())
+                    .build();
+        }
+
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @Getter
+    private static class TagSyncDTO {
+        private Long id;
+        private String tag;
+        private Integer views;
+
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        private LocalDateTime updatedAt;
+        private Boolean isDelete;
+
+        public static TagSyncDTO of(Tag tag) {
+            return TagSyncDTO.builder()
+                    .id(tag.getId())
+                    .tag(tag.getTag())
+                    .views(tag.getViews())
+                    .updatedAt(tag.getUpdatedAt())
+                    .isDelete(tag.getIsDelete())
+                    .build();
+        }
     }
 }
+

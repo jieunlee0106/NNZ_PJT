@@ -109,7 +109,7 @@ public class AdminServiceImpl implements AdminService {
                     .build());
 
             // Kafka에 메세지 전송
-            ShowKafkaDTO showKafkaDTO = ShowKafkaDTO.entityToDTO(save);
+            ShowKafkaDTO showKafkaDTO = ShowKafkaDTO.of(save);
 
             KafkaMessage<ShowKafkaDTO> message = KafkaMessage.create().body(showKafkaDTO);
 

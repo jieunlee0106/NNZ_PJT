@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.adminservice.dto.*;
 import nnz.adminservice.dto.kafka.AskedShowKafkaDTO;
+import nnz.adminservice.dto.kafka.ShowKafkaDTO;
 import nnz.adminservice.entity.*;
 import nnz.adminservice.exception.ErrorCode;
 import nnz.adminservice.repository.*;
@@ -47,14 +48,14 @@ public class KafkaDevConsumer {
     // Show
     @KafkaListener(topics = "pd-show", groupId = "dev-admin-service")
     public void showMessage(String message) throws JsonProcessingException {
-        KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
+        KafkaMessage<ShowKafkaDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowKafkaDTO.class);
         log.info("consume showMessage: {}", message);
         log.info("kafkaMessage.getType() = {}", kafkaMessage.getType());
         log.info("kafkaMessage.getBody() = {}", kafkaMessage.getBody());
 
-        ShowDTO body = kafkaMessage.getBody();
+        ShowKafkaDTO body = kafkaMessage.getBody();
 
-        Category category = categoryRepository.findByName(body.getCategory())
+        Category category = categoryRepository.findByCode(body.getCategoryCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         Show show = Show.builder()
@@ -66,7 +67,7 @@ public class KafkaDevConsumer {
                 .endDate(body.getEndDate())
                 .ageLimit(body.getAgeLimit())
                 .region(body.getRegion())
-                .posterImage(body.getPoster())
+                .posterImage(body.getPosterImage())
                 .build();
 
         if(Objects.equals(kafkaMessage.getType().toString(), "CREATE")) showRepository.save(show);
