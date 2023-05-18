@@ -28,7 +28,7 @@ public class KafkaConsumer {
     private final TagRepository tagRepository;
 
     @Transactional
-    @KafkaListener(topics = {"dev-show-sync", "dev-show-admin"}, groupId = "nanum-service-1")
+    @KafkaListener(topics = {"pd-show-sync", "pd-show-admin"}, groupId = "nanum-service")
     public void getShowMessage(String message) throws JsonProcessingException {
         KafkaMessage<ShowDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, ShowDTO.class);
         log.info("consume message: {}", message);
@@ -51,7 +51,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-tag", groupId = "nanum-service-2")
+    @KafkaListener(topics = "pd-tag", groupId = "nanum-service")
     public void getTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagSyncVO> data = KafkaMessageUtils.deserialize(message, TagSyncVO.class);
         KafkaMessage.KafkaMessageType type = data.getType();
@@ -77,7 +77,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-user", groupId = "nanum-service-2")
+    @KafkaListener(topics = "pd-user", groupId = "nanum-service")
     public void getUserMessage(String message) throws JsonProcessingException {
         KafkaMessage<UserDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, UserDTO.class);
         log.info("consume message: {}", message);
@@ -101,7 +101,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-bookmark", groupId = "nanum-service-3")
+    @KafkaListener(topics = "pd-bookmark", groupId = "nanum-service")
     public void getBookmarkMessage(String message) throws JsonProcessingException {
         KafkaMessage<BookmarkDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, BookmarkDTO.class);
         log.info("consume message: {}", message);
@@ -136,7 +136,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-follow", groupId = "nanum-service-4")
+    @KafkaListener(topics = "pd-follow", groupId = "nanum-service")
     public void getFollowMessage(String message) throws JsonProcessingException {
         KafkaMessage<FollowerSyncDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, FollowerSyncDTO.class);
         log.info("consume message: {}", message);
