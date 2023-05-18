@@ -29,6 +29,7 @@ import 'package:nnz/src/pages/category/musical.dart';
 import 'package:nnz/src/pages/category/sports.dart';
 import 'package:nnz/src/pages/category/esports.dart';
 import 'package:nnz/src/pages/category/stage.dart';
+import 'package:nnz/src/pages/home/loading.dart';
 import 'package:nnz/src/pages/user/alarm.dart';
 import 'package:nnz/src/model/popularity.dart';
 import 'package:nnz/src/model/location_model.dart';
@@ -124,8 +125,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Center(
+        child: Loading(),
       );
     } else {
       return Scaffold(
