@@ -12,19 +12,19 @@ public class KafkaDevConsumer extends KafkaConsumer {
     }
 
     @Override
-    @KafkaListener(topics = "dev-nanum")
+    @KafkaListener(topics = "pd-nanum")
     public void consumeNanumMessage(String message) throws JsonProcessingException {
         super.consumeNanumMessage(message);
     }
 
     @Override
-    @KafkaListener(topics = "dev-show-sync")
+    @KafkaListener(topics = "pd-show")
     public void consumeShowMessage(String message) throws JsonProcessingException {
         super.consumeShowMessage(message);
     }
 
     @Override
-    @KafkaListener(topics = "dev-usernanum")
+    @KafkaListener(topics = "pd-usernanum")
     public void consumeReceiveNanumMessage(String message) throws JsonProcessingException {
         super.consumeReceiveNanumMessage(message);
     }
