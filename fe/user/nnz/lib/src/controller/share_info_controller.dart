@@ -7,13 +7,13 @@ class ShareInfoController extends GetxController {
 
   final Rx<Map<String, dynamic>> shareInfoData = Rx<Map<String, dynamic>>({});
 
-  Future<void> getShareInfoData() async {
-    final res = await _shareInfoProvider.getShareInfo();
-    if (res.statusCode == 200) {
-      shareInfoData.value = res.body;
-      print(shareInfoData.value);
-    } else {
-      print("나눔인포에러");
-    }
-  }
+  // Future<void> getShareInfoData() async {
+  //   final res = await _shareInfoProvider.getShareInfo();
+  //   if (res.statusCode == 200) {
+  //     shareInfoData.value = res.body;
+  //     print(shareInfoData.value);
+  //   } else {
+  //     print("나눔인포에러");
+  //   }
+  // }
 }

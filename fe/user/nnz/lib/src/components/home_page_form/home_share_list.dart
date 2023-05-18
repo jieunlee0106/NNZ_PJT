@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/controller/bottom_nav_controller.dart';
 import 'package:nnz/src/model/popularity.dart';
 import 'package:nnz/src/pages/share/share_detail.dart';
@@ -20,7 +21,16 @@ class HomeShareList extends StatefulWidget {
 }
 
 class _HomeShareListState extends State<HomeShareList> {
-  final token = Get.find<BottomNavController>().accessToken;
+  String? token;
+
+  void initState() {
+    super.initState();
+    tokenData();
+  }
+
+  void tokenData() async {
+    token = await Token.getAccessToken();
+  }
 
   @override
   Widget build(BuildContext context) {

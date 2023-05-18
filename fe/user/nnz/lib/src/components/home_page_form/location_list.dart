@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:marquee/marquee.dart';
+import 'package:nnz/src/config/token.dart';
 import 'package:nnz/src/model/location_model.dart';
 import 'package:nnz/src/model/popularity.dart';
 
@@ -17,6 +18,17 @@ class HomeShareList2 extends StatefulWidget {
 }
 
 class _HomeShareListState extends State<HomeShareList2> {
+  String? token;
+
+  void initState() {
+    super.initState();
+    tokenData();
+  }
+
+  void tokenData() async {
+    token = await Token.getAccessToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

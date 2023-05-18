@@ -115,7 +115,7 @@ class SearchNanum extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: Get.width * 0.8,
+                height: Get.width,
                 child: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
