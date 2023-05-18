@@ -12,13 +12,13 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 class SheetBelowTest extends StatefulWidget {
   const SheetBelowTest({super.key, required this.nanumIds});
   final int nanumIds;
-
   @override
   State<SheetBelowTest> createState() => _SheetBelowTestState();
 }
 
 class _SheetBelowTestState extends State<SheetBelowTest> {
   Rx<Map<dynamic, dynamic>> result = Rx<Map<dynamic, dynamic>>({});
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -27,6 +27,8 @@ class _SheetBelowTestState extends State<SheetBelowTest> {
   }
 
   void fetchData() async {
+    _isLoading = true;
+
     String? token;
     token = await Token.getAccessToken();
     var res = await http.get(
@@ -36,10 +38,12 @@ class _SheetBelowTestState extends State<SheetBelowTest> {
           'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
         });
+    setState(() {
+      _isLoading = false;
+    });
     OtherShareInfoModel infoModelClass =
         OtherShareInfoModel.fromJson(jsonDecode(res.body));
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
-
     print("너야?");
     print(result.value);
 
@@ -50,27 +54,33 @@ class _SheetBelowTestState extends State<SheetBelowTest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SnappingSheet(
-        lockOverflowDrag: true,
-        grabbingHeight: 50,
-        grabbing: const GrabbingWidget(),
-        sheetBelow: SnappingSheetContent(
-          draggable: true,
-          child: Container(
-            width: double.infinity,
-            height: 200,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: MyShareQr(
-              receiveId: result.value["receiveId"],
-            ),
-          ),
-        ),
-        child: MySharedInfos(
-          nanumIds: widget.nanumIds,
-        ),
+    return Obx(
+      () => Scaffold(
+        body: result.value.isNotEmpty
+            ? SnappingSheet(
+                lockOverflowDrag: true,
+                grabbingHeight: 50,
+                grabbing: const GrabbingWidget(),
+                sheetBelow: SnappingSheetContent(
+                  draggable: true,
+                  child: Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: MyShareQr(
+                      receiveId: result.value["receiveId"],
+                    ),
+                  ),
+                ),
+                child: MySharedInfos(
+                  nanumIds: widget.nanumIds,
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }

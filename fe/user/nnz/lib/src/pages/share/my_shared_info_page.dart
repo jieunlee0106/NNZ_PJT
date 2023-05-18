@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:nnz/src/components/my_shared/my_shared_map.dart';
 import 'package:nnz/src/config/config.dart';
 import 'package:nnz/src/config/token.dart';
@@ -31,6 +32,7 @@ class _MySharedInfosState extends State<MySharedInfos> {
   }
 
   void fetchData() async {
+    _isLoading = true;
     String? token;
     token = await Token.getAccessToken();
     var res = await http.get(
@@ -40,21 +42,23 @@ class _MySharedInfosState extends State<MySharedInfos> {
           'Authorization': 'Bearer $token',
           "Accept-Charset": "utf-8",
         });
-    OtherShareInfoModel infoModelClass =
-        OtherShareInfoModel.fromJson(jsonDecode(res.body));
-    result.value = jsonDecode(utf8.decode(res.bodyBytes));
-    userLat = result.value["lat"];
-    userLong = result.value["lng"];
     _isLoading = false;
-
-    print(result.value);
-
-    setState(() {
-      result.value;
-      userLat;
-      userLong;
+    if (res.statusCode == 200) {
+      OtherShareInfoModel infoModelClass =
+          OtherShareInfoModel.fromJson(jsonDecode(res.body));
+      result.value = jsonDecode(utf8.decode(res.bodyBytes));
+      userLat = result.value["lat"];
+      userLong = result.value["lng"];
       _isLoading = false;
-    });
+
+      Logger().i("안녕하세요? ${jsonDecode(utf8.decode(res.bodyBytes))}");
+
+      setState(() {
+        result.value;
+        userLat;
+        userLong;
+      });
+    }
   }
 
   @override
