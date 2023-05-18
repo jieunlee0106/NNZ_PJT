@@ -17,7 +17,7 @@ class _CarouselWithIndicatorState2 extends State<CarouselWithIndicator2> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => SharePerformDetail(showIds: 4573)),
+              builder: (context) => SharePerformDetail(showIds: 2965)),
         );
       },
       child: Column(

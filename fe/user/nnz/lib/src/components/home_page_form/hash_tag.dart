@@ -24,7 +24,7 @@ class _HashTagState extends State<HashTag> {
           children: [
             Container(
               margin: const EdgeInsets.only(
-                  left: 25, right: 25, top: 10, bottom: 10),
+                  left: 25, right: 12, top: 10, bottom: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),

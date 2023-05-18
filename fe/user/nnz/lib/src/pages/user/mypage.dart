@@ -45,7 +45,7 @@ class _MyPageState extends State<MyPage> {
     // 로그아웃 로직 수행
 
     // 홈 화면으로 이동하여 재빌드
-    Modular.to.navigate('/home');
+    Modular.to.navigate('/app');
   }
 
   @override
@@ -61,7 +61,14 @@ class _MyPageState extends State<MyPage> {
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
-          actions: const [Icon(Icons.more_vert)],
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/');
+              },
+              child: Icon(Icons.home),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
