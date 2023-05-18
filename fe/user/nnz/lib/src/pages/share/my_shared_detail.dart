@@ -54,6 +54,10 @@ class _MyShareDetailState extends State<MyShareDetail> {
     result.value = jsonDecode(utf8.decode(res.bodyBytes));
     // print(result.value);
   }
+  void delete() async {
+
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +154,8 @@ class _MyShareDetailState extends State<MyShareDetail> {
             ),
             MySharedRequestList(
               nanumIds: widget.nanumIds,
-            )
+            ),
+            const Text("삭제")
           ],
         ),
       ),
