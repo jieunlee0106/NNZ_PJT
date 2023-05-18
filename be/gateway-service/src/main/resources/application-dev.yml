@@ -26,19 +26,19 @@ spring:
             baseMessage: Jwt Filter
             preLogger: false
             postLogger: false
-      # globalcors:
-      #   corsConfigurations:
-      #     '[/**]':
-      #       allowedOrigins: '*'
-            # allow-credentials: true
-        #     allowedHeaders: '*'
-        #     allowedMethods: 
-        #       - GET
-        #       - POST
-        #       - DELETE
-        #       - PATCH
-        #       - OPTIONS
-        # add-to-simple-url-handler-mapping: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: 'https://k8b207.p.ssafy.io'
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods: 
+              - GET
+              - POST
+              - DELETE
+              - PATCH
+              - OPTIONS
+        add-to-simple-url-handler-mapping: true
       routes:
         #        - id: DEV-CONFIG-SERVICE
         #          uri: lb://DEV-CONFIG-SERVICE
