@@ -25,7 +25,8 @@ public class Tag {
 
     private String tag;
 
-    private Integer views;
+    @Builder.Default
+    private Integer views = 0;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -33,5 +34,17 @@ public class Tag {
 
     public void updatePlusViews() {
         this.views += 1;
+    }
+
+    public void updateTag(String tag) {
+        this.tag = tag;
+    }
+
+    public void updateViews(Integer views) {
+        this.views = views;
+    }
+
+    public void updateUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

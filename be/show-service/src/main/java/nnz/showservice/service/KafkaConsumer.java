@@ -7,17 +7,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nnz.showservice.dto.BannerDTO;
 import nnz.showservice.dto.NanumDTO;
+import nnz.showservice.dto.TagDTO;
 import nnz.showservice.entity.Banner;
 import nnz.showservice.entity.Nanum;
 import nnz.showservice.entity.Show;
+import nnz.showservice.entity.Tag;
 import nnz.showservice.repository.BannerRepository;
 import nnz.showservice.repository.NanumRepository;
 import nnz.showservice.repository.ShowRepository;
+import nnz.showservice.repository.TagRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,6 +32,7 @@ public class KafkaConsumer {
     private final ShowRepository showRepository;
     private final NanumRepository nanumRepository;
     private final BannerRepository bannerRepository;
+    private final TagRepository tagRepository;
 
     @Transactional
     @KafkaListener(topics = "pd-nanum", groupId = "show-service")
@@ -103,6 +109,40 @@ public class KafkaConsumer {
         else {
             banner = bannerRepository.findById(kafkaMessage.getBody().getId()).orElseThrow();
             banner.deleteBanner(kafkaMessage.getBody().getUpdatedAt());
+        }
+    }
+
+    @Transactional
+    @KafkaListener(topics = "pd-tag", groupId = "show-service")
+    public void getTagMessage(String message) throws JsonProcessingException {
+        KafkaMessage<TagDTO> data = KafkaMessageUtils.deserialize(message, TagDTO.class);
+        KafkaMessage.KafkaMessageType type = data.getType();
+        TagDTO body = data.getBody();
+
+        if (type == KafkaMessage.KafkaMessageType.CREATE) {
+            Optional<Tag> optTag = tagRepository.findById(body.getId());
+            Tag tag = null;
+            if (optTag.isPresent()) {
+                tag = optTag.get();
+
+                if (body.getUpdatedAt().isAfter(tag.getUpdatedAt())) {
+                    tag.updateTag(body.getTag());
+                    tag.updateViews(body.getViews());
+                    tag.updateUpdatedAt(body.getUpdatedAt());
+                }
+
+                log.info("Tag Update Success!!");
+            } else {
+                tag = Tag.builder()
+                        .id(body.getId())
+                        .tag(body.getTag())
+                        .views(body.getViews())
+                        .updatedAt(body.getUpdatedAt())
+                        .build();
+
+                tagRepository.save(tag);
+                log.info("Tag Create Success!!");
+            }
         }
     }
 }
