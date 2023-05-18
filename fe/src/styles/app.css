@@ -466,6 +466,12 @@ video {
 .fixed {
   position: fixed;
 }
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -561,6 +567,9 @@ video {
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mt-20 {
+  margin-top: 5rem;
+}
 .mt-28 {
   margin-top: 7rem;
 }
@@ -570,6 +579,9 @@ video {
 .mt-32 {
   margin-top: 8rem;
 }
+.mt-40 {
+  margin-top: 10rem;
+}
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -578,6 +590,12 @@ video {
 }
 .mt-8 {
   margin-top: 2rem;
+}
+.mt-7 {
+  margin-top: 1.75rem;
+}
+.mt-12 {
+  margin-top: 3rem;
 }
 .flex {
   display: flex;
@@ -590,6 +608,9 @@ video {
 }
 .h-12 {
   height: 3rem;
+}
+.h-16 {
+  height: 4rem;
 }
 .h-32 {
   height: 8rem;
@@ -623,6 +644,9 @@ video {
 }
 .h-screen {
   height: 100vh;
+}
+.h-9 {
+  height: 2.25rem;
 }
 .w-1\/5 {
   width: 20%;
@@ -687,6 +711,12 @@ video {
 .w-full {
   width: 100%;
 }
+.w-44 {
+  width: 11rem;
+}
+.w-24 {
+  width: 6rem;
+}
 .flex-col {
   flex-direction: column;
 }
@@ -704,6 +734,9 @@ video {
 }
 .justify-around {
   justify-content: space-around;
+}
+.justify-items-center {
+  justify-items: center;
 }
 .overflow-y-auto {
   overflow-y: auto;
@@ -782,8 +815,15 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
+.bg-\[\#4C4B4B\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(76 75 75 / var(--tw-bg-opacity));
+}
 .bg-opacity-70 {
   --tw-bg-opacity: 0.7;
+}
+.bg-\[url\(\.\.\/assets\/nnzBackground\.png\)\] {
+  background-image: url(../assets/nnzBackground.png);
 }
 .object-fill {
   object-fit: fill;
@@ -896,6 +936,15 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.opacity-30 {
+  opacity: 0.3;
+}
+.opacity-10 {
+  opacity: 0.1;
+}
+.opacity-75 {
+  opacity: 0.75;
 }
 .outline-none {
   outline: 2px solid transparent;
