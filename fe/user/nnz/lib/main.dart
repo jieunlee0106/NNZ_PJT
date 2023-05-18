@@ -244,7 +244,9 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/shareComplete",
-          page: () => const SharingComplete(),
+          page: () => const SharingComplete(
+            nanumIds: 0,
+          ),
         ),
         GetPage(
           name: "/otherShareInfo",
