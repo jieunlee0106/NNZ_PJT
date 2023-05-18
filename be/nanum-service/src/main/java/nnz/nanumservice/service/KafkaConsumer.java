@@ -51,14 +51,40 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "pd-tag", groupId = "nanum-service")
+    @KafkaListener(topics = "pd-tag", groupId = "nanum-service-1")
     public void getTagMessage(String message) throws JsonProcessingException {
         KafkaMessage<TagSyncVO> data = KafkaMessageUtils.deserialize(message, TagSyncVO.class);
         KafkaMessage.KafkaMessageType type = data.getType();
         TagSyncVO body = data.getBody();
 
+        if (type == KafkaMessage.KafkaMessageType.CREATE) {
+            Optional<Tag> optTag = tagRepository.findById(body.getId());
+            Tag tag = null;
+            if (optTag.isPresent()) {
+                tag = optTag.get();
+
+                if (body.getUpdatedAt().isAfter(tag.getUpdatedAt())) {
+                    tag.updateTag(body.getTag());
+                    tag.updateViews(body.getViews());
+                    tag.updateUpdatedAt(body.getUpdatedAt());
+                }
+
+                log.info("Tag Update Success!!");
+            } else {
+                tag = Tag.builder()
+                        .id(body.getId())
+                        .tag(body.getTag())
+                        .views(body.getViews())
+                        .updatedAt(body.getUpdatedAt())
+                        .build();
+
+                tagRepository.save(tag);
+                log.info("Tag Create Success!!");
+            }
+        }
+
         // 조회수 동기화
-        if (type == KafkaMessage.KafkaMessageType.UPDATE) {
+        else if (type == KafkaMessage.KafkaMessageType.UPDATE) {
             Optional<Tag> optTag = tagRepository.findById(body.getId());
 
             if (optTag.isEmpty()) {
