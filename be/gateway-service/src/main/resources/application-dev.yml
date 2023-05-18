@@ -29,8 +29,8 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: 'http://localhost:3000'
-            allow-credentials: true
+            allowedOrigins: '*'
+            # allow-credentials: true
             allowedHeaders: '*'
             allowedMethods: 
               - GET
