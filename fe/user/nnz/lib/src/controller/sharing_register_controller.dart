@@ -257,6 +257,7 @@ class SharingRegisterController extends GetxController {
     }
   }
 
+  Future<void> onTwit() async {}
   //트위터 트윗 등록
   Future<void> register() async {
     final oauth = oauth1.Authorization(clientCredentials, platform);
@@ -286,8 +287,80 @@ class SharingRegisterController extends GetxController {
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
+                final tokenCred = await oauth.requestTokenCredentials(
+                  res.credentials,
+                  textController.text,
+                );
+                final client = oauth1.Client(
+                  platform.signatureMethod,
+                  clientCredentials,
+                  tokenCred.credentials,
+                );
+                final fileInfo = imageController.images[0];
+                logger.i(fileInfo.name);
+                final formData = FormData({});
+
+                showDialog(
+                  context: Get.context!,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: SizedBox(
+                        height: 100, // 원하는 높이로 설정
+                        child: Column(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center, // 세로 방향 가운데 정렬
+                          children: [
+                            Text(
+                              "트윗 등록중입니다.",
+                              style: TextStyle(
+                                color: Config.blackColor,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            SpinKitCircle(
+                              color: Config.yellowColor, // 애니메이션의 색상
+                              size: 56, // 애니메이션의 크기
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+                final request = http.MultipartRequest(
+                  'POST',
+                  Uri.parse(
+                      'https://api.twitter.com/1.1/statuses/update_with_media.json'),
+                );
+                request.fields.addAll({
+                  'status':
+                      "${titleController.text} \n 나눔을 확인하세요 \n https://play.google.com/store/apps/details?id=com.nnz.nnz&hl=ko"
+                }); // 트윗 메시지를 추가합니다.
+                request.files.add(await http.MultipartFile.fromPath(
+                  'media',
+                  fileInfo.path,
+                ));
+                const timeoutDuration = Duration(seconds: 60);
+                final response =
+                    await client.send(request).timeout(timeoutDuration);
+                Navigator.of(Get.context!).pop(); // Close the dialog
+
+                if (response.statusCode == 200) {
+                  ScaffoldMessenger.of(Get.context!).showSnackBar(
+                    const SnackBar(content: Text('성공적으로 트윗 등록하였습니다.')),
+                  );
+                  Get.until((route) => route.isFirst);
+                  Get.offNamed("/app");
+                } else {
+                  print(
+                      'Failed to upload file. Error: ${response.reasonPhrase}');
+                }
               },
               child: const Text('확인'),
             ),
@@ -298,39 +371,6 @@ class SharingRegisterController extends GetxController {
           ],
         ),
       );
-      final tokenCred = await oauth.requestTokenCredentials(
-        res.credentials,
-        textController.text,
-      );
-      final client = oauth1.Client(
-        platform.signatureMethod,
-        clientCredentials,
-        tokenCred.credentials,
-      );
-      final fileInfo = imageController.images[0];
-      logger.i(fileInfo.name);
-      final formData = FormData({});
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://api.twitter.com/1.1/statuses/update_with_media.json'),
-      );
-      request.fields.addAll({'status': titleController.text}); // 트윗 메시지를 추가합니다.
-      request.files.add(await http.MultipartFile.fromPath(
-        'media',
-        fileInfo.path,
-      ));
-      final response = await client.send(request);
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          const SnackBar(content: Text('성공적으로 트윗 등록하였습니다.')),
-        );
-        Get.until((route) => route.isFirst);
-        Get.offNamed("/app");
-      } else {
-        print('Failed to upload file. Error: ${response.reasonPhrase}');
-      }
     } catch (e) {
       print('Error: $e');
       ScaffoldMessenger.of(Get.context!).showSnackBar(
