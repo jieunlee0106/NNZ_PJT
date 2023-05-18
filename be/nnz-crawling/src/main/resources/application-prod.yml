@@ -1,0 +1,64 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: PROD-CRAWLING-SERVICE
+  datasource:
+    url: ENC(sE931f3HdALgaanSIEhDMmW1k3rYWVSn+OTvNbsdzGM8aN9VcFNzOIZmntDTFxb8uDc60aK59mmR3XRpjcjpH0XsRVMmY8hDd0JepxhbV1+WssGPCN0vhE/pVWkPdX2DchNTqhKjk8xFcLqGLHA0jw2bZjNL1BhCGqrO/8wM0mm53VmY/5Rm62HwV4Z5B5Aa)
+    username: ENC(oSnVd6qwyhPOfAaX1l7ZNw==)
+    password: ENC(AvP3afcectaUgJm5Dyil2d/FOTbEHSwy)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+#    show-sql: true
+    hibernate:
+      #      ddl-auto: create
+      ddl-auto: none
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: ENC(BG51LqW1PA/R5Kv9vmE3csMCX5xor0pj+NQbZEJka6wnMr2Z9wq0Vg==)
+    consumer:
+#      group-id: prod-
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      topic: prod-show
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+web-driver:
+  chrome:
+    driver-path: /usr/bin/chromedriver
+
+#yml 암호화 yml 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(vxKUrqtENMyaPPK5Jqf2P58689oKo66nSRv9KRjtmil5LFY6ns8m7ZzqFFJYe00+tdOCRgRyJY7SYByqxvrE1RpKd7ZiMPLf)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Crawling Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
