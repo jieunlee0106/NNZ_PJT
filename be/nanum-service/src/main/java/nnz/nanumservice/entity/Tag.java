@@ -44,4 +44,12 @@ public class Tag {
     public void updateViews(Integer views) {
         this.views = views;
     }
+
+    public void updateTag(String tag) {
+        this.tag = tag;
+    }
+
+    public void updateUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
