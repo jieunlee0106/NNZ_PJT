@@ -54,6 +54,8 @@ class _ExamplePageState extends State<SharedAuthCheck> {
       dataLength = result.length;
       if (dataLength == 0) {
         isAuthExist = true;
+      } else {
+        isAuthExist = false;
       }
       cards = result.map((el) => StackAuthCard(candidate: el)).toList();
       print(result);

@@ -85,6 +85,7 @@ class BottomNavController extends GetxController {
     _initNotification();
     token = await _getToken();
     // storage.deleteAll();
+
     // storage.write(key: "accessToken", value: "12131312313");
     // accessToken = await storage.read(key: "accessToken");
     print("들어와 $accessToken");
