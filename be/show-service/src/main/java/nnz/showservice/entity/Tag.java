@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Tag {
 
     @Id
@@ -25,7 +23,8 @@ public class Tag {
 
     private String tag;
 
-    private Integer views;
+    @Builder.Default
+    private Integer views = 0;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -33,5 +32,13 @@ public class Tag {
 
     public void updatePlusViews() {
         this.views += 1;
+    }
+
+    public void updateTag(String tag) {
+        this.tag = tag;
+    }
+
+    public void updateViews(Integer views) {
+        this.views = views;
     }
 }
