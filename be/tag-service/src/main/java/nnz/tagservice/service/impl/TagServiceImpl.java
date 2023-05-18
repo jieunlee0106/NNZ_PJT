@@ -47,7 +47,7 @@ public class TagServiceImpl implements TagService {
                 dto = TagDTO.of(newTag);
 
                 KafkaMessage<TagDTO> kafkaMessage = KafkaMessage.create().body(dto);
-                producer.sendMessage(kafkaMessage, "tag-sync");
+                producer.sendMessage(kafkaMessage, "tag");
             } else {
                 dto = TagDTO.of(tag.get());
             }
