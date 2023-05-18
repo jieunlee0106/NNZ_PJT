@@ -31,103 +31,106 @@ class MySharedInfoForm extends StatelessWidget {
         title: Center(child: Image.asset(ImagePath.logo, width: 80)),
         actions: const [Icon(Icons.notifications)],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              "나눔 위치",
-              style: TextStyle(fontSize: 15, color: Config.blackColor),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const MyMapWidget(
-            userLat: 36.355062,
-            userLong: 127.298088,
-            isUser: "현재 위치 설정",
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              children: [
-                const Image(
-                  width: 20,
-                  height: 20,
-                  image: AssetImage(
-                      "assets/images/sharing_sample/calendarcolor.png"),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "오픈 시간",
-                  style: TextStyle(fontSize: 15, color: Config.blackColor),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: SharedTimePicker(title: "나눔 오픈 시간"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              children: [
-                const Image(
-                  width: 20,
-                  height: 20,
-                  image: AssetImage("assets/images/sharing_sample/clothes.png"),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "당일 착장",
-                  style: TextStyle(fontSize: 15, color: Config.blackColor),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextFormField(
-              controller: infoFormController.userClothController,
-              keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                hintText: "착장을 입력해주세요",
-                enabledBorder: InputBorder.none,
-                alignLabelWithHint: true,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                "나눔 위치",
+                style: TextStyle(fontSize: 15, color: Config.blackColor),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Center(
-              child: GestureDetector(
-            onTap: () {
-              infoFormController.onregistInfo(nanumIds: nanumIds);
-            },
-            child: const SharingButton(
-              btnheight: 10,
-              btnwidth: 80,
-              btntext: "등록",
+            const SizedBox(
+              height: 20,
             ),
-          ))
-        ],
+            const MyMapWidget(
+              userLat: 36.355062,
+              userLong: 127.298088,
+              isUser: "현재 위치 설정",
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  const Image(
+                    width: 20,
+                    height: 20,
+                    image: AssetImage(
+                        "assets/images/sharing_sample/calendarcolor.png"),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "오픈 시간",
+                    style: TextStyle(fontSize: 15, color: Config.blackColor),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: SharedTimePicker(title: "나눔 오픈 시간"),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  const Image(
+                    width: 20,
+                    height: 20,
+                    image:
+                        AssetImage("assets/images/sharing_sample/clothes.png"),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "당일 착장",
+                    style: TextStyle(fontSize: 15, color: Config.blackColor),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: TextFormField(
+                controller: infoFormController.userClothController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  hintText: "착장을 입력해주세요",
+                  enabledBorder: InputBorder.none,
+                  alignLabelWithHint: true,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Center(
+                child: GestureDetector(
+              onTap: () {
+                infoFormController.onregistInfo(nanumIds: nanumIds);
+              },
+              child: const SharingButton(
+                btnheight: 10,
+                btnwidth: 80,
+                btntext: "등록",
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }
