@@ -1,0 +1,63 @@
+server:
+  port: 9084
+spring:
+  application:
+    name: PROD-TAG-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(stdts4p7RcldqUPrWiq6pCkS2I/mtcgPnMdGohJQ+LoLymTNVRUYcHTOiODLM1YvpLMluyleclOdbfTWqTMM9ys0EoOyRiJu/eXgWXePf1kxNObmCrzJa99yvuKKl30guC1fa+MbBm0lf+J9zuhKVDWwsgom23wSHwuicqhYOjTPMdcwrBB1SNIAjAj3JbSS)
+    username: ENC(PKmL9DdGf5/2worFEoFlQQ==)
+    password: ENC(yB49L85PzRdXc6p8GctNBuP5prIIWVPc)
+
+  jpa:
+    open-in-view: false
+#    show-sql: true
+    hibernate:
+      #      ddl-auto: none
+      ddl-auto: none
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+  kafka:
+    prefix: prod-
+    bootstrap-servers: ENC(ZfCm492xykGuZcZd3vrU9cYyr44/U9XrQpezzgPBsiAKMGDvuw85Sg==)
+    consumer:
+      group-id: prod-tag-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  redis:
+    host: ENC(0QucSfUPK1clniGhnfuCAw==)
+    port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+  cache:
+    type: redis
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(5elJrKl9l8KH4PvLRSmCkamtcBN+UMNmXGDNjWUlUbaJx9eMp3FOv7Qg6e0MhHQrN/BQHM5Yu8k=)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: false
+    webhook-url: ENC(L3DJfaOz0UEVz7FUMA5KHhLRhpQn+ehd/fCjXZWie7VdNDRNe/w/Z4pc10tfPuylwx0geLtilsCFpPbpANICJS/D7U+6QFSN)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Tag Service # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??

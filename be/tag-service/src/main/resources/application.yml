@@ -1,0 +1,78 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: DEV-TAG-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/tag_service?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: yyhj7424
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: ENC(10aUuPU1LkpGUa67GY3ftGHQ+lpr1ULpXY0CNPJv8vXPhuT+/YLca2wuYNH+Y1yPlVyf3Hx8wF9+enItfNDa9mYytGyxvM6RWTHMsy0yKUqkvUTZZSjHaWTNRo3PNGisRGJXvQqBF21NpWw5Xv9WrA==)
+#    username: ENC(r9+5XUFLaQJxTySGqeygbA==)
+#    password: ENC(mqPyqNcjpm9xW79zMYa9pzmuOdmwHnvE)
+
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      #      ddl-auto: create-drop
+      ddl-auto: none
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+  kafka:
+    prefix: dev-
+    bootstrap-servers: http://localhost:9092
+    consumer:
+#      group-id: tag-service-1 # ex) user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+#      topic: test-tag # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+  cache:
+    type: redis
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: false
+    webhook-url: https://meeting.ssafy.com/hooks/yysukqft5jgwm81ehqz5ba6qur # ?? Webhook URL? ??
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: occur error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
