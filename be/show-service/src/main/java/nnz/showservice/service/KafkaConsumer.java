@@ -29,7 +29,7 @@ public class KafkaConsumer {
     private final BannerRepository bannerRepository;
 
     @Transactional
-    @KafkaListener(topics = "dev-nanum", groupId = "show-service-1")
+    @KafkaListener(topics = "pd-nanum", groupId = "show-service")
     public void getNanumMessage(String message) throws JsonProcessingException {
         KafkaMessage<NanumDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, NanumDTO.class);
         log.info("consume message: {}", message);
@@ -68,7 +68,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "dev-banner", groupId = "show-service-2")
+    @KafkaListener(topics = "pd-banner", groupId = "show-service")
     public void getBannerMessage(String message) throws JsonProcessingException {
         KafkaMessage<BannerDTO> kafkaMessage = KafkaMessageUtils.deserialize(message, BannerDTO.class);
         log.info("consume message: {}", message);
