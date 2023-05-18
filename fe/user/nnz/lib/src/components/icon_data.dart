@@ -55,9 +55,9 @@ class ImagePath {
   static String get esports => 'assets/images/home/esports.png';
   static String get movie => 'assets/images/home/movie.png';
   static String get stage => 'assets/images/home/stage.png';
-  static String get banner1 => 'assets/images/home/banner1.png';
-  static String get banner2 => 'assets/images/home/banner2.png';
-  static String get banner3 => 'assets/images/home/banner3.png';
+  static String get banner1 => 'assets/images/home/banner1.JPG';
+  static String get banner2 => 'assets/images/home/banner2.JPG';
+  static String get banner3 => 'assets/images/home/banner3.JPG';
   static String get fire => 'assets/images/home/fire.png';
   static String get pin => 'assets/images/home/pin.png';
   static String get logo => 'assets/images/home/logo.png';

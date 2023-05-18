@@ -165,16 +165,16 @@ class _HomeState extends State<Home> {
                   ),
                   items: [
                     HomeBanner(
-                      image: ImagePath.banner1,
-                      num: 1,
-                    ),
-                    HomeBanner(
                       image: ImagePath.banner2,
-                      num: 1,
+                      num: 2382,
                     ),
                     HomeBanner(
                       image: ImagePath.banner3,
-                      num: 1,
+                      num: 2385,
+                    ),
+                    HomeBanner(
+                      image: ImagePath.banner1,
+                      num: 2381,
                     ),
                   ],
                 ),

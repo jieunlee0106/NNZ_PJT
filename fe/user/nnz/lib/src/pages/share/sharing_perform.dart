@@ -153,11 +153,19 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      const Text("공연 예매하러 가기"),
+                                      // Center(
+                                      //     child: GestureDetector(
+                                      //   onTap: () {
+                                      //     const url =
+                                      //         'http://ticket.interpark.com/';
+                                      //     launchURL(url);
+                                      //   },
+                                      //   child: const Text("공연 예매하러 가기"),
+                                      // )),
                                       Container(
-                                        width: 10,
+                                        height: 15,
                                       ),
-                                      const Icon(Icons.arrow_forward)
+                                      // const Icon(Icons.arrow_forward)
                                     ],
                                   ),
                                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nnz/src/pages/share/sharing_perform.dart';
 
 class HomeBanner extends StatelessWidget {
   final String image;
@@ -12,13 +13,22 @@ class HomeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        image: DecorationImage(
-          image: AssetImage(image),
-          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SharePerformDetail(showIds: num)),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(5.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          image: DecorationImage(
+            image: AssetImage(image),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

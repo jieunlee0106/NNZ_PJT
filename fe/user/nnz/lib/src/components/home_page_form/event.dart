@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nnz/src/components/icon_data.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:nnz/src/pages/share/sharing_perform.dart';
 
 class CarouselWithIndicator extends StatefulWidget {
   @override
@@ -23,15 +24,25 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
           items: _imageList.map((image) {
             return Builder(
               builder: (BuildContext context) {
-                return Container(
-                  width: 340,
-                  margin: EdgeInsets.symmetric(horizontal: 10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: AssetImage(image),
-                      fit: BoxFit.cover,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              SharePerformDetail(showIds: 3038)),
+                    );
+                  },
+                  child: Container(
+                    width: 340,
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: AssetImage(image),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 );
