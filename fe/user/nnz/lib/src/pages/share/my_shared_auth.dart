@@ -23,6 +23,7 @@ class _ExamplePageState extends State<SharedAuthCheck> {
   List<dynamic> result = [];
 
   int dataLength = 0;
+  bool isAuthExist = true;
 
   var cards = [];
   String? token;
@@ -51,6 +52,9 @@ class _ExamplePageState extends State<SharedAuthCheck> {
           });
       result = json.decode(res.body);
       dataLength = result.length;
+      if (dataLength == 0) {
+        isAuthExist = true;
+      }
       cards = result.map((el) => StackAuthCard(candidate: el)).toList();
       print(result);
       print(dataLength);
@@ -65,71 +69,84 @@ class _ExamplePageState extends State<SharedAuthCheck> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            Flexible(
-              child: CardSwiper(
-                controller: controller,
-                cardsCount: (dataLength),
-                onSwipe: _onSwipe,
-                onUndo: _onUndo,
-                numberOfCardsDisplayed: (dataLength),
-                backCardOffset: const Offset(40, 40),
-                padding: const EdgeInsets.all(55.0),
-                cardBuilder: (context, index) => cards[index],
+    if (isAuthExist == false) {
+      return Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 50,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FloatingActionButton(
-                    onPressed: controller.undo,
-                    heroTag: "swipe_left_button",
-                    backgroundColor: Colors.white,
-                    child: const Icon(
-                      Icons.rotate_left,
-                      color: Colors.black,
+              Flexible(
+                child: CardSwiper(
+                  controller: controller,
+                  cardsCount: (dataLength),
+                  onSwipe: _onSwipe,
+                  onUndo: _onUndo,
+                  numberOfCardsDisplayed: (dataLength),
+                  backCardOffset: const Offset(40, 40),
+                  padding: const EdgeInsets.all(55.0),
+                  cardBuilder: (context, index) => cards[index],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: controller.undo,
+                      heroTag: "swipe_left_button",
+                      backgroundColor: Colors.white,
+                      child: const Icon(
+                        Icons.rotate_left,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  FloatingActionButton(
-                    onPressed: controller.swipeLeft,
-                    heroTag: "left_button",
-                    backgroundColor: Colors.red,
-                    child: const Icon(Icons.close),
-                  ),
-                  FloatingActionButton(
-                    onPressed: controller.swipeRight,
-                    heroTag: "right_button",
-                    backgroundColor: Colors.green,
-                    child: const Icon(Icons.check),
-                  ),
-                ],
+                    FloatingActionButton(
+                      onPressed: controller.swipeLeft,
+                      heroTag: "left_button",
+                      backgroundColor: Colors.red,
+                      child: const Icon(Icons.close),
+                    ),
+                    FloatingActionButton(
+                      onPressed: controller.swipeRight,
+                      heroTag: "right_button",
+                      backgroundColor: Colors.green,
+                      child: const Icon(Icons.check),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: () => Get.to(() => MyShareDetail(
+                      nanumIds: widget.nanumIds,
+                    )),
+                child: const SharingButton(
+                    btnheight: 12, btnwidth: 130, btntext: "완료"),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return const Scaffold(
+        body: Column(
+          children: [
+            SizedBox(
+              height: 200,
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () => Get.to(() => MyShareDetail(
-                    nanumIds: widget.nanumIds,
-                  )),
-              child: const SharingButton(
-                  btnheight: 12, btnwidth: 130, btntext: "완료"),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
+            Text("인증 확인이 불필요합니다")
           ],
         ),
-      ),
-    );
+      );
+    }
   }
 
   bool _onSwipe(
