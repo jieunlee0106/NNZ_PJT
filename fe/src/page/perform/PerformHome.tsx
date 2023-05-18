@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import HeaderNav from "../../components/HeaderNav";
 import axiosApi from "../../services/axiosApi";
+import wait from "../../assets/waiting.png";
+import allow from "../../assets/allow.png";
+import reject from "../../assets/reject.png";
 import { useCallback, useEffect, useState } from "react";
 
 function PerformHome() {
@@ -11,6 +14,7 @@ function PerformHome() {
     path: string;
     requester: string;
     title: string;
+    status: number;
   }
 
   const listDataHandler = useCallback(async () => {
@@ -22,16 +26,6 @@ function PerformHome() {
       console.log(err);
     }
   }, []);
-
-  // const listDataHandler = async () => {
-  //   try {
-  //     console.log(token);
-  //     const res = await axiosApi.get("admin-service/admin/ask/shows");
-  //     console.log(res);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   useEffect(() => {
     listDataHandler();
@@ -69,7 +63,21 @@ function PerformHome() {
                       {el.title}
                     </Link>
                   </p>
-                  <p>{el.requester}</p>
+                  {el.status === 0 && (
+                    <p>
+                      <img src={wait} alt="대기" className="w-7 h-7"></img>
+                    </p>
+                  )}
+                  {el.status === 1 && (
+                    <p>
+                      <img src={allow} alt="수락" className="w-7 h-7"></img>
+                    </p>
+                  )}
+                  {el.status === 2 && (
+                    <p>
+                      <img src={reject} alt="거절" className="w-7 h-7"></img>
+                    </p>
+                  )}
                 </div>
               ))}
             </div>

@@ -7,11 +7,13 @@ import BannerForm from "./banner/BannerForm";
 import PerformDetail from "./perform/PerformDetail";
 import PerformForm from "./perform/PerformForm";
 import ReportDetail from "./report/ReportDetail";
+import MainPage from "./MainPage";
 
 const Home = () => {
   return (
     <div>
       <Routes>
+        <Route path="/*" element={<MainPage />}></Route>
         <Route path="/Login" element={<Login />}></Route>
         <Route path="/home" element={<Main />}></Route>
         <Route path="/perform/*" element={<PerformHome />}></Route>

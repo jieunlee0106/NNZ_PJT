@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import HeaderNav from "../../components/HeaderNav";
-import useInput from "../../services/useInput";
+import axiosApi from "../../services/axiosApi";
 
 function BannerForm() {
   const [showImages, setShowImages]: any = useState([]);
-  const [performId, setPerformId] = useState<number[]>([]);
+  const [performId, setPerformId] = useState<any>([]);
+  const [insertId, setInsertId] = useState(0);
 
+  interface dataType {
+    showIds: [];
+  }
   //공연 번호 넣기
-  const showid = useInput("");
-  const insertIdHandler = () => {
-    const id = setPerformId([]);
+  const changePerform = (e: any) => {
+    setInsertId(e.target.value);
   };
+  const makeIdListHandler = () => {
+    performId.push(Number(insertId));
+    setInsertId(0);
+  };
+  const idDeleteHandler = (id: number) => {
+    setPerformId(performId.filter((_: any, index: number) => index !== id));
+  };
+
   //사진 업로드
   const handleAddImages = (event: any) => {
     const imageLists = event.target.files;
@@ -31,6 +42,29 @@ function BannerForm() {
     setShowImages(showImages.filter((_: any, index: number) => index !== id));
   };
 
+  const formdata = new FormData();
+  const data: dataType = {
+    showIds: performId,
+  };
+
+  formdata.append("data", JSON.stringify(data));
+
+  formdata.append("banners", showImages);
+
+  // showImages.forEach((image: any) => formdata.append("banners", image as File));
+
+  //데이터 보내기
+  const sendDataHandler = async (e: any) => {
+    try {
+      const res = await axiosApi.post("admin-service/admin/banners", formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="w-10/12">
@@ -41,18 +75,37 @@ function BannerForm() {
           </div>
           <div className="w-4/5 pl-5 h-100 mb-20">
             <div className="text-xl text-left mb-2">배너 등록</div>
-            <div className="border-solid border-2 h-44 border-gray-400 rounded flex flex-col">
+            <div className="border-solid border-2 h-52 border-gray-400 rounded flex flex-col">
               <div className="flex pt-5 pl-5 mt-5 w-5/6 justify-around">
                 <p className="w-1/5 text-sm">공연 번호</p>
                 <input
-                  type="number"
+                  type="integer"
+                  onChange={changePerform}
                   className="border-solid border-2 border-gray-400 rounded w-3/5 h-8"
                 ></input>
-                <button className="border-none rounded bg-[#FFE277] px-4 text-sm">
+                <button
+                  className="border-none rounded bg-[#FFE277] px-4 text-sm"
+                  onClick={makeIdListHandler}
+                >
                   등록
                 </button>
               </div>
-              <div>{performId}</div>
+              <div className="flex justify-center">
+                {performId.map((num: any, id: any) => (
+                  <div
+                    key={id}
+                    className="mx-2 flex justify-center items-center"
+                  >
+                    <p>{num}</p>
+                    <button
+                      onClick={() => idDeleteHandler(id)}
+                      className="border-solid border-2 border-gray-400 rounded w-12 text-sm mt-2"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ))}
+              </div>
               <div className="flex pt-1 pl-5 mt-5 w-5/6 justify-around">
                 <p className="w-1/5 text-sm">이미지 선택</p>
                 <input
@@ -93,7 +146,10 @@ function BannerForm() {
               </div>
             </div>
             <div className="w-full flex justify-center items-center mt-8">
-              <button className="w-36 h-8 bg-[#FFE277] text-sm rounded font-bold">
+              <button
+                className="w-36 h-8 bg-[#FFE277] text-sm rounded font-bold"
+                onClick={sendDataHandler}
+              >
                 등록
               </button>
             </div>

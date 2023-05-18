@@ -1,17 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderNav from "../../components/HeaderNav";
 import axiosApi from "../../services/axiosApi";
 
 function PerformDetail() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const rejectRequestHandler = async () => {
     try {
-      const res = await axiosApi.patch("admin-service/admin/ask/reports", {
-        id: location.state.id,
-        status: 2,
+      const res = await axiosApi.patch("admin-service/admin/ask/shows", {
+        id: location.state.id.toString(),
+        status: "2",
       });
       console.log(res);
+      navigate(-1);
     } catch (err) {
       console.log(err);
     }
@@ -19,11 +21,12 @@ function PerformDetail() {
 
   const allowRequestHandler = async () => {
     try {
-      const res = await axiosApi.patch("admin-service/admin/ask/reports", {
+      const res = await axiosApi.patch("admin-service/admin/ask/shows", {
         id: location.state.id,
         status: 1,
       });
       console.log(res);
+      navigate(-1);
     } catch (err) {
       console.log(err);
     }
