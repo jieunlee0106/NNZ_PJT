@@ -173,6 +173,10 @@ public class NanumServiceImpl implements NanumService {
                 double lng2 = Double.parseDouble(nanumDTO.getLng());
                 double distance = locationDistance.getDistance(lat, lng, lat2, lng2);
                 if (distance <= 10.0 && nearNanumDTOs.size() <= 8) {
+                    Optional<NanumStock> nanumStock = nanumStockRepository.findById(nanumDTO.getId());
+                    if (nanumStock.isPresent()) {
+                        nanumDTO.setStock(nanumStock.get().getStock());
+                    }
                     nearNanumDTOs.add(new NearNanumDTO(distance, nanumDTO));
                 }
             }

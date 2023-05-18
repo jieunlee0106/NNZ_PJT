@@ -111,4 +111,8 @@ public class NanumDTO {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
 }
