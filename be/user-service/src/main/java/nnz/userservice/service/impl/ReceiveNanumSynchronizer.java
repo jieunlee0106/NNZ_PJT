@@ -54,7 +54,7 @@ public class ReceiveNanumSynchronizer implements DBSynchronizer<ReceiveNanumSync
 
         ReceiveNanum receiveNanum = ReceiveNanum.builder()
                 .id(vo.getId())
-                .isCertificated(vo.getIsCertificated())
+                .isCertificated(vo.getIsCertificated() != null && vo.getIsCertificated())
                 .isReceived(vo.getIsReceived())
                 .nanum(nanum)
                 .receiver(receiver)
@@ -79,7 +79,7 @@ public class ReceiveNanumSynchronizer implements DBSynchronizer<ReceiveNanumSync
         ReceiveNanum receiveNanum = optReceiveNanum.get();
         receiveNanum
                 .updateIsReceived(vo.getIsReceived())
-                .updateIsCertificated(vo.getIsCertificated())
+                .updateIsCertificated(vo.getIsCertificated() != null && vo.getIsCertificated())
                 .update(vo.getUpdatedAt());
 
         log.info("ReceiveNanum Update Success: 참여한 나눔: {}", receiveNanum);
