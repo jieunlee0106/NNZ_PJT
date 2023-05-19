@@ -115,20 +115,22 @@ public class NanumSynchronizer implements DBSynchronizer<NanumSyncVO> {
                 .updateIsCertification(vo.getIsCertification())
                 .update(vo.getUpdatedAt());
 
-        // 기존 태그 삭제 후 재생성
-        tagRepository.deleteByNanum(nanum);
+        if (vo.getNanumTags() != null) {
+            // 기존 태그 삭제 후 재생성
+            tagRepository.deleteByNanum(nanum);
 
-        // 나눔 태그 재생성
-        List<NanumTag> tags = new ArrayList<>();
-        for (NanumTagSyncVO nanumTag : vo.getNanumTags()) {
-            NanumTag tag = NanumTag.builder()
-                    .id(nanumTag.getId())
-                    .tag(nanumTag.getTag().getTag())
-                    .nanum(nanum)
-                    .build();
-            tags.add(tag);
+            // 나눔 태그 재생성
+            List<NanumTag> tags = new ArrayList<>();
+            for (NanumTagSyncVO nanumTag : vo.getNanumTags()) {
+                NanumTag tag = NanumTag.builder()
+                        .id(nanumTag.getId())
+                        .tag(nanumTag.getTag().getTag())
+                        .nanum(nanum)
+                        .build();
+                tags.add(tag);
+            }
+            tagRepository.saveAll(tags);
         }
-        tagRepository.saveAll(tags);
 
         log.info("Nanum Update Success: 나눔: {}", nanum);
     }
