@@ -1,0 +1,59 @@
+server:
+  port: 9000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(J9gABjs4kvefdJZWCFOze32l/U5N/Vhc2CCk5QiejpFWXnJncyfNMzlKHZZOsGdTZnTZLovE0pk=)
+
+spring:
+  application:
+    name: PROD-GATEWAY-SERVICE
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - AddResponseHeader=Access-Control-Allow-Headers, *
+        - AddResponseHeader=Access-Control-Allow-Methods, *
+        - name: JwtFilter
+          args:
+            baseMessage: Jwt Filter
+            preLogger: false
+            postLogger: false
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: 'http://localhost:3000'
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PATCH
+              - OPTIONS
+        add-to-simple-url-handler-mapping: true
+      routes:
+        - id: PROD-SHOW-SERVICE
+          uri: lb://PROD-SHOW-SERVICE
+          predicates:
+            - Path=/show-service/**
+        - id: PROD-TAG-SERVICE
+          uri: lb://PROD-TAG-SERVICE
+          predicates:
+            - Path=/tag-service/**
+jwt:
+  secret-key: ENC(2bt45uuZQZSHRdWQ4RGBElZIhPfKOHGw8mwhf9qpcOQYQGXEHjjgjjgAnjyN7CoqJx1p4swr+Jc0AqutMKJZCIFKYZ77u/mHnX/5yL85nglcpZeYPWbG6aFPVKfEvmQBi1mVOjTkPJWQ6U19Y1Kyj2n6+eYRfHBu+fO5TkkD6QnRQwtuQJFa0lgj2fxnCumruxNrNz7lMNs86EjJ23TpD13RNhtdi5TMz91qqWTNpNuookxw/yoTrz9FS3loDB7ScJwwjErPiuPY4rWrLN9nn1XvfYAoteUzjoVDQajVTRfUKg4bRoC75i16klQXunlSk1CpQ771+34EZJOw7dKOMwkgwtgFQif6tr6SrKmT3hY=)
+
+#yml 암호화 yml 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator

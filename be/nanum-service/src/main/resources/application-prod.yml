@@ -1,0 +1,97 @@
+server:
+  port: 9083
+spring:
+  application:
+    name: PROD-NANUM-SERVICE
+  datasource:
+    url: ENC(eltszocdWBS6Ju4AFI8Vctjm5P7L2ylApqqFZVicwcUgPQbZheSS1J2jgfqmk0vGasZ4qfVIENMkGGiT5g8MI1P4vjARoY2Sj2vSPq5+Zk2+WnhDLJggFdQ5h1OLcvUZibWKsedeqRMu+ZbhpLGo8ODINBMDJeFAxiGMR0OUuz9oKeoYI8fssBZFQEWYjV2a)
+    username: ENC(cgyQF1xRW6BwpBOljm82NQ==)
+    password: ENC(Rl8906cnaAqvqdVGSlRwDti72U2EhEKZ)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+  transaction:
+    default-timeout: 10
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      #      ddl-auto: none
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+  kafka:
+    prefix: prod-
+    bootstrap-servers: ENC(vnF1qX7/cGuFJKdaVCpPbDq2oQTClGEqEADAc4WeZNhVo0YdwP/Xow==)
+    consumer:
+#      group-id: show-service-1 # ex) user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+#      topic: test-show # 데이터를 퍼블리싱할 곳의 토픽 ex) dev-user
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Prod NanumService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+cloud:
+  aws:
+    s3:
+      bucket: nnz-bucket
+    credentials:
+      access-key: ENC(XB6m0cHn6sbhEZjKAXAEg3EgDzW/1xvoVh7z2/2ws2M=)
+      secret-key: ENC(nELP12TIzhQjAX4lzXgQW7piL1YPjdafQ+QYuR+k8djMVSmLIMH269QErPwDZ8Wgjw4Wic7JnWM=)
+    region:
+      static: ap-southeast-2
+      auto: false
+    stack:
+      auto: false
+
+fcm:
+  json:
+    path: /home/home/fcm/nnz-firebase.json

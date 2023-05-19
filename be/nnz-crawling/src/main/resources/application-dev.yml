@@ -1,0 +1,69 @@
+server:
+  port: 8002
+
+spring:
+  datasource:
+    url: ENC(CME3/hc/qLgRu1/yBUEvBM70vwxhkTbag+0NOJuen2wco8Ft1kMVQWxw0tksc7e8LTK3FE2qxv/W+pBJ15DLkDmHEWMKELVNmVDOS8V3sOx3e6y42hZpjDKlYxHlP2JoFCA6e+3JrpautIsoqEdnng==)
+    username: ENC(wkNqgPR+zw2ev6kDzUJaoA==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      #      ddl-auto: create
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: ENC(BG51LqW1PA/R5Kv9vmE3csMCX5xor0pj+NQbZEJka6wnMr2Z9wq0Vg==)
+    consumer:
+#      group-id: ENC(pGfFK/W6nLA1LQTs+6y/GWjRrIy5szhD)
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      topic: dev-show-sync
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+web-driver:
+  chrome:
+    driver-path: /usr/bin/chromedriver
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+
+#yml 암호화 yml 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(vxKUrqtENMyaPPK5Jqf2P58689oKo66nSRv9KRjtmil5LFY6ns8m7ZzqFFJYe00+tdOCRgRyJY7SYByqxvrE1RpKd7ZiMPLf)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: UserService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
