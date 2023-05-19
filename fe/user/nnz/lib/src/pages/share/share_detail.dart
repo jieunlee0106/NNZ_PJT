@@ -38,6 +38,8 @@ class _ShareDatailState extends State<ShareDatail> {
   int second = 0;
   String? token;
   bool _isLoading = true;
+  int shareStatus = 0;
+  bool isover = false;
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _ShareDatailState extends State<ShareDatail> {
     writerId = nunumwriter.value["id"];
     durationTime = result.value["leftTime"];
     isBooking = result.value["booking"];
+    shareStatus = result.value["status"];
     timeParts = durationTime.split(", ");
     day = int.parse(timeParts[0].split(" : ")[1]);
     hour = int.parse(timeParts[1].split(" : ")[1]);
@@ -88,6 +91,7 @@ class _ShareDatailState extends State<ShareDatail> {
       thumbnailData;
       bookmark;
       durationTime;
+      shareStatus;
       _isLoading = false;
     });
   }
@@ -287,16 +291,8 @@ class _ShareDatailState extends State<ShareDatail> {
                 const SizedBox(
                   width: 20,
                 ),
-                // Visibility(
-                //   visible: isBooking,
-                //   child: GestureDetector(
-                //       onTap: () => Get.to(() => SheetBelowTest(
-                //             nanumIds: widget.nanumIds,
-                //           )),
-                //       child: const Text("나눔 확인하기")),
-                // ),
                 Visibility(
-                  visible: !isBooking,
+                  visible: (!isBooking && shareStatus != 1),
                   child: PurchaseButton(
                     condition: isCondition,
                     isOpen: timerFinish,
@@ -308,14 +304,37 @@ class _ShareDatailState extends State<ShareDatail> {
                   ),
                 ),
                 Visibility(
-                  visible: isBooking,
+                  visible: (isBooking && shareStatus != 1),
                   child: Container(
-                      decoration: BoxDecoration(color: Config.greyColor),
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 80, vertical: 8),
-                        child: Text("이미 받은 나눔입니다"),
-                      )),
+                    decoration: BoxDecoration(color: Config.greyColor),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 80, vertical: 8),
+                      child: Text("이미 받은 나눔입니다"),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: (!isBooking && shareStatus == 1),
+                  child: Container(
+                    decoration: BoxDecoration(color: Config.greyColor),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 80, vertical: 8),
+                      child: Text("마감된 나눔입니다"),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: (isBooking && shareStatus == 1),
+                  child: Container(
+                    decoration: BoxDecoration(color: Config.greyColor),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 80, vertical: 8),
+                      child: Text("이미 받은 나눔입니다"),
+                    ),
+                  ),
                 ),
               ],
             ),
