@@ -43,7 +43,7 @@ class _SharePerformDetailState extends State<SharePerformDetail> {
 
     TagsList = result.value["showTags"];
     print(result.value);
-    String posterUrl = result.value["poster"];
+    String? posterUrl = result.value["poster"];
     // if (posterUrl != null) {
     //   var response = await http.head(Uri.parse(posterUrl));
     //   if (response.statusCode != 200) {
