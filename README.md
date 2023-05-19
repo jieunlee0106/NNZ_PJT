@@ -114,57 +114,25 @@
 ## 기능
 
 ### 메인 페이지
-
-<p align="center">
-<!-- <img src="./readmeAsset/calendar1.jpg" width="270px">
-<img src="./readmeAsset/calendar2.jpg" width="270px">
-<img src="./readmeAsset/calendar3.jpg" width="270px"> -->
-</p>
+<img src="https://lab.ssafy.com/s08-final/S08P31B207/-/raw/read_me/exec/file/%EB%A9%94%EC%9D%B8%ED%8E%98%EC%9D%B4%EC%A7%80.gif" width="270px">   
 
 ### 카테고리 상세
-
-<p align="center">
-<!-- <img src="./readmeAsset/write1.jpg" width="270px">
-<img src="./readmeAsset/write2.jpg" width="270px">
-<img src="./readmeAsset/write3.jpg" width="270px"> -->
-</p>
+<img src="https://lab.ssafy.com/s08-final/S08P31B207/-/raw/read_me/exec/file/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC%ED%8E%98%EC%9D%B4%EC%A7%80.gif" width="270px">   
 
 ### 공연 상세
-
-<p align="center">
-<!-- <img src="./readmeAsset/read1.jpg" width="270px">
-<img src="./readmeAsset/read2.jpg" width="270px">
-<img src="./readmeAsset/read3.jpg" width="270px"> -->
-</p>
-
-### 나눔 상세
-
-<p align="center">
-<!-- <img src="./readmeAsset/analyze1.jpg" width="270px">
-<img src="./readmeAsset/analyze2.jpg" width="270px">
-<img src="./readmeAsset/analyze3.jpg" width="270px"> -->
-</p>
+<img src="https://lab.ssafy.com/s08-final/S08P31B207/-/raw/read_me/exec/file/%EA%B3%B5%EC%97%B0%EC%83%81%EC%84%B8.gif" width="270px">   
 
 ### 나눔 생성
 <img src="https://lab.ssafy.com/s08-final/S08P31B207/-/raw/read_me/exec/file/%EB%82%98%EB%88%94%EB%93%B1%EB%A1%9D.gif" width="270px">
 
-<p align="center">
-<!-- <img src="./readmeAsset/analyze1.jpg" width="270px">
-<img src="./readmeAsset/analyze2.jpg" width="270px">
-<img src="./readmeAsset/analyze3.jpg" width="270px"> -->
-</p>
-
 ### 나눔 받기
-<img src="https://github.com/yuriyeom/Flora/assets/43941336/e2cf3983-df5d-4b35-866b-878db6c5bbbe" width="270px">
+<img src="https://lab.ssafy.com/s08-final/S08P31B207/-/raw/read_me/exec/file/%EB%82%98%EB%88%94%EB%B0%9B%EA%B8%B0.gif" width="270px">  
 
+### QR 인증
+<img src="https://lab.ssafy.com/s08-final/S08P31B207/-/raw/read_me/exec/file/qr%EC%9D%B8%EC%A6%9D.gif" width="270px">   
 
 ### 마이페이지 & 나눔 관리
-
-<p align="center">
-<!-- <img src="./readmeAsset/analyze1.jpg" width="270px">
-<img src="./readmeAsset/analyze2.jpg" width="270px">
-<img src="./readmeAsset/analyze3.jpg" width="270px"> -->
-</p>
+<img src="https://github.com/yuriyeom/Flora/assets/43941336/e2cf3983-df5d-4b35-866b-878db6c5bbbe" width="270px">   
 
 ## Front-end
 
