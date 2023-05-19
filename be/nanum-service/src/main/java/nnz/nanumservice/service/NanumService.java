@@ -31,7 +31,7 @@ public interface NanumService {
 
     ResNanumDetailDTO readNanumDetail(Long nanumId, Long userId);
 
-    void createUserNanum(Long nanumId, Long userId, MultipartFile file);
+    void createUserNanum(Long nanumId, Long userId, MultipartFile file) throws FirebaseMessagingException;
 
     List<ResNanumDTO> readPopularNaums();
 
