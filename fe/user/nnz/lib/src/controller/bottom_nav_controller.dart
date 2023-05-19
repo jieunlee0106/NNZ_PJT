@@ -33,26 +33,77 @@ class BottomNavController extends GetxController {
   void changeBottomNav(int value, {bool hasGesture = true}) async {
     var page = PageName.values[value];
     print(page);
+    // switch (page) {
+    //   case PageName.HOME:
+    //     changeIndex(value);
+    //     break;
+    //   case PageName.SEARCH:
+    //     changeIndex(value);
+    //     break;
+    //   case PageName.UPLOAD:
+    //     curIndex(page.index);
+    //     accessToken = await getToken();
+    //     refreshToken = await Token.getRefreshToken();
+    //     userId = await getUserId();
+
+    //     print(accessToken);
+    //     if (accessToken == null) {
+    //       print("$accessToken $refreshToken");
+    //       Get.toNamed("/register");
+    //     } else {
+    //       Get.toNamed("/sharingRegister");
+    //     }
+    //     break;
+
+    //   case PageName.MYPAGE:
+    //     curIndex(page.index);
+    //     accessToken = await getToken();
+    //     if (accessToken == null) {
+    //       print(accessToken);
+    //       Get.toNamed("/register");
+    //     } else {
+    //       Get.to(() => const MyPage());
+    //     }
+    //     break;
+    //   case PageName.ACTIVITY:
+    //     curIndex(page.index);
+    //     accessToken = await getToken();
+
+    //     if (accessToken == null) {
+    //       print(accessToken);
+    //       Get.toNamed("/register");
+    //     } else {
+    //       Get.to(() => const LikesPage());
+    //     }
+    //     break;
+    // }
     switch (page) {
-      case PageName.HOME:
-        changeIndex(value);
-        break;
-      case PageName.SEARCH:
-        changeIndex(value);
-        break;
       case PageName.UPLOAD:
         curIndex(page.index);
         accessToken = await getToken();
-        refreshToken = await Token.getRefreshToken();
         userId = await getUserId();
-
-        print(accessToken);
         if (accessToken == null) {
-          print("$accessToken $refreshToken");
-          Get.toNamed("/register");
+          print(accessToken);
+          Get.offNamed("/register");
+          // return;
         } else {
           Get.toNamed("/sharingRegister");
         }
+        // Get.toNamed("/sharingRegister");
+        break;
+      case PageName.HOME:
+      case PageName.SEARCH:
+        changeIndex(value);
+        break;
+      case PageName.ACTIVITY:
+        curIndex(page.index);
+        accessToken = await getToken();
+        if (accessToken == null) {
+          print(accessToken);
+          Get.offNamed("/register");
+          return;
+        }
+        changeIndex(value);
         break;
 
       case PageName.MYPAGE:
@@ -60,21 +111,10 @@ class BottomNavController extends GetxController {
         accessToken = await getToken();
         if (accessToken == null) {
           print(accessToken);
-          Get.toNamed("/register");
-        } else {
-          Get.to(() => const MyPage());
+          Get.offNamed("/register");
+          return;
         }
-        break;
-      case PageName.ACTIVITY:
-        curIndex(page.index);
-        accessToken = await getToken();
-
-        if (accessToken == null) {
-          print(accessToken);
-          Get.toNamed("/register");
-        } else {
-          Get.to(() => const LikesPage());
-        }
+        changeIndex(value);
         break;
     }
   }
@@ -180,9 +220,9 @@ class BottomNavController extends GetxController {
       var index = bottomHistory.last;
       changeIndex(index, hasGesture: false);
 //Mypage 페이지를 떠날 때 네비게이터 스택을 제거한다.
-      if (index != PageName.MYPAGE.index) {
-        mypageKey.currentState!.popUntil((route) => route.isFirst);
-      }
+      // if (index != PageName.MYPAGE.index) {
+      //   mypageKey.currentState!.popUntil((route) => route.isFirst);
+      // }
       return false;
     }
   }

@@ -19,21 +19,19 @@ class MyPageService extends GetConnect {
   }
 
   Future<dynamic> getMyPageInfo() async {
-    final token = await Token.getAccessToken();
-
     try {
+      final token = await Token.getAccessToken();
       print(token);
       final response = await dio.get(
         'https://k8b207.p.ssafy.io/api/user-service/users',
         options: Options(
           headers: {
-            "authorization": "Bearer $token",
+            "Authorization": "Bearer $token",
           },
         ),
       );
       return response;
     } catch (e) {
-      print(token);
       print('!!!!!Error occurred: $e');
       rethrow;
     }
