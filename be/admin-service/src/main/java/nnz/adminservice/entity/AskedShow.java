@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 @Where(clause = "is_delete  = 0")
 public class AskedShow {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String path;
