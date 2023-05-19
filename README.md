@@ -1,4 +1,15 @@
 # 🎁 나너주, 나와 너의 굿즈나눔 🎁
+프로젝트 기간 : 2023.04.10 ~ 2023.05.19 (6주) 
+
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/43941336/239482561-386691f9-3c7e-489f-8e3d-8aee43e53572.png" width="270px">
+
+<br /> 
+
+### 지금 플레이스토어에서 나너주를 만나보세요!   
+
+<a href='https://play.google.com/store/apps/details?id=com.nnz.nnz&hl=ko&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='다운로드하기 Google Play' src='https://play.google.com/intl/ko/badges/static/images/badges/ko_badge_web_generic.png' width='150px'/></a>   
+
+<br />   
 
 ## 📝 목차
 
@@ -8,12 +19,23 @@
 - [Front-end](#front-end)
 - [Back-end](#back-end)
 
+<br />   
+
 ## 🗂 개요
 
 ### 💗 나너주란? 
-> *팬들 간의 제작 굿즈 나눔 어플*
+> *팬들 간의 제작 굿즈 나눔 앱*
 ### 🧐 기획의도 
-> *팬들 간의 자체 굿즈 나눔 어플*
+기존 굿즈 나눔 방식은 트위터에 자신이 만든 굿즈를 올리며 리트윗 혹은 마음을 눌러 굿즈 받을 사람을 선별합니다. 
+
+하지만 다음과 같은 불편함이 있습니다.   
+- 나눔을 하는 위치를 알기가 어렵다.   
+- 계속 트위터 공지를 주시하고 있어야 한다.   
+- 재고 수량 파악이 어렵다.   
+- 원하는 공연에 대한 굿즈 나눔을 모아보기 힘들다.   
+- 웨이팅 현황 파악이 힘들어 직접 현장에 가봐야 판단 가능하다.
+
+이러한 불편함을 개선하기 위해 '나너주'를 만들었습니다.
 
 <br />   
 
