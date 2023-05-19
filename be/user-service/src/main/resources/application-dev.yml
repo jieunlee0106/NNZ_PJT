@@ -1,0 +1,99 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /user-service
+
+notification:
+  mattermost:
+    enabled: true
+    webhook-url: ENC(7qBTZB4neg5MqkEw8EysFtLOki9HW/2GKq/6DGvfYAAyWj7/bFB85Fz30ihkvFc2T4jJU4CvTkfR+sRaIref/IGD4KlRMN9c)
+    channel: # ?? ??? ??? ?? ?? ??? ??? ?? ? ????
+    pretext: Dev UserService Error # attachments? ??? ??? ?? ?? ??? ??
+    #    color: # attachment? ?? ??? ??. default=red
+    author-name: mmSender # attachment? ??? ??? ??
+    author-icon: https://mattermost.com/wp-content/uploads/2022/02/icon.png # author-icon ??? ?? ???? url??
+#    footer: # attachment? ??? ?? ??. default=?? ??
+
+spring:
+  application:
+    name: DEV-USER-SERVICE
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ENC(ZsRuvWnZfl5CmNrlWvF/nS66ZfJd0az21nTmIxAqFoNK6i61aEVZ3F+zTMitE1pyOyav2uo/J5CNKJ7qkquzwZA72nW1nA4t1mGKxz/1R5GQ12gisHrgN2R0NWxuqjigpx/h6u+JyWaqMD0rwW8p+w==)
+    username: ENC(onO4YH5Qz4OjeUTqnAZCGg==)
+    password: ENC(CioE8/kTjiNovsPoDSPQAbI87EYmmP1t)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  jpa:
+    database:
+    hibernate:
+      ddl_auto: update
+    properties:
+      hibernate:
+        "globally_quoted_identifiers": "true"
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+
+  kafka:
+    prefix: pd-
+    bootstrap-servers: ENC(BG51LqW1PA/R5Kv9vmE3csMCX5xor0pj+NQbZEJka6wnMr2Z9wq0Vg==)
+    consumer:
+      group-id: dev-user-service-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      topic: ENC(CRlNcIg5nJbI5KGyLy3USMPO3/e3GmbA)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+ncp-sms:
+  access-key: ENC(3WdT8Gm9xahe2b9XH+FeKtgGEZFDmdv1nM4c+w+6DtQ=)
+  secret-key: ENC(4Kquf+ybsLmmWU8KwTyxonqw7+TLbh8Yki688c+ZfEwJODqtMWeMtbxDVvZAxCq2nm2shgRozUI=)
+  service-id: ENC(9MpTE/BNt0xWhmCsfajrapguRTWo07voCh7MCyoD+nDCi4DEuepGyg==)
+  from: ENC(AWNq6weRmTk/inXmHqPm2KV206sYbSIu)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+jwt:
+  secret-key: ENC(unin5/kUnBeNBeVor/OAPJdWELA1uM5T6djQzn4udV8D7xa7+ohvH6WcZCl23xP62a8IPnHr7EyRnb2wdmlMyB1HyVbAplW3iyuF0Kc3iL6e/cnpZ3uwQUrwkx4h1qLZK1iJmAVROIFlUpAOtd4/iYrBmTM21IgaSEIAHPY+9WFY01Mn/08TWFHzB896vnSb/IhmyEoVV9dXwWAS4dq30opTksk05omgDjIV9Id7BuWkErC5bJ3zPvAIg+ulLZXS4p/PwULB3Lz968PFlItQ0Hhg/casKwiTQCQZRxrtF/7Uf6rQ+Y06sGJSXZvqv/sofJwMH+f9DCOowG0nwgF6D23ngzOzURxdzo/xvKTpjdM=)
+  expiration-period:
+    access-token: 604800000 # 7day
+    refresh-token: 1296000000 # 15day
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ENC(+7HkpgsS1BJwy0smEij0gewhZS/W2kqqtZqpMk64g7ujNZJ1IlD6RrcdUH0mCEns1xRiZd8cCko=)
+
+cloud:
+  aws:
+    s3:
+      bucket: ENC(gje0c+ysfMXAd0lIu5ZOMhAq/dN8UKEK)
+    credentials:
+      access-key: ENC(XB6m0cHn6sbhEZjKAXAEg3EgDzW/1xvoVh7z2/2ws2M=)
+      secret-key: ENC(fZCㅇWX/jrQ/i7HRMxfzvUfW+DifqHAiA01qNPYfjyIlM3lQ01WYhIPrh8OGjf6SEubzHUslYQOOQ=)
+    region:
+      static: ap-southeast-2
+      auto: false
+    stack:
+      auto: false
