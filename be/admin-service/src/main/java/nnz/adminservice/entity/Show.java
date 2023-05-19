@@ -36,5 +36,10 @@ public class Show extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_code")
     private Category category;
+
+    @OneToMany(mappedBy = "show")
+    @Builder.Default
+    private List<ShowTag> tags = new ArrayList<>();
+
 }
 
