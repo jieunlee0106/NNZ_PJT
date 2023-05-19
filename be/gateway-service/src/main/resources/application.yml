@@ -1,0 +1,80 @@
+server:
+  port: 8000
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: DEV-GATEWAY-SERVICE
+  redis:
+    host: ENC(+9h0Soa0ASvurYPtju+G9Q==)
+    port: 6379
+    password: ENC(LYaFkmNEuCOhq2K1ci5CbbHAZyS8Pd62)
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - AddResponseHeader=Access-Control-Allow-Headers, *
+        - AddResponseHeader=Access-Control-Allow-Methods, *
+        - name: JwtFilter
+          args:
+            baseMessage: Jwt Filter
+            preLogger: false
+            postLogger: false
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: 'http://localhost:3000'
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PATCH
+              - OPTIONS
+        add-to-simple-url-handler-mapping: true
+      routes:
+        #        - id: DEV-CONFIG-SERVICE
+        #          uri: lb://DEV-CONFIG-SERVICE
+        #          predicates:
+        #            - Path=/config-service/**
+        - id: DEV-USER-SERVICE
+          uri: lb://DEV-USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+        - id: DEV-SHOW-SERVICE
+          uri: lb://DEV-SHOW-SERVICE
+          predicates:
+            - Path=/show-service/**
+        - id: DEV-ADMIN-SERVICE
+          uri: lb://DEV-ADMIN-SERVICE
+          predicates:
+            - Path=/admin-service/**
+        - id: DEV-TAG-SERVICE
+          uri: lb://DEV-TAG-SERVICE
+          predicates:
+            - Path=/tag-service/**
+        - id: DEV-NANUM-SERVICE
+          uri: lb://DEV-NANUM-SERVICE
+          predicates:
+            - Path=/nanum-service/**
+        - id: DEV-TAG-SERVICE
+          uri: lb://DEV-TAG-SERVICE
+          predicates:
+            - Path=/tag-service/**
+
+jwt:
+  secret-key: ENC(unin5/kUnBeNBeVor/OAPJdWELA1uM5T6djQzn4udV8D7xa7+ohvH6WcZCl23xP62a8IPnHr7EyRnb2wdmlMyB1HyVbAplW3iyuF0Kc3iL6e/cnpZ3uwQUrwkx4h1qLZK1iJmAVROIFlUpAOtd4/iYrBmTM21IgaSEIAHPY+9WFY01Mn/08TWFHzB896vnSb/IhmyEoVV9dXwWAS4dq30opTksk05omgDjIV9Id7BuWkErC5bJ3zPvAIg+ulLZXS4p/PwULB3Lz968PFlItQ0Hhg/casKwiTQCQZRxrtF/7Uf6rQ+Y06sGJSXZvqv/sofJwMH+f9DCOowG0nwgF6D23ngzOzURxdzo/xvKTpjdM=)
+
+#yml 암호화 yml 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
