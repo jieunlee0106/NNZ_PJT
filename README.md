@@ -256,6 +256,7 @@
 <img src="https://github.com/yuriyeom/Flora/assets/43941336/e2cf3983-df5d-4b35-866b-878db6c5bbbe" width="270px">   
 
 <br />   
+<br />   
 
 ## 🖌️ Front-end
 
