@@ -19,10 +19,31 @@
 
 ### 핵심 기능
 
-- 사용자 위치 정보를 기반으로 한 나눔 
-- qr코드를 통한 빠른 나눔 가능
-- 
-- 
+- 크롤링 스케줄링을 통해 최신 공연 정보 조회
+  - 네이버 공연 정보를 기반으로 하루에 한 번 새로운 공연 정보를 크롤링한다.
+  - 다양한 카테고리의 공연을 제공한다.
+    - 농구, 야구, 클래식, 콘서트, E스포츠, 가족/아동, 카트라이더: 드리프트, 리그 오브 레전드, 뮤직페스티벌 뮤지컬, 오버워치, 공연제, 축구, 스포츠, 스타크래프트2, 연극
+- 나눔 생성
+  - 사진, 제목, 나눔일자, 오픈시간, 인증여부, 인증조건, 수량, 내용, 태그를 담아 나눔을 생성할 수  있다.
+  - 나눔 생성 시 트위터에 게시글 생성을 연동할 수 있다.
+  - 신청된 인증에 대해 수락/거절할 수 있다.
+  - 나눔자는 당일에 본인을 찾을 수 있는 정보를 등록할 수 있다.
+    - 구글맵으로 정확한 위치 정보 제공
+    - 정확한 시간과 착장 정보 제공
+  - QR코드 인증으로 빠르게 나눔할 수 있다.
+- 나눔 참여
+  - 인증이 필수이면 신청할 때 사진을 첨부하여 신청해야 한다.
+  - 관심있는 나눔을 찜할 수 있다.
+  - QR코드 인증으로 빠르게 나눔받을 수 있다.
+- 사용자 간 소통
+  - 팔로우 기능
+  - 서로 트위터 팔로우가 됐는지 확인할 수 있다.
+- PUSH 알림
+  - 내가 팔로우한 사용자가 나눔 생성 때
+  - 내가 생성한 나눔이 마감될 때
+  - 내가 찜한 나눔이 오픈할 때
+  - 내가 참여한 나눔의 당일이 됐을 때
+
 
 ## 설계
 
@@ -58,7 +79,7 @@
 <img src="https://img.shields.io/badge/IntelliJ-000000?style=flat&logo=IntelliJ IDEA&logoColor=white"/>
 
 ### 서비스 아키텍쳐
-
+![image](https://github.com/yuriyeom/Flora/assets/43941336/9f601ca6-93ba-40ec-8836-53f13ca1aa21)
 <p align="center">
 
 </p>
@@ -76,12 +97,13 @@
 </p>
 
 ### 요구사항 명세서
-
+[Notion Link](https://absorbing-antimatter-c8a.notion.site/2bca47aaa2024894918d8bdc79c5fba2?v=9afa3d18e4a14e969388f34948b077c8)
 <p align="center">
 <!-- <img src="./readmeAsset/requirements.png" width="800px"> -->
 </p>
 
-### API 명세서 [:link:](https://documenter.getpostman.com/view/25310566/2s93JxsMqe#intro)
+### API 명세서 
+[Notion Link](https://absorbing-antimatter-c8a.notion.site/3886fa0afed04d4c87b1956451713b34?v=46990bbbe0dc47edbca935e291926dfe)
 
 <p align="center">
 <!-- <img src="./readmeAsset/api.png" width="800px"> -->
