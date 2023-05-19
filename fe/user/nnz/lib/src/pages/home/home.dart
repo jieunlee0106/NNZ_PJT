@@ -133,17 +133,17 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
-          leading: IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Register(),
-                ),
-              );
-            },
-          ),
+          // leading: IconButton(
+          //   icon: Icon(Icons.account_circle),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => Register(),
+          //       ),
+          //     );
+          //   },
+          // ),
           title: Center(child: Image.asset(ImagePath.logo, width: 80)),
         ),
         body: SingleChildScrollView(
