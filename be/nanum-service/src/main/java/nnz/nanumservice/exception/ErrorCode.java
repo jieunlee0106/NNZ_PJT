@@ -15,6 +15,7 @@ public enum ErrorCode implements AbstractErrorCode {
     CATEGORY_NOT_FOUND("C001", "등록되지 않은 카테고리입니다.", NOT_FOUND),
     NANUM_NOT_FOUND("N001", "등록되지 않은 나눔입니다.", NOT_FOUND),
     NANUM_NOT_ACTIVE("N003", "진행중인 나눔이 아닙니다.", BAD_REQUEST),
+    NANUM_CLOSE("N004", "마감된 나눔입니다.", NOT_FOUND),
     USER_NANUM_NOT_FOUND("UN002", "등록되지 않은 받은 나눔입니다.", NOT_FOUND),
     ALREADY_USER_NANUM("UN003", "이미 처리한 나눔 인증입니다.", CONFLICT),
     USER_NANUM_NOT_CERTIFIED("UN004", "인증되지 않은 나눔 신청입니다.", NOT_FOUND),

@@ -299,9 +299,13 @@ public class NanumServiceImpl implements NanumService {
 
     @Override
     @Transactional
-    public void createUserNanum(Long nanumId, Long userId, MultipartFile file) {
+    public void createUserNanum(Long nanumId, Long userId, MultipartFile file) throws FirebaseMessagingException {
         Nanum nanum = nanumRepository.findById(nanumId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NANUM_NOT_FOUND));
+
+        if(nanum.getStatus() >= 1)
+            throw new CustomException(ErrorCode.NANUM_CLOSE);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -323,6 +327,17 @@ public class NanumServiceImpl implements NanumService {
                 .build();
 
         userNanumRepository.save(userNanum);
+
+        int countByIsCertificated = userNanumRepository.countByNanumAndIsCertificated(nanum, true);
+        if(countByIsCertificated == nanum.getQuantity()){
+            nanum.updateStatus(1);
+            // 마감되었을 때 PUSH 알림
+            fcmService.sendMessage(FcmNotificationDTO.builder()
+                    .title("내가 만든 나눔이 마감되었어요.")
+                    .body(nanum.getIsCertification() ? "인증을 검사하러 가볼까요?" : "나눔해주셔서 감사합니다!")
+                    .userToken(nanum.getProvider().getDeviceToken())
+                    .build());
+        }
 
         UserNanumDTO userNanumDTO = UserNanumDTO.of(userNanum);
         KafkaMessage<UserNanumDTO> userNanumDTOKafkaMessage = KafkaMessage.create().body(userNanumDTO);
