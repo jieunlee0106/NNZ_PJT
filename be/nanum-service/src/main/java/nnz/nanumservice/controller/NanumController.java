@@ -122,7 +122,7 @@ public class NanumController {
     public ResponseEntity<Void> createUserNanum(
             @PathVariable(name = "nanumId") Long nanumId,
             @RequestPart(value = "image", required = false) MultipartFile file,
-            DecodedToken userToken) {
+            DecodedToken userToken) throws FirebaseMessagingException {
         nanumService.createUserNanum(nanumId, userToken.getId(), file);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
